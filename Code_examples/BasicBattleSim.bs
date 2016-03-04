@@ -1,0 +1,96 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Her begynder Type erklæringer'''''''''''''''''''''''''''
+Type Coord
+	x as Integer
+	y as Integer
+	Constructor(x as Integer, y as Integer)
+		this.x = x
+		this.y = y
+	End Constructor
+	Function GetHeight as Integer(terrain as Terrain)
+		Return terrain.map[x][y]
+	End Function
+End Type
+
+Type Terrain
+	resolution as Integer 			/'Opløsningen af højde-værdierne (Jpg og png er 256 resolution)'/
+	map[][] as Integer
+	pixelLength as Double 			'Den aktuelle længde per pixel i meter
+	maxRealHeight as Integer 		'Den maksimale højde i meter for en pixel = Resolution
+	Action CreateTerrainFromImg(path as String)
+		'Læser filen og initialiserer Map
+	End Action
+End Type
+
+Type Unit
+	id as Integer
+	name as String
+	rank as Integer
+	position as Coord
+	speed as Double
+	Action MoveTo(newposition as Coord)
+		' ... Move funktionaltiet
+	End Action
+	Action Move(length as Integer, degree as Degree)
+End Type
+
+Type Platoon
+	units as List<Unit>
+
+	Function AverageHeight as Integer(terrain as Terrain)
+		Dcl res as Integer = 0
+		Foreach Unit unit In units
+			res += unit.position.GetHeight(terrain)
+		End Foreach
+		Return res / units.Count()
+	End Function
+End Type
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Her begynder deklarationer''''''''''''''''''''''''''''''
+Dcl terrain as Terrain //Standard library der genererer 2D-array elevation-matrix
+terrain = terrain.CreateTerrainFromImg("Heightmap.png")
+
+Dcl soldier as Unit
+soldier.id = 0
+soldier.name = "John"
+soldier.rank = 2
+soldier.position = (10, 20)
+
+Dcl soldier2 as Unit
+soldier2(id, name, rank, position) = 1, "Gert", 3, (11, 20)
+
+Dcl soldier3 as Unit(id, name, rank, position) = 2, "Charles", 3, (12, 22)
+
+Dcl platoon as Platoon = {soldier, soldier2, soldier3}
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Her begynder den imperative del'''''''''''''''''''''''''
+soldier2.MoveTo(11, 21) 'Flytter soldier2 til koordinatet (11, 21)
+soldier3.MoveTo(43, 45)
+soldier.MoveTo(45, 76)
+
+If soldier.position.GetHeight(terrain) > 100 Then
+	platoon.Move(30, N) 'Flytter platoon 30 units nord
+End If
+
+Dcl base as Coord = (50, 50)
+
+If platoon.AverageHeight > 100 Then
+	platoon.Move(30, NW)
+ElseIf platoon > 90 Then
+	platoon.MoveTo(base)
+End If
+
+While platoon.position.GetHeight(terrain) < 100 Do
+	Foreach Unit unit in platoon Do
+		unit.speed = unit.speed + 0.1
+	End Foreach
+	wait 100 			'wait tager input i millisekunder
+End While
