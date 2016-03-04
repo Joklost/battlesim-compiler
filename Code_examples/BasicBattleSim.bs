@@ -18,7 +18,7 @@ Type Terrain
 	resolution as Integer 			/'Opløsningen af højde-værdierne (Jpg og png er 256 resolution)'/
 	map[][] as Integer
 	pixelLength as Double 			'Den aktuelle længde per pixel i meter
-	maxRealHeight as Integer 		'Den maksimale højde i meter for en pixel = Resolution
+	maxRealHeight as Integer 		'Den maksimale højde i meter for en pixel  (Resolution)
 	Action CreateTerrainFromImg(path as String)
 		'Læser filen og initialiserer Map
 	End Action
@@ -55,18 +55,18 @@ End Type
 Dcl terrain as Terrain //Standard library der genererer 2D-array elevation-matrix
 terrain = terrain.CreateTerrainFromImg("Heightmap.png")
 
-Dcl soldier as Unit
-soldier.id = 0
-soldier.name = "John"
-soldier.rank = 2
-soldier.position = (10, 20)
+Dcl soldier1 as Unit		/'Her ville det nok give bedre mening med'/
+soldier1.id = 0					/'soldier1(id) = 0'/
+soldier1.name = "John"	/'måske??'/
+soldier1.rank = 2
+soldier1.position = (10, 20)
 
 Dcl soldier2 as Unit
 soldier2(id, name, rank, position) = 1, "Gert", 3, (11, 20)
 
 Dcl soldier3 as Unit(id, name, rank, position) = 2, "Charles", 3, (12, 22)
 
-Dcl platoon as Platoon = {soldier, soldier2, soldier3}
+Dcl platoon as Platoon = {soldier1, soldier2, soldier3}
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -74,9 +74,9 @@ Dcl platoon as Platoon = {soldier, soldier2, soldier3}
 'Her begynder den imperative del'''''''''''''''''''''''''
 soldier2.MoveTo(11, 21) 'Flytter soldier2 til koordinatet (11, 21)
 soldier3.MoveTo(43, 45)
-soldier.MoveTo(45, 76)
+soldier1.MoveTo(45, 76)
 
-If soldier.position.GetHeight(terrain) > 100 Then
+If soldier1.position.GetHeight(terrain) > 100 Then
 	platoon.Move(30, N) 'Flytter platoon 30 units nord
 End If
 
@@ -92,5 +92,5 @@ While platoon.position.GetHeight(terrain) < 100 Do
 	Foreach Unit unit in platoon Do
 		unit.speed = unit.speed + 0.1
 	End Foreach
-	wait 100 			'wait tager input i millisekunder
+	wait 100 			'wait tager input i millisekunder -- evt wait(100)?
 End While
