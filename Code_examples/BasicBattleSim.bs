@@ -11,7 +11,7 @@ Type Coord
 		this.y = y
 	End Constructor
 '/
-	Function Number GetHeight(terrain as Terrain) 'as Number ???
+	Function Number GetHeight(terrain as Terrain)
 		Return terrain.map[x][y]
 	End Function
 End Type
