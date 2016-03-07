@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <png.h>
 
 #define MAX_MIDI_SIZE 1000000000000
 
