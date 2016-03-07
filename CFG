@@ -1,0 +1,100 @@
+Start               : Types FunctionDcls Program FunctionDcls
+Includes            : Include Includes
+                    |
+Include             : "Include (" HeaderId ")"
+TypeDcls            : TypeDcl TypeDcls
+                    |
+TypeDcl             : "Type" Id MemberDcl MemberDcls FunctionDcls "End Type"
+MemberDcls          : MemberDcl MemberDcls
+                    |
+MemberDcl           : Id "as" TypeId
+FunctionDcl         : FunctionDcl FunctionDcls
+                    |
+FunctionDcl         : "Function" TypeId Id "(" Params ")" Stmts "End Function"
+                    | "Function" TypeId Id "()" Stmts "End Function"
+                    | "Function" Id "(" Params ")" Stmts "End Function"
+                    | "Function" Id "()" Stmts "End Function"
+Params              : MemberDcl ", " Params
+                    | MemberDcl
+Program             : "Begin Program" Stmts "End Program"
+                    |
+Stmts               : Stmt Stmts
+                    |
+Stmt                : Dcl
+                    | Assigment
+                    | IfStmt
+                    | LoopStmt
+                    | "Return" variable
+                    | "Return"
+IfStmt              : "If" Arithmetic "Then" Stmts V
+V                   : "End If"
+                    | "Else" Stmts "End If"
+                    | "ElseIf" Arithmetic "Then" Stmts V
+SwitchcStmt         : "Switch" Arithmetic SwitchCases SwitchDefault "End Switch'"
+SwitchCases         : SwitchCase SwitchCases
+                    |
+SwitchCase          : "Case" Arithmetic Stmts
+SwitchDefault       : "Default" Stmts
+                    |
+Arithmetic          : "(" Arithmetic ")"
+                    | Variable BinOperator Variable
+                    | Variable UnOperator
+                    | LeftUnOperator Variable
+Assignment          : Id "=" RightAssign
+RightAssign         : Variable
+                    | Function
+                    | TypeFunction
+Function            : Id "(" Arguments ")"
+                    | Id "()"
+TypeFunction        : TypeId "." Id "(" Arguments ")"
+                    | TypeId "." Id "()"
+Arguments           : Variable ", " Arguments
+                    | Variable
+LoopStmt            : WhileStmt
+                    | ForStmt
+                    | ForeachStmt
+WhileStmt           : "While" Arithmetic "Do" Stmts "End While"
+ForeachStmt         : "Foreach" TypeId Id "In" "List<" TypeId "> Do" Stmts "End Foreach"
+                    | "Foreach" TypeId Id "In" TypeId "Do" Stmts "End Foreach"
+ForStmt             : "For" Integer "To" Integer "Do" Stmts "End For"
+                    | "For" Integer "DownTo" Integer "Do" Stmts "End For"
+BinOperator         : "*"
+                    | "+"
+                    | "/"
+                    | "-"
+                    | "%"
+                    | LogicOperator
+                    | RelationelOperator
+LogicOperator       : "AND"
+                    | "OR"
+RelationelOperator  : "EQUALS"
+                    | "GREATERTHAN"
+                    | "LESSTHAN"
+                    | "GREATERTHANEQUALS"
+                    | "LESSERTHANEQUALS"
+UnOperator          : "++"
+                    | "--"
+LeftUnOperator      : "-"
+                    | "NOT"
+                    | UnOperator
+Variable            : Arithmetic
+                    | Id
+                    | Number
+                    | String
+                    | Boolean
+Dcl                 : "Declare" Id "as" TypeId
+TypeId              : Id
+                    | "Number"
+                    | "String"
+                    | "Boolean"
+                    | "List<" TypeId ">"
+                    | TypeId "[" Integer "]"
+
+/*
+Id                  : ^(?=[a-zA-Z]+[a-zA-Z0-9]*)(?!.*(AND|OR|NOT|EQUALS|GREATERTHAN|GREATERTHANEQUALS|LESSTHAN|LESSTHANEQUALS|If|While|Do|Foreach|Function|End|Begin|Program|For|Type|as|Number|String|Boolean|Declare|In|Return|ElseIf|Else|Wait|List|Include|Switch|Default|Case)).+$
+HeaderId            : ^.*\.(bs)$
+Number              : ^[+-]?[0-9]*\.?[0-9]+$
+String              : ^.*$
+Boolean             : ^(true|false)$
+Integers            : ^[0-9]+$
+*/

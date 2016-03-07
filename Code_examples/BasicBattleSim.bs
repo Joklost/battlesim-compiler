@@ -110,8 +110,8 @@ Begin Program /' command line arguments? '/
 	While platoon.position.GetHeight(terrain) < 100 Do
 		Foreach Unit unit in platoon Do
 			unit.speed = unit.speed + 0.1
-		End Foreach
-		Wait(100) 			'wait tager input i millisekunder -- evt wait(100)?
+		End Foreach'wait tager input i millisekunder -- evt wait(100)?
+		Wait(100)
 	End While
 
 	Switch soldier1.position
@@ -122,7 +122,6 @@ Begin Program /' command line arguments? '/
 		Default
 			Print("Other Position")
 	End Switch
-
 
 End Program
 
