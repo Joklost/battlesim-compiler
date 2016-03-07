@@ -1,3 +1,6 @@
+Include("stdlib.bs")
+
+
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -48,7 +51,7 @@ Type Platoon
 
 	Function Number AverageHeight(terrain as Terrain)
 		Declare res as Number = 0
-		Foreach unit as Unit In units
+		Foreach unit as Unit In units Do
 			res += unit.position.GetHeight(terrain)
 		End Foreach
 		Return res / units.Count()
@@ -108,8 +111,18 @@ Begin Program /' command line arguments? '/
 		Foreach Unit unit in platoon Do
 			unit.speed = unit.speed + 0.1
 		End Foreach
-		wait 100 			'wait tager input i millisekunder -- evt wait(100)?
+		Wait(100) 			'wait tager input i millisekunder -- evt wait(100)?
 	End While
+
+	Switch soldier1.position
+		Case (10, 11)
+			Print("Position (10, 11)")
+		Case (10, 12)
+			Print("Position (10, 12)")
+		Default
+			Print("Other Position")
+	End Switch
+
 
 End Program
 
