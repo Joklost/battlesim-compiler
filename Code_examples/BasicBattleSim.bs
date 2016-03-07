@@ -36,7 +36,7 @@ Type Unit
 		' ... MoveTo funktionaltiet
 	End Function
 	Function Move(length as Number, degree as Number)
-		If degree > 360 Or degree < 0 Then
+		If degree > 360 OR degree < 0 Then
 			Return
 		End If
 			' ... Move funktionaltiet
