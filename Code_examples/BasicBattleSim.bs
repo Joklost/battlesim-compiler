@@ -11,7 +11,7 @@ Type Coord
 	End Function
 End Type
 /'
-Dcl pos as Coord
+Declare pos as Coord
 pos(x, y) = 20, 10
 pos.x = 20
 pos.y = 10
@@ -47,7 +47,7 @@ Type Platoon
 	units as List<Unit>
 
 	Function Number AverageHeight(terrain as Terrain)
-		Dcl res as Number = 0
+		Declare res as Number = 0
 		Foreach unit as Unit In units
 			res += unit.position.GetHeight(terrain)
 		End Foreach
@@ -65,24 +65,24 @@ End Function
 'Her begynder deklarationer''''''''''''''''''''''''''''''
 
 Begin Program /' command line arguments? '/
-	Dcl terrain as Terrain 'Standard library der genererer 2D-array elevation-matrix
+	Declare terrain as Terrain 'Standard library der genererer 2D-array elevation-matrix
 	terrain = terrain.CreateTerrainFromImg("Heightmap.png")
 
-	Dcl soldier1 as Unit		/'Her ville det nok give bedre mening med'/
+	Declare soldier1 as Unit		/'Her ville det nok give bedre mening med'/
 	soldier1.id = 0					/'soldier1(id) = 0'/
 	soldier1.name = "John"	/'måske??'/
 	soldier1.rank = 2
 	soldier1.position = (10, 20)
 
-	Dcl soldier2 as Unit
+	Declare soldier2 as Unit
 	soldier2.id = 1
 	soldier2.name = "Gert"
 	soldier2.rank = 3
 	soldier2.position = (11, 20)
 
-	Dcl soldier3 as Unit(id, name, rank, position) = 2, "Charles", 3, (12, 22)
+	Declare soldier3 as Unit(id, name, rank, position) = 2, "Charles", 3, (12, 22)
 
-	Dcl platoon as Platoon(units) = {soldier1, soldier2, soldier3} as List<unit>
+	Declare platoon as Platoon(units) = {soldier1, soldier2, soldier3} as List<unit>
 
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -96,7 +96,7 @@ Begin Program /' command line arguments? '/
 		platoon.Move(30, N) 'Flytter platoon 30 units nord
 	End If
 
-	Dcl base as Coord = (50, 50)
+	Declare base as Coord = (50, 50)
 
 	If platoon.AverageHeight > 100 Then
 		platoon.Move(30, NW)
