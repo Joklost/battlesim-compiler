@@ -1,3 +1,6 @@
+Include("stdlib.bs")
+
+
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -11,7 +14,7 @@ Type Coord
 	End Function
 End Type
 /'
-Dcl pos as Coord
+Declare pos as Coord
 pos(x, y) = 20, 10
 pos.x = 20
 pos.y = 10
@@ -36,7 +39,7 @@ Type Unit
 		' ... MoveTo funktionaltiet
 	End Function
 	Function Move(length as Number, degree as Number)
-		If degree > 360 Or degree < 0 Then
+		If degree > 360 OR degree < 0 Then
 			Return
 		End If
 			' ... Move funktionaltiet
@@ -47,8 +50,8 @@ Type Platoon
 	units as List<Unit>
 
 	Function Number AverageHeight(terrain as Terrain)
-		Dcl res as Number = 0
-		Foreach unit as Unit In units
+		Declare res as Number = 0
+		Foreach unit as Unit In units Do
 			res += unit.position.GetHeight(terrain)
 		End Foreach
 		Return res / units.Count()
@@ -65,29 +68,24 @@ End Function
 'Her begynder deklarationer''''''''''''''''''''''''''''''
 
 Begin Program /' command line arguments? '/
-	Dcl terrain as Terrain 'Standard library der genererer 2D-array elevation-matrix
+	Declare terrain as Terrain 'Standard library der genererer 2D-array elevation-matrix
 	terrain = terrain.CreateTerrainFromImg("Heightmap.png")
 
-	Dcl soldier1 as Unit		/'Her ville det nok give bedre mening med'/
+	Declare soldier1 as Unit		/'Her ville det nok give bedre mening med'/
 	soldier1.id = 0					/'soldier1(id) = 0'/
 	soldier1.name = "John"	/'måske??'/
 	soldier1.rank = 2
 	soldier1.position = (10, 20)
 
-	Dcl num1 as Number
-	num1 = 1 And 1
-
-	1 && 1
-
-	Dcl soldier2 as Unit
+	Declare soldier2 as Unit
 	soldier2.id = 1
 	soldier2.name = "Gert"
 	soldier2.rank = 3
 	soldier2.position = (11, 20)
 
-	Dcl soldier3 as Unit(id, name, rank, position) = 2, "Charles", 3, (12, 22)
+	Declare soldier3 as Unit(id, name, rank, position) = 2, "Charles", 3, (12, 22)
 
-	Dcl platoon as Platoon(units) = {soldier1, soldier2, soldier3} as List<unit>
+	Declare platoon as Platoon(units) = {soldier1, soldier2, soldier3} as List<unit>
 
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -101,7 +99,7 @@ Begin Program /' command line arguments? '/
 		platoon.Move(30, N) 'Flytter platoon 30 units nord
 	End If
 
-	Dcl base as Coord = (50, 50)
+	Declare base as Coord = (50, 50)
 
 	If platoon.AverageHeight > 100 Then
 		platoon.Move(30, NW)
@@ -113,8 +111,18 @@ Begin Program /' command line arguments? '/
 		Foreach Unit unit in platoon Do
 			unit.speed = unit.speed + 0.1
 		End Foreach
-		wait 100 			'wait tager input i millisekunder -- evt wait(100)?
+		Wait(100) 			'wait tager input i millisekunder -- evt wait(100)?
 	End While
+
+	Switch soldier1.position
+		Case (10, 11)
+			Print("Position (10, 11)")
+		Case (10, 12)
+			Print("Position (10, 12)")
+		Default
+			Print("Other Position")
+	End Switch
+
 
 End Program
 
