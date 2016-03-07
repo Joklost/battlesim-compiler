@@ -3,44 +3,56 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'Her begynder Type erklæringer'''''''''''''''''''''''''''
 Type Coord
-	x as Integer
-	y as Integer
-	Constructor(x as Integer, y as Integer)
+	x as Number
+	y as Number
+/'
+	Constructor(x as Number, y as Number)
 		this.x = x
 		this.y = y
 	End Constructor
-	Function GetHeight as Integer(terrain as Terrain)
+'/
+	Function Number GetHeight(terrain as Terrain) 'as Number ???
 		Return terrain.map[x][y]
 	End Function
 End Type
-
+/'
+Dcl pos as Coord
+pos(x, y) = 20, 10
+pos.x = 20
+pos.y = 10
+'/
 Type Terrain
-	resolution as Integer 			/'Opløsningen af højde-værdierne (Jpg og png er 256 resolution)'/
-	map[][] as Integer
-	pixelLength as Double 			'Den aktuelle længde per pixel i meter
-	maxRealHeight as Integer 		'Den maksimale højde i meter for en pixel  (Resolution)
-	Action CreateTerrainFromImg(path as String)
+	resolution as Number 			/'Opløsningen af højde-værdierne (Jpg og png er 256 resolution)'/
+	map[][] as Number
+	pixelLength as Number 			'Den aktuelle længde per pixel i meter
+	maxRealHeight as Number 		'Den maksimale højde i meter for en pixel  (Resolution)
+	Function CreateTerrainFromImg(path as String)
 		'Læser filen og initialiserer Map
-	End Action
+	End Function
 End Type
 
 Type Unit
-	id as Integer
+	id as Number
 	name as String
-	rank as Integer
+	rank as Number
 	position as Coord
-	speed as Double
-	Action MoveTo(newposition as Coord)
-		' ... Move funktionaltiet
-	End Action
-	Action Move(length as Integer, degree as Degree)
+	speed as Number
+	Function MoveTo(newposition as Coord)
+		' ... MoveTo funktionaltiet
+	End Function
+	Function Move(length as Number, degree as Number)
+		If degree > 360 Then
+			Return
+		End If
+			' ... Move funktionaltiet
+	End Function
 End Type
 
 Type Platoon
 	units as List<Unit>
 
-	Function AverageHeight as Integer(terrain as Terrain)
-		Dcl res as Integer = 0
+	Function Number AverageHeight(terrain as Terrain)
+		Dcl res as Number = 0
 		Foreach Unit unit In units
 			res += unit.position.GetHeight(terrain)
 		End Foreach
@@ -52,7 +64,7 @@ End Type
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'Her begynder deklarationer''''''''''''''''''''''''''''''
-Dcl terrain as Terrain //Standard library der genererer 2D-array elevation-matrix
+Dcl terrain as Terrain 'Standard library der genererer 2D-array elevation-matrix
 terrain = terrain.CreateTerrainFromImg("Heightmap.png")
 
 Dcl soldier1 as Unit		/'Her ville det nok give bedre mening med'/
