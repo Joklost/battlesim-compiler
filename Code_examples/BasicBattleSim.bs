@@ -1,5 +1,14 @@
 Include("stdlib.bs")
-
+' List<T> - Add(obj as T), Remove(obj as T), Count()
+' Terrain - CreateTerrainFromImg(path as String)
+'
+'
+'
+Define NORTH 0
+Define EAST 90
+Define SOUTH 180
+Define WEST 270
+Define HELLO "Hej"
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -19,9 +28,9 @@ pos(x, y) = 20, 10
 pos.x = 20
 pos.y = 10
 '/
-Type Terrain
+Type Terrain	'Skal være stdlib
 	resolution as Number 			/'Opløsningen af højde-værdierne (Jpg og png er 256 resolution)'/
-	map[][] as Number
+	map as Number[1081][1081]
 	pixelLength as Number 			'Den aktuelle længde per pixel i meter
 	maxRealHeight as Number 		'Den maksimale højde i meter for en pixel  (Resolution)
 	Function CreateTerrainFromImg(path as String)
@@ -75,17 +84,27 @@ Begin Program /' command line arguments? '/
 	soldier1.id = 0					/'soldier1(id) = 0'/
 	soldier1.name = "John"	/'måske??'/
 	soldier1.rank = 2
-	soldier1.position = (10, 20)
+	soldier1.position.x = 10
+	soldier1.position.y = 20
 
 	Declare soldier2 as Unit
 	soldier2.id = 1
 	soldier2.name = "Gert"
 	soldier2.rank = 3
-	soldier2.position = (11, 20)
+	soldier2.position.x = 11
+	soldier2.position.y = 20
 
-	Declare soldier3 as Unit(id, name, rank, position) = 2, "Charles", 3, (12, 22)
+	Declare soldier3 as Unit
+	soldier3.id = 2
+	soldier3.name = "Charles"
+	soldier3.rank = 3
+	soldier3.position.x = 12
+	soldier3.position.y = 22
 
-	Declare platoon as Platoon(units) = {soldier1, soldier2, soldier3} as List<unit>
+	Declare platoon as Platoon	'List<T>.Add() er stdlib
+	platoon.units.Add(soldier1)
+	platoon.units.Add(soldier2)
+	platoon.units.Add(soldier3)
 
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -110,7 +129,8 @@ Begin Program /' command line arguments? '/
 	While platoon.position.GetHeight(terrain) < 100 Do
 		Foreach Unit unit in platoon Do
 			unit.speed = unit.speed + 0.1
-		End Foreach'wait tager input i millisekunder -- evt wait(100)?
+		End Foreach
+		'wait tager input i millisekunder
 		Wait(100)
 	End While
 
