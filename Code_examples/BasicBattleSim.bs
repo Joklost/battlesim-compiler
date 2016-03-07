@@ -74,6 +74,11 @@ Begin Program /' command line arguments? '/
 	soldier1.rank = 2
 	soldier1.position = (10, 20)
 
+	Dcl num1 as Number
+	num1 = 1 And 1
+
+	1 && 1
+
 	Dcl soldier2 as Unit
 	soldier2.id = 1
 	soldier2.name = "Gert"
