@@ -113,12 +113,12 @@ TypeId              : Id
                     | "Number"
                     | "String"
                     | "Boolean"
-                    | "List<" TypeId ">"          // List<Unit>
-                    | TypeId "[" Integer "]"      // Er det nemmere at forstå uden SKULLE allokere plads
-NestedId            : "." Id
+                    | "List<" TypeId ">"            // List<Unit>
+                    | TypeId "[" Integer "]"        // Er det nemmere at forstå uden SKULLE allokere plads
+//NestedId            : "."
 Id                  : "id"
-                    | "id" NestedId
-                    | Id "[" Integer "]"        // Array og List<T> tilgang
+                    | "." Id                        // <-- er forkert
+                    | "id[" Integer "]"             // Array og List<T> tilgang - Hvad gør vi med id[int].id.id[int].id??
 HeaderId            : "hid"
 Number              : "num"
 String              : "str"

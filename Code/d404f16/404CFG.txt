@@ -1,0 +1,58 @@
+Start             : "inkluder(" String ") EOL" Start // afviger fra CFG
+                  | "start{" Linjer "}"
+Linjer            : Linje "EOL" Linjer
+                  |
+Linje             : Vars
+                  | Metode
+                  | If_statement
+                  | While_lokke
+                  | For_lokke
+                  | "returner " Vars
+Vars              : Type ID
+                  | ID " = " Variabel
+                  | Variabel
+                  | ID
+                  | ID "[" Vars "] = " Vars
+                  | ID "[tilfoj] = " Vars
+                  | ID "[længde]"
+                  | ID "[" Vars ", " Vars "]"
+Variabel          : Num
+                  | String
+                  | Bool
+Type              : "tal"
+                  | "tekst"
+                  | "udsagn"
+                  | "liste " Type
+Metode            : ID "(" ListOfVars ") {" Linjer "}"
+Operation         : Factor " + " Operation
+                  | Factor " - " Operation
+                  | Factor
+Factor            : Operation " * " Factor
+                  | Operation " / " Factor
+                  | Operation " % " Factor
+                  | "(" Operation ")"
+                  | Vars
+If_statement      : "hvis " Stats " EOL {" Linjer "} " Ellers_statement
+Ellers_statement  : "ellers EOL {" Linjer "}"
+                  | "ellers " If_statement
+                  |
+While_lokke       : "sålænge " Stats " gentag {" Linjer "}"
+For_lokke         : "gentag tal " ID " = " Num " til " Vars "{" Linjer "}" // afviger fra CFG
+Stats             : Stat " og " Stats
+                  | Stat " eller " Stats
+                  | Stat
+Stat              : Operation Sammenligning Operation
+                  | "(" Stats ")"
+                  | Bool
+Sammenligning     : " > "
+                  | " < "
+                  | " >= "
+                  | " <= "
+                  | " == "
+                  | " != "
+ListOfVars        : Vars ", " ListOfVars
+                  | Vars
+ID                : "id"
+Num               : "num"
+String            : "str"
+Bool              : "true"
