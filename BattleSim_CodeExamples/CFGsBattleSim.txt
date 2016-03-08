@@ -9,8 +9,8 @@ Includes            : Include Includes
 Include             : "Include (" HeaderId ")"    // Header-filer indeholder TypeDcls og FunctionDcls
 Defines             : Define Defines
                     |
-Define              : "Define " Id " " D1
-D1                  : Number
+Define              : "Define " Id " " DefineType
+DefineType          : Number
                     | String
                     | Boolean
 TypeDcls            : TypeDcl TypeDcls
@@ -41,8 +41,8 @@ Stmt                : Dcl
                     | "Return "
 /* *** potential horizontal ambiguity: Stmts[#1]: Stmt <--> Stmts */
 ////////////////////////////////////////////////////////////////////////////////
-IfStmt              : "If " Arithmetic " Then " Stmts V1
-V1                  : " End If"
+IfStmt              : "If " Arithmetic " Then " Stmts ElifStmt
+ElifStmt            : " End If"
                     | " Else " Stmts " End If"
                     | " Else" IfStmt
 /* *** potential horizontal ambiguity: IfStmt[#1]: "If " Arithmetic " Then " Stmts <--> V1 */
@@ -61,7 +61,7 @@ Arithmetic          : "(" Arithmetic ")"
                     | LeftUnOperator Variable
 A                   : BinOperator Variable
                     | UnOperator
-Assignment          : Id AssignOperator RightAssign
+Assignment          : NestedId AssignOperator RightAssign
 AssignOperator      : " = "
                     | " += "
                     | " -= "
@@ -71,8 +71,8 @@ AssignOperator      : " = "
 RightAssign         : Arithmetic
                     | Variable
                     | FunctionCall
-FunctionCall        : Id "(" Arguments ")"
-                    | Id "()"
+FunctionCall        : NestedId "(" Arguments ")"
+                    | NestedId "()"
 Arguments           : Variable ", " Arguments
                     | Arithmetic ", " Arguments
                     | Variable
@@ -81,7 +81,7 @@ LoopStmt            : WhileStmt
                     | ForStmt
                     | ForeachStmt
 WhileStmt           : "While " Arithmetic " Do " Stmts " End While"
-ForeachStmt         : "Foreach " TypeId " " Id " In " Id " Do " Stmts " End Foreach"
+ForeachStmt         : "Foreach " TypeId " " Id " In " NestedId " Do " Stmts " End Foreach"    // Foreach Unit unit In units.unitList Do
 ForStmt             : "For " Integer ForIterator Integer " Do " Stmts " End For"
 ForIterator         : " To "
                     | " DownTo "
@@ -104,7 +104,7 @@ UnOperator          : "++"
 LeftUnOperator      : " NOT"
                     | " -"
                     | UnOperator
-Variable            : Id
+Variable            : NestedId
                     | Number
                     | String
                     | Boolean
@@ -115,10 +115,11 @@ TypeId              : Id
                     | "Boolean"
                     | "List<" TypeId ">"            // List<Unit>
                     | TypeId "[" Integer "]"        // Er det nemmere at forstå uden SKULLE allokere plads
-//NestedId            : "."
+NestedId            : Id V
+N                   : "." NestedId
+                    | "[" Integer "]" N
+                    |
 Id                  : "id"
-                    | "." Id                        // <-- er forkert
-                    | "id[" Integer "]"             // Array og List<T> tilgang - Hvad gør vi med id[int].id.id[int].id??
 HeaderId            : "hid"
 Number              : "num"
 String              : "str"
