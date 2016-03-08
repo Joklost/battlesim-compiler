@@ -62,6 +62,9 @@ Arithmetic          : "(" Arithmetic ")"
 A                   : BinOperator Variable
                     | UnOperator
 Assignment          : NestedId AssignOperator RightAssign
+                    | NestedId "(" Id MultiAssign Variable ")"
+MultiAssign         : ", " Id MultiAssign Variable ", "
+                    | ") = ("
 AssignOperator      : " = "
                     | " += "
                     | " -= "
