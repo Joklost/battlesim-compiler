@@ -18,6 +18,7 @@ import java_cup.runtime.*;
         return new Symbol(type, yyline, yycolumn, value);
       }
 
+      /* This is required, as ZZAtEOF is private */
       public boolean getZZAtEOF() {
         return zzAtEOF;
       }
@@ -35,6 +36,8 @@ EndOfLineComment    = "//" {InputCharacter}* {LineTerminator}?
 
 /* StringLiteral       = "([^"\\]*(\\.[^"\\]*)*)" */
 /* BooleanLiteral      = (true | false) */
+
+ListDeclaration     = (List< {Identifier} >)
 
 StringCharacter     = [^\r\n\"\\]
 IntegerLiteral      = 0 | [1-9][0-9]*
@@ -65,7 +68,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "In"                    { return symbol(Token.IN); }
     "Return"                { return symbol(Token.RETURN); }
     "Else"                  { return symbol(Token.ELSE); }
-    "List"                  { return symbol(Token.LIST); }
+    {ListDeclaration}       { return symbol(Token.LIST); }
     "Include"               { return symbol(Token.INCLUDE); }
     "Define"                { return symbol(Token.DEFINE); }
     "Switch"                { return symbol(Token.SWITCH); }
@@ -108,14 +111,16 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "LESSTHAN"              { return symbol(Token.LESSTHAN); }
     "LESSTHANEQUALS"        { return symbol(Token.LESSTHANEQUALS); }
 
-    /* string? */
-
     /* Numeric literals */
     {IntegerLiteral}        { return symbol(Token.INTEGER_LITERAL, new Integer(yytext())); }
     {NumberLiteral}         { return symbol(Token.NUMBER_LITERAL, new Double(yytext())); }
 
     /* String literal */
     \"                      { yybegin(STRING); string.setLength(0); }
+
+    /* Is used if a NEWLINE token is necessary
+    {LineTerminator}        { return symbol(Token.NEWLINE); }
+    */
 
     /* Ignore these */
     {Comment}               { /* nothing happens here, maybe */ }
@@ -124,6 +129,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
     /* Identifiers */
     {Identifier}            { return symbol(Token.IDENTIFIER, yytext()); }
+
 }
 
 <STRING> {

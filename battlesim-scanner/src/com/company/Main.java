@@ -4,28 +4,48 @@ package com.company;
  */
 public class Main {
     public static void main(String argv[]) {
+        String[] paths = new String[] {
+                //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs",
+                //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BasicBattleSim.bs",
+                //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/EuclideanAlgorithm.bs",
+                //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BellmanFord.bs",
+        };
         if (argv.length == 0) {
-            System.out.println("Usage : java Scanner <inputfile>");
+            // /home/joklost/Repos/P4-Code/battlesim-scanner/BattleSimCode/BasicBattleSim.bs
+            //            ScanFile(path);
+            if (paths.length != 0) {
+                for (String path : paths) {
+                    System.out.println("Scanning : " + path);
+                    ScanFile(path);
+                }
+            } else {
+                System.out.println("Usage : java Scanner <inputfile>");
+            }
         } else {
             for (int i = 0; i < argv.length; i++) {
-                Scanner scanner = null;
-                try {
-                    scanner = new Scanner(new java.io.FileReader(argv[i]));
-                    while (!scanner.getZZAtEOF()) {
-                        java_cup.runtime.Symbol sym = scanner.next_token();
-                        System.out.print(Token.getTokenName(sym.sym) + " - ");
-                        System.out.print(sym.value + "\n");
-                    }
-                } catch (java.io.FileNotFoundException e) {
-                    System.out.println("File not found : \"" + argv[i] + "\"");
-                } catch (java.io.IOException e) {
-                    System.out.println("IO error scanning file \"" + argv[i] + "\"");
-                    System.out.println(e);
-                } catch (Exception e) {
-                    System.out.println("Unexpected exception:");
-                    e.printStackTrace();
-                }
+                ScanFile(argv[i]);
             }
+        }
+    }
+
+    public static void ScanFile(String path) {
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new java.io.FileReader(path));
+            while (!scanner.getZZAtEOF()) {
+
+                java_cup.runtime.Symbol sym = scanner.next_token();
+                Token token = new Token(sym.sym, sym.value == null ? "" : sym.value.toString());
+                System.out.println(token.toString());
+            }
+        } catch (java.io.FileNotFoundException e) {
+            System.out.println("File not found : \"" + path + "\"");
+        } catch (java.io.IOException e) {
+            System.out.println("IO error scanning file \"" + path + "\"");
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println("Unexpected exception:");
+            e.printStackTrace();
         }
     }
 }

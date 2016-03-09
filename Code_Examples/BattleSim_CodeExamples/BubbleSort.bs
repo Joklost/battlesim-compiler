@@ -2,11 +2,9 @@
 Function BubbleSort(a as List<Number>)
   Declare n as Number
   n = a.Count()
-  Declare i as Number
+  Declare i, c, t as Number
   i = 0
-  Declare c as Number
   c = 0
-  Declare t as Number
   For i To (n - 1) Do
     For c To (n - i - 1) Do
       If a[c] GREATERTHAN a[c + 1] Then
