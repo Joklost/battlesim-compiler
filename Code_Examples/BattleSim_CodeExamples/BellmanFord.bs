@@ -70,7 +70,7 @@ End Program
 Function InitializeSingleSource(graph as Graph, source as Vertex)
   Foreach Vertex v In graph Do
     v.d = infinity                  'included in math.bs library
-    v.pi = Null
+    v.pi = NULL
   End Foreach
   s.d = 0
 End Function
