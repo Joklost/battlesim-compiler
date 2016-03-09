@@ -115,12 +115,12 @@ Begin Program
 
 	If platoon.AverageHeight GREATERTHAN 100 Then
 		platoon.Move(30, NW)
-	ElseIf platoon GREATERTHAN 90 Then
+	Else If platoon GREATERTHAN 90 Then
 		platoon.MoveTo(base)
 	End If
 
 	While platoon.position.GetHeight(terrain) LESSTHAN 100 Do
-		Foreach Unit unit in platoon Do
+		Foreach Unit unit In platoon Do
 			unit.speed = unit.speed + 0.1
 		End Foreach
 		//wait tager input i millisekunder
@@ -135,7 +135,6 @@ Begin Program
 		Default
 			Print("Other Position")
 	End Switch
-
 End Program
 
 

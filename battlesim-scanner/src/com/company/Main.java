@@ -9,13 +9,12 @@ public class Main {
                 //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BasicBattleSim.bs",
                 //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/EuclideanAlgorithm.bs",
                 //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BellmanFord.bs",
+                "C:\\Users\\Jonas\\P4-Code\\Code_Examples\\BattleSim_CodeExamples\\BellmanFord.bs",
         };
         if (argv.length == 0) {
-            // /home/joklost/Repos/P4-Code/battlesim-scanner/BattleSimCode/BasicBattleSim.bs
-            //            ScanFile(path);
             if (paths.length != 0) {
                 for (String path : paths) {
-                    System.out.println("Scanning : " + path);
+                    System.out.println("Scanning : \"" + path + "\"");
                     ScanFile(path);
                 }
             } else {
