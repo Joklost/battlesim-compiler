@@ -1,11 +1,11 @@
-/'
+/*
 function gcd(a, b)
     while b ≠ 0
        t := b;
        b := a mod b;
        a := t;
     return a;
-'/
+*/
 
 Function Gcd(a as Number, b as Number)
   While NOT (b EQUALS 0) Do
@@ -22,5 +22,11 @@ Begin Program
   Declare b as Number
   a = 1071
   b = 462
+  Declare test1, test2 as Number
+  test1 = 10.6
+  test2 = .5
+
+  Declare testStr as String
+  testStr = "Charles er dum.\""
   Print(Gcd(a, b))
 End Program

@@ -1,5 +1,5 @@
-include java_cup.runtime.*;
-
+package com.company;
+import java_cup.runtime.*;
 
 %%
 %class Scanner
@@ -16,6 +16,10 @@ include java_cup.runtime.*;
       }
       private Symbol symbol(int type, Object value) {
         return new Symbol(type, yyline, yycolumn, value);
+      }
+
+      public boolean getZZAtEOF() {
+        return zzAtEOF;
       }
 %}
 
@@ -43,72 +47,72 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
 <YYINITIAL> {
     /* Keywords */
-    "Boolean"               { return symbol(sym.BOOLEAN); }
-    "If"                    { return symbol(sym.IF); }
-    "While"                 { return symbol(sym.WHILE); }
-    "Do"                    { return symbol(sym.DO); }
-    "Foreach"               { return symbol(sym.FOREACH); }
-    "Function"              { return symbol(sym.FUNCTION); }
-    "End"                   { return symbol(sym.END); }
-    "Begin"                 { return symbol(sym.BEGIN); }
-    "Program"               { return symbol(sym.PROGRAM); }
-    "For"                   { return symbol(sym.FOR); }
-    "Type"                  { return symbol(sym.TYPE); }
-    "as"                    { return symbol(sym.AS); }
-    "Number"                { return symbol(sym.NUMBER); }
-    "String"                { return symbol(sym.STRING); }
-    "Declare"               { return symbol(sym.DECLARE); }
-    "In"                    { return symbol(sym.IN); }
-    "Return"                { return symbol(sym.RETURN); }
-    "Else"                  { return symbol(sym.ELSE); }
-    "List"                  { return symbol(sym.LIST); }
-    "Include"               { return symbol(sym.INCLUDE); }
-    "Define"                { return symbol(sym.DEFINE); }
-    "Switch"                { return symbol(sym.SWITCH); }
-    "NULL"                  { return symbol(sym.NULL_LITERAL); }
-    "Case"                  { return symbol(sym.CASE); }
-    "Default"               { return symbol(sym.DEFAULT); }
+    "Boolean"               { return symbol(Token.BOOLEAN); }
+    "If"                    { return symbol(Token.IF); }
+    "While"                 { return symbol(Token.WHILE); }
+    "Do"                    { return symbol(Token.DO); }
+    "Foreach"               { return symbol(Token.FOREACH); }
+    "Function"              { return symbol(Token.FUNCTION); }
+    "End"                   { return symbol(Token.END); }
+    "Begin"                 { return symbol(Token.BEGIN); }
+    "Program"               { return symbol(Token.PROGRAM); }
+    "For"                   { return symbol(Token.FOR); }
+    "Type"                  { return symbol(Token.TYPE); }
+    "as"                    { return symbol(Token.AS); }
+    "Number"                { return symbol(Token.NUMBER); }
+    "String"                { return symbol(Token.STRING); }
+    "Declare"               { return symbol(Token.DECLARE); }
+    "In"                    { return symbol(Token.IN); }
+    "Return"                { return symbol(Token.RETURN); }
+    "Else"                  { return symbol(Token.ELSE); }
+    "List"                  { return symbol(Token.LIST); }
+    "Include"               { return symbol(Token.INCLUDE); }
+    "Define"                { return symbol(Token.DEFINE); }
+    "Switch"                { return symbol(Token.SWITCH); }
+    "NULL"                  { return symbol(Token.NULL_LITERAL); }
+    "Case"                  { return symbol(Token.CASE); }
+    "Default"               { return symbol(Token.DEFAULT); }
 
     /* Boolean literals */
-    "true"                  { return symbol(sym.BOOLEAN_LITERAL, true); }
-    "false"                 { return symbol(sym.BOOLEAN_LITERAL, false); }
+    "true"                  { return symbol(Token.BOOLEAN_LITERAL, true); }
+    "false"                 { return symbol(Token.BOOLEAN_LITERAL, false); }
 
     /* Seperators */
-    "("                     { return symbol(sym.LPAREN); }
-    ")"                     { return symbol(sym.RPAREN); }
-    "["                     { return symbol(sym.LBRACE); }
-    "]"                     { return symbol(sym.RBRACE); }
-    ","                     { return symbol(sym.COMMA); }
-    "."                     { return symbol(sym.DOT); }
+    "("                     { return symbol(Token.LPAREN); }
+    ")"                     { return symbol(Token.RPAREN); }
+    "["                     { return symbol(Token.LBRACE); }
+    "]"                     { return symbol(Token.RBRACE); }
+    ","                     { return symbol(Token.COMMA); }
+    "."                     { return symbol(Token.DOT); }
 
     /* Operators */
-    "="                     { return symbol(sym.EQ); }
-    "++"                    { return symbol(sym.PLUSPLUS); }
-    "--"                    { return symbol(sym.MINUSMINUS); }
-    "+"                     { return symbol(sym.PLUS); }
-    "-"                     { return symbol(sym.MINUS); }
-    "/"                     { return symbol(sym.DIV); }
-    "*"                     { return symbol(sym.MULT); }
-    "%"                     { return symbol(sym.MOD); }
-    "+="                    { return symbol(sym.PLUSEQ); }
-    "-="                    { return symbol(sym.MINUSEQ); }
-    "*="                    { return symbol(sym.MULTEQ); }
-    "/="                    { return symbol(sym.DIVEQ); }
-    "%="                    { return symbol(sym.MODEQ); }
-    "AND"                   { return symbol(sym.AND); }
-    "OR"                    { return symbol(sym.OR); }
-    "NOT"                   { return symbol(sym.NOT); }
-    "EQUALS"                { return symbol(sym.EQUALS); }
-    "GREATERTHAN"           { return symbol(sym.GREATERTHAN); }
-    "GREATERTHANEQUALS"     { return symbol(sym.GREATERTHANEQUALS); }
-    "LESSTHAN"              { return symbol(sym.LESSTHAN); }
-    "LESSTHANEQUALS"        { return symbol(sym.LESSTHANEQUALS); }
+    "="                     { return symbol(Token.EQ); }
+    "++"                    { return symbol(Token.PLUSPLUS); }
+    "--"                    { return symbol(Token.MINUSMINUS); }
+    "+"                     { return symbol(Token.PLUS); }
+    "-"                     { return symbol(Token.MINUS); }
+    "/"                     { return symbol(Token.DIV); }
+    "*"                     { return symbol(Token.MULT); }
+    "%"                     { return symbol(Token.MOD); }
+    "+="                    { return symbol(Token.PLUSEQ); }
+    "-="                    { return symbol(Token.MINUSEQ); }
+    "*="                    { return symbol(Token.MULTEQ); }
+    "/="                    { return symbol(Token.DIVEQ); }
+    "%="                    { return symbol(Token.MODEQ); }
+    "AND"                   { return symbol(Token.AND); }
+    "OR"                    { return symbol(Token.OR); }
+    "NOT"                   { return symbol(Token.NOT); }
+    "EQUALS"                { return symbol(Token.EQUALS); }
+    "GREATERTHAN"           { return symbol(Token.GREATERTHAN); }
+    "GREATERTHANEQUALS"     { return symbol(Token.GREATERTHANEQUALS); }
+    "LESSTHAN"              { return symbol(Token.LESSTHAN); }
+    "LESSTHANEQUALS"        { return symbol(Token.LESSTHANEQUALS); }
 
     /* string? */
 
     /* Numeric literals */
-    {IntegerLiteral}        { return symbol(sym.INTEGER_LITERAL, new Integer(yytext())); }
-    {NumberLiteral}         { return symbol(sym.NUMBER_LITERAL, new Double(yytext())); }
+    {IntegerLiteral}        { return symbol(Token.INTEGER_LITERAL, new Integer(yytext())); }
+    {NumberLiteral}         { return symbol(Token.NUMBER_LITERAL, new Double(yytext())); }
 
     /* String literal */
     \"                      { yybegin(STRING); string.setLength(0); }
@@ -119,11 +123,11 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
 
     /* Identifiers */
-    {Identifier}            { return symbol(sym.IDENTIFIER, yytext())); }
+    {Identifier}            { return symbol(Token.IDENTIFIER, yytext()); }
 }
 
 <STRING> {
-    \"                      { yybegin(YYINITIAL); return symbol(sym.STRING_LITERAL, string.toString()); }
+    \"                      { yybegin(YYINITIAL); return symbol(Token.STRING_LITERAL, string.toString()); }
 
     {StringCharacter}+      { string.append( yytext() ); }
 
@@ -144,4 +148,4 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
 /* error fallback */
 [^]                         { throw new RuntimeException("Illegal character \""+yytext()+"\" at line "+yyline+", column "+yycolumn); }
-<<EOF>>                     { return symbol(EOF); }
+<<EOF>>                     { return symbol(Token.EOF); }
