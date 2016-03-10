@@ -11,6 +11,7 @@ public class TokenStream {
 
     public TokenStream(Scanner scanner) {
         this.scanner = scanner;
+        this.advance();
     }
 
     public int peek() {

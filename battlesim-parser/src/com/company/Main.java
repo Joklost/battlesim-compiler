@@ -10,6 +10,7 @@ public class Main {
             try {
                 Scanner scanner = new Scanner(new java.io.FileReader(args[0]));
                 Parser parser = new Parser(scanner);
+                parser.Start();
             } catch (java.io.FileNotFoundException e) {
                 System.out.println("File not found : \"" + args[0] + "\"");
             } catch (Exception e) {

@@ -68,7 +68,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "In"                    { return symbol(Token.IN); }
     "Return"                { return symbol(Token.RETURN); }
     "Else"                  { return symbol(Token.ELSE); }
-    {ListDeclaration}       { return symbol(Token.LIST); }
+    {ListDeclaration}       { return symbol(Token.LIST, yytext()); }
     "Include"               { return symbol(Token.INCLUDE); }
     "Define"                { return symbol(Token.DEFINE); }
     "Switch"                { return symbol(Token.SWITCH); }
