@@ -80,7 +80,10 @@ public class Token {
         NEWLINE             = 58,
 
         /* For iterators */
-        DOWNTO              = 59, TO                  = 60;
+        DOWNTO              = 59, TO                  = 60,
+
+        /* Extras (dem vi glemte) */
+        THEN                = 61;
 
     private static HashMap<Integer, String> tokenNames;
     static {
