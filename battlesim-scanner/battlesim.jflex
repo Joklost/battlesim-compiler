@@ -77,6 +77,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Default"               { return symbol(Token.DEFAULT); }
     "DownTo"                { return symbol(Token.DOWNTO); }
     "To"                    { return symbol(Token.TO); }
+    "Then"                  { return symbol(Token.THEN); }
 
     /* Boolean literals */
     "true"                  { return symbol(Token.BOOLEAN_LITERAL, true); }
