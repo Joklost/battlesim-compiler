@@ -67,7 +67,7 @@ Begin Program
   Return true
 End Program
 
-Function InitializeSingleSource(graph as Graph, source as Vertex)
+Function Void InitializeSingleSource(graph as Graph, source as Vertex)
   Foreach Vertex v In graph Do
     v.d = infinity                  //included in math.bs library
     v.pi = NULL
@@ -75,7 +75,7 @@ Function InitializeSingleSource(graph as Graph, source as Vertex)
   s.d = 0
 End Function
 
-Function Relax(u as Vertex, v as Vertex, w as Number)
+Function Void Relax(u as Vertex, v as Vertex, w as Number)
   If v.d GREATERTHAN u.d + w Then
     v.d = u.d + w
     v.pi = u

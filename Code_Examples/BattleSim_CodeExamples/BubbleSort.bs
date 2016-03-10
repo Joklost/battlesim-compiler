@@ -1,5 +1,5 @@
 
-Function BubbleSort(a as List<Number>)
+Function Void BubbleSort(a as List<Number>)
   Declare n as Number
   n = a.Count()
   Declare i, c, t as Number
@@ -25,6 +25,8 @@ Begin Program
   a.Add(16)
   a.Add(-4)
   a.Add(17)
+
+  Declare array as [10]Number
 
   Foreach Number num In a Do
     Print(num)

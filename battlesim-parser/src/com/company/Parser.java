@@ -1,10 +1,5 @@
 package com.company;
 
-import javax.lang.model.element.VariableElement;
-import java.lang.invoke.SwitchPoint;
-import java.lang.reflect.Member;
-import java.lang.reflect.Type;
-
 /**
  * Created by joklost on 3/10/16.
  */
@@ -19,6 +14,18 @@ public class Parser {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ///////CFG//////////////////////////////////////////////////////////////////////
+
+    /*
+
+    Vi mangler:
+    --
+
+    RightAssign()
+    FunctionCall()
+    Arguments()
+
+     */
+
     public void Start() {
         if (ts.peek() == Token.INCLUDE || ts.peek() == Token.DEFINE || ts.peek() == Token.TYPE || ts.peek() == Token.FUNCTION || ts.peek() == Token.BEGIN) {
             Includes();
@@ -48,7 +55,7 @@ public class Parser {
         if (ts.peek() == Token.INCLUDE) {
             expect(Token.INCLUDE);
             expect(Token.LPAREN);
-            HeaderId();
+            String_Lit();
             expect(Token.RPAREN);
         } else {
             error("Include: Expected Include.");
@@ -69,6 +76,8 @@ public class Parser {
     public void Define() {
         if (ts.peek() == Token.DEFINE) {
             expect(Token.DEFINE);
+            Id();
+            DefineType();
         } else {
             error("Define: Expected Define.");
         }
@@ -145,15 +154,37 @@ public class Parser {
 
     public void FunctionDcl() {
         if (ts.peek() == Token.FUNCTION) {
-            // CFG'en skal refactores
+            expect(Token.FUNCTION);
+            TypeId();
+            Id();
+            expect(Token.LPAREN);
+            Param();
+            expect(Token.RPAREN);
+            Stmts();
+            expect(Token.END);
+            expect(Token.FUNCTION);
         } else {
             error("FunctionDcl: Expected Function.");
         }
     }
 
-    public void Params() {
+    public void Param() {
         if (ts.peek() == Token.IDENTIFIER) {
-            // CFG'en skal refactores
+            MemberDcl();
+            Params();
+        } else if (ts.peek() == Token.RPAREN) {
+            // Lambda
+        } else {
+            error("Param: Expected Identifier.");
+        }
+    }
+
+    public void Params() {
+        if (ts.peek() == Token.COMMA) {
+            expect(Token.COMMA);
+            Param();
+        } else if (ts.peek() == Token.RPAREN) {
+            // Lambda
         } else {
             error("Params: Expected Identifier.");
         }
@@ -194,9 +225,20 @@ public class Parser {
         } else if (ts.peek() == Token.SWITCH) {
             SwitchStmt();
         } else if (ts.peek() == Token.RETURN) {
-            // CFG'en skal refactores
+            expect(Token.RETURN);
+            ReturnV();
         } else {
             error("Stmt: Expected Declare, Identifier, If, While, Foreach, For, Switch or Return.");
+        }
+    }
+
+    public void ReturnV() {
+        if (ts.peek() == Token.IDENTIFIER || ts.peek() == Token.NUMBER_LITERAL || ts.peek() == Token.STRING_LITERAL || ts.peek() == Token.BOOLEAN_LITERAL) {
+            Variable();
+        } else if (ts.peek() == Token.DECLARE || ts.peek() == Token.IDENTIFIER || ts.peek() == Token.IF || ts.peek() == Token.WHILE || ts.peek() == Token.FOREACH || ts.peek() == Token.FOR || ts.peek() == Token.SWITCH || ts.peek() == Token.RETURN || ts.peek() == Token.END || ts.peek() == Token.DEFAULT) {
+            // Lambda
+        } else {
+            error("ReturnV: Expected Identifier, Number_Literal, String_Literal, Boolean_Literal, Declare, Identifier, If, While, Foreach, For, Switch, Return.");
         }
     }
 
@@ -211,17 +253,20 @@ public class Parser {
             error("IfStmt: Expected If.");
         }
     }
-
     public void ElifStmt() {
         if (ts.peek() == Token.END) {
             expect(Token.END);
             expect(Token.IF);
         } else if (ts.peek() == Token.ELSE) {
-            // CFG'en skal refactoreres
+            expect(Token.ELSE);
+            Stmt();
+            expect(Token.END);
+            expect(Token.IF);
         } else {
             error("ElifStmt: Expected End or Else.");
         }
     }
+
 
     public void SwitchStmt() {
         if (ts.peek() == Token.SWITCH) {
@@ -294,9 +339,25 @@ public class Parser {
 
     public void Assignment() {
         if (ts.peek() == Token.IDENTIFIER) {
-            // CFG'en skal refactoreres
+            NestedId();
+            AssignMode();
         } else {
             error("Assignment: Expected Identifier");
+        }
+    }
+
+    public void AssignMode() {
+        if (ts.peek() == Token.EQ || ts.peek() == Token.PLUSEQ || ts.peek() == Token.MINUSEQ || ts.peek() == Token.MODEQ || ts.peek() == Token.MULTEQ || ts.peek() == Token.DIVEQ) {
+            AssignOperator();
+            RightAssign();
+        } else if (ts.peek() == Token.LPAREN) {
+            expect(Token.LPAREN);
+            Id();
+            MultiAssign();
+            Variable();
+            expect(Token.RPAREN);
+        } else {
+            error("AssignMode: Expected (, =, +=, -=, %=, *=, /=.");
         }
     }
 
@@ -494,7 +555,135 @@ public class Parser {
         }
     }
 
-    
+    public void Dcl() {
+        if (ts.peek() == Token.DECLARE) {
+            expect(Token.DECLARE);
+            Id();
+            Dcls();
+            expect(Token.AS);
+            TypeId();
+        } else {
+            error("Dcl: Expected Declare.");
+        }
+    }
+
+    public void Dcls() {
+        if (ts.peek() == Token.COMMA) {
+            expect(Token.COMMA);
+            Id();
+            Dcls();
+        } else if (ts.peek() == Token.AS) {
+            // Lambda
+        } else {
+            error("Dcls: Expected , or as.");
+        }
+    }
+
+    public void TypeId() {
+        if (ts.peek() == Token.IDENTIFIER) {
+            Id();
+            ArrayDcl();
+        } else if (ts.peek() == Token.NUMBER) {
+            expect(Token.NUMBER);
+            ArrayDcl();
+        } else if (ts.peek() == Token.STRING) {
+            expect(Token.STRING);
+            ArrayDcl();
+        } else if (ts.peek() == Token.BOOLEAN) {
+            expect(Token.BOOLEAN);
+            ArrayDcl();
+        } else if (ts.peek() == Token.VOID) {
+            expect(Token.VOID);
+        } else if (ts.peek() == Token.LIST) {
+            expect(Token.LIST);
+            expect(Token.LANGLE);
+            Integer_Lit();
+            expect(Token.RANGLE);
+        } else {
+            error("TypeId: Expected Identifier, Number, String, Boolean, Void or List.");
+        }
+    }
+
+    public void ArrayDcl() {
+        if (ts.peek() == Token.LBRACE) {
+            expect(Token.LBRACE);
+            Integer_Lit();
+            expect(Token.RBRACE);
+        } else if (ts.peek() == Token.IDENTIFIER || ts.peek() == Token.RANGLE || ts.peek() == Token.IF || ts.peek() == Token.WHILE || ts.peek() == Token.FOREACH || ts.peek() == Token.FOR || ts.peek() == Token.SWITCH || ts.peek() == Token.RETURN || ts.peek() == Token.END || ts.peek() == Token.DEFAULT || ts.peek() == Token.FUNCTION) {
+            // Lambda
+        } else {
+            error("ArrayDcl: Expected [, Identifier, >, Foreach, For, Switch, Return, End, Default or Function.");
+        }
+    }
+
+    public void NestedId() {
+        if (ts.peek() == Token.IDENTIFIER) {
+            Id();
+            N();
+        } else {
+            error("NestedId: Expected Identifier.");
+        }
+    }
+
+    public void N() {
+        if (ts.peek() == Token.DOT) {
+            expect(Token.DOT);
+            NestedId();
+        } else if (ts.peek() == Token.LBRACE) {
+            expect(Token.LBRACE);
+            Integer_Lit();
+            expect(Token.RBRACE);
+            N();
+        } else if (ts.peek() == Token.LPAREN || ts.peek() == Token.DO || ts.peek() == Token.THEN || ts.peek() == Token.RPAREN || ts.peek() == Token.COMMA || ts.peek() == Token.EQ || ts.peek() == Token.PLUSEQ || ts.peek() == Token.MINUSEQ || ts.peek() == Token.MODEQ|| ts.peek() == Token.MULTEQ || ts.peek() == Token.DIVEQ || ts.peek() == Token.DEFAULT || ts.peek() == Token.END || ts.peek() == Token.CASE || ts.peek() == Token.DECLARE || ts.peek() == Token.IDENTIFIER || ts.peek() == Token.IF || ts.peek() == Token.WHILE || ts.peek() == Token.FOREACH || ts.peek() == Token.FOR || ts.peek() == Token.SWITCH || ts.peek() == Token.RETURN || ts.peek() == Token.MULT || ts.peek() == Token.PLUS || ts.peek() == Token.DIV || ts.peek() == Token.MINUS || ts.peek() == Token.MOD|| ts.peek() == Token.AND || ts.peek() == Token.OR || ts.peek() == Token.EQUALS || ts.peek() == Token.GREATERTHAN || ts.peek() == Token.LESSTHAN || ts.peek() == Token.GREATERTHANEQUALS || ts.peek() == Token.LESSTHANEQUALS || ts.peek() == Token.PLUSPLUS || ts.peek() == Token.MINUSMINUS) {
+            // Lambda
+        } else {
+            error("N: Expected (, Do, Then, ), ',', =, +=, -=, %=, *=, /=, Default," +
+                    " End, Case, Declare, Identifier, If, While, Foreach, For, Switch," +
+                    " Return, *, +, /, -, %, AND, OR, EQUALS, GREATERTHAN, LESSTHAN," +
+                    " GREATERTHANEQUALS, LESSTHANEQUALS, ++ or --.");
+        }
+    }
+
+    // RegEx
+    public void Id() {
+        if (ts.peek() == Token.IDENTIFIER) {
+            expect(Token.IDENTIFIER);
+        } else {
+            error("Id: Expected Identifier.");
+        }
+    }
+
+    public void Number_Lit() {
+        if (ts.peek() == Token.NUMBER_LITERAL) {
+            expect(Token.NUMBER_LITERAL);
+        } else {
+            error("Number_Lit: Expected Number_Literal.");
+        }
+    }
+
+    public void String_Lit() {
+        if (ts.peek() == Token.STRING_LITERAL) {
+            expect(Token.STRING_LITERAL);
+        } else {
+            error("String_Lit: Expected String_Literal.");
+        }
+    }
+
+    public void Boolean_Lit() {
+        if (ts.peek() == Token.BOOLEAN_LITERAL) {
+            expect(Token.BOOLEAN_LITERAL);
+        } else {
+            error("Boolean_Lit: Expected Boolean_Literal.");
+        }
+    }
+
+    public void Integer_Lit() {
+        if (ts.peek() == Token.INTEGER_LITERAL) {
+            expect(Token.INTEGER_LITERAL);
+        } else {
+            error("Integer_Lit: Expected Integer_Literal.");
+        }
+    }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

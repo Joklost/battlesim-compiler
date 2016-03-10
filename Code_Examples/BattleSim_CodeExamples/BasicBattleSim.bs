@@ -10,7 +10,6 @@ Define SOUTH 180
 Define WEST 270
 Define HELLO "Hej"
 
-
 //Her begynder Type erklæringer
 Type Coord
 	x as Number
@@ -31,7 +30,7 @@ Type Terrain	//Skal være stdlib
 	map as Number[1081][1081]
 	pixelLength as Number 			//Den aktuelle længde per pixel i meter
 	maxRealHeight as Number 		//Den maksimale højde i meter for en pixel  (Resolution)
-	Function CreateTerrainFromImg(path as String)
+	Function Void CreateTerrainFromImg(path as String)
 		//Læser filen og initialiserer Map
 	End Function
 End Type
@@ -42,10 +41,10 @@ Type Unit
 	rank as Number
 	position as Coord
 	speed as Number
-	Function MoveTo(newposition as Coord)
+	Function Void MoveTo(newposition as Coord)
 		// ... MoveTo funktionaltiet
 	End Function
-	Function Move(length as Number, degree as Number)
+	Function Void Move(length as Number, degree as Number)
 		If degree GREATERTHAN 360 OR degree LESSTHAN 0 Then
 			Return
 		End If

@@ -7,7 +7,7 @@ function gcd(a, b)
     return a;
 */
 
-Function Gcd(a as Number, b as Number)
+Function Number Gcd(a as Number, b as Number)
   While NOT (b EQUALS 0) Do
     Declare t as Number
     t = b
@@ -18,15 +18,9 @@ Function Gcd(a as Number, b as Number)
 End Function
 
 Begin Program
-  Declare a as Number
-  Declare b as Number
+  Declare a, b as Number
   a = 1071
   b = 462
-  Declare test1, test2 as Number
-  test1 = 10.6
-  test2 = .5
 
-  Declare testStr as String
-  testStr = "Charles er dum.\""
   Print(Gcd(a, b))
 End Program

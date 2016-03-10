@@ -83,44 +83,70 @@ public class Token {
         DOWNTO              = 59, TO                  = 60,
 
         /* Extras (dem vi glemte) */
-        THEN                = 61;
+        THEN                = 61, VOID                = 62,
+        LANGLE              = 63, RANGLE              = 64;
 
     private static HashMap<Integer, String> tokenNames;
     static {
         tokenNames = new HashMap<Integer, String>();
 
         /* Keywords */
-        tokenNames.put(BOOLEAN, "BOOLEAN"); tokenNames.put(IF, "IF");
-        tokenNames.put(WHILE, "WHILE"); tokenNames.put(DO, "DO");
-        tokenNames.put(FOREACH, "FOREACH"); tokenNames.put(FUNCTION, "FUNCTION");
-        tokenNames.put(END, "END"); tokenNames.put(BEGIN, "BEGIN");
-        tokenNames.put(PROGRAM, "PROGRAM"); tokenNames.put(FOR, "FOR");
-        tokenNames.put(TYPE, "TYPE"); tokenNames.put(AS, "AS");
-        tokenNames.put(NUMBER, "NUMBER"); tokenNames.put(STRING, "STRING");
-        tokenNames.put(DECLARE, "DECLARE"); tokenNames.put(IN, "IN");
-        tokenNames.put(RETURN, "RETURN"); tokenNames.put(ELSE, "ELSE");
-        tokenNames.put(LIST, "LIST"); tokenNames.put(INCLUDE, "INCLUDE");
-        tokenNames.put(DEFINE, "DEFINE"); tokenNames.put(SWITCH, "SWITCH");
-        tokenNames.put(NULL_LITERAL, "NULL_LITERAL"); tokenNames.put(CASE, "CASE");
+        tokenNames.put(BOOLEAN, "BOOLEAN");
+        tokenNames.put(IF, "IF");
+        tokenNames.put(WHILE, "WHILE");
+        tokenNames.put(DO, "DO");
+        tokenNames.put(FOREACH, "FOREACH");
+        tokenNames.put(FUNCTION, "FUNCTION");
+        tokenNames.put(END, "END");
+        tokenNames.put(BEGIN, "BEGIN");
+        tokenNames.put(PROGRAM, "PROGRAM");
+        tokenNames.put(FOR, "FOR");
+        tokenNames.put(TYPE, "TYPE");
+        tokenNames.put(AS, "AS");
+        tokenNames.put(NUMBER, "NUMBER");
+        tokenNames.put(STRING, "STRING");
+        tokenNames.put(DECLARE, "DECLARE");
+        tokenNames.put(IN, "IN");
+        tokenNames.put(RETURN, "RETURN");
+        tokenNames.put(ELSE, "ELSE");
+        tokenNames.put(LIST, "LIST");
+        tokenNames.put(INCLUDE, "INCLUDE");
+        tokenNames.put(DEFINE, "DEFINE");
+        tokenNames.put(SWITCH, "SWITCH");
+        tokenNames.put(NULL_LITERAL, "NULL_LITERAL");
+        tokenNames.put(CASE, "CASE");
         tokenNames.put(DEFAULT, "DEFAULT");
 
         /* Seperators */
         tokenNames.put(BOOLEAN_LITERAL, "BOOLEAN_LITERAL");
-        tokenNames.put(LPAREN, "LPAREN"); tokenNames.put(RPAREN, "RPAREN");
-        tokenNames.put(LBRACE, "LBRACE"); tokenNames.put(RBRACE, "RBRACE");
-        tokenNames.put(COMMA, "COMMA"); tokenNames.put(DOT, "DOT");
+        tokenNames.put(LPAREN, "LPAREN");
+        tokenNames.put(RPAREN, "RPAREN");
+        tokenNames.put(LBRACE, "LBRACE");
+        tokenNames.put(RBRACE, "RBRACE");
+        tokenNames.put(COMMA, "COMMA");
+        tokenNames.put(DOT, "DOT");
 
         /* Operators */
-        tokenNames.put(EQ, "EQ"); tokenNames.put(PLUSPLUS, "PLUSPLUS");
-        tokenNames.put(MINUSMINUS, "MINUSMINUS"); tokenNames.put(PLUS, "PLUS");
-        tokenNames.put(MINUS, "MINUS"); tokenNames.put(DIV, "DIV");
-        tokenNames.put(MULT, "MULT"); tokenNames.put(MOD, "MOD");
-        tokenNames.put(PLUSEQ, "PLUSEQ"); tokenNames.put(MINUSEQ, "MINUSEQ");
-        tokenNames.put(MULTEQ, "MULTEQ"); tokenNames.put(DIVEQ, "DIVEQ");
-        tokenNames.put(MODEQ, "MODEQ"); tokenNames.put(AND, "AND");
-        tokenNames.put(OR, "OR"); tokenNames.put(NOT, "NOT");
-        tokenNames.put(EQUALS, "EQUALS"); tokenNames.put(GREATERTHAN, "GREATERTHAN");
-        tokenNames.put(GREATERTHANEQUALS, "GREATERTHANEQUALS"); tokenNames.put(LESSTHAN, "LESSTHAN");
+        tokenNames.put(EQ, "EQ");
+        tokenNames.put(PLUSPLUS, "PLUSPLUS");
+        tokenNames.put(MINUSMINUS, "MINUSMINUS");
+        tokenNames.put(PLUS, "PLUS");
+        tokenNames.put(MINUS, "MINUS");
+        tokenNames.put(DIV, "DIV");
+        tokenNames.put(MULT, "MULT");
+        tokenNames.put(MOD, "MOD");
+        tokenNames.put(PLUSEQ, "PLUSEQ");
+        tokenNames.put(MINUSEQ, "MINUSEQ");
+        tokenNames.put(MULTEQ, "MULTEQ");
+        tokenNames.put(DIVEQ, "DIVEQ");
+        tokenNames.put(MODEQ, "MODEQ");
+        tokenNames.put(AND, "AND");
+        tokenNames.put(OR, "OR");
+        tokenNames.put(NOT, "NOT");
+        tokenNames.put(EQUALS, "EQUALS");
+        tokenNames.put(GREATERTHAN, "GREATERTHAN");
+        tokenNames.put(GREATERTHANEQUALS, "GREATERTHANEQUALS");
+        tokenNames.put(LESSTHAN, "LESSTHAN");
         tokenNames.put(LESSTHANEQUALS, "LESSTHANEQUALS");
 
         /* Literals */
@@ -133,7 +159,12 @@ public class Token {
         tokenNames.put(EOF, "EOF");
         tokenNames.put(NEWLINE, "NEWLINE");
 
-        tokenNames.put(DOWNTO, "DOWNTO"); tokenNames.put(TO, "TO");
+        tokenNames.put(DOWNTO, "DOWNTO");
+        tokenNames.put(TO, "TO");
+        tokenNames.put(VOID, "VOID");
+        tokenNames.put(LANGLE, "LANGLE");
+        tokenNames.put(RANGLE, "RANGLE");
+
     }
 
     public static String getTokenName(int token) {

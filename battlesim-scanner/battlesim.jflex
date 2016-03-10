@@ -37,7 +37,7 @@ EndOfLineComment    = "//" {InputCharacter}* {LineTerminator}?
 /* StringLiteral       = "([^"\\]*(\\.[^"\\]*)*)" */
 /* BooleanLiteral      = (true | false) */
 
-ListDeclaration     = (List< {Identifier} >)
+/* ListDeclaration     = (List< {Identifier} >) */
 
 StringCharacter     = [^\r\n\"\\]
 IntegerLiteral      = 0 | [1-9][0-9]*
@@ -68,7 +68,9 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "In"                    { return symbol(Token.IN); }
     "Return"                { return symbol(Token.RETURN); }
     "Else"                  { return symbol(Token.ELSE); }
-    {ListDeclaration}       { return symbol(Token.LIST, yytext()); }
+    "List"                  { return symbol(Token.LIST); }
+    "<"                     { return symbol(Token.LANGLE); }
+    ">"                     { return symbol(Token.RANGLE); }
     "Include"               { return symbol(Token.INCLUDE); }
     "Define"                { return symbol(Token.DEFINE); }
     "Switch"                { return symbol(Token.SWITCH); }
@@ -78,6 +80,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "DownTo"                { return symbol(Token.DOWNTO); }
     "To"                    { return symbol(Token.TO); }
     "Then"                  { return symbol(Token.THEN); }
+    "Void"                  { return symbol(Token.VOID); }
 
     /* Boolean literals */
     "true"                  { return symbol(Token.BOOLEAN_LITERAL, true); }

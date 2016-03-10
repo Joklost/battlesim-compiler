@@ -8,7 +8,7 @@ public class Main {
                 //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs",
                 //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BasicBattleSim.bs",
                 //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/EuclideanAlgorithm.bs",
-                //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BellmanFord.bs",
+                "/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BellmanFord.bs",
                 //"C:\\Users\\Jonas\\P4-Code\\Code_Examples\\BattleSim_CodeExamples\\BellmanFord.bs",
         };
         if (argv.length == 0) {
