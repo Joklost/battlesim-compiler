@@ -1,19 +1,17 @@
 Include("stdlib.bs")
-' List<T> - Add(obj as T), Remove(obj as T), Count()
-' Terrain - CreateTerrainFromImg(path as String)
-'
-'
-'
+/* List<T> - Add(obj as T), Remove(obj as T), Count()
+ Terrain - CreateTerrainFromImg(path as String)
+
+
+*/
 Define NORTH 0
 Define EAST 90
 Define SOUTH 180
 Define WEST 270
 Define HELLO "Hej"
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'Her begynder Type erklæringer'''''''''''''''''''''''''''
+
+//Her begynder Type erklæringer
 Type Coord
 	x as Number
 	y as Number
@@ -22,19 +20,19 @@ Type Coord
 		Return terrain.map[x][y]
 	End Function
 End Type
-/'
+/*
 Declare pos as Coord
 pos(x, y) = 20, 10
 pos.x = 20
 pos.y = 10
-'/
-Type Terrain	'Skal være stdlib
-	resolution as Number 			/'Opløsningen af højde-værdierne (Jpg og png er 256 resolution)'/
+*/
+Type Terrain	//Skal være stdlib
+	resolution as Number 			//Opløsningen af højde-værdierne (Jpg og png er 256 resolution)
 	map as Number[1081][1081]
-	pixelLength as Number 			'Den aktuelle længde per pixel i meter
-	maxRealHeight as Number 		'Den maksimale højde i meter for en pixel  (Resolution)
+	pixelLength as Number 			//Den aktuelle længde per pixel i meter
+	maxRealHeight as Number 		//Den maksimale højde i meter for en pixel  (Resolution)
 	Function CreateTerrainFromImg(path as String)
-		'Læser filen og initialiserer Map
+		//Læser filen og initialiserer Map
 	End Function
 End Type
 
@@ -45,13 +43,13 @@ Type Unit
 	position as Coord
 	speed as Number
 	Function MoveTo(newposition as Coord)
-		' ... MoveTo funktionaltiet
+		// ... MoveTo funktionaltiet
 	End Function
 	Function Move(length as Number, degree as Number)
-		If degree > 360 OR degree < 0 Then
+		If degree GREATERTHAN 360 OR degree LESSTHAN 0 Then
 			Return
 		End If
-			' ... Move funktionaltiet
+			// ... Move funktionaltiet
 	End Function
 End Type
 
@@ -71,18 +69,15 @@ Function Number Sum(num1 as Number, num2 as Number)
 	Return num1 + num2
 End Function
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'Her begynder deklarationer''''''''''''''''''''''''''''''
+//Her begynder deklarationer
 
-Begin Program /' command line arguments? '/
-	Declare terrain as Terrain 'Standard library der genererer 2D-array elevation-matrix
+Begin Program
+	Declare terrain as Terrain //Standard library der genererer 2D-array elevation-matrix
 	terrain = terrain.CreateTerrainFromImg("Heightmap.png")
 
-	Declare soldier1 as Unit		/'Her ville det nok give bedre mening med'/
-	soldier1.id = 0					/'soldier1(id) = 0'/
-	soldier1.name = "John"	/'måske??'/
+	Declare soldier1 as Unit		//Her ville det nok give bedre mening med
+	soldier1.id = 0					//soldier1(id) = 0
+	soldier1.name = "John"	//måske??
 	soldier1.rank = 2
 	soldier1.position.x = 10
 	soldier1.position.y = 20
@@ -101,36 +96,34 @@ Begin Program /' command line arguments? '/
 	soldier3.position.x = 12
 	soldier3.position.y = 22
 
-	Declare platoon as Platoon	'List<T>.Add() er stdlib
+	Declare platoon as Platoon	//List<T>.Add() er stdlib
 	platoon.units.Add(soldier1)
 	platoon.units.Add(soldier2)
 	platoon.units.Add(soldier3)
 
-	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	'Her begynder den imperative del'''''''''''''''''''''''''
-	soldier2.MoveTo(11, 21) 'Flytter soldier2 til koordinatet (11, 21)
+
+//	Her begynder den imperative del
+	soldier2.MoveTo(11, 21) //Flytter soldier2 til koordinatet (11, 21)
 	soldier3.MoveTo(43, 45)
 	soldier1.MoveTo(45, 76)
 
-	If soldier1.position.GetHeight(terrain) > 100 Then
-		platoon.Move(30, N) 'Flytter platoon 30 units nord
+	If soldier1.position.GetHeight(terrain) GREATERTHAN 100 Then
+		platoon.Move(30, N) //Flytter platoon 30 units nord
 	End If
 
 	Declare base as Coord = (50, 50)
 
-	If platoon.AverageHeight > 100 Then
+	If platoon.AverageHeight GREATERTHAN 100 Then
 		platoon.Move(30, NW)
-	ElseIf platoon > 90 Then
+	Else If platoon GREATERTHAN 90 Then
 		platoon.MoveTo(base)
 	End If
 
-	While platoon.position.GetHeight(terrain) < 100 Do
-		Foreach Unit unit in platoon Do
+	While platoon.position.GetHeight(terrain) LESSTHAN 100 Do
+		Foreach Unit unit In platoon Do
 			unit.speed = unit.speed + 0.1
 		End Foreach
-		'wait tager input i millisekunder
+		//wait tager input i millisekunder
 		Wait(100)
 	End While
 
@@ -142,7 +135,6 @@ Begin Program /' command line arguments? '/
 		Default
 			Print("Other Position")
 	End Switch
-
 End Program
 
 
