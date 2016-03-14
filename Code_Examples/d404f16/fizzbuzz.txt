@@ -1,0 +1,26 @@
+inkluder(standardIO)
+
+start
+{
+    tal n = 0
+
+    gentag tal n til 100
+    {
+        hvis n % 3 == 0 og n % 5 != 0
+        {
+            print("fizz")
+        }
+        hvis n % 5 == 0 og n % 3 != 0
+        {
+            print("buzz")
+        }
+        hvis n % 5 == 0 og n % 3 == 0
+        {
+            print("fizzbuzz")
+        }
+        hvis n % 5 != 0 og n % 3 != 0
+        {
+            print(n)
+        }
+    }
+}
