@@ -1,0 +1,29 @@
+inkluder(standartIO)
+start
+{
+  tal side1
+  tal side2
+  tal hypotenuse
+  tal m
+  tal n
+
+  print("Indtast et tal.\n")
+  m = input()
+  print("Indtast et mindre tal.\n")
+  n = input()
+
+  hvis(m<n)
+  {
+    print("FEJL! tal 2 er ikke mindre en tal 1.\n")
+  }
+  side1 = m*m - n*n
+  side2 = 2*m*n
+  hypotenuse = m*m + n*n
+
+  print("side1 = ")
+  print(side1)
+  print("\nside2 = ")
+  print(side2)
+  print("\nhypotenuse = ")
+  print(hypotenuse)
+}
