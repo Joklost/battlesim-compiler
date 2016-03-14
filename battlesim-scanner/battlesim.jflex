@@ -124,9 +124,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     /* String literal */
     \"                      { yybegin(STRING); string.setLength(0); }
 
-    /* Is used if a NEWLINE token is necessary
-    {LineTerminator}        { return symbol(Token.NEWLINE); }
-    */
+    {LineTerminator}        { return symbol(Token.EOL); }
 
     /* Ignore these */
     {Comment}               { /* nothing happens here, maybe */ }

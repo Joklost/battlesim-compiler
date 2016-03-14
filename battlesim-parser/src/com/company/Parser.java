@@ -404,7 +404,16 @@ public class Parser {
     }
 
     public void Arguments() {
-        // CFG bør refactoreres
+
+    }
+
+    public void Arg1() {
+
+
+    }
+
+    public void Arg2() {
+
     }
 
     public void LoopStmt() {

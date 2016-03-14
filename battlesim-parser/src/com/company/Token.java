@@ -77,7 +77,7 @@ public class Token {
 
             /* Other */
         IDENTIFIER          = 56, EOF                 = 57,
-        NEWLINE             = 58,
+        EOL                 = 58,
 
         /* For iterators */
         DOWNTO              = 59, TO                  = 60,
@@ -157,7 +157,7 @@ public class Token {
         /* Other */
         tokenNames.put(IDENTIFIER, "IDENTIFIER");
         tokenNames.put(EOF, "EOF");
-        tokenNames.put(NEWLINE, "NEWLINE");
+        tokenNames.put(EOL, "EOL");
 
         tokenNames.put(DOWNTO, "DOWNTO");
         tokenNames.put(TO, "TO");

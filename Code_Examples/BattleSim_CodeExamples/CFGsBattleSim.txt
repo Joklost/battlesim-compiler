@@ -3,32 +3,29 @@
  * End of line bør repræsenteres på en eller anden måde
  */
 ////////////////////////////////////////////////////////////////////////////////
-Start               : Includes Defines TypeDcls FunctionDcls Program FunctionDcls
+Start               : Includes Defines TypeDcls FunctionDcls Program FunctionDcls "$"
 Includes            : Include Includes
                     |
-Include             : "Include (" String ")"    // Header-filer indeholder TypeDcls og FunctionDcls
+Include             : "Include (" String ")" EOL  // Header-filer indeholder TypeDcls og FunctionDcls
 Defines             : Define Defines
                     |
-Define              : "Define " Id " " DefineType
-DefineType          : Number
-                    | String
-                    | Boolean
+Define              : "Define " Id " " StdTypes EOL
 TypeDcls            : TypeDcl TypeDcls
                     |
-TypeDcl             : "Type " Id MemberDcl MemberDcls FunctionDcls " End Type"
-MemberDcls          : MemberDcl MemberDcls
+TypeDcl             : "Type " Id EOL MemberDcl MemberDcls FunctionDcls " End Type" EOL
+MemberDcls          : MemberDcl EOL MemberDcls
                     |
 MemberDcl           : Id " as " TypeId
-FunctionDcls        : FunctionDcl FunctionDcls
+FunctionDcls        : FunctionDcl EOL FunctionDcls
                     |
-FunctionDcl         : "Function " TypeId Id "(" Param ")" Stmts " End Function"  //******* ÆNDRET
+FunctionDcl         : "Function " TypeId Id "(" Param ")" EOL Stmts " End Function" //******* ÆNDRET
 Param               : MemberDcl Params                                           //******* ÆNDRET
                     |                                                            //******* ÆNDRET
 Params              : ", " Param                                                 //******* ÆNDRET
                     |                       // FOLLOW - ) ??                     //******* ÆNDRET
-Program             : "Begin Program " Stmts " End Program"
+Program             : "Begin Program " EOL Stmts " End Program" EOL
 ////////////////////////////////////////////////////////////////////////////////
-Stmts               : Stmt Stmts
+Stmts               : Stmt EOL Stmts
                     |
 Stmt                : Dcl
                     | Assignment
@@ -36,35 +33,34 @@ Stmt                : Dcl
                     | LoopStmt
                     | SwitchStmt
                     | "Return " ReturnV                                         //******** Ændret
+                    | FunctionCall                                              //******** Ændret
 ReturnV             : Variable                                                  //******** Ændret
                     | // follow set????                                                          //******** Ændret
 /* *** potential horizontal ambiguity: Stmts[#1]: Stmt <--> Stmts */
 ////////////////////////////////////////////////////////////////////////////////
-IfStmt                : "If " Arithmetic " Then " Stmts ElifStmt                //******** Ændret
+IfStmt                : "If " Arithmetic " Then " EOL Stmts ElifStmt            //******** Ændret
 ElifStmt              : " End If"                                               //******** Ændret
-                      | " Else " Stmts " End If"                                //******** Ændret
+                      | " Else " EOL Stmts " End If"                                //******** Ændret
 /* *** potential horizontal ambiguity: IfStmt[#1]: "If " Arithmetic " Then " Stmts <--> V1 */
 ////////////////////////////////////////////////////////////////////////////////
-SwitchStmt          : "Switch " Variable SwitchCases SwitchDefault " End Switch'"
-SwitchCases         : SwitchCase SwitchCases
+SwitchStmt          : "Switch " Variable EOL SwitchCases SwitchDefault " End Switch'"
+SwitchCases         : SwitchCase EOL SwitchCases
                     |
-SwitchCase          : "Case " Variable Stmts
-SwitchDefault       : "Default " Stmts
+SwitchCase          : "Case " Variable EOL Stmts
+SwitchDefault       : "Default " EOL Stmts
                     |
 /* *** potential horizontal ambiguity: SwitchStmt[#1]: "Switch " Variable SwitchCases <--> S1
  * *** potential horizontal ambiguity: SwitchCases[#1]: SwitchCase <--> SwitchCases */
 ////////////////////////////////////////////////////////////////////////////////
-Arithmetic          : "(" Arithmetic ")"
-                    | Variable A
-                    | LeftUnOperator Variable
-A                   : BinOperator Variable
-                    | UnOperator
-Assignment          : NestedId AssignMode                                       //******** Ændret
+Arithmetic          : "(" Arithmetic ")"              //First: (
+                    | Variable Operator               //First: "id", "num", "string", "bool"
+                    | LeftUnOperator Variable         //First: NOT, -, ++, --
+Operator            : BinOperator Variable            //First: *, +, /, -, %, AND, OR, EQUALS, GREATERTHAN, LESSTHAN, GREATERTHANEQUALS, LESSTHANEQUALS
+                    | UnOperator                      //First: ++, --
+                    |                                 //Follow: EOL, ), Then, Do
+Assignment          : NestedId AssignMode EOL                                   //******** Ændret
 AssignMode          : AssignOperator RightAssign                                //******** Ændret
                     | "(" Id MultiAssign Variable ")"                           //******** Ændret
-
-//Assignment          : NestedId AssignOperator RightAssign
-//                    | NestedId "(" Id MultiAssign Variable ")"
 MultiAssign         : ", " Id MultiAssign Variable ", "
                     | ") = ("
 AssignOperator      : " = "
@@ -73,21 +69,27 @@ AssignOperator      : " = "
                     | " %= "
                     | " *= "
                     | " /= "
-RightAssign         : Arithmetic
-                    | Variable
-                    | FunctionCall
-FunctionCall        : NestedId "(" Arguments ")"
-                    | NestedId "()"
-Arguments           : Variable ", " Arguments
-                    | Arithmetic ", " Arguments
-                    | Variable
-                    | Arithmetic
+////////////////////////////////////////////////////////////////////////////////
+RightAssign         : Arithmetic                    // First: (, "id", "num", "string", "bool", "NOT", -, ++, --
+                    | Variable                      // First: "id", "num", "string", "bool"
+                    | FunctionCall                  // First: "id"
+////////////////////////////////////////////////////////////////////////////////
+FunctionCall        : NestedId "(" Arguments ")"    // First: "id"
+//FunctionCall        : "(" Arguments ")"    // First: "id"
+                    |
+////////////////////////////////////////////////////////////////////////////////
+Arguments             : Arg1             // First: "id", "num", "string", "bool"******** Ændret
+                      |                  // Follow: )                           ******** Ændret
+Arg1                  : Variable Arg2    // First: "id", "num", "string", "bool"******** Ændret
+Arg2                  : ", " Arg1        // First: ,                            ******** Ændret
+                      |                  // Follow: )                           ******** Ændret
+////////////////////////////////////////////////////////////////////////////////
 LoopStmt            : WhileStmt
                     | ForStmt
                     | ForeachStmt
-WhileStmt           : "While " Arithmetic " Do " Stmts " End While"
-ForeachStmt         : "Foreach " TypeId " " Id " In " NestedId " Do " Stmts " End Foreach"    // Foreach Unit unit In units.unitList Do
-ForStmt             : "For " Integer ForIterator Integer " Do " Stmts " End For"
+WhileStmt           : "While " Arithmetic " Do " EOL Stmts " End While"
+ForeachStmt         : "Foreach " TypeId " " Id " In " NestedId " Do " EOL Stmts " End Foreach"    // Foreach Unit unit In units.unitList Do
+ForStmt             : "For " Integer ForIterator Integer " Do " EOL Stmts " End For"
 ForIterator         : " To "
                     | " DownTo "
 BinOperator         : " * "
@@ -110,10 +112,11 @@ LeftUnOperator      : " NOT"
                     | " -"
                     | UnOperator
 Variable            : NestedId
-                    | Number
+                    | StdTypes
+StdTypes            : Number
                     | String
                     | Boolean
-Dcl                 : "Declare" Id Dcls " as " TypeId    // Declare units as Unit[90]
+Dcl                 : "Declare" Id Dcls " as " TypeId EOL   // Declare units as Unit[90]
 Dcls                : ", " Id Dcls
                     |
 TypeId              : Id ArrayDcl                                               //****** Ændret
@@ -136,6 +139,8 @@ Number              : "num"
 String              : "str"
 Boolean             : "bool"
 Integer             : "int"
+EOL                 : "\n"
+                    | "\r"
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Regular Expressions - testet på https://regex101.com/   // Nedenstående er keywords i sproget

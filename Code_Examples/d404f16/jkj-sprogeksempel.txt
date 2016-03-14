@@ -1,0 +1,36 @@
+inkluder(standardIO)
+
+start
+{
+    list tal a
+    gentag tal i = 0 til 20
+    {
+        a[i] = TilfældigtTal(0, 100)
+        print(a[i])
+    }
+
+    bubbleSort(a)
+
+    gentag tal i = 0 til 20
+    {
+        print(a[i])
+    }
+}
+
+bubbleSort(liste tal a)
+{
+    tal n = a[længde]
+    tal t = 0
+    gentag tal i = 0 til n-1
+    {
+        gentag tal c = 0 til n-i-1
+        {
+            hvis a[c] > a[c + 1]
+            {
+                t      = a[c]
+                a[c]   = a[a+1]
+                a[c+1] = t
+            }
+        }
+    }
+}
