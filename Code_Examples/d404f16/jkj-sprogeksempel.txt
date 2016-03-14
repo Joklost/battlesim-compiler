@@ -19,8 +19,9 @@ start
 
 bubbleSort(liste tal a)
 {
-    tal n = a[længde]
-    tal t = 0
+    tal n
+    n = a[længde]
+    tal t
     gentag tal i = 0 til n-1
     {
         gentag tal c = 0 til n-i-1
