@@ -19,7 +19,7 @@ End Type
 
 Begin Program
   Declare graph as Graph
-  Declare S,A,B,C,D as Vertex
+  Declare S, A, B, C, D as Vertex
   Declare SA, AB, AC, BC, BD as Edge
 
   SA.weight = 2
@@ -55,8 +55,8 @@ Begin Program
   InitializeSingleSource(graph, S)
 
   For 1 To graph.vertexList.Count() - 1 Do
-      Relax(edges.startP, edges.endP, edges.weight)
-      Foreach Edge edges In graph.edgeList Do
+    Foreach Edge edges In graph.edgeList Do
+        Relax(edges.startP, edges.endP, edges.weight)
     End Foreach
   End For
   Foreach Edge edges In graph.edgeList Do
