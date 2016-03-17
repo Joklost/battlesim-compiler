@@ -1,14 +1,20 @@
 package com.company;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Main {
+
+    public static int MAX_X = 100;
+    public static int MAX_Y = 5;
 
     public static void main(String[] args) {
 
         Vehicle cent = new Vehicle();
-        cent.Velocity = 2;
+        cent.PosX = 1;
+        cent.Velocity = 1;
         cent.VectorX = 1;
         cent.Model = '#';
 
@@ -30,7 +36,12 @@ public class Main {
             moveVehicles(vehicles);
 
             //Derefter kaldes alt collition detection, og events der udspringer af objekternes tilstande
-            if(cent.PosX >= 100)
+            if(cent.PosX == 98){
+                cent.VectorX = 0;
+                cent.VectorY = 1;
+            }
+
+            if(cent.PosX >= MAX_X || cent.PosY >= MAX_Y)
                 break;
             if(cent.PosX == rcCar.PosX){
                 rcCar.Model = 'x';
@@ -52,23 +63,37 @@ public class Main {
     }
 
     public static void moveVehicles(List<Vehicle> vehicles){
-        for(Vehicle vehicle: vehicles)
+        for(Vehicle vehicle: vehicles){
             vehicle.PosX = vehicle.PosX + vehicle.Velocity * vehicle.VectorX;
+            vehicle.PosY = vehicle.PosY + vehicle.Velocity * vehicle.VectorY;
+        }
+
     }
 
     public static void render(List<Vehicle> vehicles){
-        char[] map = new char[100];
+        char[][] map = new char[MAX_X][MAX_Y];
 
-        for (int i = 0; i < 100; i++) {
-            map[i] = '_';
+        for (int i = 0; i < MAX_X; i++) {
+            for (int j = 0; j < MAX_Y; j++) {
+                map[i][j] = '_';
+            }
         }
 
         for(Vehicle vehicle: vehicles)
-            map[vehicle.PosX] = vehicle.Model;
+            map[vehicle.PosX][vehicle.PosY] = vehicle.Model;
 
-        for (int i = 0; i < 100; i++) {
-            System.out.print(map[i]);
+        for (int i = 0; i < MAX_Y; i++) {
+            for (int j = 0; j < MAX_X; j++) {
+                System.out.print(map[j][i]);
+            }
+            System.out.println();
         }
         System.out.println();
+
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
