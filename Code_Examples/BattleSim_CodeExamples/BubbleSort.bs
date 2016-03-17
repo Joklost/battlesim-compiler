@@ -17,7 +17,7 @@ Function Void BubbleSort(a as List<Number>)
 End Function
 
 Begin Program
-  Declare a as List<Number>
+  Declare a as List of Number
   a.Add(12)
   a.Add(24)
   a.Add(13)
