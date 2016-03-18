@@ -14,8 +14,6 @@ public class Map extends JPanel implements ActionListener {
 
     private final int MapWidth = 300;
     private final int MapHeight = 200;
-    private final int X = 0;
-    private final int Y = 1;
 
     private Timer timer;
     private boolean isStarted;
@@ -29,8 +27,6 @@ public class Map extends JPanel implements ActionListener {
     private void initMap() {
         setFocusable(true);
         timer = new Timer(50, this);
-        timer.start();
-
     }
 
     @Override
@@ -53,8 +49,6 @@ public class Map extends JPanel implements ActionListener {
     }
 
     private void detectCollisions(){
-        Random rn = new Random();
-
 
         for(Vehicle vehicle: vehicles){
             if(vehicle.getPosX() - vehicle.getSize() / 2 == 0 || vehicle.getPosX() + vehicle.getSize() / 2 == MapWidth){
@@ -107,7 +101,6 @@ public class Map extends JPanel implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g){
-
         super.paintComponent(g);
         doDrawing(g);
     }

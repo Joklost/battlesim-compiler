@@ -6,20 +6,21 @@ package com.company;
 public class Vehicle {
     private int posX = 0;
     private int posY = 0;
-    private int velocity = 0;
     private int vectorX = 0;
     private int vectorY = 0;
     private int size = 1;
     private String model;
+    private boolean isDead;
 
     public boolean isDead(){
-        return model == "x" && velocity == 0;
+        return isDead;
     }
 
     public void kill(){
         setVectorX(0);
         setVectorY(0);
         setModel("x");
+        isDead = true;
     }
 
     public int getPosX() {
@@ -36,10 +37,6 @@ public class Vehicle {
 
     public int getVectorY() {
         return vectorY;
-    }
-
-    public int getVelocity() {
-        return velocity;
     }
 
     public int getSize() {
@@ -64,10 +61,6 @@ public class Vehicle {
 
     public void setVectorY(int vectorY) {
         this.vectorY = vectorY;
-    }
-
-    public void setVelocity(int velocity) {
-        this.velocity = velocity;
     }
 
     public void setSize(int size) {

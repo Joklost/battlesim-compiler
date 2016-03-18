@@ -24,16 +24,7 @@ public class Main {
         });
     }
 
-    public static void moveVehiclesPos(List<Vehicle> vehicles){
-        for(Vehicle vehicle: vehicles){
-            vehicle.setPosX(vehicle.getPosX() + vehicle.getVelocity() * vehicle.getVectorX()) ;
-            vehicle.setPosY(vehicle.getPosY() + vehicle.getVelocity() * vehicle.getVectorY());
-        }
-
-    }
-
     public static void runSimulation() {
-
 
         Vehicle cent = new Vehicle();
         cent.setPosX(200);
@@ -65,70 +56,5 @@ public class Main {
         vehicles.add(batMobileCar);
         BasicFrame ex = new BasicFrame(vehicles);
         ex.setVisible(true);
-
-        /*try {
-            Thread.sleep(1000);                 //1000 milliseconds is one second.
-        } catch(InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }*/
-
-
-        //Game Loop
-        /*while (true) {
-
-            //Først flytes alle objekter
-            moveVehiclesPos(vehicles);
-
-            //Derefter kaldes alt collition detection, og events der udspringer af objekternes tilstande
-            if(cent.getPosX() == 98){
-                cent.setVectorX(0);
-                cent.setVectorY(1);
-            }
-
-            if(cent.getPosX() >= MAX_X || cent.getPosY() >= MAX_Y)
-                break;
-            if(cent.getPosX() == rcCar.getPosX()){
-                rcCar.setModel("x");
-                rcCar.setVelocity(0);
-            }
-
-            //Render
-            //render(vehicles);
-            ex.repaint();
-
-            //Vent efter den ønskede framerate
-            try {
-                Thread.sleep(100);                 //1000 milliseconds is one second.
-            } catch(InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }*/
     }
-
-    /*public static void render(List<Vehicle> vehicles){
-        char[][] map = new char[MAX_X][MAX_Y];
-
-        for (int i = 0; i < MAX_X; i++) {
-            for (int j = 0; j < MAX_Y; j++) {
-                map[i][j] = '_';
-            }
-        }
-
-        for(Vehicle vehicle: vehicles)
-            map[vehicle.getPosX()][vehicle.getPosY()] = vehicle.getModel();
-
-        for (int i = 0; i < MAX_Y; i++) {
-            for (int j = 0; j < MAX_X; j++) {
-                System.out.print(map[j][i]);
-            }
-            System.out.println();
-        }
-        System.out.println();
-
-    }
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }*/
 }
