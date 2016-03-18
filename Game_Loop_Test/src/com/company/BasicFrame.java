@@ -17,7 +17,7 @@ public class BasicFrame extends JFrame {
         add(map);
         map.start();
         setTitle("Simple example");
-        setSize(300, 200);
+        setSize(400, 350);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
