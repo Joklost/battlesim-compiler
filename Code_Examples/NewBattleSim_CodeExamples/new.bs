@@ -1,0 +1,69 @@
+
+
+Begin Declarations
+  Declare terrain as Terrain
+  terrain.height = 500
+  terrain.width = 1000
+
+  ////////////////////////
+  //Declaration of Allies/
+  ////////////////////////
+  Declare aGroup1 as Group
+  aGroup1.coord = (20,30)
+  aGroup1.addSoldiers(6)
+  aGroup1.magazines = 24
+
+  Declare aGroup2 as Group
+  aGroup2.coord = (30,30)
+  aGroup2.addSoldiers(6)
+  aGroup2.magazines = 24
+
+  Declare aGroup3 as Group
+  aGroup3.coord = (40,30)
+  aGroup3.addSoldiers(6)
+  aGroup3.magazines = 24
+
+  Declare aPlatoon1 as Platoon
+  aPlatoon1.addGroups(aGroup1, aGroup2, aGroup3)
+
+  Declare allies as Force
+  allies.addPlatoons(aPlatoon1)
+
+  /////////////////////////
+  //Declaration of Enemies/
+  /////////////////////////
+
+  Declare eGroup1 as Group
+  eGroup1.coord = (960,450)
+  eGroup1.addSoldiers(6)
+  eGroup1.magazines = 24
+
+  Declare eGroup2 as Group
+  eGroup2.coord = (950,450)
+  eGroup2.addSoldiers(6)
+  eGroup2.magazines = 24
+
+  Declare eGroup3 as Group
+  eGroup3.coord = (940,450)
+  eGroup3.addSoldiers(6)
+  eGroup3.magazines = 24
+
+  Declare ePlatoon1 as Platoon
+  ePlatoon1.addGroups(eGroup1, eGroup2, eGroup3)
+
+  Declare enemies as Force
+  enemies.addPlatoons(ePlatoon1)
+End Declarations
+
+Begin Program
+  
+End Program
+
+Function Void MoveGroup(group as Group, velocity as Number, degree as Degree)
+  group.velocity = velocity // km/h
+  group.degree = degree// 0.00-359.999
+End Function
+
+Function Void Flanking()
+
+End Function
