@@ -54,12 +54,54 @@ Type List of T
 
   Function Boolean Contains(arg as T)
   End Function
+
+  Function Number Count()
+  End Function
+
+  // Sort??
 End Type
+
+Type Coord
+  x as Number // technically integer
+  y as Number // technically integer
+
+  Function Void SetX(arg as Number) // technically integer
+    x = arg
+  End Function
+
+  Function Void SetY(arg as Number) // technically integer
+    y = arg
+  End Function
+
+  Function Number GetX()
+    Return x
+  End Function
+
+  Function Number GetY()
+    Return y
+  End Function
+
+  /*
+  Declare coord as Coord
+  coord = (x, y)
+  */
+End Type
+
+Function Void Print(arg as String)
+  // System.out.println(arg);
+End Function
+
+Function Void ClearConsole()
+  // how to implement in Java ???
+End Function
+
+
+
 ////////////////////////
 //End STDLib           /
 ////////////////////////
 
-Begin Declarations
+Begin Declarations  // Declaration of global variables
   Declare terrain as Terrain
   terrain.height = 500
   terrain.width = 1000
