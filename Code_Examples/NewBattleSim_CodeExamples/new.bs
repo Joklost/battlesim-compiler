@@ -1,90 +1,3 @@
-////////////////////////
-//STDLib               /
-////////////////////////
-Type Terrain
-  width as Number   // x-coordinate
-  height as Number  // y-coordinate
-  map as Number[height][width]
-  /*
-    map[0][0] == (x_0, y_height)
-    map[height][0] == (x_0, y_0)
-    map[height][width] == (x_width, y_0)
-  */
-End Type
-
-Type Group
-  coord as Coord
-  soldiers as Number    // technically integer
-  magazines as Number   // technically integer
-End Type
-
-Type Platoon
-  groups as List of Group
-  Function Void AddGroups(groupArgs as List of Group)
-    Foreach Group g In groupArgs Do
-      groups.Add(g)
-    End Foreach
-  End Function
-End Type
-
-Type Force
-  platoons as List of Platoon
-  Function Void AddPlatoons(platoonArgs as List of Platoon)
-    Foreach Platoon p In platoonArgs Do
-      platoons.Add(p)
-    End Foreach
-  End Function
-End Type
-
-Type List of T
-  // Needs proper implementation
-  Function Void Add(arg as T)
-  End Function
-
-  Function T Remove(arg as T)
-  End Function
-
-  Function Void Clear()
-    // Removes all elements
-  End Function
-
-  Function T Get(index as Number) // technically integer
-    // Returns at index
-  End Function
-
-  Function Boolean Contains(arg as T)
-  End Function
-
-  Function Number Count()
-  End Function
-
-  // Sort??
-End Type
-
-Type Coord
-  x as Number // technically integer
-  y as Number // technically integer
-
-  /*
-  Declare coord as Coord
-  coord = (x, y)
-  */
-End Type
-
-Function Void Print(arg as String)
-  // System.out.println(arg);
-End Function
-
-Function Void ClearConsole()
-  // how to implement in Java ???
-End Function
-
-
-
-////////////////////////
-//End STDLib           /
-////////////////////////
-
 Begin Declarations  // Declaration of global variables
   Declare terrain as Terrain
   terrain.height = 500
@@ -141,16 +54,51 @@ Begin Declarations  // Declaration of global variables
 End Declarations
 
 Begin Program
-
+  Co
 End Program
 
-Function Void MoveGroup(group as Group, velocity as Number, degree as Degree)
-  //group.velocity = velocity // km/h
-  //group.degree = degree// 0.00-359.999
+Function Void MoveSoldier(soldier as Soldier, velocity as Number, coord as Coord)
+  soldier.velocity = velocity
+  soldier.vector = FindUnitVector(soldier.coord, coord)
+End Function
 
+//Moves a groups leader (first in list) to a given coordinate, and the rest of the groups moves relatively to the leader
+Function Void MoveGroup(group as Group, velocity as Number, coord as Coord)
+  group.velocity = velocity // km/h.  Changes the velocity of all Soldiers of the Group
+  Vector vector = FindUnitVector(group.soldiers[0].coord)
+  Foreach Soldier soldier in group
+    relativeCoord as Coord
+    relativeCoord.x = soldier.coord.x + vector.x
+    relativeCoord.y = soldier.coord.y + vector.y
+    MoveSoldier(soldier, velocity, relativeCoord)
+  End Foreach
+  /*
+  Something happens here
+  */
 
+End Function
+
+Function Void MovePlatoon(platoon as Platoon, velocity as Number, coord as Coord)
+  platoon.velocity = velocity
+  Foreach Group group In platoon
+    MoveGroup(group, velocity, coord)
+  End Foreach
+  /*
+  Something happens here
+  */
 End Function
 
 Function Void Flanking()
 
+End Function
+
+Function Vector FindUnitVector(startCoord as Coord, targetCoord as Coord)
+  res as Vector
+  res.x = targetCoord.x - startCoord.x
+  res.y = targetCoord.y - targetCoord.y
+  length as Number = res.x * res.x + res.y * res.y
+  length = sqrt(length)
+  res.x *= length
+  res.y *= length
+  Return res
 End Function
