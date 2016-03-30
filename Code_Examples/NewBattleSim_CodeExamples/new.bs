@@ -65,22 +65,6 @@ Type Coord
   x as Number // technically integer
   y as Number // technically integer
 
-  Function Void SetX(arg as Number) // technically integer
-    x = arg
-  End Function
-
-  Function Void SetY(arg as Number) // technically integer
-    y = arg
-  End Function
-
-  Function Number GetX()
-    Return x
-  End Function
-
-  Function Number GetY()
-    Return y
-  End Function
-
   /*
   Declare coord as Coord
   coord = (x, y)
