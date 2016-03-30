@@ -1,4 +1,63 @@
+////////////////////////
+//STDLib               /
+////////////////////////
+Type Terrain
+  width as Number   // x-coordinate
+  height as Number  // y-coordinate
+  map as Number[height][width]
+  /*
+    map[0][0] == (x_0, y_height)
+    map[height][0] == (x_0, y_0)
+    map[height][width] == (x_width, y_0)
+  */
+End Type
 
+Type Group
+  coord as Coord
+  soldiers as Number    // technically integer
+  magazines as Number   // technically integer
+End Type
+
+Type Platoon
+  groups as List of Group
+  Function Void AddGroups(groupArgs as List of Group)
+    Foreach Group g In groupArgs Do
+      groups.Add(g)
+    End Foreach
+  End Function
+End Type
+
+Type Force
+  platoons as List of Platoon
+  Function Void AddPlatoons(platoonArgs as List of Platoon)
+    Foreach Platoon p In platoonArgs Do
+      platoons.Add(p)
+    End Foreach
+  End Function
+End Type
+
+Type List of T
+  // Needs proper implementation
+  Function Void Add(arg as T)
+  End Function
+
+  Function T Remove(arg as T)
+  End Function
+
+  Function Void Clear()
+    // Removes all elements
+  End Function
+
+  Function T Get(index as Number) // technically integer
+    // Returns at index
+  End Function
+
+  Function Boolean Contains(arg as T)
+  End Function
+End Type
+////////////////////////
+//End STDLib           /
+////////////////////////
 
 Begin Declarations
   Declare terrain as Terrain
@@ -10,24 +69,24 @@ Begin Declarations
   ////////////////////////
   Declare aGroup1 as Group
   aGroup1.coord = (20,30)
-  aGroup1.addSoldiers(6)
+  aGroup1.soldiers = 6
   aGroup1.magazines = 24
 
   Declare aGroup2 as Group
   aGroup2.coord = (30,30)
-  aGroup2.addSoldiers(6)
+  aGroup2.soldiers = 6
   aGroup2.magazines = 24
 
   Declare aGroup3 as Group
   aGroup3.coord = (40,30)
-  aGroup3.addSoldiers(6)
+  aGroup3.soldiers = 6
   aGroup3.magazines = 24
 
   Declare aPlatoon1 as Platoon
-  aPlatoon1.addGroups(aGroup1, aGroup2, aGroup3)
+  aPlatoon1.AddGroups(aGroup1, aGroup2, aGroup3)
 
   Declare allies as Force
-  allies.addPlatoons(aPlatoon1)
+  allies.AddPlatoons(aPlatoon1)
 
   /////////////////////////
   //Declaration of Enemies/
@@ -35,33 +94,35 @@ Begin Declarations
 
   Declare eGroup1 as Group
   eGroup1.coord = (960,450)
-  eGroup1.addSoldiers(6)
+  eGroup1.soldiers = 6
   eGroup1.magazines = 24
 
   Declare eGroup2 as Group
   eGroup2.coord = (950,450)
-  eGroup2.addSoldiers(6)
+  eGroup2.soldiers = 6
   eGroup2.magazines = 24
 
   Declare eGroup3 as Group
   eGroup3.coord = (940,450)
-  eGroup3.addSoldiers(6)
+  eGroup3.soldiers = 6
   eGroup3.magazines = 24
 
   Declare ePlatoon1 as Platoon
-  ePlatoon1.addGroups(eGroup1, eGroup2, eGroup3)
+  ePlatoon1.AddGroups(eGroup1, eGroup2, eGroup3)
 
   Declare enemies as Force
-  enemies.addPlatoons(ePlatoon1)
+  enemies.AddPlatoons(ePlatoon1)
 End Declarations
 
 Begin Program
-  
+
 End Program
 
 Function Void MoveGroup(group as Group, velocity as Number, degree as Degree)
-  group.velocity = velocity // km/h
-  group.degree = degree// 0.00-359.999
+  //group.velocity = velocity // km/h
+  //group.degree = degree// 0.00-359.999
+
+
 End Function
 
 Function Void Flanking()
