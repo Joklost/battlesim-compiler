@@ -81,7 +81,7 @@ Begin Program
       allies.Done()
 
     Interupts:
-      If(!allies.IsInCombat() AND allies.IsGettingShot)
+      If(!allies.IsInCombat() AND allies.IsGettingShot())
         allies.StopMovement()
         allies.TryDetectEnemies(2m)
       End If
