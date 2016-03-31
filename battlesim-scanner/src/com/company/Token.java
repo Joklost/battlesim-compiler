@@ -44,7 +44,7 @@ public class Token {
             END                 = 6,  BEGIN               = 7,
             PROGRAM             = 8,  FOR                 = 9,
             TYPE                = 10, AS                  = 11,
-            NUMBER              = 12, STRING              = 13,
+            DECIMAL             = 12, STRING              = 13,
             DECLARE             = 14, IN                  = 15,
             RETURN              = 16, ELSE                = 17,
             LIST                = 18, INCLUDE             = 19,
@@ -53,13 +53,13 @@ public class Token {
             DEFAULT             = 24,
 
     /* Seperators */
-    BOOLEAN_LITERAL     = 25, LPAREN              = 26,
+            BOOLEAN_LITERAL     = 25, LPAREN              = 26,
             RPAREN              = 27, LBRACE              = 28,
             RBRACE              = 29, COMMA               = 30,
             DOT                 = 31,
 
     /* Operators */
-    EQ                  = 32, PLUSPLUS            = 33,
+            EQ                  = 32, PLUSPLUS            = 33,
             MINUSMINUS          = 34, PLUS                = 35,
             MINUS               = 36, DIV                 = 37,
             MULT                = 38, MOD                 = 39,
@@ -72,19 +72,24 @@ public class Token {
             LESSTHANEQUALS      = 52,
 
     /* Literals */
-    INTEGER_LITERAL     = 53, NUMBER_LITERAL      = 54,
+            INTEGER_LITERAL     = 53, DECIMAL_LITERAL     = 54,
             STRING_LITERAL      = 55,
 
     /* Other */
-    IDENTIFIER          = 56, EOF                 = 57,
+            IDENTIFIER          = 56, EOF                 = 57,
             EOL                 = 58,
 
     /* For iterators */
-    DOWNTO              = 59, TO                  = 60,
+            DOWNTO              = 59, TO                  = 60,
 
     /* Extras (dem vi glemte) */
-    THEN                = 61, VOID                = 62,
-            LANGLE              = 63, RANGLE              = 64;
+            THEN                = 61, VOID                = 62,
+            OF                  = 63,
+
+    /* Domain Specific */
+            TERRAIN             = 64, GROUP               = 65,
+            PLATOON             = 66, FORCE               = 67,
+            COORD               = 68, SOLDIER             = 69;
 
     private static HashMap<Integer, String> tokenNames;
     static {
@@ -103,7 +108,7 @@ public class Token {
         tokenNames.put(FOR, "FOR");
         tokenNames.put(TYPE, "TYPE");
         tokenNames.put(AS, "AS");
-        tokenNames.put(NUMBER, "NUMBER");
+        tokenNames.put(DECIMAL, "DECIMAL");
         tokenNames.put(STRING, "STRING");
         tokenNames.put(DECLARE, "DECLARE");
         tokenNames.put(IN, "IN");
@@ -151,7 +156,7 @@ public class Token {
 
         /* Literals */
         tokenNames.put(INTEGER_LITERAL, "INTEGER_LITERAL");
-        tokenNames.put(NUMBER_LITERAL, "NUMBER_LITERAL");
+        tokenNames.put(DECIMAL_LITERAL, "NUMBER_LITERAL");
         tokenNames.put(STRING_LITERAL, "STRING_LITERAL");
 
         /* Other */
@@ -162,9 +167,15 @@ public class Token {
         tokenNames.put(DOWNTO, "DOWNTO");
         tokenNames.put(TO, "TO");
         tokenNames.put(VOID, "VOID");
-        tokenNames.put(LANGLE, "LANGLE");
-        tokenNames.put(RANGLE, "RANGLE");
+        tokenNames.put(OF, "OF");
 
+        /* Domain specific */
+        tokenNames.put(TERRAIN, "TERRAIN");
+        tokenNames.put(GROUP, "GROUP");
+        tokenNames.put(PLATOON, "PLATOON");
+        tokenNames.put(FORCE, "FORCE");
+        tokenNames.put(COORD, "COORD");
+        tokenNames.put(SOLDIER, "SOLDIER");
     }
 
     public static String getTokenName(int token) {

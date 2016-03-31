@@ -41,7 +41,7 @@ EndOfLineComment    = "//" {InputCharacter}* {LineTerminator}?
 
 StringCharacter     = [^\r\n\"\\]
 IntegerLiteral      = 0 | [1-9][0-9]*
-NumberLiteral       = [0-9]*\.[0-9]+ | {IntegerLiteral}
+DecimalLiteral      = [0-9]*\.[0-9]+ /*| {IntegerLiteral}*/
 Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
 %state STRING
@@ -62,15 +62,14 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "For"                   { return symbol(Token.FOR); }
     "Type"                  { return symbol(Token.TYPE); }
     "as"                    { return symbol(Token.AS); }
-    "Number"                { return symbol(Token.NUMBER); }
+    "Decimal"               { return symbol(Token.DECIMAL); }
     "String"                { return symbol(Token.STRING); }
     "Declare"               { return symbol(Token.DECLARE); }
-    "In"                    { return symbol(Token.IN); }
+    "in"                    { return symbol(Token.IN); }
     "Return"                { return symbol(Token.RETURN); }
     "Else"                  { return symbol(Token.ELSE); }
     "List"                  { return symbol(Token.LIST); }
-    "<"                     { return symbol(Token.LANGLE); }
-    ">"                     { return symbol(Token.RANGLE); }
+    "of"                    { return symbol(Token.OF); }
     "Include"               { return symbol(Token.INCLUDE); }
     "Define"                { return symbol(Token.DEFINE); }
     "Switch"                { return symbol(Token.SWITCH); }
@@ -81,6 +80,12 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "To"                    { return symbol(Token.TO); }
     "Then"                  { return symbol(Token.THEN); }
     "Void"                  { return symbol(Token.VOID); }
+    "Terrain"               { return symbol(Token.TERRAIN); }
+    "Group"                 { return symbol(Token.GROUP); }
+    "Platoon"               { return symbol(Token.PLATOON); }
+    "Force"                 { return symbol(Token.FORCE); }
+    "Coord"                 { return symbol(Token.COORD); }
+    "Soldier"               { return symbol(Token.SOLDIER); }
 
     /* Boolean literals */
     "true"                  { return symbol(Token.BOOLEAN_LITERAL, true); }
@@ -111,15 +116,15 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "AND"                   { return symbol(Token.AND); }
     "OR"                    { return symbol(Token.OR); }
     "NOT"                   { return symbol(Token.NOT); }
-    "EQUALS"                { return symbol(Token.EQUALS); }
-    "GREATERTHAN"           { return symbol(Token.GREATERTHAN); }
-    "GREATERTHANEQUALS"     { return symbol(Token.GREATERTHANEQUALS); }
-    "LESSTHAN"              { return symbol(Token.LESSTHAN); }
-    "LESSTHANEQUALS"        { return symbol(Token.LESSTHANEQUALS); }
+    "=="                    { return symbol(Token.EQUALS); }
+    ">"                     { return symbol(Token.GREATERTHAN); }
+    ">="                    { return symbol(Token.GREATERTHANEQUALS); }
+    "<"                     { return symbol(Token.LESSTHAN); }
+    "<="                    { return symbol(Token.LESSTHANEQUALS); }
 
     /* Numeric literals */
     {IntegerLiteral}        { return symbol(Token.INTEGER_LITERAL, new Integer(yytext())); }
-    {NumberLiteral}         { return symbol(Token.NUMBER_LITERAL, new Double(yytext())); }
+    {DecimalLiteral}        { return symbol(Token.DECIMAL_LITERAL, new Double(yytext())); }
 
     /* String literal */
     \"                      { yybegin(STRING); string.setLength(0); }

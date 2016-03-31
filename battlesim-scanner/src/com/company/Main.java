@@ -5,10 +5,10 @@ package com.company;
 public class Main {
     public static void main(String argv[]) {
         String[] paths = new String[] {
-                //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs",
+                "/home/joklost/git/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs",
                 //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BasicBattleSim.bs",
                 //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/EuclideanAlgorithm.bs",
-                "/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BellmanFord.bs",
+                //"/home/joklost/Repos/P4-Code/Code_Examples/BattleSim_CodeExamples/BellmanFord.bs",
                 //"C:\\Users\\Jonas\\P4-Code\\Code_Examples\\BattleSim_CodeExamples\\BellmanFord.bs",
         };
         if (argv.length == 0) {
@@ -35,7 +35,13 @@ public class Main {
 
                 java_cup.runtime.Symbol sym = scanner.next_token();
                 Token token = new Token(sym.sym, sym.value == null ? "" : sym.value.toString());
-                System.out.println(token.toString());
+
+                if (token.getType() == Token.EOL) {
+                    System.out.println();
+                } else {
+                    System.out.print(token.toString() + " ");
+                }
+
             }
         } catch (java.io.FileNotFoundException e) {
             System.out.println("File not found : \"" + path + "\"");
