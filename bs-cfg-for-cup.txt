@@ -1,0 +1,158 @@
+start         ::= defines:ds function_dcls:fds1 program:p function_dcls:fds2 EOF
+              ;
+defines       ::= defines:ds define:d
+              |
+              ;
+function_dcls ::= function_dcls:fds function_dcl:fd EOL
+              |
+              ;
+function_dcl  ::= FUNCTION type_id:ti IDENTIFIER:id LPAREN params:p RPAREN EOL stmts:ss END FUNCTION
+              ;
+param         ::= IDENTIFIER:id AS type_id:ti params:p
+              |
+              ;
+params        ::= COMMA param
+              |
+              ;
+program       ::= BEGIN PROGRAM EOL stmts:ss END PROGRAM EOL
+              ;
+stmts         ::= stmts:ss stmt:s EOL
+              |
+              ;
+stmt          ::= dcl:d
+              |   assignment:a
+              |   if_stmt:ifs
+              |   loop_stmt:ls
+              |   switch_stmt:sws
+              |   RETURN return_v:rv
+              |   function_call:fc
+              ;
+return_v      ::= variable:v
+              |
+              ;
+if_stmt       ::= IF arithmetic:ar THEN EOL stmts:ss else_stmt:els
+              ;
+else_stmt     ::= END IF
+              |   ELSE elif_stmt:elifs
+              ;
+elif_stmt     ::= if_stmt:ifs
+              |   EOL stmts:ss END IF
+              ;
+switch_stmt   ::= SWITCH variable:v EOL switch_cases:swcs switch_def:swd END SWITCH
+              ;
+switch_cases  ::= switch_cases:swcs switch_case:swc EOL
+              |
+              ;
+switch_case   ::= CASE variable:v EOL stmts
+              ;
+switch_def    ::= DEFAULT EOL stmts
+              |
+              ;
+arithmetic    ::= LPAREN arithmetic:ar RPAREN
+              |   variable:v operator:o
+              |   left_un_op:luo variable:v
+              ;
+operator      ::= bin_operator:bo variable:v
+              |   un_operator
+              |
+              ;
+assignment    ::= nested_id:ni assign_op:ao right_assign:ra EOL
+              ;
+assign_op     ::= EQ
+              |   PLUSEQ
+              |   MINUSEQ
+              |   MODEQ
+              |   MULTEQ
+              |   DIVEQ
+              ;
+right_assign  ::= arithmetic:ar
+              |   variable:v
+              |   function_call:fc
+              ;
+function_call ::= nested_id:ni LPAREN arguments:arg RPAREN
+              ;
+arguments     ::= arg1:arg
+              |
+              ;
+arg1          ::= variable:v arg2:arg
+              ;
+arg2          ::= COMMA arg1:arg
+              |
+              ;
+loop_stmt     ::= while_stmt:whs
+              |   for_stmt:fors
+              |   foreach_stmt:fores
+              ;
+while_stmt    ::= WHILE arithmetic:ar DO EOL stmts:ss END WHILE
+              ;
+foreach_stmt  ::= FOREACH type_id:ti IDENTIFIER:id IN nested_id:ni DO EOL stmts END FOREACH
+              ;
+for_stmt      ::= FOR int_index:int1 for_iterator:fi int_index:int2 DO EOL stmts END FOR
+              ;
+for_iterator  ::= TO
+              |   DOWNTO
+              ;
+bin_operator  ::= MULT
+              |   PLUS
+              |   DIV
+              |   MINUS
+              |   MOD
+              |   logic_op:lo
+              |   rela_op:ro
+              ;
+logic_op      ::= AND
+              |   OR
+              ;
+rela_op       ::= EQUALS
+              |   GREATERTHAN
+              |   LESSTHAN
+              |   GREATERTHANEQUALS
+              |   LESSTHENEQUALS
+              ;
+un_operator   ::= PLUSPLUS
+              |   MINUSMINUS
+              ;
+left_un_op    ::= NOT
+              |   MINUS
+              |   un_operator:uo
+              ;
+variable      ::= nested_id:ni
+              |   std_types:st
+              ;
+std_types     ::= DECIMAL_LITERAL:dec
+              |   STRING_LITERAL:str
+              |   BOOLEAN_LITERAL:bool
+              |   INTEGER_LITERAL:int // ny?
+              ;
+dcl           ::= DECLARE IDENTIFIER:id dcls:ds AS type_id:ti EOL
+              ;
+dcls          ::= dcls:ds COMMA IDENTIFIER:id
+              |
+              ;
+type_id       ::= IDENTIFIER:id array_dcl:ad
+              |   DECIMAL array_dcl:ad
+              |   STRING array_dcl:ad
+              |   BOOLEAN array_dcl:ad
+              |   TERRAIN array_dcl:ad
+              |   GROUP array_dcl:ad
+              |   PLATOON array_dcl:ad
+              |   FORCE array_dcl:ad
+              |   COORD array_dcl:ad
+              |   SOLDIER array_dcl:ad
+              |   VOID
+              |   LIST OF type_id:ti
+              ;
+array_dcl     ::= LBRACE int_index:index RBRACE
+              |
+              ;
+nested_id     ::= IDENTIFIER:id child_id:ci
+              ;
+child_id      ::= dot_ni:dni
+              |   LBRACE int_index:index RBRACE dot_ni:dni
+              ;
+dot_ni        ::= DOT nested_id:ni
+              |
+              ;
+int_index     ::= nested_id:ni
+              |   INTEGER_LITERAL
+              ;
