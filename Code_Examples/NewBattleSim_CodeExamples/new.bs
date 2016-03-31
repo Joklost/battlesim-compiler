@@ -65,14 +65,14 @@ End Declarations
 
 Begin Program
 
-  Declare simulation1, sim2 as Simulation
-
+  //Declare simulation1, sim2 as Simulation
+  
   Simulation simulation1
     Step 1
       enemies.Move(100,715)
       allies.Move(320,900)
     Step 2
-      enemies.TryDetectEnemies(30m) //Try to detect enemies for 30 minuttes
+      enemies.TryDetectEnemies(1800) //Try to detect enemies for 30 minuttes
       allies.Move(320,500)
     Step 3
       enemies.Move(100,960)
@@ -80,10 +80,10 @@ Begin Program
     Step 4
       allies.Done()
 
-    Interupts:
+    Interrupts
       If(!allies.IsInCombat() AND allies.IsGettingShot())
         allies.StopMovement()
-        allies.TryDetectEnemies(2m)
+        allies.TryDetectEnemies(120)
       End If
 
       If(allies.IsEnemyDetected())
