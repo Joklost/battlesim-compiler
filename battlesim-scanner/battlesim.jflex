@@ -88,6 +88,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Soldier"               { return symbol(Token.SOLDIER); }
     "Simulation"            { return symbol(Token.SIMULATION); }
     "Step"                  { return symbol(Token.STEP); }
+    "Interrupts"            { return symbol(Token.INTERRUPTS); }
 
     /* Boolean literals */
     "true"                  { return symbol(Token.BOOLEAN_LITERAL, true); }
