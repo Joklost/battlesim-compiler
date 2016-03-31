@@ -1,8 +1,8 @@
 
-Function Void BubbleSort(a as List<Number>)
-  Declare n as Number
+Function Void BubbleSort(a as List of Integer)
+  Declare n as Integer
   n = a.Count()
-  Declare i, c, t as Number
+  Declare i, c, t as Integer
   i = 0
   c = 0
   For i To (n - 1) Do
@@ -17,7 +17,7 @@ Function Void BubbleSort(a as List<Number>)
 End Function
 
 Begin Program
-  Declare a as List of Number
+  Declare a as List of Integer
   a.Add(12)
   a.Add(24)
   a.Add(13)
@@ -26,15 +26,13 @@ Begin Program
   a.Add(-4)
   a.Add(17)
 
-  Declare array as [10]Number
-
-  Foreach Number num In a Do
+  Foreach Integer num in a Do
     Print(num)
   End Foreach
 
   BubbleSort(a)
 
-  Foreach Number num In a Do
+  Foreach Integer num in a Do
     Print(num)
   End Foreach
 
