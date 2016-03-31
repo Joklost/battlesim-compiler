@@ -70,8 +70,8 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Else"                  { return symbol(Token.ELSE); }
     "List"                  { return symbol(Token.LIST); }
     "of"                    { return symbol(Token.OF); }
-    "Include"               { return symbol(Token.INCLUDE); }
-    "Define"                { return symbol(Token.DEFINE); }
+    /*"Include"               { return symbol(Token.INCLUDE); }*/
+    /*"Define"                { return symbol(Token.DEFINE); }*/
     "Switch"                { return symbol(Token.SWITCH); }
     "NULL"                  { return symbol(Token.NULL_LITERAL); }
     "Case"                  { return symbol(Token.CASE); }
@@ -86,6 +86,8 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Force"                 { return symbol(Token.FORCE); }
     "Coord"                 { return symbol(Token.COORD); }
     "Soldier"               { return symbol(Token.SOLDIER); }
+    "Simulation"            { return symbol(Token.SIMULATION); }
+    "Step"                  { return symbol(Token.STEP); }
 
     /* Boolean literals */
     "true"                  { return symbol(Token.BOOLEAN_LITERAL, true); }

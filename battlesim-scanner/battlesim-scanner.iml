@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="de.jflex:jflex-maven-plugin:1.6.1" level="project" />
+    <orderEntry type="library" name="com.github.vbmacher:java-cup:11b" level="project" />
   </component>
 </module>

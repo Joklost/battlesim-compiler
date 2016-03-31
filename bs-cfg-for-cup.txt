@@ -1,158 +1,173 @@
-start         ::= defines:ds function_dcls:fds1 program:p function_dcls:fds2 EOF
+package com.company;
+import java_cup.runtime.*;
+
+
+/* Preliminaries to set up and use the scanner.  */
+scan with {: return scanner.next_token(); :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal BOOLEAN, IF, WHILE, DO, FOREACH, FUNCTION, END, BEGIN, PROGRAM, FOR, TYPE, AS, DECIMAL, STRING, DECLARE, IN, RETURN, ELSE, LIST, SWITCH, NULL_LITERAL, CASE, DEFAULT;
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, DOT;
+terminal EQ, PLUSPLUS, MINUSMINUS, PLUS, MINUS, DIV, MULT, MOD, PLUSEQ, MINUSEQ, MULTEQ, DIVEQ, MODEQ, AND, OR, NOT, EQUALS, GREATERTHAN, GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
+terminal EOF, EOL, DOWNTO, TO, THEN, VOID, OF, TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
+terminal Boolean BOOLEAN_LITERAL;
+terminal Integer INTEGER_LITERAL; // decimal??
+terminal Double DECIMAL_LITERAL;
+terminal String STRING_LITERAL, IDENTIFIER;
+
+/* Non-terminals */
+
+
+/* Precedences */
+precedence nonassoc OR;
+precedence nonassoc AND;
+precedence nonassoc EQUALS;
+precedence left LESSTHAN, GREATERTHAN, GREATERTHANEQUALS, LESSTHANEQUALS;
+precedence left PLUS, MINUS;
+precedence left MULT, DIV, MOD;
+precedence right NOT, PLUSPLUS, MINUSMINUS, UMINUS;
+precedence left POSTPLUSPLUS, POSTMINUSMINUS;
+
+/* The grammar */
+Start         ::= FunctionDcls:fds1 Program:p FunctionDcls:fds2 EOF
               ;
-defines       ::= defines:ds define:d
+FunctionDcls  ::= FunctionDcls:fds FunctionDcl:fd EOL
               |
               ;
-function_dcls ::= function_dcls:fds function_dcl:fd EOL
+FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id LPAREN Params:p RPAREN EOL Stmts:ss END FUNCTION
+              ;
+Param         ::= IDENTIFIER:id AS TypeId:ti Params:p
               |
               ;
-function_dcl  ::= FUNCTION type_id:ti IDENTIFIER:id LPAREN params:p RPAREN EOL stmts:ss END FUNCTION
-              ;
-param         ::= IDENTIFIER:id AS type_id:ti params:p
+Params        ::= COMMA Param
               |
               ;
-params        ::= COMMA param
+Program       ::= BEGIN PROGRAM EOL Stmts:ss END PROGRAM EOL
+              ;
+Stmts         ::= Stmts:ss Stmt:s EOL
               |
               ;
-program       ::= BEGIN PROGRAM EOL stmts:ss END PROGRAM EOL
+Stmt          ::= Dcl:d
+              |   Assignment:a
+              |   IfStmt:ifs
+              |   LoopStmt:ls
+              |   SwitchStmt:sws
+              |   RETURN ReturnV:rv
+              |   FunctionCall:fc
               ;
-stmts         ::= stmts:ss stmt:s EOL
+ReturnV       ::= Variable:v
               |
               ;
-stmt          ::= dcl:d
-              |   assignment:a
-              |   if_stmt:ifs
-              |   loop_stmt:ls
-              |   switch_stmt:sws
-              |   RETURN return_v:rv
-              |   function_call:fc
+IfStmt        ::= IF Expression:e THEN EOL Stmts:ss ElseStmt:els
               ;
-return_v      ::= variable:v
+ElseStmt      ::= END IF
+              |   ELSE ElifStmt:elifs
+              ;
+ElifStmt      ::= IfStmt:ifs
+              |   EOL Stmts:ss END IF
+              ;
+SwitchStmt    ::= SWITCH Variable:v EOL SwitchCases:swcs SwitchDef:swd END SWITCH
+              ;
+SwitchCases   ::= SwitchCases:swcs SwitchCase:swc EOL
               |
               ;
-if_stmt       ::= IF arithmetic:ar THEN EOL stmts:ss else_stmt:els
+SwitchCase    ::= CASE Variable:v EOL Stmts
               ;
-else_stmt     ::= END IF
-              |   ELSE elif_stmt:elifs
-              ;
-elif_stmt     ::= if_stmt:ifs
-              |   EOL stmts:ss END IF
-              ;
-switch_stmt   ::= SWITCH variable:v EOL switch_cases:swcs switch_def:swd END SWITCH
-              ;
-switch_cases  ::= switch_cases:swcs switch_case:swc EOL
+SwitchDef     ::= DEFAULT EOL Stmts
               |
               ;
-switch_case   ::= CASE variable:v EOL stmts
+Expression    ::= Expression:e1 PLUS Expression:e2
+              |   Expression:e1 MINUS Expression:e2
+              |   Expression:e1 MULT Expression:e2
+              |   Expression:e1 DIV Expression:e2
+              |   Expression:e1 MOD Expression:e2
+              |   Expression:e1 EQUALS Expression:e2
+              |   Expression:e1 LESSTHAN Expression:e2
+              |   Expression:e1 GREATERTHAN Expression:e2
+              |   Expression:e1 LESSTHENEQUALS Expression:e2
+              |   Expression:e1 GREATERTHANEQUALS Expression:e2
+              |   LPAREN Expression:e RPAREN
+              |   NOT Expression:e
+              |   MINUS Expression:e %prec UMINUS // giver denne præcedens som var det unær minus
+              |   PLUSPLUS Expression:e
+              |   MINUSMINUS Expression:e
+              |   Expression:e PLUSPLUS %prec POSTPLUSPLUS
+              |   Expression:e MINUSMINUS %prec POSTMINUSMINUS
+              |   Variable:v
               ;
-switch_def    ::= DEFAULT EOL stmts
-              |
+Assignment    ::= NestedId:ni AssignOp:ao RightAssign:ra EOL
               ;
-arithmetic    ::= LPAREN arithmetic:ar RPAREN
-              |   variable:v operator:o
-              |   left_un_op:luo variable:v
-              ;
-operator      ::= bin_operator:bo variable:v
-              |   un_operator
-              |
-              ;
-assignment    ::= nested_id:ni assign_op:ao right_assign:ra EOL
-              ;
-assign_op     ::= EQ
+AssignOp      ::= EQ
               |   PLUSEQ
               |   MINUSEQ
               |   MODEQ
               |   MULTEQ
               |   DIVEQ
               ;
-right_assign  ::= arithmetic:ar
-              |   variable:v
-              |   function_call:fc
+RightAssign   ::= Expression:e
+              |   Variable:v
+              |   FunctionCall:fc
               ;
-function_call ::= nested_id:ni LPAREN arguments:arg RPAREN
+FunctionCall  ::= NestedId:ni LPAREN Arguments:arg RPAREN
               ;
-arguments     ::= arg1:arg
+Arguments     ::= Arg1:arg
               |
               ;
-arg1          ::= variable:v arg2:arg
+Arg1          ::= Variable:v Arg2:arg
               ;
-arg2          ::= COMMA arg1:arg
+Arg2          ::= COMMA Arg1:arg
               |
               ;
-loop_stmt     ::= while_stmt:whs
-              |   for_stmt:fors
-              |   foreach_stmt:fores
+LoopStmt      ::= WhileStmt:whs
+              |   ForStmt:fors
+              |   ForeachStmt:fores
               ;
-while_stmt    ::= WHILE arithmetic:ar DO EOL stmts:ss END WHILE
+WhileStmt     ::= WHILE Expression:e DO EOL Stmts:ss END WHILE
               ;
-foreach_stmt  ::= FOREACH type_id:ti IDENTIFIER:id IN nested_id:ni DO EOL stmts END FOREACH
+ForeachStmt   ::= FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO EOL Stmts END FOREACH
               ;
-for_stmt      ::= FOR int_index:int1 for_iterator:fi int_index:int2 DO EOL stmts END FOR
+ForStmt       ::= FOR IntIndex:int1 ForIterator:fi IntIndex:int2 DO EOL Stmts END FOR
               ;
-for_iterator  ::= TO
+ForIterator   ::= TO
               |   DOWNTO
               ;
-bin_operator  ::= MULT
-              |   PLUS
-              |   DIV
-              |   MINUS
-              |   MOD
-              |   logic_op:lo
-              |   rela_op:ro
+Variable      ::= NestedId:ni
+              |   StdTypes:st
               ;
-logic_op      ::= AND
-              |   OR
-              ;
-rela_op       ::= EQUALS
-              |   GREATERTHAN
-              |   LESSTHAN
-              |   GREATERTHANEQUALS
-              |   LESSTHENEQUALS
-              ;
-un_operator   ::= PLUSPLUS
-              |   MINUSMINUS
-              ;
-left_un_op    ::= NOT
-              |   MINUS
-              |   un_operator:uo
-              ;
-variable      ::= nested_id:ni
-              |   std_types:st
-              ;
-std_types     ::= DECIMAL_LITERAL:dec
+StdTypes      ::= DECIMAL_LITERAL:dec
               |   STRING_LITERAL:str
               |   BOOLEAN_LITERAL:bool
               |   INTEGER_LITERAL:int // ny?
               ;
-dcl           ::= DECLARE IDENTIFIER:id dcls:ds AS type_id:ti EOL
+Dcl           ::= DECLARE IDENTIFIER:id Dcls:ds AS TypeId:ti EOL
               ;
-dcls          ::= dcls:ds COMMA IDENTIFIER:id
+Dcls          ::= Dcls:ds COMMA IDENTIFIER:id
               |
               ;
-type_id       ::= IDENTIFIER:id array_dcl:ad
-              |   DECIMAL array_dcl:ad
-              |   STRING array_dcl:ad
-              |   BOOLEAN array_dcl:ad
-              |   TERRAIN array_dcl:ad
-              |   GROUP array_dcl:ad
-              |   PLATOON array_dcl:ad
-              |   FORCE array_dcl:ad
-              |   COORD array_dcl:ad
-              |   SOLDIER array_dcl:ad
+TypeId        ::= IDENTIFIER:id ArrayDcl:ad
+              |   DECIMAL ArrayDcl:ad
+              |   STRING ArrayDcl:ad
+              |   BOOLEAN ArrayDcl:ad
+              |   TERRAIN ArrayDcl:ad
+              |   GROUP ArrayDcl:ad
+              |   PLATOON ArrayDcl:ad
+              |   FORCE ArrayDcl:ad
+              |   COORD ArrayDcl:ad
+              |   SOLDIER ArrayDcl:ad
               |   VOID
-              |   LIST OF type_id:ti
+              |   LIST OF TypeId:ti
               ;
-array_dcl     ::= LBRACE int_index:index RBRACE
+ArrayDcl      ::= LBRACE IntIndex:index RBRACE
               |
               ;
-nested_id     ::= IDENTIFIER:id child_id:ci
+NestedId      ::= IDENTIFIER:id ChildId:ci
               ;
-child_id      ::= dot_ni:dni
-              |   LBRACE int_index:index RBRACE dot_ni:dni
+ChildId       ::= DotNi:dni
+              |   LBRACE IntIndex:index RBRACE DotNi:dni
               ;
-dot_ni        ::= DOT nested_id:ni
+DotNi         ::= DOT NestedId:ni
               |
               ;
-int_index     ::= nested_id:ni
+IntIndex      ::= NestedId:ni
               |   INTEGER_LITERAL
               ;
