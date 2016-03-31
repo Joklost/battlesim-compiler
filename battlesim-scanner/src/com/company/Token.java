@@ -58,7 +58,7 @@ public class Token {
         RETURN              = 16,
         ELSE                = 17,
         LIST                = 18,
-        //INCLUDE             = 19,
+        DECLARATIONS        = 19,
         //DEFINE              = 20,
         SWITCH              = 21,
         NULL_LITERAL        = 22,
@@ -152,7 +152,7 @@ public class Token {
         tokenNames.put(RETURN, "RETURN");
         tokenNames.put(ELSE, "ELSE");
         tokenNames.put(LIST, "LIST");
-        //tokenNames.put(INCLUDE, "INCLUDE");
+        tokenNames.put(DECLARATIONS, "DECLARATIONS");
         //tokenNames.put(DEFINE, "DEFINE");
         tokenNames.put(SWITCH, "SWITCH");
         tokenNames.put(NULL_LITERAL, "NULL_LITERAL");
