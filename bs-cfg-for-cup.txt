@@ -54,7 +54,16 @@ Stmt          ::= Dcl:d
               |   SwitchStmt:sws
               |   RETURN ReturnV:rv
               |   FunctionCall:fc
+              |   SimStmt:sis
               ;
+SimStmt       ::= SIMULATION NestedId:ni EOL SimSteps Interrupts END SIMULATION
+              ;
+SimSteps      ::= SimSteps SimStep
+              |
+              ;
+SimStep       ::= STEP INTEGER_LITERAL EOL Stmts
+              ;
+Interrupts    ::= INTERRUPTS EOL Stmts
 ReturnV       ::= Variable:v
               |
               ;
@@ -68,7 +77,7 @@ ElifStmt      ::= IfStmt:ifs
               ;
 SwitchStmt    ::= SWITCH Variable:v EOL SwitchCases:swcs SwitchDef:swd END SWITCH
               ;
-SwitchCases   ::= SwitchCases:swcs SwitchCase:swc EOL
+SwitchCases   ::= SwitchCases:swcs SwitchCase:swc
               |
               ;
 SwitchCase    ::= CASE Variable:v EOL Stmts
