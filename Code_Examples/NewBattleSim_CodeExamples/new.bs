@@ -67,17 +67,17 @@ Begin Program
 
   Declare simulation1, sim2 as Simulation
 
-  Simulation simulation1:
-    Step 1:
+  Simulation simulation1
+    Step 1
       enemies.Move(100,715)
       allies.Move(320,900)
-    Step 2:
+    Step 2
       enemies.TryDetectEnemies(30m) //Try to detect enemies for 30 minuttes
       allies.Move(320,500)
-    Step 3:
+    Step 3
       enemies.Move(100,960)
       allies.Done()
-    Step 4:
+    Step 4
       allies.Done()
 
     Interupts:
@@ -90,11 +90,36 @@ Begin Program
         allies.StopMovement()
         allies.Engage(allies.enemy)
       End If
-
   End Simulation
 
-  Simulation sim2
-    Step1:
+  Simulation flanking
+    Step 1
+      allies.Move(30,250)
+      enemies.Move(950,250)
+    Step 2
+      allies.Move(250,250)
+      enemies.Move(600,250)
+    Step 3 //Group 1 and 3 starts moving to flanking positions
+      aGroup1.Move(550,400)
+      aGroup2.Move(300,250)
+      aGroup3.Move(550,100)
+      enemies.TryDetectEnemies(30m)
+    Step 4
+      aGroup1.Move(600,400)
+      aGroup2.Wait(aGroup1.Step4 AND aGroup3.Step4)
+      aGroup3.Move(600,100)
+    Step 5
+      aGroup1.Move(600,300)
+      aGroup2.Move(500,250)
+      aGroup3.Move(600,200)
+    Step 6
+      aGroup1.TryDetectEnemies(2m)
+      aGroup2.TryDetectEnemies(2m)
+      aGroup3.TryDetectEnemies(2m)
+    Step 7
+      allies.Done()
+      enemies.Done()
+
   End Simulation
 
   Declare i as Integer
@@ -107,6 +132,10 @@ Begin Program
 
 
 End Program
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Dette skal være indbyggede funktioner, og Move() funktioner skal nok være en del af klasserne der kan bevæge sig/
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Function Void MoveSoldier(soldier as Soldier, velocity as Number, coord as Coord)
   soldier.velocity = velocity
@@ -139,9 +168,6 @@ Function Void MovePlatoon(platoon as Platoon, velocity as Number, coord as Coord
   */
 End Function
 
-Function Void Flanking()
-
-End Function
 
 Function Vector FindUnitVector(startCoord as Coord, targetCoord as Coord)
   res as Vector
