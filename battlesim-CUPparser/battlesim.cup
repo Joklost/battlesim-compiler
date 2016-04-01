@@ -56,12 +56,15 @@ nonterminal SwitchDef       SwitchDef
 nonterminal Expression      Expression
 nonterminal AssignOp        AssignOp
 nonterminal FunctionCall    FunctionCall
+nonterminal ArgumentList    Arguments
+nonterminal ArgumentList    ArgumentList
+nonterminal ArgumentList    Arguments
 nonterminal ForIterator     ForIterator
 nonterminal Variable        Variable
 nonterminal StdLiteral      StdLiteral
 nonterminal DclIdList       Dcls
 nonterminal TypeIdentifier  TypeId
-nonterminal NestedId        NestedId
+nonterminal NestedIdentifier NestedId
 
 /* Precedences */
 precedence nonassoc OR;
@@ -70,8 +73,8 @@ precedence nonassoc EQUALS;
 precedence left LESSTHAN, GREATERTHAN, GREATERTHANEQUALS, LESSTHANEQUALS;
 precedence left PLUS, MINUS;
 precedence left MULT, DIV, MOD;
-precedence right NOT, PLUSPLUS, MINUSMINUS, UMINUS;
-precedence left POSTPLUSPLUS, POSTMINUSMINUS;
+precedence right NOT, UMINUS;
+precedence left PLUSPLUS, MINUSMINUS;
 
 /* The grammar */
 Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2 EOF                 {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
@@ -105,7 +108,7 @@ Stmt          ::= DECLARE IDENTIFIER:id Dcls:ds AS TypeId:ti EOL                
               |   SWITCH Variable:v EOL SwitchCases:swcs SwitchDef:swd END SWITCH               {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
               |   RETURN Expression:e                                                           {: RESULT = new ReturnExpr(e, eleft); :}
               |   RETURN:r                                                                      {: RESULT = new Return(rleft); :}
-              |   FunctionCall:fc                                                               {: RESULT = fc; :}
+              |   FunctionCall:fc                                                               {: RESULT = new FunctionCallStmt(fc, nileft); :}
 //              |   SIMULATION NestedId:ni EOL SimSteps:sis Interrupts:is END SIMULATION          {: RESULT = new SimulationStmt(ni, sis, is, nileft); :}
               ;
 //SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
@@ -119,41 +122,39 @@ IfStmt        ::= IF Expression:e THEN EOL Stmts:ss ElseStmt:els                
               ;
 ElseStmt      ::= END IF:eif                                                                    {: RESULT = new EndIfStmt(eifleft); :}
               |   ELSE IfStmt:ifs                                                               {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
-              |   ELSE EOL Stmts:ss END IF                                                      {: RESULT = new ElseStmt(ss, ssleft); :}
+              |   ELSE EOL Stmts:ss END IF                                                      {: RESULT = new ElseEndStmt(ss, ssleft); :}
               ;
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: RESULT = swcs; swcs.addElement(swc); :}
               |                                                                                 {: RESULT = new SwitchCaseList(0); :}
               ;
 SwitchCase    ::= CASE Variable:v EOL Stmts:ss                                                  {: RESULT = new SwitchCase(v, ss, vleft); :}
               ;
-SwitchDef     ::= DEFAULT EOL Stmts:ss                                                          {: RESULT = new SwitchDef(ss, ssleft); :}
+SwitchDef     ::= DEFAULT:d EOL Stmts:ss                                                        {: RESULT = new SwitchDef(ss, dleft); :}
               ;
-Expression    ::= Expression:e1 PLUS Expression:e2                                              {: RESULT = new Plus(e1, e2, e1left); :}
-              |   Expression:e1 MINUS Expression:e2                                             {: RESULT = new Minus(e1, e2, e1left); :}
-              |   Expression:e1 MULT Expression:e2                                              {: RESULT = new Mult(e1, e2, e1left); :}
-              |   Expression:e1 DIV Expression:e2                                               {: RESULT = new Div(e1, e2, e1left); :}
-              |   Expression:e1 MOD Expression:e2                                               {: RESULT = new Mod(e1, e2, e1left); :}
-              |   Expression:e1 EQUALS Expression:e2                                            {: RESULT = new LogicEquals(e1, e2, e1left); :}
-              |   Expression:e1 LESSTHAN Expression:e2                                          {: RESULT = new LessThan(e1, e2, e1left); :}
-              |   Expression:e1 GREATERTHAN Expression:e2                                       {: RESULT = new GreaterThan(e1, e2, e1left); :}
-              |   Expression:e1 LESSTHANEQUALS Expression:e2                                    {: RESULT = new LessThanEquals(e1, e2, e1left); :}
-              |   Expression:e1 GREATERTHANEQUALS Expression:e2                                 {: RESULT = new GreaterThanEquals(e1, e2, e1left); :}
+Expression    ::= Expression:e1 PLUS Expression:e2                                              {: RESULT = new PlusExpr(e1, e2, e1left); :}
+              |   Expression:e1 MINUS Expression:e2                                             {: RESULT = new MinusExpr(e1, e2, e1left); :}
+              |   Expression:e1 MULT Expression:e2                                              {: RESULT = new MultExpr(e1, e2, e1left); :}
+              |   Expression:e1 DIV Expression:e2                                               {: RESULT = new DivExpr(e1, e2, e1left); :}
+              |   Expression:e1 MOD Expression:e2                                               {: RESULT = new ModExpr(e1, e2, e1left); :}
+              |   Expression:e1 EQUALS Expression:e2                                            {: RESULT = new LogicEqualsExpr(e1, e2, e1left); :}
+              |   Expression:e1 LESSTHAN Expression:e2                                          {: RESULT = new LessThanExpr(e1, e2, e1left); :}
+              |   Expression:e1 GREATERTHAN Expression:e2                                       {: RESULT = new GreaterThanExpr(e1, e2, e1left); :}
+              |   Expression:e1 LESSTHANEQUALS Expression:e2                                    {: RESULT = new LessThanEqualsExpr(e1, e2, e1left); :}
+              |   Expression:e1 GREATERTHANEQUALS Expression:e2                                 {: RESULT = new GreaterThanEqualsExpr(e1, e2, e1left); :}
               |   LPAREN Expression:e RPAREN                                                    {: RESULT = e; :}
-              |   NOT:not Expression:e                                                          {: RESULT = new Not(e, notleft); :}
-              |   MINUS:min Expression:e %prec UMINUS                                           {: RESULT = new UnMinus(e, minleft); :}
-              |   PLUSPLUS:pp Expression:e                                                      {: RESULT = new PrefixPlusPlus(e, ppleft); :}
-              |   MINUSMINUS:mm Expression:e                                                    {: RESULT = new PrefixMinusMinus(e, mmleft); :}
-              |   Expression:e PLUSPLUS %prec POSTPLUSPLUS                                      {: RESULT = new PostfixPlusPlus(e, eleft); :}
-              |   Expression:e MINUSMINUS %prec POSTMINUSMINUS                                  {: RESULT = new PostfixMinusMinus(e, eleft); :}
-              |   Variable:v                                                                    {: RESULT = v; :}
-              |   FunctionCall:fc                                                               {: RESULT = fc; :}
+              |   NOT:not Expression:e                                                          {: RESULT = new NotExpr(e, notleft); :}
+              |   MINUS:min Expression:e %prec UMINUS                                           {: RESULT = new UnMinusExpr(e, minleft); :}
+              |   Expression:e PLUSPLUS                                                         {: RESULT = new PlusPlusExpr(e, eleft); :}
+              |   Expression:e MINUSMINUS                                                       {: RESULT = new MinusMinusExpr(e, eleft); :}
+              |   Variable:v                                                                    {: RESULT = new VariableExpr(v, vleft); :}
+              |   FunctionCall:fc                                                               {: RESULT = new FunctionCallExpr(fc, nileft); :}
               ;
-AssignOp      ::= EQ:eq                                                                         {: RESULT = new Equals(eqleft); :}
-              |   PLUSEQ:eq                                                                     {: RESULT = new PlusEquals(eqleft); :}
-              |   MINUSEQ:eq                                                                    {: RESULT = new MinusEquals(eqleft); :}
-              |   MODEQ:eq                                                                      {: RESULT = new ModEquals(eqleft); :}
-              |   MULTEQ:eq                                                                     {: RESULT = new MultEquals(eqleft); :}
-              |   DIVEQ:eq                                                                      {: RESULT = new DivEquals(eqleft); :}
+AssignOp      ::= EQ:eq                                                                         {: RESULT = new EqualsOp(eqleft); :}
+              |   PLUSEQ:eq                                                                     {: RESULT = new PlusEqualsOp(eqleft); :}
+              |   MINUSEQ:eq                                                                    {: RESULT = new MinusEqualsOp(eqleft); :}
+              |   MODEQ:eq                                                                      {: RESULT = new ModEqualsOp(eqleft); :}
+              |   MULTEQ:eq                                                                     {: RESULT = new MultEqualsOp(eqleft); :}
+              |   DIVEQ:eq                                                                      {: RESULT = new DivEqualsOp(eqleft); :}
               ;
 FunctionCall  ::= NestedId:ni Arguments:arg                                                     {: RESULT = new FunctionCall(ni, arg, nileft); :}
               ;
@@ -163,36 +164,36 @@ Arguments     ::= LPAREN:l RPAREN                                               
 ArgumentList  ::= Expression:e                                                                  {: RESULT = new ArgumentList(eleft); RESULT.addElement(e); :}
               |   Expression:e COMMA ArgumentList:al                                            {: RESULT = al; al.addElement(e); :}
               ;
-ForIterator   ::= TO:t                                                                          {: RESULT = new To(tleft); :}
-              |   DOWNTO:t                                                                      {: RESULT = new DownTo(tleft); :}
+ForIterator   ::= TO:t                                                                          {: RESULT = new ToIterator(tleft); :}
+              |   DOWNTO:t                                                                      {: RESULT = new DownToIterator(tleft); :}
               ;
-Variable      ::= NestedId:ni                                                                   {: RESULT = ni; :}
-              |   StdLiteral:st                                                                 {: RESULT = st; :}
+Variable      ::= NestedId:ni                                                                   {: RESULT = new VariableNestedId(ni, nileft); :}
+              |   StdLiteral:st                                                                 {: RESULT = new VariableStdLiteral(st, stleft); :}
               ;
-StdLiteral    ::= DECIMAL_LITERAL:dec                                                           {: RESULT = new Double(dec.doubleValue(), decleft); :}
-              |   STRING_LITERAL:str                                                            {: RESULT = new String(str.stringValue(), strleft); :}
-              |   BOOLEAN_LITERAL:bool                                                          {: RESULT = new Boolean(bool.booleanValue(), boolleft); :}
-              |   INTEGER_LITERAL:int                                                           {: RESULT = new Integer(int.intValue(), intleft); :}
+StdLiteral    ::= DECIMAL_LITERAL:dec                                                           {: RESULT = new DecimalLiteral(dec, decleft); :}
+              |   STRING_LITERAL:str                                                            {: RESULT = new StringLiteral(str, strleft); :}
+              |   BOOLEAN_LITERAL:bool                                                          {: RESULT = new BooleanLiteral(bool, boolleft); :}
+              |   INTEGER_LITERAL:int                                                           {: RESULT = new IntegerLiteral(int, intleft); :}
               ;
 Dcls          ::= Dcls:ds COMMA IDENTIFIER:id                                                   {: RESULT = ds; ds.addElement(id); :}
               |                                                                                 {: RESULT = new DclIdList(0); :}
               ;
-TypeId        ::= DECIMAL:d                                                                     {: RESULT = new DecimalType(dleft); :}
-              |   STRING:s                                                                      {: RESULT = new StringType(sleft); :}
-              |   BOOLEAN:b                                                                     {: RESULT = new BooleanType(bleft); :}
-              |   TERRAIN:t                                                                     {: RESULT = new TerrainType(tleft); :}
-              |   GROUP:g                                                                       {: RESULT = new GroupType(gleft); :}
-              |   PLATOON:p                                                                     {: RESULT = new PlatoonType(pleft); :}
-              |   FORCE:f                                                                       {: RESULT = new ForceType(fleft); :}
-              |   COORD:c                                                                       {: RESULT = new CoordType(cleft); :}
-              |   SOLDIER:s                                                                     {: RESULT = new SoldierType(sleft); :}
-              |   BARRIER:b                                                                     {: RESULT = new BarrierType(bleft); :}
-              |   VECTOR:v                                                                      {: RESULT = new VectorType(vleft); :}
-              |   VOID:vo                                                                       {: RESULT = new VoidType(voleft); :}
-              |   LIST OF TypeId:ti                                                             {: RESULT = new ListType(ti, tileft); :}
-              |   TypeId:ty LBRACE StdLiterals:std RBRACE                                       {: RESULT = new ArrayType(ty, std, tyleft); :}
+TypeId        ::= DECIMAL:d                                                                     {: RESULT = new TypeDecimal(dleft); :}
+              |   STRING:s                                                                      {: RESULT = new TypeString(sleft); :}
+              |   BOOLEAN:b                                                                     {: RESULT = new TypeBoolean(bleft); :}
+              |   TERRAIN:t                                                                     {: RESULT = new TypeTerrain(tleft); :}
+              |   GROUP:g                                                                       {: RESULT = new TypeGroup(gleft); :}
+              |   PLATOON:p                                                                     {: RESULT = new TypePlatoon(pleft); :}
+              |   FORCE:f                                                                       {: RESULT = new TypeForce(fleft); :}
+              |   COORD:c                                                                       {: RESULT = new TypeCoord(cleft); :}
+              |   SOLDIER:s                                                                     {: RESULT = new TypeSoldier(sleft); :}
+              |   BARRIER:b                                                                     {: RESULT = new TypeBarrier(bleft); :}
+              |   VECTOR:v                                                                      {: RESULT = new TypeVector(vleft); :}
+              |   VOID:vo                                                                       {: RESULT = new TypeVoid(voleft); :}
+              |   LIST OF TypeId:ti                                                             {: RESULT = new TypeList(ti, tileft); :}
+              |   TypeId:ty LBRACE Expression:e RBRACE                                          {: RESULT = new TypeArray(ty, e, tyleft); :}
               ;
-NestedId      ::= IDENTIFIER:id DOT NestedId:ni                                                 {: RESULT = new NestedChildIdentifier(id, ni, idleft); :}
-              |   IDENTIFIER:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedArrayIdentifier(id, e, ni, idleft); :}
+NestedId      ::= IDENTIFIER:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
+              |   IDENTIFIER:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifierArray(id, e, ni, idleft); :}
               |   IDENTIFIER:id                                                                 {: RESULT = new Identifier(id, idleft); :}
               ;
