@@ -183,7 +183,7 @@ Dcls          ::= Dcls:ds COMMA IDENTIFIER:id                                   
               |                                                                                 {: RESULT = new DclIdList(0); :}
               ;
 TypeId        ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
-              |   STRING:s                                                                      {: RESULT = new String(sleft); :}
+              |   STRING:s                                                                      {: RESULT = new StringT(sleft); :}
               |   BOOLEAN:b                                                                     {: RESULT = new Boolean(bleft); :}
               |   TERRAIN:t                                                                     {: RESULT = new Terrain(tleft); :}
               |   GROUP:g                                                                       {: RESULT = new Group(gleft); :}
