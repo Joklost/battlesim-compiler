@@ -12,21 +12,22 @@ parser code {:
 scan with {: return s.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal BOOLEAN, IF, WHILE, DO, FOREACH, FUNCTION, END,
-terminal BEGIN, PROGRAM, FOR, TYPE, AS, DECIMAL, STRING;
+terminal BOOLEAN, IF, WHILE, DO, FOREACH, FUNCTION, END;
+terminal BEGIN, PROGRAM, FOR, AS, DECIMAL, STRING;
 terminal DECLARE, IN, RETURN, ELSE, LIST, DECLARATIONS;
 terminal SWITCH, NULL_LITERAL, CASE, DEFAULT;
 
 terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, DOT;
 
-terminal EQ, PLUSPLUS, MINUSMINUS, PLUS, MINUS, DIV;
+terminal EQ, PLUSPLUS, MINUSMINUS, PLUS, MINUS, DIV, UMINUS;
 terminal MULT, MOD, PLUSEQ, MINUSEQ, MULTEQ, DIVEQ;
 terminal MODEQ, AND, OR, NOT, EQUALS, GREATERTHAN;
 terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 
-terminal EOF, EOL, DOWNTO, TO, THEN, VOID, OF;
+terminal EOL, DOWNTO, TO, THEN, VOID, OF;
 terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
-terminal SIMULATION, STEP, INTERRUPTS, VECTOR, BARRIER;
+//terminal SIMULATION, STEP, INTERRUPTS;
+terminal VECTOR, BARRIER;
 
 terminal Boolean BOOLEAN_LITERAL;
 terminal Integer INTEGER_LITERAL;
@@ -35,36 +36,35 @@ terminal String STRING_LITERAL, IDENTIFIER;
 
 /* Non-terminals */
 
-nonterminal Start           Start
-nonterminal DclBlock        DclBlock
-nonterminal FunctionDclList FunctionDcls
-nonterminal FunctionDcl     FunctionDcl
-nonterminal Param           Param
-nonterminal ParamList       Params
-nonterminal ParamList       ParamList
-nonterminal Program         Program
-nonterminal StmtList        Stmts
-nonterminal Stmt            Stmt
-nonterminal SimStepList     SimSteps
-nonterminal SimStep         SimStep
-nonterminal Interrupts      Interrupts
-nonterminal IfStmt          IfStmt
-nonterminal ElseStmt        ElseStmt
-nonterminal SwitchCaseList  SwitchCases
-nonterminal SwitchCase      SwitchCase
-nonterminal SwitchDef       SwitchDef
-nonterminal Expression      Expression
-nonterminal AssignOp        AssignOp
-nonterminal FunctionCall    FunctionCall
-nonterminal ArgumentList    Arguments
-nonterminal ArgumentList    ArgumentList
-nonterminal ArgumentList    Arguments
-nonterminal ForIterator     ForIterator
-nonterminal Variable        Variable
-nonterminal StdLiteral      StdLiteral
-nonterminal DclIdList       Dcls
-nonterminal TypeIdentifier  TypeId
-nonterminal NestedIdentifier NestedId
+nonterminal Start           Start;
+nonterminal DclBlock        DclBlock;
+nonterminal FunctionDclList FunctionDcls;
+nonterminal FunctionDcl     FunctionDcl;
+nonterminal Param           Param;
+nonterminal ParamList       Params;
+nonterminal ParamList       ParamList;
+nonterminal Program         Program;
+nonterminal StmtList        Stmts;
+nonterminal Stmt            Stmt;
+//nonterminal SimStepList     SimSteps;
+//nonterminal SimStep         SimStep;
+//nonterminal Interrupts      Interrupts;
+nonterminal IfStmt          IfStmt;
+nonterminal ElseStmt        ElseStmt;
+nonterminal SwitchCaseList  SwitchCases;
+nonterminal SwitchCase      SwitchCase;
+nonterminal SwitchDef       SwitchDef;
+nonterminal Expression      Expression;
+nonterminal AssignOp        AssignOp;
+nonterminal FunctionCall    FunctionCall;
+nonterminal ArgumentList    Arguments;
+nonterminal ArgumentList    ArgumentList;
+nonterminal ForIterator     ForIterator;
+nonterminal Variable        Variable;
+nonterminal StdLiteral      StdLiteral;
+nonterminal DclIdList       Dcls;
+nonterminal TypeIdentifier  TypeId;
+nonterminal NestedIdentifier NestedId;
 
 /* Precedences */
 precedence nonassoc OR;
@@ -77,7 +77,7 @@ precedence right NOT, UMINUS;
 precedence left PLUSPLUS, MINUSMINUS;
 
 /* The grammar */
-Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2 EOF                 {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
+Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2 /*EOF*/             {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
               ;
 DclBlock      ::= BEGIN DECLARATIONS EOL Stmts:ss END DECLARATIONS EOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               ;
@@ -136,6 +136,8 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   Expression:e1 MULT Expression:e2                                              {: RESULT = new MultExpr(e1, e2, e1left); :}
               |   Expression:e1 DIV Expression:e2                                               {: RESULT = new DivExpr(e1, e2, e1left); :}
               |   Expression:e1 MOD Expression:e2                                               {: RESULT = new ModExpr(e1, e2, e1left); :}
+              |   Expression:e1 AND Expression:e2                                               {: RESULT = new AndExpr(e1, e2, e1left); :}
+              |   Expression:e1 OR Expression:e2                                                {: RESULT = new OrExpr(e1, e2, e1left); :}
               |   Expression:e1 EQUALS Expression:e2                                            {: RESULT = new LogicEqualsExpr(e1, e2, e1left); :}
               |   Expression:e1 LESSTHAN Expression:e2                                          {: RESULT = new LessThanExpr(e1, e2, e1left); :}
               |   Expression:e1 GREATERTHAN Expression:e2                                       {: RESULT = new GreaterThanExpr(e1, e2, e1left); :}
@@ -143,7 +145,7 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   Expression:e1 GREATERTHANEQUALS Expression:e2                                 {: RESULT = new GreaterThanEqualsExpr(e1, e2, e1left); :}
               |   LPAREN Expression:e RPAREN                                                    {: RESULT = e; :}
               |   NOT:not Expression:e                                                          {: RESULT = new NotExpr(e, notleft); :}
-              |   MINUS:min Expression:e %prec UMINUS                                           {: RESULT = new UnMinusExpr(e, minleft); :}
+              |   MINUS:min Expression:e                                                        {: RESULT = new UnMinusExpr(e, minleft); :} %prec UMINUS
               |   Expression:e PLUSPLUS                                                         {: RESULT = new PlusPlusExpr(e, eleft); :}
               |   Expression:e MINUSMINUS                                                       {: RESULT = new MinusMinusExpr(e, eleft); :}
               |   Variable:v                                                                    {: RESULT = new VariableExpr(v, vleft); :}
@@ -174,24 +176,58 @@ StdLiteral    ::= DECIMAL_LITERAL:dec                                           
               |   STRING_LITERAL:str                                                            {: RESULT = new StringLiteral(str, strleft); :}
               |   BOOLEAN_LITERAL:bool                                                          {: RESULT = new BooleanLiteral(bool, boolleft); :}
               |   INTEGER_LITERAL:int                                                           {: RESULT = new IntegerLiteral(int, intleft); :}
+              |   NULL_LITERAL:null                                                             {: RESULT = new NullLiteral(nullleft); :}
               ;
 Dcls          ::= Dcls:ds COMMA IDENTIFIER:id                                                   {: RESULT = ds; ds.addElement(id); :}
               |                                                                                 {: RESULT = new DclIdList(0); :}
               ;
-TypeId        ::= DECIMAL:d                                                                     {: RESULT = new TypeDecimal(dleft); :}
-              |   STRING:s                                                                      {: RESULT = new TypeString(sleft); :}
-              |   BOOLEAN:b                                                                     {: RESULT = new TypeBoolean(bleft); :}
-              |   TERRAIN:t                                                                     {: RESULT = new TypeTerrain(tleft); :}
-              |   GROUP:g                                                                       {: RESULT = new TypeGroup(gleft); :}
-              |   PLATOON:p                                                                     {: RESULT = new TypePlatoon(pleft); :}
-              |   FORCE:f                                                                       {: RESULT = new TypeForce(fleft); :}
-              |   COORD:c                                                                       {: RESULT = new TypeCoord(cleft); :}
-              |   SOLDIER:s                                                                     {: RESULT = new TypeSoldier(sleft); :}
-              |   BARRIER:b                                                                     {: RESULT = new TypeBarrier(bleft); :}
-              |   VECTOR:v                                                                      {: RESULT = new TypeVector(vleft); :}
-              |   VOID:vo                                                                       {: RESULT = new TypeVoid(voleft); :}
-              |   LIST OF TypeId:ti                                                             {: RESULT = new TypeList(ti, tileft); :}
-              |   TypeId:ty LBRACE Expression:e RBRACE                                          {: RESULT = new TypeArray(ty, e, tyleft); :}
+TypeId        ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
+              |   STRING:s                                                                      {: RESULT = new String(sleft); :}
+              |   BOOLEAN:b                                                                     {: RESULT = new Boolean(bleft); :}
+              |   TERRAIN:t                                                                     {: RESULT = new Terrain(tleft); :}
+              |   GROUP:g                                                                       {: RESULT = new Group(gleft); :}
+              |   PLATOON:p                                                                     {: RESULT = new Platoon(pleft); :}
+              |   FORCE:f                                                                       {: RESULT = new Force(fleft); :}
+              |   COORD:c                                                                       {: RESULT = new Coord(cleft); :}
+              |   SOLDIER:s                                                                     {: RESULT = new Soldier(sleft); :}
+              |   BARRIER:b                                                                     {: RESULT = new Barrier(bleft); :}
+              |   VECTOR:v                                                                      {: RESULT = new Vector(vleft); :}
+              |   DECIMAL:d LBRACE Expression:e RBRACE                                          {: RESULT = new Decimal1DArray(e, dleft); :}
+              |   STRING:s LBRACE Expression:e RBRACE                                           {: RESULT = new String1DArray(e, sleft); :}
+              |   BOOLEAN:b LBRACE Expression:e RBRACE                                          {: RESULT = new Boolean1DArray(e, bleft); :}
+              |   TERRAIN:t LBRACE Expression:e RBRACE                                          {: RESULT = new Terrain1DArray(e, tleft); :}
+              |   GROUP:g LBRACE Expression:e RBRACE                                            {: RESULT = new Group1DArray(e, gleft); :}
+              |   PLATOON:p LBRACE Expression:e RBRACE                                          {: RESULT = new Platoon1DArray(e, pleft); :}
+              |   FORCE:f LBRACE Expression:e RBRACE                                            {: RESULT = new Force1DArray(e, fleft); :}
+              |   COORD:c LBRACE Expression:e RBRACE                                            {: RESULT = new Coord1DArray(e, cleft); :}
+              |   SOLDIER:s LBRACE Expression:e RBRACE                                          {: RESULT = new Soldier1DArray(e, sleft); :}
+              |   BARRIER:b LBRACE Expression:e RBRACE                                          {: RESULT = new Barrier1DArray(e, bleft); :}
+              |   VECTOR:v LBRACE Expression:e RBRACE                                           {: RESULT = new Vector1DArray(e, vleft); :}
+              |   DECIMAL:d LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE               {: RESULT = new Decimal2DArray(e1, e2, dleft); :}
+              |   STRING:s LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE                {: RESULT = new String2DArray(e1, e2, sleft); :}
+              |   BOOLEAN:b LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE               {: RESULT = new Boolean2DArray(e1, e2, bleft); :}
+              |   TERRAIN:t LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE               {: RESULT = new Terrain2DArray(e1, e2, tleft); :}
+              |   GROUP:g LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE                 {: RESULT = new Group2DArray(e1, e2, gleft); :}
+              |   PLATOON:p LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE               {: RESULT = new Platoon2DArray(e1, e2, pleft); :}
+              |   FORCE:f LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE                 {: RESULT = new Force2DArray(e1, e2, fleft); :}
+              |   COORD:c LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE                 {: RESULT = new Coord2DArray(e1, e2, cleft); :}
+              |   SOLDIER:s LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE               {: RESULT = new Soldier2DArray(e1, e2, sleft); :}
+              |   BARRIER:b LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE               {: RESULT = new Barrier2DArray(e1, e2, bleft); :}
+              |   VECTOR:v LBRACE Expression:e RBRACE LBRACE Expression:e RBRACE                {: RESULT = new Vector2DArray(e1, e2, vleft); :}
+              |   LIST OF DECIMAL:d                                                             {: RESULT = new DecimalList(dleft); :}
+              |   LIST OF STRING:s                                                              {: RESULT = new StringList(sleft); :}
+              |   LIST OF BOOLEAN:b                                                             {: RESULT = new BooleanList(bleft); :}
+              |   LIST OF TERRAIN:t                                                             {: RESULT = new TerrainList(tleft); :}
+              |   LIST OF GROUP:g                                                               {: RESULT = new GroupList(gleft); :}
+              |   LIST OF PLATOON:p                                                             {: RESULT = new PlatoonList(pleft); :}
+              |   LIST OF FORCE:f                                                               {: RESULT = new ForceList(fleft); :}
+              |   LIST OF COORD:c                                                               {: RESULT = new CoordList(cleft); :}
+              |   LIST OF SOLDIER:s                                                             {: RESULT = new SoldierList(sleft); :}
+              |   LIST OF BARRIER:b                                                             {: RESULT = new BarrierList(bleft); :}
+              |   LIST OF VECTOR:v                                                              {: RESULT = new VectorList(vleft); :}
+              |   VOID:vo                                                                       {: RESULT = new Void(voleft); :}
+//              |   LIST OF TypeId:ti                                                             {: RESULT = new TypeList(ti, tileft); :}
+//              |   TypeId:ty LBRACE Expression:e RBRACE                                          {: RESULT = new TypeArray(ty, e, tyleft); :}
               ;
 NestedId      ::= IDENTIFIER:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
               |   IDENTIFIER:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifierArray(id, e, ni, idleft); :}
