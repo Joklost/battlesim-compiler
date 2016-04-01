@@ -39,94 +39,96 @@ public class Token {
 
     public final static int
         /*  Keywords */
-        BOOLEAN             = 0,
-        IF                  = 1,
-        WHILE               = 2,
-        DO                  = 3,
-        FOREACH             = 4,
-        FUNCTION            = 5,
-        END                 = 6,
-        BEGIN               = 7,
-        PROGRAM             = 8,
-        FOR                 = 9,
-        TYPE                = 10,
-        AS                  = 11,
-        DECIMAL             = 12,
-        STRING              = 13,
-        DECLARE             = 14,
-        IN                  = 15,
-        RETURN              = 16,
-        ELSE                = 17,
-        LIST                = 18,
-        DECLARATIONS        = 19,
-        //DEFINE              = 20,
-        SWITCH              = 21,
-        NULL_LITERAL        = 22,
-        CASE                = 23,
-        DEFAULT             = 24,
+            BOOLEAN             = 0,
+            IF                  = 1,
+            WHILE               = 2,
+            DO                  = 3,
+            FOREACH             = 4,
+            FUNCTION            = 5,
+            END                 = 6,
+            BEGIN               = 7,
+            PROGRAM             = 8,
+            FOR                 = 9,
+            //TYPE                = 10,
+            AS                  = 11,
+            DECIMAL             = 12,
+            STRING              = 13,
+            DECLARE             = 14,
+            IN                  = 15,
+            RETURN              = 16,
+            ELSE                = 17,
+            LIST                = 18,
+            DECLARATIONS        = 19,
+    //DEFINE              = 20,
+    SWITCH              = 21,
+            NULL_LITERAL        = 22,
+            CASE                = 23,
+            DEFAULT             = 24,
 
-        BOOLEAN_LITERAL     = 25,
+    BOOLEAN_LITERAL     = 25,
 
-        /* Seperators */
-        LPAREN              = 26,
-        RPAREN              = 27,
-        LBRACE              = 28,
-        RBRACE              = 29,
-        COMMA               = 30,
-        DOT                 = 31,
+    /* Seperators */
+    LPAREN              = 26,
+            RPAREN              = 27,
+            LBRACE              = 28,
+            RBRACE              = 29,
+            COMMA               = 30,
+            DOT                 = 31,
 
-        /* Operators */
-        EQ                  = 32,
-        PLUSPLUS            = 33,
-        MINUSMINUS          = 34,
-        PLUS                = 35,
-        MINUS               = 36,
-        DIV                 = 37,
-        MULT                = 38,
-        MOD                 = 39,
-        PLUSEQ              = 40,
-        MINUSEQ             = 41,
-        MULTEQ              = 42,
-        DIVEQ               = 43,
-        MODEQ               = 44,
-        AND                 = 45,
-        OR                  = 46,
-        NOT                 = 47,
-        EQUALS              = 48,
-        GREATERTHAN         = 49,
-        GREATERTHANEQUALS   = 50,
-        LESSTHAN            = 51,
-        LESSTHANEQUALS      = 52,
+    /* Operators */
+    EQ                  = 32,
+            PLUSPLUS            = 33,
+            MINUSMINUS          = 34,
+            PLUS                = 35,
+            MINUS               = 36,
+            DIV                 = 37,
+            MULT                = 38,
+            MOD                 = 39,
+            PLUSEQ              = 40,
+            MINUSEQ             = 41,
+            MULTEQ              = 42,
+            DIVEQ               = 43,
+            MODEQ               = 44,
+            AND                 = 45,
+            OR                  = 46,
+            NOT                 = 47,
+            EQUALS              = 48,
+            GREATERTHAN         = 49,
+            GREATERTHANEQUALS   = 50,
+            LESSTHAN            = 51,
+            LESSTHANEQUALS      = 52,
 
-        /* Literals */
-        INTEGER_LITERAL     = 53,
-        DECIMAL_LITERAL     = 54,
-        STRING_LITERAL      = 55,
+    /* Literals */
+    INTEGER_LITERAL     = 53,
+            DECIMAL_LITERAL     = 54,
+            STRING_LITERAL      = 55,
 
-        /* Other */
-        IDENTIFIER          = 56,
-        EOF                 = 57,
-        EOL                 = 58,
+    /* Other */
+    IDENTIFIER          = 56,
+            EOF                 = 57,
+            EOL                 = 58,
 
-        /* For iterators */
-        DOWNTO              = 59,
-        TO                  = 60,
+    /* For iterators */
+    DOWNTO              = 59,
+            TO                  = 60,
 
-        /* Extras (dem vi glemte) */
-        THEN                = 61,
-        VOID                = 62,
-        OF                  = 63,
+    /* Extras (dem vi glemte) */
+    THEN                = 61,
+            VOID                = 62,
+            OF                  = 63,
 
-        /* Domain Specific */
-        TERRAIN             = 64,
-        GROUP               = 65,
-        PLATOON             = 66,
-        FORCE               = 67,
-        COORD               = 68,
-        SOLDIER             = 69,
-        SIMULATION          = 70,
-        STEP                = 71,
-        INTERRUPTS          = 72;
+    /* Domain Specific */
+    TERRAIN             = 64,
+            GROUP               = 65,
+            PLATOON             = 66,
+            FORCE               = 67,
+            COORD               = 68,
+            SOLDIER             = 69,
+            SIMULATION          = 70,
+            STEP                = 71,
+            INTERRUPTS          = 72,
+        BARRIER                 = 73,
+        VECTOR                  = 74;
 
     private static HashMap<Integer, String> tokenNames;
     static {
@@ -143,7 +145,7 @@ public class Token {
         tokenNames.put(BEGIN, "BEGIN");
         tokenNames.put(PROGRAM, "PROGRAM");
         tokenNames.put(FOR, "FOR");
-        tokenNames.put(TYPE, "TYPE");
+        //tokenNames.put(TYPE, "TYPE");
         tokenNames.put(AS, "AS");
         tokenNames.put(DECIMAL, "DECIMAL");
         tokenNames.put(STRING, "STRING");
@@ -216,6 +218,8 @@ public class Token {
         tokenNames.put(SIMULATION, "SIMULATION");
         tokenNames.put(STEP, "STEP");
         tokenNames.put(INTERRUPTS, "INTERRUPTS");
+        tokenNames.put(BARRIER, "BARRIER");
+        tokenNames.put(VECTOR, "VECTOR");
     }
 
     public static String getTokenName(int token) {
