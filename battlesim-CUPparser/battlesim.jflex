@@ -60,7 +60,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Begin"                 { return symbol(Token.BEGIN); }
     "Program"               { return symbol(Token.PROGRAM); }
     "For"                   { return symbol(Token.FOR); }
-    "Type"                  { return symbol(Token.TYPE); }
+    //"Type"                  { return symbol(Token.TYPE); }
     "as"                    { return symbol(Token.AS); }
     "Decimal"               { return symbol(Token.DECIMAL); }
     "String"                { return symbol(Token.STRING); }

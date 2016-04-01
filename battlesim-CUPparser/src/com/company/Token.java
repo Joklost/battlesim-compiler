@@ -49,7 +49,7 @@ public class Token {
             BEGIN               = 7,
             PROGRAM             = 8,
             FOR                 = 9,
-            TYPE                = 10,
+            //TYPE                = 10,
             AS                  = 11,
             DECIMAL             = 12,
             STRING              = 13,
@@ -145,7 +145,7 @@ public class Token {
         tokenNames.put(BEGIN, "BEGIN");
         tokenNames.put(PROGRAM, "PROGRAM");
         tokenNames.put(FOR, "FOR");
-        tokenNames.put(TYPE, "TYPE");
+        //tokenNames.put(TYPE, "TYPE");
         tokenNames.put(AS, "AS");
         tokenNames.put(DECIMAL, "DECIMAL");
         tokenNames.put(STRING, "STRING");
