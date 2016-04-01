@@ -1,3 +1,6 @@
+Begin Declarations
+  Declare test as Integer
+End Declarations
 
 Function Void BubbleSort(a as List of Integer)
   Declare n as Integer
@@ -7,7 +10,7 @@ Function Void BubbleSort(a as List of Integer)
   c = 0
   For i To (n - 1) Do
     For c To (n - i - 1) Do
-      If a[c] GREATERTHAN a[c + 1] Then
+      If a[c] > a[c + 1] Then
         t        = a[c]
         a[c]     = a[c + 1]
         a[c + 1] = t
