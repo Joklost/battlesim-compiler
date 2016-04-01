@@ -885,7 +885,7 @@ class Scanner implements java_cup.runtime.Scanner {
         zzAtEOF = true;
             zzDoEOF();
               {
-                return symbol(Token.EOF);
+                return symbol(sym.EOF);
               }
       }
       else {
@@ -895,7 +895,7 @@ class Scanner implements java_cup.runtime.Scanner {
             }
           case 88: break;
           case 2: 
-            { return symbol(Token.EOL);
+            { return symbol(sym.EOL);
             }
           case 89: break;
           case 3: 
@@ -903,67 +903,67 @@ class Scanner implements java_cup.runtime.Scanner {
             }
           case 90: break;
           case 4: 
-            { return symbol(Token.DIV);
+            { return symbol(sym.DIV);
             }
           case 91: break;
           case 5: 
-            { return symbol(Token.MULT);
+            { return symbol(sym.MULT);
             }
           case 92: break;
           case 6: 
-            { return symbol(Token.INTEGER_LITERAL, new Integer(yytext()));
+            { return symbol(sym.INTEGER_LITERAL, new Integer(yytext()));
             }
           case 93: break;
           case 7: 
-            { return symbol(Token.DOT);
+            { return symbol(sym.DOT);
             }
           case 94: break;
           case 8: 
-            { return symbol(Token.IDENTIFIER, yytext());
+            { return symbol(sym.IDENTIFIER, yytext());
             }
           case 95: break;
           case 9: 
-            { return symbol(Token.LPAREN);
+            { return symbol(sym.LPAREN);
             }
           case 96: break;
           case 10: 
-            { return symbol(Token.RPAREN);
+            { return symbol(sym.RPAREN);
             }
           case 97: break;
           case 11: 
-            { return symbol(Token.LBRACE);
+            { return symbol(sym.LBRACE);
             }
           case 98: break;
           case 12: 
-            { return symbol(Token.RBRACE);
+            { return symbol(sym.RBRACE);
             }
           case 99: break;
           case 13: 
-            { return symbol(Token.COMMA);
+            { return symbol(sym.COMMA);
             }
           case 100: break;
           case 14: 
-            { return symbol(Token.EQ);
+            { return symbol(sym.EQ);
             }
           case 101: break;
           case 15: 
-            { return symbol(Token.PLUS);
+            { return symbol(sym.PLUS);
             }
           case 102: break;
           case 16: 
-            { return symbol(Token.MINUS);
+            { return symbol(sym.MINUS);
             }
           case 103: break;
           case 17: 
-            { return symbol(Token.MOD);
+            { return symbol(sym.MOD);
             }
           case 104: break;
           case 18: 
-            { return symbol(Token.GREATERTHAN);
+            { return symbol(sym.GREATERTHAN);
             }
           case 105: break;
           case 19: 
-            { return symbol(Token.LESSTHAN);
+            { return symbol(sym.LESSTHAN);
             }
           case 106: break;
           case 20: 
@@ -979,79 +979,79 @@ class Scanner implements java_cup.runtime.Scanner {
             }
           case 109: break;
           case 23: 
-            { yybegin(YYINITIAL); return symbol(Token.STRING_LITERAL, string.toString());
+            { yybegin(YYINITIAL); return symbol(sym.STRING_LITERAL, string.toString());
             }
           case 110: break;
           case 24: 
-            { return symbol(Token.DIVEQ);
+            { return symbol(sym.DIVEQ);
             }
           case 111: break;
           case 25: 
-            { return symbol(Token.MULTEQ);
+            { return symbol(sym.MULTEQ);
             }
           case 112: break;
           case 26: 
-            { return symbol(Token.DECIMAL_LITERAL, new Double(yytext()));
+            { return symbol(sym.DECIMAL_LITERAL, new Double(yytext()));
             }
           case 113: break;
           case 27: 
-            { return symbol(Token.OF);
+            { return symbol(sym.OF);
             }
           case 114: break;
           case 28: 
-            { return symbol(Token.AS);
+            { return symbol(sym.AS);
             }
           case 115: break;
           case 29: 
-            { return symbol(Token.IF);
+            { return symbol(sym.IF);
             }
           case 116: break;
           case 30: 
-            { return symbol(Token.IN);
+            { return symbol(sym.IN);
             }
           case 117: break;
           case 31: 
-            { return symbol(Token.DO);
+            { return symbol(sym.DO);
             }
           case 118: break;
           case 32: 
-            { return symbol(Token.TO);
+            { return symbol(sym.TO);
             }
           case 119: break;
           case 33: 
-            { return symbol(Token.EQUALS);
+            { return symbol(sym.EQUALS);
             }
           case 120: break;
           case 34: 
-            { return symbol(Token.PLUSEQ);
+            { return symbol(sym.PLUSEQ);
             }
           case 121: break;
           case 35: 
-            { return symbol(Token.PLUSPLUS);
+            { return symbol(sym.PLUSPLUS);
             }
           case 122: break;
           case 36: 
-            { return symbol(Token.MINUSEQ);
+            { return symbol(sym.MINUSEQ);
             }
           case 123: break;
           case 37: 
-            { return symbol(Token.MINUSMINUS);
+            { return symbol(sym.MINUSMINUS);
             }
           case 124: break;
           case 38: 
-            { return symbol(Token.MODEQ);
+            { return symbol(sym.MODEQ);
             }
           case 125: break;
           case 39: 
-            { return symbol(Token.OR);
+            { return symbol(sym.OR);
             }
           case 126: break;
           case 40: 
-            { return symbol(Token.GREATERTHANEQUALS);
+            { return symbol(sym.GREATERTHANEQUALS);
             }
           case 127: break;
           case 41: 
-            { return symbol(Token.LESSTHANEQUALS);
+            { return symbol(sym.LESSTHANEQUALS);
             }
           case 128: break;
           case 42: 
@@ -1091,151 +1091,151 @@ class Scanner implements java_cup.runtime.Scanner {
             }
           case 137: break;
           case 51: 
-            { return symbol(Token.FOR);
+            { return symbol(sym.FOR);
             }
           case 138: break;
           case 52: 
-            { return symbol(Token.END);
+            { return symbol(sym.END);
             }
           case 139: break;
           case 53: 
-            { return symbol(Token.NOT);
+            { return symbol(sym.NOT);
             }
           case 140: break;
           case 54: 
-            { return symbol(Token.AND);
+            { return symbol(sym.AND);
             }
           case 141: break;
           case 55: 
-            { return symbol(Token.BOOLEAN_LITERAL, true);
+            { return symbol(sym.BOOLEAN_LITERAL, true);
             }
           case 142: break;
           case 56: 
-            { return symbol(Token.ELSE);
+            { return symbol(sym.ELSE);
             }
           case 143: break;
           case 57: 
-            { return symbol(Token.STEP);
+            { return symbol(sym.STEP);
             }
           case 144: break;
           case 58: 
-            { return symbol(Token.LIST);
+            { return symbol(sym.LIST);
             }
           case 145: break;
           case 59: 
-            { return symbol(Token.NULL_LITERAL);
+            { return symbol(sym.NULL_LITERAL);
             }
           case 146: break;
           case 60: 
-            { return symbol(Token.CASE);
+            { return symbol(sym.CASE);
             }
           case 147: break;
           case 61: 
-            { return symbol(Token.THEN);
+            { return symbol(sym.THEN);
             }
           case 148: break;
           case 62: 
-            { return symbol(Token.VOID);
+            { return symbol(sym.VOID);
             }
           case 149: break;
           case 63: 
-            { return symbol(Token.BEGIN);
+            { return symbol(sym.BEGIN);
             }
           case 150: break;
           case 64: 
-            { return symbol(Token.BOOLEAN_LITERAL, false);
+            { return symbol(sym.BOOLEAN_LITERAL, false);
             }
           case 151: break;
           case 65: 
-            { return symbol(Token.WHILE);
+            { return symbol(sym.WHILE);
             }
           case 152: break;
           case 66: 
-            { return symbol(Token.FORCE);
+            { return symbol(sym.FORCE);
             }
           case 153: break;
           case 67: 
-            { return symbol(Token.COORD);
+            { return symbol(sym.COORD);
             }
           case 154: break;
           case 68: 
-            { return symbol(Token.GROUP);
+            { return symbol(sym.GROUP);
             }
           case 155: break;
           case 69: 
-            { return symbol(Token.DOWNTO);
+            { return symbol(sym.DOWNTO);
             }
           case 156: break;
           case 70: 
-            { return symbol(Token.STRING);
+            { return symbol(sym.STRING);
             }
           case 157: break;
           case 71: 
-            { return symbol(Token.SWITCH);
+            { return symbol(sym.SWITCH);
             }
           case 158: break;
           case 72: 
-            { return symbol(Token.RETURN);
+            { return symbol(sym.RETURN);
             }
           case 159: break;
           case 73: 
-            { return symbol(Token.VECTOR);
+            { return symbol(sym.VECTOR);
             }
           case 160: break;
           case 74: 
-            { return symbol(Token.BOOLEAN);
+            { return symbol(sym.BOOLEAN);
             }
           case 161: break;
           case 75: 
-            { return symbol(Token.BARRIER);
+            { return symbol(sym.BARRIER);
             }
           case 162: break;
           case 76: 
-            { return symbol(Token.DEFAULT);
+            { return symbol(sym.DEFAULT);
             }
           case 163: break;
           case 77: 
-            { return symbol(Token.DECLARE);
+            { return symbol(sym.DECLARE);
             }
           case 164: break;
           case 78: 
-            { return symbol(Token.DECIMAL);
+            { return symbol(sym.DECIMAL);
             }
           case 165: break;
           case 79: 
-            { return symbol(Token.FOREACH);
+            { return symbol(sym.FOREACH);
             }
           case 166: break;
           case 80: 
-            { return symbol(Token.PLATOON);
+            { return symbol(sym.PLATOON);
             }
           case 167: break;
           case 81: 
-            { return symbol(Token.PROGRAM);
+            { return symbol(sym.PROGRAM);
             }
           case 168: break;
           case 82: 
-            { return symbol(Token.SOLDIER);
+            { return symbol(sym.SOLDIER);
             }
           case 169: break;
           case 83: 
-            { return symbol(Token.TERRAIN);
+            { return symbol(sym.TERRAIN);
             }
           case 170: break;
           case 84: 
-            { return symbol(Token.FUNCTION);
+            { return symbol(sym.FUNCTION);
             }
           case 171: break;
           case 85: 
-            { return symbol(Token.INTERRUPTS);
+            { return symbol(sym.INTERRUPTS);
             }
           case 172: break;
           case 86: 
-            { return symbol(Token.SIMULATION);
+            { return symbol(sym.SIMULATION);
             }
           case 173: break;
           case 87: 
-            { return symbol(Token.DECLARATIONS);
+            { return symbol(sym.DECLARATIONS);
             }
           case 174: break;
           default:

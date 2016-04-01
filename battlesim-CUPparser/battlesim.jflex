@@ -50,92 +50,92 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
 <YYINITIAL> {
     /* Keywords */
-    "Boolean"               { return symbol(Token.BOOLEAN); }
-    "If"                    { return symbol(Token.IF); }
-    "While"                 { return symbol(Token.WHILE); }
-    "Do"                    { return symbol(Token.DO); }
-    "Foreach"               { return symbol(Token.FOREACH); }
-    "Function"              { return symbol(Token.FUNCTION); }
-    "End"                   { return symbol(Token.END); }
-    "Begin"                 { return symbol(Token.BEGIN); }
-    "Program"               { return symbol(Token.PROGRAM); }
-    "For"                   { return symbol(Token.FOR); }
-    //"Type"                  { return symbol(Token.TYPE); }
-    "as"                    { return symbol(Token.AS); }
-    "Decimal"               { return symbol(Token.DECIMAL); }
-    "String"                { return symbol(Token.STRING); }
-    "Declare"               { return symbol(Token.DECLARE); }
-    "in"                    { return symbol(Token.IN); }
-    "Return"                { return symbol(Token.RETURN); }
-    "Else"                  { return symbol(Token.ELSE); }
-    "List"                  { return symbol(Token.LIST); }
-    "of"                    { return symbol(Token.OF); }
-    /*"Include"               { return symbol(Token.INCLUDE); }*/
-    /*"Define"                { return symbol(Token.DEFINE); }*/
-    "Switch"                { return symbol(Token.SWITCH); }
-    "NULL"                  { return symbol(Token.NULL_LITERAL); }
-    "Case"                  { return symbol(Token.CASE); }
-    "Default"               { return symbol(Token.DEFAULT); }
-    "DownTo"                { return symbol(Token.DOWNTO); }
-    "To"                    { return symbol(Token.TO); }
-    "Then"                  { return symbol(Token.THEN); }
-    "Void"                  { return symbol(Token.VOID); }
-    "Terrain"               { return symbol(Token.TERRAIN); }
-    "Group"                 { return symbol(Token.GROUP); }
-    "Platoon"               { return symbol(Token.PLATOON); }
-    "Force"                 { return symbol(Token.FORCE); }
-    "Coord"                 { return symbol(Token.COORD); }
-    "Soldier"               { return symbol(Token.SOLDIER); }
-    "Simulation"            { return symbol(Token.SIMULATION); }
-    "Step"                  { return symbol(Token.STEP); }
-    "Interrupts"            { return symbol(Token.INTERRUPTS); }
-    "Declarations"          { return symbol(Token.DECLARATIONS); }
-    "Barrier"               { return symbol(Token.BARRIER); }
-    "Vector"                { return symbol(Token.VECTOR); }
+    "Boolean"               { return symbol(sym.BOOLEAN); }
+    "If"                    { return symbol(sym.IF); }
+    "While"                 { return symbol(sym.WHILE); }
+    "Do"                    { return symbol(sym.DO); }
+    "Foreach"               { return symbol(sym.FOREACH); }
+    "Function"              { return symbol(sym.FUNCTION); }
+    "End"                   { return symbol(sym.END); }
+    "Begin"                 { return symbol(sym.BEGIN); }
+    "Program"               { return symbol(sym.PROGRAM); }
+    "For"                   { return symbol(sym.FOR); }
+    //"Type"                  { return symbol(sym.TYPE); }
+    "as"                    { return symbol(sym.AS); }
+    "Decimal"               { return symbol(sym.DECIMAL); }
+    "String"                { return symbol(sym.STRING); }
+    "Declare"               { return symbol(sym.DECLARE); }
+    "in"                    { return symbol(sym.IN); }
+    "Return"                { return symbol(sym.RETURN); }
+    "Else"                  { return symbol(sym.ELSE); }
+    "List"                  { return symbol(sym.LIST); }
+    "of"                    { return symbol(sym.OF); }
+    /*"Include"               { return symbol(sym.INCLUDE); }*/
+    /*"Define"                { return symbol(sym.DEFINE); }*/
+    "Switch"                { return symbol(sym.SWITCH); }
+    "NULL"                  { return symbol(sym.NULL_LITERAL); }
+    "Case"                  { return symbol(sym.CASE); }
+    "Default"               { return symbol(sym.DEFAULT); }
+    "DownTo"                { return symbol(sym.DOWNTO); }
+    "To"                    { return symbol(sym.TO); }
+    "Then"                  { return symbol(sym.THEN); }
+    "Void"                  { return symbol(sym.VOID); }
+    "Terrain"               { return symbol(sym.TERRAIN); }
+    "Group"                 { return symbol(sym.GROUP); }
+    "Platoon"               { return symbol(sym.PLATOON); }
+    "Force"                 { return symbol(sym.FORCE); }
+    "Coord"                 { return symbol(sym.COORD); }
+    "Soldier"               { return symbol(sym.SOLDIER); }
+    "Simulation"            { return symbol(sym.SIMULATION); }
+    "Step"                  { return symbol(sym.STEP); }
+    "Interrupts"            { return symbol(sym.INTERRUPTS); }
+    "Declarations"          { return symbol(sym.DECLARATIONS); }
+    "Barrier"               { return symbol(sym.BARRIER); }
+    "Vector"                { return symbol(sym.VECTOR); }
 
     /* Boolean literals */
-    "true"                  { return symbol(Token.BOOLEAN_LITERAL, true); }
-    "false"                 { return symbol(Token.BOOLEAN_LITERAL, false); }
+    "true"                  { return symbol(sym.BOOLEAN_LITERAL, true); }
+    "false"                 { return symbol(sym.BOOLEAN_LITERAL, false); }
 
     /* Seperators */
-    "("                     { return symbol(Token.LPAREN); }
-    ")"                     { return symbol(Token.RPAREN); }
-    "["                     { return symbol(Token.LBRACE); }
-    "]"                     { return symbol(Token.RBRACE); }
-    ","                     { return symbol(Token.COMMA); }
-    "."                     { return symbol(Token.DOT); }
+    "("                     { return symbol(sym.LPAREN); }
+    ")"                     { return symbol(sym.RPAREN); }
+    "["                     { return symbol(sym.LBRACE); }
+    "]"                     { return symbol(sym.RBRACE); }
+    ","                     { return symbol(sym.COMMA); }
+    "."                     { return symbol(sym.DOT); }
 
     /* Operators */
-    "="                     { return symbol(Token.EQ); }
-    "++"                    { return symbol(Token.PLUSPLUS); }
-    "--"                    { return symbol(Token.MINUSMINUS); }
-    "+"                     { return symbol(Token.PLUS); }
-    "-"                     { return symbol(Token.MINUS); }
-    "/"                     { return symbol(Token.DIV); }
-    "*"                     { return symbol(Token.MULT); }
-    "%"                     { return symbol(Token.MOD); }
-    "+="                    { return symbol(Token.PLUSEQ); }
-    "-="                    { return symbol(Token.MINUSEQ); }
-    "*="                    { return symbol(Token.MULTEQ); }
-    "/="                    { return symbol(Token.DIVEQ); }
-    "%="                    { return symbol(Token.MODEQ); }
-    "AND"                   { return symbol(Token.AND); }
-    "OR"                    { return symbol(Token.OR); }
-    "NOT"                   { return symbol(Token.NOT); }
-    "=="                    { return symbol(Token.EQUALS); }
-    ">"                     { return symbol(Token.GREATERTHAN); }
-    ">="                    { return symbol(Token.GREATERTHANEQUALS); }
-    "<"                     { return symbol(Token.LESSTHAN); }
-    "<="                    { return symbol(Token.LESSTHANEQUALS); }
+    "="                     { return symbol(sym.EQ); }
+    "++"                    { return symbol(sym.PLUSPLUS); }
+    "--"                    { return symbol(sym.MINUSMINUS); }
+    "+"                     { return symbol(sym.PLUS); }
+    "-"                     { return symbol(sym.MINUS); }
+    "/"                     { return symbol(sym.DIV); }
+    "*"                     { return symbol(sym.MULT); }
+    "%"                     { return symbol(sym.MOD); }
+    "+="                    { return symbol(sym.PLUSEQ); }
+    "-="                    { return symbol(sym.MINUSEQ); }
+    "*="                    { return symbol(sym.MULTEQ); }
+    "/="                    { return symbol(sym.DIVEQ); }
+    "%="                    { return symbol(sym.MODEQ); }
+    "AND"                   { return symbol(sym.AND); }
+    "OR"                    { return symbol(sym.OR); }
+    "NOT"                   { return symbol(sym.NOT); }
+    "=="                    { return symbol(sym.EQUALS); }
+    ">"                     { return symbol(sym.GREATERTHAN); }
+    ">="                    { return symbol(sym.GREATERTHANEQUALS); }
+    "<"                     { return symbol(sym.LESSTHAN); }
+    "<="                    { return symbol(sym.LESSTHANEQUALS); }
 
     /* Numeric literals */
-    {IntegerLiteral}        { return symbol(Token.INTEGER_LITERAL, new Integer(yytext())); }
-    {DecimalLiteral}        { return symbol(Token.DECIMAL_LITERAL, new Double(yytext())); }
+    {IntegerLiteral}        { return symbol(sym.INTEGER_LITERAL, new Integer(yytext())); }
+    {DecimalLiteral}        { return symbol(sym.DECIMAL_LITERAL, new Double(yytext())); }
 
     /* String literal */
     \"                      { yybegin(STRING); string.setLength(0); }
 
-    {LineTerminator}        { return symbol(Token.EOL); }
+    {LineTerminator}        { return symbol(sym.EOL); }
 
     /* Ignore these */
     {Comment}               { /* nothing happens here, maybe */ }
@@ -143,12 +143,12 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
 
     /* Identifiers */
-    {Identifier}            { return symbol(Token.IDENTIFIER, yytext()); }
+    {Identifier}            { return symbol(sym.IDENTIFIER, yytext()); }
 
 }
 
 <STRING> {
-    \"                      { yybegin(YYINITIAL); return symbol(Token.STRING_LITERAL, string.toString()); }
+    \"                      { yybegin(YYINITIAL); return symbol(sym.STRING_LITERAL, string.toString()); }
 
     {StringCharacter}+      { string.append( yytext() ); }
 
@@ -169,4 +169,4 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
 /* error fallback */
 [^]                         { throw new RuntimeException("Illegal character \""+yytext()+"\" at line "+yyline+", column "+yycolumn); }
-<<EOF>>                     { return symbol(Token.EOF); }
+<<EOF>>                     { return symbol(sym.EOF); }
