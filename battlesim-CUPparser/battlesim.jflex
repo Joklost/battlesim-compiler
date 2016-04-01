@@ -90,6 +90,8 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Step"                  { return symbol(Token.STEP); }
     "Interrupts"            { return symbol(Token.INTERRUPTS); }
     "Declarations"          { return symbol(Token.DECLARATIONS); }
+    "Barrier"               { return symbol(Token.BARRIER); }
+    "Vector"                { return symbol(Token.VECTOR); }
 
     /* Boolean literals */
     "true"                  { return symbol(Token.BOOLEAN_LITERAL, true); }
