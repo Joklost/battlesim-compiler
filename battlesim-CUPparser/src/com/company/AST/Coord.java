@@ -3,8 +3,8 @@ package com.company.AST;
 /**
  * Created by joklost on 01-04-16.
  */
-public class TypeBoolean extends TypeIdentifier {
-    public TypeBoolean(int ln) {
+public class Coord extends TypeIdentifier {
+    public Coord(int ln) {
         super(ln);
     }
 }
