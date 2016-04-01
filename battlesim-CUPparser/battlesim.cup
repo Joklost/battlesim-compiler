@@ -1,4 +1,5 @@
 package com.company;
+
 import java_cup.runtime.*;
 
 parser code {:
@@ -26,7 +27,7 @@ terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 
 terminal EOL, DOWNTO, TO, THEN, VOID, OF;
 terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
-//terminal SIMULATION, STEP, INTERRUPTS;
+terminal SIMULATION, STEP, INTERRUPTS;
 terminal VECTOR, BARRIER;
 
 terminal Boolean BOOLEAN_LITERAL;
