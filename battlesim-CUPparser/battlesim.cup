@@ -98,7 +98,7 @@ ParamList     ::= Param:p COMMA ParamList:pl                                    
               ;
 Program       ::= BEGIN PROGRAM EOL Stmts:ss END PROGRAM EOL                                    {: RESULT = new Program(ss, ssleft); :}
               ;
-Stmts         ::= Stmts:ss Stmt:s EOL                                                           {: RESULT = ss; ss.addElement(s); :}
+Stmts         ::= Stmts:ss Stmt:s EOL                                                           {: ss.addElement(s); RESULT = ss; :}
               |                                                                                 {: RESULT = new StmtList(0); :}
               ;
 Stmt          ::= DECLARE IDENTIFIER:id Dcls:ds AS TypeId:ti EOL                                {: RESULT = new Dcl(id, ds, ti, idleft); :}
