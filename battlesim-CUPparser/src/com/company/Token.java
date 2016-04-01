@@ -126,7 +126,9 @@ public class Token {
             SOLDIER             = 69,
             SIMULATION          = 70,
             STEP                = 71,
-            INTERRUPTS          = 72;
+            INTERRUPTS          = 72,
+        BARRIER                 = 73,
+        VECTOR                  = 74;
 
     private static HashMap<Integer, String> tokenNames;
     static {
@@ -216,6 +218,8 @@ public class Token {
         tokenNames.put(SIMULATION, "SIMULATION");
         tokenNames.put(STEP, "STEP");
         tokenNames.put(INTERRUPTS, "INTERRUPTS");
+        tokenNames.put(BARRIER, "BARRIER");
+        tokenNames.put(VECTOR, "VECTOR");
     }
 
     public static String getTokenName(int token) {
