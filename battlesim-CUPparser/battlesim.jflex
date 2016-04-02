@@ -135,7 +135,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     /* String literal */
     \"                      { yybegin(STRING); string.setLength(0); }
 
-    /*{LineTerminator}        { return symbol(Sym.EOL); }*/
+    {LineTerminator}        { return symbol(Sym.EOL); }
 
     /* Ignore these */
     {Comment}               { /* nothing happens here, maybe */ }

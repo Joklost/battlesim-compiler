@@ -1,5 +1,5 @@
 Begin Declarations
-  test = 3
+  Declare test as Integer
 End Declarations
 
 Function Void BubbleSort(a as List of Integer)

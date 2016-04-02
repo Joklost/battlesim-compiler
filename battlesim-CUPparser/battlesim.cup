@@ -9,29 +9,28 @@ parser code {:
         super(s);
         this.s = s;
     }
-
-    public void syntax_error(Symbol cur_token) {
-        report_error("Syntax error at token: " + Sym.terminalNames[cur_token.sym] + " linenumber: " , null);
-    }
-
 :};
 
 /* Preliminaries to set up and use the scanner.  */
 scan with {: return s.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal BOOLEAN, IF, WHILE, DO, FOREACH, FUNCTION,
-    END, BEGIN, PROGRAM, FOR, AS, DECIMAL, STRING,
-    DECLARE, IN, RETURN, ELSE, LIST, DECLARATIONS,
-    SWITCH, NULL_LITERAL, CASE, DEFAULT,
-    LPAREN, RPAREN, LBRACE, RBRACE, COMMA, DOT,
-    EQ, PLUSPLUS, MINUSMINUS, PLUS, MINUS, DIV, UMINUS,
-    MULT, MOD, PLUSEQ, MINUSEQ, MULTEQ, DIVEQ,
-    MODEQ, AND, OR, NOT, EQUALS, GREATERTHAN,
-    GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS,
-    DOWNTO, TO, THEN, VOID, OF,
-    TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER,
-    SIMULATION, STEP, INTERRUPTS, VECTOR, BARRIER;
+terminal BOOLEAN, IF, WHILE, DO, FOREACH, FUNCTION, END;
+terminal BEGIN, PROGRAM, FOR, AS, DECIMAL, STRING;
+terminal DECLARE, IN, RETURN, ELSE, LIST, DECLARATIONS;
+terminal SWITCH, NULL_LITERAL, CASE, DEFAULT;
+
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, DOT;
+
+terminal EQ, PLUSPLUS, MINUSMINUS, PLUS, MINUS, DIV, UMINUS;
+terminal MULT, MOD, PLUSEQ, MINUSEQ, MULTEQ, DIVEQ;
+terminal MODEQ, AND, OR, NOT, EQUALS, GREATERTHAN;
+terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
+
+terminal EOL, DOWNTO, TO, THEN, VOID, OF;
+terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
+terminal SIMULATION, STEP, INTERRUPTS;
+terminal VECTOR, BARRIER;
 
 terminal Boolean BOOLEAN_LITERAL;
 terminal Integer INTEGER_LITERAL;
@@ -54,8 +53,7 @@ nonterminal Stmt            Stmt;
 //nonterminal SimStep         SimStep;
 //nonterminal Interrupts      Interrupts;
 nonterminal IfStmt          IfStmt;
-nonterminal ElseStmt        ElifStmt;
-//nonterminal ElseStmt        ElseStmt;
+nonterminal ElseStmt        ElseStmt;
 nonterminal SwitchCaseList  SwitchCases;
 nonterminal SwitchCase      SwitchCase;
 nonterminal SwitchDef       SwitchDef;
@@ -81,18 +79,16 @@ precedence left MULT, DIV, MOD;
 precedence right NOT, UMINUS;
 precedence left PLUSPLUS, MINUSMINUS;
 
-start with Start;
-
 /* The grammar */
-Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2 /*EOF*/         {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
+Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2 /*EOF*/             {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
               ;
-DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS                              {: RESULT = new DclBlock(ss, ssleft); :}
-//              |                                                                           {: RESULT = new DclBlock(null, 0); :}
+DclBlock      ::= BEGIN DECLARATIONS EOL Stmts:ss END DECLARATIONS EOL                          {: RESULT = new DclBlock(ss, ssleft); :}
+              |   EOL                                                                              {: RESULT = null; :}
               ;
-FunctionDcls  ::= FunctionDcls:fds FunctionDcl:fd                                           {: RESULT = fds; fds.addElement(fd); :}
-              |   FunctionDcl:fd                                                            {: RESULT = new FunctionDclList(0); RESULT.addElement(fd); :}
+FunctionDcls  ::= EOL                                                                           {: RESULT = new FunctionDclList(0); :}
+              |   FunctionDcls:fds FunctionDcl:fd EOL                                           {: RESULT = fds; fds.addElement(fd); :}
               ;
-FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p Stmts:ss END FUNCTION           {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
+FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p EOL Stmts:ss END FUNCTION           {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
               ;
 Param         ::= IDENTIFIER:id AS TypeId:ti                                                    {: RESULT = new Param(id, ti, idleft); :}
               ;
@@ -102,55 +98,42 @@ Params        ::= LPAREN:l RPAREN                                               
 ParamList     ::= Param:p COMMA ParamList:pl                                                    {: RESULT = pl; pl.addElement(p); :}
               |   Param:p                                                                       {: RESULT = new ParamList(pleft); RESULT.addElement(p); :}
               ;
-Program       ::= BEGIN PROGRAM Stmts:ss END PROGRAM                                    {: RESULT = new Program(ss, ssleft); :}
+Program       ::= BEGIN PROGRAM EOL Stmts:ss END PROGRAM EOL                                    {: RESULT = new Program(ss, ssleft); :}
               ;
 Stmts         ::= Stmts:ss Stmt:s                                                               {: ss.addElement(s); RESULT = ss; :}
-              |   Stmt:s                                                                             {: RESULT = new StmtList(0); RESULT.addElement(s); :}
+              |   EOL                                                                           {: RESULT = new StmtList(0); :}
               ;
-Stmt          ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti                                {: RESULT = new Dcl(id, null /*ds*/, ti, idleft); :}
-              |   NestedId:ni AssignOp:ao Expression:e                                      {: RESULT = new Assignment(ni, ao, e, nileft); :}
+Stmt          ::= DECLARE IDENTIFIER:id Dcls:ds AS TypeId:ti EOL                                {: RESULT = new Dcl(id, ds, ti, idleft); :}
+              |   NestedId:ni AssignOp:ao Expression:e EOL                                      {: RESULT = new Assignment(ni, ao, e, nileft); :}
               |   IfStmt:is                                                                     {: RESULT = is; :}
-              |   WHILE Expression:e DO Stmts:ss END WHILE                              {: RESULT = new WhileStmt(e, ss, eleft); :}
-              |   FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO Stmts:s END FOREACH {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
-              |   FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FOR       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
-              |   SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
-              |   RETURN Expression:e                                                       {: RESULT = new ReturnExpr(e, eleft); :}
-//              |   RETURN:r                                                                  {: RESULT = new Return(rleft); :}
-              |   FunctionCall:fc                                                           {: RESULT = new FunctionCallStmt(fc, fcleft); :}
-//              |   SIMULATION NestedId:ni SimSteps:sis Interrupts:is END SIMULATION          {: RESULT = new SimulationStmt(ni, sis, is, nileft); :}
-//              |   {: RESULT = new EmptyStmt(0); :}
+              |   WHILE Expression:e DO EOL Stmts:ss END WHILE EOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
+              |   FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO EOL Stmts:s END FOREACH EOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
+              |   FOR NestedId:ni ForIterator:fi Expression:e DO EOL Stmts:ss END FOR EOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
+              |   SWITCH Variable:v EOL SwitchCases:swcs SwitchDef:swd END SWITCH EOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
+              |   RETURN Expression:e EOL                                                       {: RESULT = new ReturnExpr(e, eleft); :}
+              |   RETURN:r EOL                                                                  {: RESULT = new Return(rleft); :}
+              |   FunctionCall:fc EOL                                                           {: RESULT = new FunctionCallStmt(fc, fcleft); :}
+//              |   SIMULATION NestedId:ni EOL SimSteps:sis Interrupts:is END SIMULATION          {: RESULT = new SimulationStmt(ni, sis, is, nileft); :}
               ;
 //SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
 //              |                                                                                 {: RESULT = new SimStepList(0); :}
 //              ;
-//SimStep       ::= STEP INTEGER_LITERAL:i Stmts:ss                                               {: RESULT = new SimStep(i.intValue, ss, ileft); :}
+//SimStep       ::= STEP INTEGER_LITERAL:i EOL Stmts:ss                                           {: RESULT = new SimStep(i.intValue, ss, ileft); :}
 //              ;
-//Interrupts    ::= INTERRUPTS Stmts:ss                                                           {: RESULT = new Interrupts(ss, ssleft); :}
+//Interrupts    ::= INTERRUPTS EOL Stmts:ss                                                       {: RESULT = new Interrupts(ss, ssleft); :}
 //              ;
-
-// If Stmts are not correct yet, as else if would be:
-//
-// If e Then ss End If
-// If e Then ss Else ss EndIf
-// If e Then ss Else If e Then ss End If EndIf - this is fine for a nested if, but it is not a valid else if
-IfStmt          ::= IF Expression:e THEN Stmts:ss ElifStmt:els                                  {: RESULT = new IfStmt(e, ss, els, eleft); :}
-                ;
-ElifStmt        ::= END IF:eif                                                                  {: RESULT = new EndIfStmt(eifleft); :}
-                |   ELSE Stmts:ss END IF                                                        {: RESULT = new ElseEndStmt(ss, ssleft); :}
-                ;
-//IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                                    {: RESULT = new IfStmt(e, ss, els, eleft); :}
-//              ;
-//ElseStmt      ::= END IF:eif                                                                    {: RESULT = new EndIfStmt(eifleft); :}
-//              |   ELSE IfStmt:ifs                                                               {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
-//              |   ELSE Stmts:ss END IF /* This way of doing it has shift-reduce conflicts */    {: RESULT = new ElseEndStmt(ss, ssleft); :}
-//              ;
-
+IfStmt        ::= IF Expression:e THEN EOL Stmts:ss ElseStmt:els                                {: RESULT = new IfStmt(e, ss, els, eleft); :}
+              ;
+ElseStmt      ::= END IF:eif EOL                                                                {: RESULT = new EndIfStmt(eifleft); :}
+              |   ELSE IfStmt:ifs                                                               {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
+              |   ELSE EOL Stmts:ss END IF EOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
+              ;
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
-              |   SwitchCase:swc                                                                {: RESULT = new SwitchCaseList(0); RESULT.addElement(swc); :}
+              |   EOL                                                                           {: RESULT = new SwitchCaseList(0); :}
               ;
-SwitchCase    ::= CASE Variable:v Stmts:ss                                                      {: RESULT = new SwitchCase(v, ss, vleft); :}
+SwitchCase    ::= CASE Variable:v EOL Stmts:ss                                                  {: RESULT = new SwitchCase(v, ss, vleft); :}
               ;
-SwitchDef     ::= DEFAULT:d Stmts:ss                                                            {: RESULT = new SwitchDef(ss, dleft); :}
+SwitchDef     ::= DEFAULT:d EOL Stmts:ss                                                        {: RESULT = new SwitchDef(ss, dleft); :}
               ;
 Expression    ::= Expression:e1 PLUS Expression:e2                                              {: RESULT = new PlusExpr(e1, e2, e1left); :}
               |   Expression:e1 MINUS Expression:e2                                             {: RESULT = new MinusExpr(e1, e2, e1left); :}
@@ -199,8 +182,8 @@ StdLiteral    ::= DECIMAL_LITERAL:dec                                           
               |   INTEGER_LITERAL:in                                                            {: RESULT = new IntegerLiteral(in, inleft); :}
               |   NULL_LITERAL:nul                                                              {: RESULT = new NullLiteral(nulleft); :}
               ;
-//Dcls          ::= Dcls:ds COMMA IDENTIFIER:id                                                   {: RESULT = ds; ds.addElement(id); :}
-//              |   IDENTIFIER:id                                                                 {: RESULT = new DclIdList(0); RESULT.addElement(id); :}
+Dcls          ::= Dcls:ds COMMA IDENTIFIER:id                                                   {: RESULT = ds; ds.addElement(id); :}
+              |   EOL                                                                              {: RESULT = new DclIdList(0); :}
               ;
 TypeId        ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
               |   STRING:s                                                                      {: RESULT = new StringT(sleft); :}
