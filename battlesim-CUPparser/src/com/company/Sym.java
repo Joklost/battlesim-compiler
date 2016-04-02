@@ -9,32 +9,32 @@ package com.company;
 public class Sym {
   /* terminals */
   public static final int AS = 12;
-  public static final int IDENTIFIER = 74;
-  public static final int INTERRUPTS = 67;
-  public static final int SOLDIER = 64;
-  public static final int FORCE = 62;
-  public static final int GROUP = 60;
+  public static final int IDENTIFIER = 73;
+  public static final int INTERRUPTS = 66;
+  public static final int SOLDIER = 63;
+  public static final int FORCE = 61;
+  public static final int GROUP = 59;
   public static final int GREATERTHANEQUALS = 50;
-  public static final int BARRIER = 69;
+  public static final int BARRIER = 68;
   public static final int PLUSEQ = 40;
   public static final int COMMA = 29;
-  public static final int SIMULATION = 65;
+  public static final int SIMULATION = 64;
   public static final int RBRACE = 28;
-  public static final int TERRAIN = 59;
+  public static final int TERRAIN = 58;
   public static final int RPAREN = 26;
   public static final int DECLARE = 15;
   public static final int LBRACE = 27;
-  public static final int VECTOR = 68;
+  public static final int VECTOR = 67;
   public static final int LESSTHANEQUALS = 52;
   public static final int LPAREN = 25;
-  public static final int INTEGER_LITERAL = 71;
+  public static final int INTEGER_LITERAL = 70;
   public static final int NOT = 47;
-  public static final int COORD = 63;
-  public static final int THEN = 56;
+  public static final int COORD = 62;
+  public static final int THEN = 55;
   public static final int EQ = 31;
   public static final int GREATERTHAN = 49;
   public static final int MOD = 39;
-  public static final int BOOLEAN_LITERAL = 70;
+  public static final int BOOLEAN_LITERAL = 69;
   public static final int LESSTHAN = 51;
   public static final int PLUS = 34;
   public static final int WHILE = 4;
@@ -43,16 +43,15 @@ public class Sym {
   public static final int SWITCH = 21;
   public static final int DO = 5;
   public static final int FOR = 11;
-  public static final int VOID = 57;
+  public static final int VOID = 56;
   public static final int DIV = 36;
-  public static final int DOWNTO = 54;
+  public static final int DOWNTO = 53;
   public static final int RETURN = 17;
   public static final int MULT = 38;
   public static final int ELSE = 18;
   public static final int DOT = 30;
-  public static final int EOL = 53;
   public static final int NULL_LITERAL = 22;
-  public static final int STRING_LITERAL = 73;
+  public static final int STRING_LITERAL = 72;
   public static final int EOF = 0;
   public static final int DEFAULT = 24;
   public static final int FUNCTION = 7;
@@ -61,24 +60,24 @@ public class Sym {
   public static final int IN = 16;
   public static final int OR = 46;
   public static final int error = 1;
-  public static final int DECIMAL_LITERAL = 72;
+  public static final int DECIMAL_LITERAL = 71;
   public static final int DIVEQ = 43;
   public static final int LIST = 19;
   public static final int IF = 3;
-  public static final int PLATOON = 61;
+  public static final int PLATOON = 60;
   public static final int MODEQ = 44;
   public static final int MINUSMINUS = 33;
-  public static final int OF = 58;
+  public static final int OF = 57;
   public static final int END = 8;
   public static final int FOREACH = 6;
   public static final int BEGIN = 9;
   public static final int CASE = 23;
   public static final int PLUSPLUS = 32;
   public static final int STRING = 14;
-  public static final int STEP = 66;
+  public static final int STEP = 65;
   public static final int PROGRAM = 10;
   public static final int AND = 45;
-  public static final int TO = 55;
+  public static final int TO = 54;
   public static final int UMINUS = 37;
   public static final int DECLARATIONS = 20;
   public static final int EQUALS = 48;
@@ -137,7 +136,6 @@ public class Sym {
   "GREATERTHANEQUALS",
   "LESSTHAN",
   "LESSTHANEQUALS",
-  "EOL",
   "DOWNTO",
   "TO",
   "THEN",
