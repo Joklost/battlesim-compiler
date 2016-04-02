@@ -6,9 +6,11 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
+        String path = "/home/joklost/git/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs";
+        ScanFile(path);
         Scanner scanner = null;
         try {
-            scanner = new Scanner(new java.io.FileReader("/home/joklost/git/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs"));
+            scanner = new Scanner(new java.io.FileReader(path));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -16,6 +18,43 @@ public class Main {
         try {
             parser.parse();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void ScanFile(String path) {
+        Scanner scanner = null;
+        int tNum = 1;
+        try {
+            scanner = new Scanner(new java.io.FileReader(path));
+            while (!scanner.getZZAtEOF()) {
+
+                java_cup.runtime.Symbol sym = scanner.next_token();
+
+                System.out.print(tNum + ":");
+                if (sym.value != null) {
+                    System.out.print(sym.value + " ");
+                } else {
+                    System.out.print(Sym.terminalNames[sym.sym] + " ");
+                }
+
+                if (sym.sym == Sym.EOL) {
+                    System.out.println();
+                }
+                tNum++;
+
+
+            }
+            System.out.println("\n\n");
+
+        } catch (java.io.FileNotFoundException e) {
+            System.out.println("File not found : \"" + path + "\"");
+        } catch (java.io.IOException e) {
+            System.out.println("IO error scanning file \"" + path + "\"");
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println("Unexpected exception:");
             e.printStackTrace();
         }
     }

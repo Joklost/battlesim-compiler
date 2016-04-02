@@ -4,21 +4,26 @@ import java_cup.runtime.*;
 import com.company.AST.*;
 
 parser code {:
+    private int token_num = 0;
     private Scanner s;
     public Parser(Scanner s) {
         super(s);
         this.s = s;
     }
+
+    public void syntax_error(Symbol cur_token) {
+        report_error("Syntax error at token " + token_num + " : " + Sym.terminalNames[cur_token.sym] + (cur_token.value == null ? "" : " value: " + cur_token.value), null);
+    }
 :};
 
 /* Preliminaries to set up and use the scanner.  */
-scan with {: return s.next_token(); :};
+scan with {: token_num++; return s.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
 terminal BOOLEAN, IF, WHILE, DO, FOREACH, FUNCTION, END;
 terminal BEGIN, PROGRAM, FOR, AS, DECIMAL, STRING;
 terminal DECLARE, IN, RETURN, ELSE, LIST, DECLARATIONS;
-terminal SWITCH, NULL_LITERAL, CASE, DEFAULT;
+terminal SWITCH, NULL_LITERAL, CASE, DEFAULT, INTEGER;
 
 terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, DOT;
 
@@ -29,7 +34,7 @@ terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 
 terminal EOL, DOWNTO, TO, THEN, VOID, OF;
 terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
-terminal SIMULATION, STEP, INTERRUPTS;
+//terminal SIMULATION, STEP, INTERRUPTS;
 terminal VECTOR, BARRIER;
 
 terminal Boolean BOOLEAN_LITERAL;
@@ -65,9 +70,10 @@ nonterminal ArgumentList    ArgumentList;
 nonterminal ForIterator     ForIterator;
 nonterminal Variable        Variable;
 nonterminal StdLiteral      StdLiteral;
-nonterminal DclIdList       Dcls;
+//nonterminal DclIdList       Dcls;
 nonterminal TypeIdentifier  TypeId;
 nonterminal NestedIdentifier NestedId;
+
 
 /* Precedences */
 precedence nonassoc OR;
@@ -79,8 +85,10 @@ precedence left MULT, DIV, MOD;
 precedence right NOT, UMINUS;
 precedence left PLUSPLUS, MINUSMINUS;
 
+start with Start;
+
 /* The grammar */
-Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2 /*EOF*/             {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
+Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2                     {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
               ;
 DclBlock      ::= BEGIN DECLARATIONS EOL Stmts:ss END DECLARATIONS EOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               |   EOL                                                                              {: RESULT = null; :}
@@ -88,7 +96,7 @@ DclBlock      ::= BEGIN DECLARATIONS EOL Stmts:ss END DECLARATIONS EOL          
 FunctionDcls  ::= EOL                                                                           {: RESULT = new FunctionDclList(0); :}
               |   FunctionDcls:fds FunctionDcl:fd EOL                                           {: RESULT = fds; fds.addElement(fd); :}
               ;
-FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p EOL Stmts:ss END FUNCTION           {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
+FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p EOL Stmts:ss END FUNCTION EOL       {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
               ;
 Param         ::= IDENTIFIER:id AS TypeId:ti                                                    {: RESULT = new Param(id, ti, idleft); :}
               ;
@@ -103,7 +111,7 @@ Program       ::= BEGIN PROGRAM EOL Stmts:ss END PROGRAM EOL                    
 Stmts         ::= Stmts:ss Stmt:s                                                               {: ss.addElement(s); RESULT = ss; :}
               |   EOL                                                                           {: RESULT = new StmtList(0); :}
               ;
-Stmt          ::= DECLARE IDENTIFIER:id Dcls:ds AS TypeId:ti EOL                                {: RESULT = new Dcl(id, ds, ti, idleft); :}
+Stmt          ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti EOL                               {: RESULT = new Dcl(id,/* ds, */ti, idleft); :}
               |   NestedId:ni AssignOp:ao Expression:e EOL                                      {: RESULT = new Assignment(ni, ao, e, nileft); :}
               |   IfStmt:is                                                                     {: RESULT = is; :}
               |   WHILE Expression:e DO EOL Stmts:ss END WHILE EOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
@@ -113,6 +121,7 @@ Stmt          ::= DECLARE IDENTIFIER:id Dcls:ds AS TypeId:ti EOL                
               |   RETURN Expression:e EOL                                                       {: RESULT = new ReturnExpr(e, eleft); :}
               |   RETURN:r EOL                                                                  {: RESULT = new Return(rleft); :}
               |   FunctionCall:fc EOL                                                           {: RESULT = new FunctionCallStmt(fc, fcleft); :}
+              |   error EOL
 //              |   SIMULATION NestedId:ni EOL SimSteps:sis Interrupts:is END SIMULATION          {: RESULT = new SimulationStmt(ni, sis, is, nileft); :}
               ;
 //SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
@@ -152,8 +161,10 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   MINUS:min Expression:e                                                        {: RESULT = new UnMinusExpr(e, minleft); :} %prec UMINUS
               |   Expression:e PLUSPLUS                                                         {: RESULT = new PlusPlusExpr(e, eleft); :}
               |   Expression:e MINUSMINUS                                                       {: RESULT = new MinusMinusExpr(e, eleft); :}
-              |   Variable:v                                                                    {: RESULT = new VariableExpr(v, vleft); :}
+//              |   Variable:v                                                                    {: RESULT = new VariableExpr(v, vleft); :}
               |   FunctionCall:fc                                                               {: RESULT = new FunctionCallExpr(fc, fcleft); :}
+              |   NestedId:nid                                                                  {: RESULT = new NestedIdExpr(nid, nidleft); :}
+              |   StdLiteral:std                                                                {: RESULT = new StdLiteralExpr(std, stdleft); :}
               ;
 AssignOp      ::= EQ:eq                                                                         {: RESULT = new EqualsOp(eqleft); :}
               |   PLUSEQ:eq                                                                     {: RESULT = new PlusEqualsOp(eqleft); :}
@@ -182,9 +193,9 @@ StdLiteral    ::= DECIMAL_LITERAL:dec                                           
               |   INTEGER_LITERAL:in                                                            {: RESULT = new IntegerLiteral(in, inleft); :}
               |   NULL_LITERAL:nul                                                              {: RESULT = new NullLiteral(nulleft); :}
               ;
-Dcls          ::= Dcls:ds COMMA IDENTIFIER:id                                                   {: RESULT = ds; ds.addElement(id); :}
-              |   EOL                                                                              {: RESULT = new DclIdList(0); :}
-              ;
+//Dcls          ::= Dcls:ds COMMA IDENTIFIER:id                                                   {: RESULT = ds; ds.addElement(id); :}
+//              |   EOL                                                                              {: RESULT = new DclIdList(0); :}
+//              ;             DENNE SKAL LAVES
 TypeId        ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
               |   STRING:s                                                                      {: RESULT = new StringT(sleft); :}
               |   BOOLEAN:b                                                                     {: RESULT = new BooleanT(bleft); :}
@@ -195,7 +206,8 @@ TypeId        ::= DECIMAL:d                                                     
               |   COORD:c                                                                       {: RESULT = new Coord(cleft); :}
               |   SOLDIER:s                                                                     {: RESULT = new Soldier(sleft); :}
               |   BARRIER:b                                                                     {: RESULT = new Barrier(bleft); :}
-              |   VECTOR:v                                                                      {: RESULT = new Vector(vleft); :}
+              |   VECTOR:v                                                                      {: RESULT = new VectorT(vleft); :}
+              |   INTEGER:i                                                                     {: RESULT = new IntegerT(ileft); :}
               |   DECIMAL:d LBRACE Expression:e RBRACE                                          {: RESULT = new Decimal1DArray(e, dleft); :}
               |   STRING:s LBRACE Expression:e RBRACE                                           {: RESULT = new String1DArray(e, sleft); :}
               |   BOOLEAN:b LBRACE Expression:e RBRACE                                          {: RESULT = new Boolean1DArray(e, bleft); :}
@@ -207,6 +219,7 @@ TypeId        ::= DECIMAL:d                                                     
               |   SOLDIER:s LBRACE Expression:e RBRACE                                          {: RESULT = new Soldier1DArray(e, sleft); :}
               |   BARRIER:b LBRACE Expression:e RBRACE                                          {: RESULT = new Barrier1DArray(e, bleft); :}
               |   VECTOR:v LBRACE Expression:e RBRACE                                           {: RESULT = new Vector1DArray(e, vleft); :}
+              |   INTEGER:v LBRACE Expression:e RBRACE                                          {: RESULT = new Integer1DArray(e, vleft); :}
               |   DECIMAL:d LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Decimal2DArray(e1, e2, dleft); :}
               |   STRING:s LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE              {: RESULT = new String2DArray(e1, e2, sleft); :}
               |   BOOLEAN:b LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Boolean2DArray(e1, e2, bleft); :}
@@ -218,6 +231,7 @@ TypeId        ::= DECIMAL:d                                                     
               |   SOLDIER:s LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Soldier2DArray(e1, e2, sleft); :}
               |   BARRIER:b LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Barrier2DArray(e1, e2, bleft); :}
               |   VECTOR:v LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE              {: RESULT = new Vector2DArray(e1, e2, vleft); :}
+              |   INTEGER:i LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Integer2DArray(e1, e2, ileft); :}
               |   LIST OF DECIMAL:d                                                             {: RESULT = new DecimalList(dleft); :}
               |   LIST OF STRING:s                                                              {: RESULT = new StringList(sleft); :}
               |   LIST OF BOOLEAN:b                                                             {: RESULT = new BooleanList(bleft); :}
@@ -229,11 +243,13 @@ TypeId        ::= DECIMAL:d                                                     
               |   LIST OF SOLDIER:s                                                             {: RESULT = new SoldierList(sleft); :}
               |   LIST OF BARRIER:b                                                             {: RESULT = new BarrierList(bleft); :}
               |   LIST OF VECTOR:v                                                              {: RESULT = new VectorList(vleft); :}
+              |   LIST OF INTEGER:v                                                             {: RESULT = new IntegerList(vleft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
 //              |   LIST OF TypeId:ti                                                             {: RESULT = new TypeList(ti, tileft); :}
 //              |   TypeId:ty LBRACE Expression:e RBRACE                                          {: RESULT = new TypeArray(ty, e, tyleft); :}
               ;
 NestedId      ::= IDENTIFIER:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
-              |   IDENTIFIER:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifierArray(id, e, ni, idleft); :}
+              |   IDENTIFIER:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifierArrayMember(id, e, ni, idleft); :}
+              |   IDENTIFIER:id LBRACE Expression:e RBRACE                                      {: RESULT = new NestedIdentifierArray(id, e, idleft); :}
               |   IDENTIFIER:id                                                                 {: RESULT = new Identifier(id, idleft); :}
               ;
