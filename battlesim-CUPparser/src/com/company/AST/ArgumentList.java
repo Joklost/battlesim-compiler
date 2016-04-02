@@ -10,6 +10,7 @@ public class ArgumentList extends ASTNode {
 
     public ArgumentList(int ln) {
         super(ln);
+        this.list = new Vector();
     }
 
     public void addElement(Expression e) {

@@ -10,6 +10,7 @@ public class DclIdList extends ASTNode {
 
     public DclIdList(int ln) {
         super(ln);
+        list = new Vector();
     }
 
     public void addElement(String id) {

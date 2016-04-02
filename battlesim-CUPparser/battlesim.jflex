@@ -61,6 +61,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Program"               { return symbol(Sym.PROGRAM); }
     "For"                   { return symbol(Sym.FOR); }
     //"Type"                  { return symbol(Sym.TYPE); }
+    "Integer"               { return symbol(Sym.INTEGER); }
     "as"                    { return symbol(Sym.AS); }
     "Decimal"               { return symbol(Sym.DECIMAL); }
     "String"                { return symbol(Sym.STRING); }
@@ -86,9 +87,9 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Force"                 { return symbol(Sym.FORCE); }
     "Coord"                 { return symbol(Sym.COORD); }
     "Soldier"               { return symbol(Sym.SOLDIER); }
-    "Simulation"            { return symbol(Sym.SIMULATION); }
-    "Step"                  { return symbol(Sym.STEP); }
-    "Interrupts"            { return symbol(Sym.INTERRUPTS); }
+    //"Simulation"            { return symbol(Sym.SIMULATION); }
+    //"Step"                  { return symbol(Sym.STEP); }
+    //"Interrupts"            { return symbol(Sym.INTERRUPTS); }
     "Declarations"          { return symbol(Sym.DECLARATIONS); }
     "Barrier"               { return symbol(Sym.BARRIER); }
     "Vector"                { return symbol(Sym.VECTOR); }
