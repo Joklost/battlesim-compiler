@@ -1,4 +1,12 @@
 Begin Declarations
+  Declare a as List of Integer
+  a.Add(12)
+  a.Add(24)
+  a.Add(13)
+  a.Add(9)
+  a.Add(16)
+  a.Add(-4)
+  a.Add(17)
 End Declarations
 
 Function Void BubbleSort(a as List of Integer)
@@ -21,14 +29,6 @@ Function Void BubbleSort(a as List of Integer)
 End Function
 
 Begin Program
-  Declare a as List of Integer
-  a.Add(12)
-  a.Add(24)
-  a.Add(13)
-  a.Add(9)
-  a.Add(16)
-  a.Add(-4)
-  a.Add(17)
   Foreach Integer num in a Do
     Print(num)
   End Foreach
