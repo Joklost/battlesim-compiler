@@ -91,13 +91,13 @@ start with Start;
 /* The grammar */
 Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2                     {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
               ;
-DclBlock      ::= BEGIN DECLARATIONS EOL Stmts:ss END DECLARATIONS EOL                          {: RESULT = new DclBlock(ss, ssleft); :}
+DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS EOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               |   EOL                                                                              {: RESULT = null; :}
               ;
 FunctionDcls  ::= MultEOL                                                                           {: RESULT = new FunctionDclList(0); :}
               |   FunctionDcls:fds FunctionDcl:fd MultEOL                                           {: RESULT = fds; fds.addElement(fd); :}
               ;
-FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p EOL Stmts:ss END FUNCTION       {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
+FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p Stmts:ss END FUNCTION       {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
               ;
 Param         ::= IDENTIFIER:id AS TypeId:ti                                                    {: RESULT = new Param(id, ti, idleft); :}
               ;
@@ -107,17 +107,17 @@ Params        ::= LPAREN:l RPAREN                                               
 ParamList     ::= Param:p COMMA ParamList:pl                                                    {: RESULT = pl; pl.addElement(p); :}
               |   Param:p                                                                       {: RESULT = new ParamList(pleft); RESULT.addElement(p); :}
               ;
-Program       ::= BEGIN PROGRAM EOL Stmts:ss END PROGRAM                                    {: RESULT = new Program(ss, ssleft); :}
+Program       ::= BEGIN PROGRAM Stmts:ss END PROGRAM                                    {: RESULT = new Program(ss, ssleft); :}
               ;
 Stmts         ::= Stmts:ss Stmt:s                                                               {: ss.addElement(s); RESULT = ss; :}
-              |   EOL                                                                           {: RESULT = new StmtList(0); :}
+              |   MultEOL                                                                           {: RESULT = new StmtList(0); :}
               ;
 Stmt          ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti MultEOL                               {: RESULT = new Dcl(id,/* ds, */ti, idleft); :}
               |   NestedId:ni AssignOp:ao Expression:e MultEOL                                      {: RESULT = new Assignment(ni, ao, e, nileft); :}
               |   IfStmt:is                                                                     {: RESULT = is; :}
-              |   WHILE Expression:e DO EOL Stmts:ss END WHILE MultEOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
-              |   FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO EOL Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
-              |   FOR NestedId:ni ForIterator:fi Expression:e DO MultEOL Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
+              |   WHILE Expression:e DO Stmts:ss END WHILE MultEOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
+              |   FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
+              |   FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
               |   SWITCH Variable:v EOL SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
               |   RETURN Expression:e MultEOL                                                       {: RESULT = new ReturnExpr(e, eleft); :}
               |   RETURN:r MultEOL                                                                  {: RESULT = new Return(rleft); :}
@@ -132,18 +132,18 @@ Stmt          ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti MultEOL        
 //              ;
 //Interrupts    ::= INTERRUPTS EOL Stmts:ss                                                       {: RESULT = new Interrupts(ss, ssleft); :}
 //              ;
-IfStmt        ::= IF Expression:e THEN MultEOL Stmts:ss ElseStmt:els                                {: RESULT = new IfStmt(e, ss, els, eleft); :}
+IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                                {: RESULT = new IfStmt(e, ss, els, eleft); :}
               ;
 ElseStmt      ::= END IF:eif MultEOL                                                                {: RESULT = new EndIfStmt(eifleft); :}
               |   ELSE IfStmt:ifs                                                               {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
-              |   ELSE MultEOL Stmts:ss END IF EOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
+              |   ELSE Stmts:ss END IF EOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
               ;
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
               |   EOL                                                                           {: RESULT = new SwitchCaseList(0); :}
               ;
-SwitchCase    ::= CASE Variable:v EOL Stmts:ss                                                  {: RESULT = new SwitchCase(v, ss, vleft); :}
+SwitchCase    ::= CASE Variable:v Stmts:ss                                                  {: RESULT = new SwitchCase(v, ss, vleft); :}
               ;
-SwitchDef     ::= DEFAULT:d EOL Stmts:ss                                                        {: RESULT = new SwitchDef(ss, dleft); :}
+SwitchDef     ::= DEFAULT:d Stmts:ss                                                        {: RESULT = new SwitchDef(ss, dleft); :}
               ;
 Expression    ::= Expression:e1 PLUS Expression:e2                                              {: RESULT = new PlusExpr(e1, e2, e1left); :}
               |   Expression:e1 MINUS Expression:e2                                             {: RESULT = new MinusExpr(e1, e2, e1left); :}
