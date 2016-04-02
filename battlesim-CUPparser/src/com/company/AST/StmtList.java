@@ -10,6 +10,7 @@ public class StmtList extends ASTNode {
 
     public StmtList(int ln) {
         super(ln);
+        list = new Vector();
     }
 
     public void addElement(Stmt s) {

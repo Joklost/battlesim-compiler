@@ -10,6 +10,7 @@ public class SwitchCaseList extends ASTNode {
 
     public SwitchCaseList(int ln) {
         super(ln);
+        this.list = new Vector();
     }
 
     public void addElement(SwitchCase s) {
