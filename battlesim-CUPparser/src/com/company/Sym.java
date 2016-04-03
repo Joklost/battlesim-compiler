@@ -9,31 +9,33 @@ package com.company;
 public class Sym {
   /* terminals */
   public static final int AS = 12;
-  public static final int IDENTIFIER = 72;
+  public static final int IDENTIFIER = 75;
+  public static final int INTERRUPTS = 68;
   public static final int SOLDIER = 65;
   public static final int FORCE = 63;
   public static final int GROUP = 61;
   public static final int GREATERTHANEQUALS = 51;
-  public static final int BARRIER = 67;
+  public static final int BARRIER = 70;
   public static final int PLUSEQ = 41;
   public static final int COMMA = 30;
+  public static final int SIMULATION = 66;
   public static final int RBRACE = 29;
   public static final int TERRAIN = 60;
   public static final int RPAREN = 27;
   public static final int INTEGER = 25;
   public static final int DECLARE = 15;
   public static final int LBRACE = 28;
-  public static final int VECTOR = 66;
+  public static final int VECTOR = 69;
   public static final int LESSTHANEQUALS = 53;
   public static final int LPAREN = 26;
-  public static final int INTEGER_LITERAL = 69;
+  public static final int INTEGER_LITERAL = 72;
   public static final int NOT = 48;
   public static final int COORD = 64;
   public static final int THEN = 57;
   public static final int EQ = 32;
   public static final int GREATERTHAN = 50;
+  public static final int BOOLEAN_LITERAL = 71;
   public static final int MOD = 40;
-  public static final int BOOLEAN_LITERAL = 68;
   public static final int LESSTHAN = 52;
   public static final int PLUS = 35;
   public static final int WHILE = 4;
@@ -51,7 +53,7 @@ public class Sym {
   public static final int DOT = 31;
   public static final int EOL = 54;
   public static final int NULL_LITERAL = 22;
-  public static final int STRING_LITERAL = 71;
+  public static final int STRING_LITERAL = 74;
   public static final int EOF = 0;
   public static final int DEFAULT = 24;
   public static final int FUNCTION = 7;
@@ -60,7 +62,7 @@ public class Sym {
   public static final int IN = 16;
   public static final int OR = 47;
   public static final int error = 1;
-  public static final int DECIMAL_LITERAL = 70;
+  public static final int DECIMAL_LITERAL = 73;
   public static final int DIVEQ = 44;
   public static final int LIST = 19;
   public static final int IF = 3;
@@ -74,6 +76,7 @@ public class Sym {
   public static final int CASE = 23;
   public static final int PLUSPLUS = 33;
   public static final int STRING = 14;
+  public static final int STEP = 67;
   public static final int PROGRAM = 10;
   public static final int AND = 46;
   public static final int TO = 56;
@@ -148,6 +151,9 @@ public class Sym {
   "FORCE",
   "COORD",
   "SOLDIER",
+  "SIMULATION",
+  "STEP",
+  "INTERRUPTS",
   "VECTOR",
   "BARRIER",
   "BOOLEAN_LITERAL",

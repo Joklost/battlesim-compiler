@@ -55,7 +55,7 @@ terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 
 terminal EOL, DOWNTO, TO, THEN, VOID, OF;
 terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
-//terminal SIMULATION, STEP, INTERRUPTS;
+terminal SIMULATION, STEP, INTERRUPTS;
 terminal VECTOR, BARRIER;
 
 terminal Boolean BOOLEAN_LITERAL;
@@ -75,9 +75,13 @@ nonterminal ParamList         ParamList;
 nonterminal Program           Program;
 nonterminal StmtList          Stmts;
 nonterminal Stmt              Stmt;
-//nonterminal SimStepList       SimSteps;
-//nonterminal SimStep           SimStep;
-//nonterminal Interrupts        Interrupts;
+/*
+nonterminal SimulationList    Simulations;
+nonterminal Simulation        Simulation;
+nonterminal SimStepList       SimSteps;
+nonterminal SimStep           SimStep;
+nonterminal Interrupts        Interrupts;
+/**/
 nonterminal WhileStmt         WhileStmt;
 nonterminal ForeachStmt       ForeachStmt;
 nonterminal ForStmt           ForStmt;
@@ -116,10 +120,24 @@ precedence left PLUSPLUS, MINUSMINUS;
 /* The grammar */
 start with Start;
 
-Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2                     {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
+Start         ::= DclBlock:db /*Simulations:s*/ FunctionDcls:fds1 Program:p FunctionDcls:fds2   {: RESULT = new Start(db, /* s, */fds1, p, fds2, dbleft); :}
               ;
 DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS EOL                              {: RESULT = new DclBlock(ss, ssleft); :}
               ;
+/*
+Simulations   ::= Simulations:ss Simulation:s                                                   {: RESULT = ss; ss.addElement(s); :}
+              |   MultEOL                                                                       {: RESULT = new SimulationList(0); :}
+              ;
+Simulation    ::= SIMULATION NestedId:ni SimSteps:sis Interrupts:is END SIMULATION MultEOL      {: RESULT = new Simulation(ni, sis, is, nileft); :}
+              ;
+SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
+              |   MultEOL                                                                       {: RESULT = new SimStepList(0); :}
+              ;
+SimStep       ::= STEP INTEGER_LITERAL:i Stmts:ss MultEOL                                       {: RESULT = new SimStep(i.intValue, ss, ileft); :}
+              ;
+Interrupts    ::= MultEOL INTERRUPTS Stmts:ss                                                   {: RESULT = new Interrupts(ss, ssleft); :}
+              ;
+/**/
 FunctionDcls  ::= MultEOL                                                                       {: RESULT = new FunctionDclList(0); :}
               |   FunctionDcls:fds FunctionDcl:fd MultEOL                                       {: RESULT = fds; fds.addElement(fd); :}
               ;
@@ -149,7 +167,6 @@ Stmt          ::= Dcl:d                                                         
               |   RETURN:r MultEOL                                                              {: RESULT = new Return(rleft); :}
               |   FunctionCall:fc MultEOL                                                       {: RESULT = new FunctionCallStmt(fc, fcleft); :}
               |   error EOL
-//              |   SIMULATION NestedId:ni EOL SimSteps:sis Interrupts:is END SIMULATION          {: RESULT = new SimulationStmt(ni, sis, is, nileft); :}
               ;
 Dcl           ::= DECLARE DclIds:ds AS TypeId:ti MultEOL                                        {: RESULT = new Dcl(ds, ti, dsleft); :}
               ;
@@ -161,17 +178,10 @@ ForeachStmt   ::= FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO Stmts:s END 
               ;
 ForStmt       ::= FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
               ;
-//SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
-//              |                                                                                 {: RESULT = new SimStepList(0); :}
-//              ;
-//SimStep       ::= STEP INTEGER_LITERAL:i EOL Stmts:ss                                           {: RESULT = new SimStep(i.intValue, ss, ileft); :}
-//              ;
-//Interrupts    ::= INTERRUPTS EOL Stmts:ss                                                       {: RESULT = new Interrupts(ss, ssleft); :}
-//              ;
 IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                                    {: RESULT = new IfStmt(e, ss, els, eleft); :}
               ;
 ElseStmt      ::= END IF:eif MultEOL                                                            {: RESULT = new EndIfStmt(eifleft); :}
-              |   ELSE IfStmt:ifs                                                               {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
+              |   ELSE IfStmt:ifs              //if else virker ikke optimalt..                 {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
               |   ELSE Stmts:ss END IF MultEOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
               ;
 SwitchStmt    ::= SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
@@ -203,6 +213,7 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   FunctionCall:fc                                                               {: RESULT = new FunctionCallExpr(fc, fcleft); :}
               |   NestedId:nid                                                                  {: RESULT = new NestedIdExpr(nid, nidleft); :}
               |   StdLiteral:std                                                                {: RESULT = new StdLiteralExpr(std, stdleft); :}
+              |   LPAREN Expression:e1 COMMA Expression:e2 RPAREN // coord                      {: RESULT = new CoordExpr(e1, e2, e1left); :}
               ;
 AssignOp      ::= EQ:eq                                                                         {: RESULT = new EqualsOp(eqleft); :}
               |   PLUSEQ:eq                                                                     {: RESULT = new PlusEqualsOp(eqleft); :}
@@ -283,8 +294,6 @@ TypeId        ::= DECIMAL:d                                                     
               |   LIST OF VECTOR:v                                                              {: RESULT = new VectorList(vleft); :}
               |   LIST OF INTEGER:v                                                             {: RESULT = new IntegerList(vleft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
-//              |   LIST OF TypeId:ti                                                             {: RESULT = new TypeList(ti, tileft); :}
-//              |   TypeId:ty LBRACE Expression:e RBRACE                                          {: RESULT = new TypeArray(ty, e, tyleft); :}
               ;
 NestedId      ::= IDENTIFIER:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
               |   IDENTIFIER:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifierArrayMember(id, e, ni, idleft); :}
