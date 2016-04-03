@@ -5,11 +5,11 @@ package com.company.AST;
  */
 public class FunctionDcl extends ASTNode {
     public TypeIdentifier typeIdentifier;
-    public String identifier;
+    public Identifier identifier;
     public ParamList paramList;
     public StmtList stmtList;
 
-    public FunctionDcl(TypeIdentifier tid, String id, ParamList p, StmtList sl, int ln) {
+    public FunctionDcl(TypeIdentifier tid, Identifier id, ParamList p, StmtList sl, int ln) {
         super(ln);
         this.typeIdentifier = tid;
         this.identifier = id;
