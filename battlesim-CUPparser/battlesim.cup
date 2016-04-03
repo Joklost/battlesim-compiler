@@ -78,8 +78,14 @@ nonterminal Stmt            Stmt;
 //nonterminal SimStepList     SimSteps;
 //nonterminal SimStep         SimStep;
 //nonterminal Interrupts      Interrupts;
+nonterminal WhileStmt       WhileStmt;
+nonterminal ForeachStmt     ForeachStmt;
+nonterminal ForStmt         ForStmt;
+nonterminal Dcl             Dcl;
+nonterminal Assignment      Assignment;
 nonterminal IfStmt          IfStmt;
 nonterminal ElseStmt        ElseStmt;
+nonterminal SwitchStmt      SwitchStmt;
 nonterminal SwitchCaseList  SwitchCases;
 nonterminal SwitchCase      SwitchCase;
 nonterminal SwitchDef       SwitchDef;
@@ -133,18 +139,28 @@ Program       ::= BEGIN PROGRAM Stmts:ss END PROGRAM                            
 Stmts         ::= Stmts:ss Stmt:s                                                               {: ss.addElement(s); RESULT = ss; :}
               |   MultEOL                                                                           {: RESULT = new StmtList(0); :}
               ;
-Stmt          ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti MultEOL                               {: RESULT = new Dcl(id,/* ds, */ti, idleft); :}
-              |   NestedId:ni AssignOp:ao Expression:e MultEOL                                      {: RESULT = new Assignment(ni, ao, e, nileft); :}
+Stmt          ::= Dcl:d                                                                         {: RESULT = d; :}
+              |   Assignment:a                                                                  {: RESULT = a; :}
               |   IfStmt:is                                                                     {: RESULT = is; :}
-              |   WHILE Expression:e DO Stmts:ss END WHILE MultEOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
-              |   FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
-              |   FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
-              |   SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
+              |   WhileStmt:ws                                                                  {: RESULT = ws; :}
+              |   ForeachStmt:fs                                                                {: RESULT = fs; :}
+              |   ForStmt:fs                                                                    {: RESULT = fs; :}
+              |   SwitchStmt:s                                                                  {: RESULT = s; :}
               |   RETURN Expression:e MultEOL                                                       {: RESULT = new ReturnExpr(e, eleft); :}
               |   RETURN:r MultEOL                                                                  {: RESULT = new Return(rleft); :}
               |   FunctionCall:fc MultEOL                                                           {: RESULT = new FunctionCallStmt(fc, fcleft); :}
               |   error EOL
 //              |   SIMULATION NestedId:ni EOL SimSteps:sis Interrupts:is END SIMULATION          {: RESULT = new SimulationStmt(ni, sis, is, nileft); :}
+              ;
+Dcl           ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti MultEOL                               {: RESULT = new Dcl(id,/* ds, */ti, idleft); :}
+              ;
+Assignment    ::= NestedId:ni AssignOp:ao Expression:e MultEOL                                  {: RESULT = new Assignment(ni, ao, e, nileft); :}
+              ;
+WhileStmt     ::= WHILE Expression:e DO Stmts:ss END WHILE MultEOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
+              ;
+ForeachStmt   ::= FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
+              ;
+ForStmt       ::= FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
               ;
 //SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
 //              |                                                                                 {: RESULT = new SimStepList(0); :}
@@ -158,6 +174,8 @@ IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                    
 ElseStmt      ::= END IF:eif MultEOL                                                                {: RESULT = new EndIfStmt(eifleft); :}
               |   ELSE IfStmt:ifs                                                               {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
               |   ELSE Stmts:ss END IF MultEOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
+              ;
+SwitchStmt    ::= SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
               ;
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
               |   MultEOL                                                                           {: RESULT = new SwitchCaseList(0); :}

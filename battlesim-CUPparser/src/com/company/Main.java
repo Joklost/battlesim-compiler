@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         String path = "/home/joklost/git/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs";
-        boolean parseErrorFound = false;
+        boolean parseSuccesful = true;
 
         Scanner scanner = null;
         Parser parser = null;
@@ -23,11 +23,11 @@ public class Main {
             startNode = (Start)parser.parse().value;
 
         } catch (Exception e) {
-            parseErrorFound = true;
+            parseSuccesful = false;
             e.printStackTrace();
         }
 
-        if (!parseErrorFound) {
+        if (parseSuccesful) {
             System.out.println("The input has been succesfully parsed!");
         }
     }
