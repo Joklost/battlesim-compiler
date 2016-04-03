@@ -4,20 +4,41 @@ import java_cup.runtime.*;
 import com.company.AST.*;
 
 parser code {:
-    private int token_num = 0;
+    //private int token_num = 0;
     private Scanner s;
     public Parser(Scanner s) {
         super(s);
         this.s = s;
     }
-
+/*
     public void syntax_error(Symbol cur_token) {
-        report_error("Syntax error at token " + token_num + " : " + Sym.terminalNames[cur_token.sym] + (cur_token.value == null ? "" : " value: " + cur_token.value), null);
+        report_error("Syntax error at line " + (cur_token.left + 1) + " column " + (cur_token.right + 1) + " of input.", null);
+        //  : " + Sym.terminalNames[cur_token.sym] + (cur_token.value == null ? "" : " value: " + cur_token.value), null
     }
+
+    public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
+        this.report_fatal_error("Couldn\'t repair and continue parse", cur_token);
+    }
+    */
+
+    public void report_error(String message, Object info) {
+    System.err.print(message);
+    System.err.flush();
+    if(info instanceof Symbol) {
+        if(((Symbol)info).left != -1) {
+            System.err.println(" at line " + (((Symbol)info).left + 1) + " column " + (((Symbol)info).right + 1) + " of input");
+        } else {
+            System.err.println("");
+        }
+    } else {
+        System.err.println("");
+    }
+
+}
 :};
 
 /* Preliminaries to set up and use the scanner.  */
-scan with {: token_num++; return s.next_token(); :};
+scan with {: /*token_num++; */return s.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
 terminal BOOLEAN, IF, WHILE, DO, FOREACH, FUNCTION, END;
@@ -118,7 +139,7 @@ Stmt          ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti MultEOL        
               |   WHILE Expression:e DO Stmts:ss END WHILE MultEOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
               |   FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
               |   FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
-              |   SWITCH Variable:v MultEOL SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
+              |   SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
               |   RETURN Expression:e MultEOL                                                       {: RESULT = new ReturnExpr(e, eleft); :}
               |   RETURN:r MultEOL                                                                  {: RESULT = new Return(rleft); :}
               |   FunctionCall:fc MultEOL                                                           {: RESULT = new FunctionCallStmt(fc, fcleft); :}
@@ -136,10 +157,10 @@ IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                    
               ;
 ElseStmt      ::= END IF:eif MultEOL                                                                {: RESULT = new EndIfStmt(eifleft); :}
               |   ELSE IfStmt:ifs                                                               {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
-              |   ELSE Stmts:ss END IF EOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
+              |   ELSE Stmts:ss END IF MultEOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
               ;
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
-              |   EOL                                                                           {: RESULT = new SwitchCaseList(0); :}
+              |   MultEOL                                                                           {: RESULT = new SwitchCaseList(0); :}
               ;
 SwitchCase    ::= CASE Expression:v Stmts:ss                                                  {: RESULT = new SwitchCase(v, ss, vleft); :}
               ;

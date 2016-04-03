@@ -1,28 +1,38 @@
 package com.company;
 
+import com.company.AST.Start;
+import java_cup.runtime.Symbol;
+
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
         String path = "/home/joklost/git/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs";
-        ScanFile(path);
+        boolean parseErrorFound = false;
+
         Scanner scanner = null;
+        Parser parser = null;
+        Start startNode = null;
+
         try {
+
             scanner = new Scanner(new java.io.FileReader(path));
-        } catch (FileNotFoundException e) {
+            parser = new Parser(scanner);
+            startNode = (Start)parser.parse().value;
+
+        } catch (Exception e) {
+            parseErrorFound = true;
             e.printStackTrace();
         }
-        Parser parser = new Parser(scanner);
-        try {
-            parser.parse();
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        if (!parseErrorFound) {
+            System.out.println("The input has been succesfully parsed!");
         }
     }
 
-
+/*
     public static void ScanFile(String path) {
         Scanner scanner = null;
         int tNum = 1;
@@ -31,6 +41,7 @@ public class Main {
             while (!scanner.getZZAtEOF()) {
 
                 java_cup.runtime.Symbol sym = scanner.next_token();
+
 
                 System.out.print(tNum + ":");
                 if (sym.value != null) {
@@ -42,11 +53,11 @@ public class Main {
                 if (sym.sym == Sym.EOL) {
                     System.out.println();
                 }
+
                 tNum++;
 
 
             }
-            System.out.println("\n\n");
 
         } catch (java.io.FileNotFoundException e) {
             System.out.println("File not found : \"" + path + "\"");
@@ -58,4 +69,5 @@ public class Main {
             e.printStackTrace();
         }
     }
+    */
 }

@@ -9,6 +9,8 @@ Begin Declarations
   a.Add(17)
 End Declarations
 
+
+
 Function Void BubbleSort(a as List of Integer)
   Declare n as Integer
   n = a.Count()
@@ -49,7 +51,19 @@ Begin Program
       Print(0)
   End Switch
 
+  If 3 Then
+    Print("test")
+  Else If 4 Then
+    Print("test2")
+  //Else
+    //Print("2")
+  End If
 
+  If 3 Then
+    Print("tis")
+  Else
+    Print("skrald")
+  End If
 End Program
 
 Function Void Test()

@@ -4,12 +4,12 @@ package com.company.AST;
  * Created by joklost on 01-04-16.
  */
 public class SwitchCase extends ASTNode {
-    public Variable variable;
+    public Expression expression;
     public StmtList stmtList;
 
-    public SwitchCase(Variable v, StmtList s, int ln) {
+    public SwitchCase(Expression e, StmtList s, int ln) {
         super(ln);
-        this.variable = v;
+        this.expression = e;
         this.stmtList = s;
     }
 }
