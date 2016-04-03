@@ -36,6 +36,20 @@ Begin Program
   Foreach Integer num in a Do
     Print(num)
   End Foreach
+
+  Declare test as Integer
+  test = 2
+
+  Switch test
+    Case 1
+      Print(1)
+    Case 2
+      Print(2)
+    Default
+      Print(0)
+  End Switch
+
+
 End Program
 
 Function Void Test()

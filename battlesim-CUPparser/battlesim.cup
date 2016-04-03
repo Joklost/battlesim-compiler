@@ -118,7 +118,7 @@ Stmt          ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti MultEOL        
               |   WHILE Expression:e DO Stmts:ss END WHILE MultEOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
               |   FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
               |   FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
-              |   SWITCH Variable:v EOL SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
+              |   SWITCH Variable:v MultEOL SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
               |   RETURN Expression:e MultEOL                                                       {: RESULT = new ReturnExpr(e, eleft); :}
               |   RETURN:r MultEOL                                                                  {: RESULT = new Return(rleft); :}
               |   FunctionCall:fc MultEOL                                                           {: RESULT = new FunctionCallStmt(fc, fcleft); :}
@@ -141,7 +141,7 @@ ElseStmt      ::= END IF:eif MultEOL                                            
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
               |   EOL                                                                           {: RESULT = new SwitchCaseList(0); :}
               ;
-SwitchCase    ::= CASE Variable:v Stmts:ss                                                  {: RESULT = new SwitchCase(v, ss, vleft); :}
+SwitchCase    ::= CASE Expression:v Stmts:ss                                                  {: RESULT = new SwitchCase(v, ss, vleft); :}
               ;
 SwitchDef     ::= DEFAULT:d Stmts:ss                                                        {: RESULT = new SwitchDef(ss, dleft); :}
               ;
