@@ -87,7 +87,7 @@ nonterminal ForeachStmt       ForeachStmt;
 nonterminal ForStmt           ForStmt;
 nonterminal Dcl               Dcl;
 nonterminal Assignment        Assignment;
-nonterminal IfStmt            IfStmt;
+//nonterminal IfStmt            IfStmt;
 nonterminal ElseStmt          ElseStmt;
 nonterminal SwitchStmt        SwitchStmt;
 nonterminal SwitchCaseList    SwitchCases;
@@ -104,6 +104,7 @@ nonterminal StdLiteral        StdLiteral;
 nonterminal DclIdList         DclIds;
 nonterminal TypeIdentifier    TypeId;
 nonterminal NestedIdentifier  NestedId;
+nonterminal Identifier        Identifier;
 
 nonterminal MultEOL;
 
@@ -141,9 +142,9 @@ Interrupts    ::= MultEOL INTERRUPTS Stmts:ss                                   
 FunctionDcls  ::= MultEOL                                                                       {: RESULT = new FunctionDclList(0); :}
               |   FunctionDcls:fds FunctionDcl:fd MultEOL                                       {: RESULT = fds; fds.addElement(fd); :}
               ;
-FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p Stmts:ss END FUNCTION               {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
+FunctionDcl   ::= FUNCTION TypeId:ti Identifier:id Params:p Stmts:ss END FUNCTION               {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
               ;
-Param         ::= IDENTIFIER:id AS TypeId:ti                                                    {: RESULT = new Param(id, ti, idleft); :}
+Param         ::= Identifier:id AS TypeId:ti                                                    {: RESULT = new Param(id, ti, idleft); :}
               ;
 Params        ::= LPAREN:l RPAREN                                                               {: RESULT = new ParamList(lleft); :}
               |   LPAREN ParamList:pl RPAREN                                                    {: RESULT = pl; :}
@@ -158,7 +159,7 @@ Stmts         ::= Stmts:ss Stmt:s                                               
               ;
 Stmt          ::= Dcl:d                                                                         {: RESULT = d; :}
               |   Assignment:a                                                                  {: RESULT = a; :}
-              |   IfStmt:is                                                                     {: RESULT = is; :}
+//              |   IfStmt:is                                                                     {: RESULT = is; :}
               |   WhileStmt:ws                                                                  {: RESULT = ws; :}
               |   ForeachStmt:fs                                                                {: RESULT = fs; :}
               |   ForStmt:fs                                                                    {: RESULT = fs; :}
@@ -174,16 +175,18 @@ Assignment    ::= NestedId:ni AssignOp:ao Expression:e MultEOL                  
               ;
 WhileStmt     ::= WHILE Expression:e DO Stmts:ss END WHILE MultEOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
               ;
-ForeachStmt   ::= FOREACH TypeId:ti IDENTIFIER:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
+ForeachStmt   ::= FOREACH TypeId:ti Identifier:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
               ;
-ForStmt       ::= FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(ni, fi, e, ss, nileft); :}
+ForStmt       ::= FOR Expression:e1 ForIterator:fi Expression:e2 DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(e1, fi, e2, ss, e1left); :}
               ;
+/*
 IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                                    {: RESULT = new IfStmt(e, ss, els, eleft); :}
               ;
 ElseStmt      ::= END IF:eif MultEOL                                                            {: RESULT = new EndIfStmt(eifleft); :}
               |   ELSE IfStmt:ifs              //if else virker ikke optimalt..                 {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
               |   ELSE Stmts:ss END IF MultEOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
               ;
+*/
 SwitchStmt    ::= SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
               ;
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
@@ -242,8 +245,8 @@ StdLiteral    ::= DECIMAL_LITERAL:dec                                           
               |   INTEGER_LITERAL:in                                                            {: RESULT = new IntegerLiteral(in, inleft); :}
               |   NULL_LITERAL:nul                                                              {: RESULT = new NullLiteral(nulleft); :}
               ;
-DclIds        ::= DclIds:ds COMMA IDENTIFIER:id                                                 {: RESULT = ds; ds.addElement(id); :}
-              |   IDENTIFIER:id                                                                 {: RESULT = new DclIdList(0); RESULT.addElement(id); :}
+DclIds        ::= DclIds:ds COMMA Identifier:id                                                 {: RESULT = ds; ds.addElement(id); :}
+              |   Identifier:id                                                                 {: RESULT = new DclIdList(0); RESULT.addElement(id); :}
               ;
 TypeId        ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
               |   STRING:s                                                                      {: RESULT = new StringT(sleft); :}
@@ -295,11 +298,15 @@ TypeId        ::= DECIMAL:d                                                     
               |   LIST OF INTEGER:v                                                             {: RESULT = new IntegerList(vleft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
               ;
-NestedId      ::= IDENTIFIER:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
-              |   IDENTIFIER:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifierArrayMember(id, e, ni, idleft); :}
-              |   IDENTIFIER:id LBRACE Expression:e RBRACE                                      {: RESULT = new NestedIdentifierArray(id, e, idleft); :}
-              |   IDENTIFIER:id                                                                 {: RESULT = new Identifier(id, idleft); :}
+NestedId      ::= Identifier:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
+              |   Identifier:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifier1DArrayMember(id, e, ni, idleft); :}
+              |   Identifier:id LBRACE Expression:e RBRACE                                      {: RESULT = new NestedIdentifier1DArray(id, e, idleft); :}
+              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifier2DArrayMember(id, e1, e2, ni, idleft); :}
+              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE                                      {: RESULT = new NestedIdentifier2DArray(id, e1, e2, idleft); :}
+              |   Identifier:id                                                                 {: RESULT = new NestedIdentifier(id, idleft); :}
               ;
 MultEOL       ::= MultEOL EOL
               |   EOL
+              ;
+Identifier    ::= IDENTIFIER:id                                                                 {: RESULT = new Identifier(id, idleft); :}
               ;

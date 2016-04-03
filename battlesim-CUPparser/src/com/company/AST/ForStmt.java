@@ -4,16 +4,16 @@ package com.company.AST;
  * Created by joklost on 01-04-16.
  */
 public class ForStmt extends Stmt {
-    public NestedIdentifier nestedIdentifier;
+    public Expression expression1;
     public ForIterator forIterator;
-    public Expression expression;
+    public Expression expression2;
     public StmtList stmtList;
 
-    public ForStmt(NestedIdentifier nid, ForIterator fi, Expression e, StmtList s, int ln) {
+    public ForStmt(Expression e1, ForIterator fi, Expression e2, StmtList s, int ln) {
         super(ln);
-        this.nestedIdentifier = nid;
+        this.expression1 = e1;
         this.forIterator = fi;
-        this.expression = e;
+        this.expression2 = e2;
         this.stmtList = s;
     }
 }

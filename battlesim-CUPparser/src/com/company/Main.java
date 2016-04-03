@@ -1,6 +1,8 @@
 package com.company;
 
 import com.company.AST.Start;
+import com.company.AST.Terrain;
+import com.company.AST.Visitor.TreeVisitor;
 import java_cup.runtime.Symbol;
 
 import java.io.FileNotFoundException;
@@ -16,12 +18,14 @@ public class Main {
         Scanner scanner = null;
         Parser parser = null;
         Start startNode = null;
+        TreeVisitor treeVisitor = new TreeVisitor();
 
         try {
 
             scanner = new Scanner(new java.io.FileReader(path));
             parser = new Parser(scanner);
             startNode = (Start)parser.parse().value;
+            startNode.accept(treeVisitor);
 
         } catch (Exception e) {
             parseSuccesful = false;
