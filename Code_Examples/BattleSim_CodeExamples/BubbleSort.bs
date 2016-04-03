@@ -14,9 +14,7 @@ End Declarations
 Function Void BubbleSort(a as List of Integer)
   Declare n as Integer
   n = a.Count()
-  Declare i as Integer
-  Declare c as Integer
-  Declare t as Integer
+  Declare i, c, t as Integer
   i = 0
   c = 0
   For i To (n - 1) Do

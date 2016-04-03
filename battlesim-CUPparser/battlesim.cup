@@ -65,43 +65,43 @@ terminal String STRING_LITERAL, IDENTIFIER;
 
 /* Non-terminals */
 
-nonterminal Start           Start;
-nonterminal DclBlock        DclBlock;
-nonterminal FunctionDclList FunctionDcls;
-nonterminal FunctionDcl     FunctionDcl;
-nonterminal Param           Param;
-nonterminal ParamList       Params;
-nonterminal ParamList       ParamList;
-nonterminal Program         Program;
-nonterminal StmtList        Stmts;
-nonterminal Stmt            Stmt;
-//nonterminal SimStepList     SimSteps;
-//nonterminal SimStep         SimStep;
-//nonterminal Interrupts      Interrupts;
-nonterminal WhileStmt       WhileStmt;
-nonterminal ForeachStmt     ForeachStmt;
-nonterminal ForStmt         ForStmt;
-nonterminal Dcl             Dcl;
-nonterminal Assignment      Assignment;
-nonterminal IfStmt          IfStmt;
-nonterminal ElseStmt        ElseStmt;
-nonterminal SwitchStmt      SwitchStmt;
-nonterminal SwitchCaseList  SwitchCases;
-nonterminal SwitchCase      SwitchCase;
-nonterminal SwitchDef       SwitchDef;
-nonterminal Expression      Expression;
-nonterminal AssignOp        AssignOp;
-nonterminal FunctionCall    FunctionCall;
-nonterminal ArgumentList    Arguments;
-nonterminal ArgumentList    ArgumentList;
-nonterminal ForIterator     ForIterator;
-nonterminal Variable        Variable;
-nonterminal StdLiteral      StdLiteral;
-//nonterminal DclIdList       Dcls;
-nonterminal TypeIdentifier  TypeId;
-nonterminal NestedIdentifier NestedId;
-nonterminal MultEOL;
+nonterminal Start             Start;
+nonterminal DclBlock          DclBlock;
+nonterminal FunctionDclList   FunctionDcls;
+nonterminal FunctionDcl       FunctionDcl;
+nonterminal Param             Param;
+nonterminal ParamList         Params;
+nonterminal ParamList         ParamList;
+nonterminal Program           Program;
+nonterminal StmtList          Stmts;
+nonterminal Stmt              Stmt;
+//nonterminal SimStepList       SimSteps;
+//nonterminal SimStep           SimStep;
+//nonterminal Interrupts        Interrupts;
+nonterminal WhileStmt         WhileStmt;
+nonterminal ForeachStmt       ForeachStmt;
+nonterminal ForStmt           ForStmt;
+nonterminal Dcl               Dcl;
+nonterminal Assignment        Assignment;
+nonterminal IfStmt            IfStmt;
+nonterminal ElseStmt          ElseStmt;
+nonterminal SwitchStmt        SwitchStmt;
+nonterminal SwitchCaseList    SwitchCases;
+nonterminal SwitchCase        SwitchCase;
+nonterminal SwitchDef         SwitchDef;
+nonterminal Expression        Expression;
+nonterminal AssignOp          AssignOp;
+nonterminal FunctionCall      FunctionCall;
+nonterminal ArgumentList      Arguments;
+nonterminal ArgumentList      ArgumentList;
+nonterminal ForIterator       ForIterator;
+nonterminal Variable          Variable;
+nonterminal StdLiteral        StdLiteral;
+nonterminal DclIdList         DclIds;
+nonterminal TypeIdentifier    TypeId;
+nonterminal NestedIdentifier  NestedId;
 
+nonterminal MultEOL;
 
 /* Precedences */
 precedence nonassoc OR;
@@ -113,18 +113,17 @@ precedence left MULT, DIV, MOD;
 precedence right NOT, UMINUS;
 precedence left PLUSPLUS, MINUSMINUS;
 
+/* The grammar */
 start with Start;
 
-/* The grammar */
 Start         ::= DclBlock:db FunctionDcls:fds1 Program:p FunctionDcls:fds2                     {: RESULT = new Start(db, fds1, p, fds2, dbleft); :}
               ;
-DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS EOL                          {: RESULT = new DclBlock(ss, ssleft); :}
-              |   EOL                                                                              {: RESULT = null; :}
+DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS EOL                              {: RESULT = new DclBlock(ss, ssleft); :}
               ;
-FunctionDcls  ::= MultEOL                                                                           {: RESULT = new FunctionDclList(0); :}
-              |   FunctionDcls:fds FunctionDcl:fd MultEOL                                           {: RESULT = fds; fds.addElement(fd); :}
+FunctionDcls  ::= MultEOL                                                                       {: RESULT = new FunctionDclList(0); :}
+              |   FunctionDcls:fds FunctionDcl:fd MultEOL                                       {: RESULT = fds; fds.addElement(fd); :}
               ;
-FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p Stmts:ss END FUNCTION       {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
+FunctionDcl   ::= FUNCTION TypeId:ti IDENTIFIER:id Params:p Stmts:ss END FUNCTION               {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
               ;
 Param         ::= IDENTIFIER:id AS TypeId:ti                                                    {: RESULT = new Param(id, ti, idleft); :}
               ;
@@ -134,10 +133,10 @@ Params        ::= LPAREN:l RPAREN                                               
 ParamList     ::= Param:p COMMA ParamList:pl                                                    {: RESULT = pl; pl.addElement(p); :}
               |   Param:p                                                                       {: RESULT = new ParamList(pleft); RESULT.addElement(p); :}
               ;
-Program       ::= BEGIN PROGRAM Stmts:ss END PROGRAM                                    {: RESULT = new Program(ss, ssleft); :}
+Program       ::= BEGIN PROGRAM Stmts:ss END PROGRAM                                            {: RESULT = new Program(ss, ssleft); :}
               ;
 Stmts         ::= Stmts:ss Stmt:s                                                               {: ss.addElement(s); RESULT = ss; :}
-              |   MultEOL                                                                           {: RESULT = new StmtList(0); :}
+              |   MultEOL                                                                       {: RESULT = new StmtList(0); :}
               ;
 Stmt          ::= Dcl:d                                                                         {: RESULT = d; :}
               |   Assignment:a                                                                  {: RESULT = a; :}
@@ -146,13 +145,13 @@ Stmt          ::= Dcl:d                                                         
               |   ForeachStmt:fs                                                                {: RESULT = fs; :}
               |   ForStmt:fs                                                                    {: RESULT = fs; :}
               |   SwitchStmt:s                                                                  {: RESULT = s; :}
-              |   RETURN Expression:e MultEOL                                                       {: RESULT = new ReturnExpr(e, eleft); :}
-              |   RETURN:r MultEOL                                                                  {: RESULT = new Return(rleft); :}
-              |   FunctionCall:fc MultEOL                                                           {: RESULT = new FunctionCallStmt(fc, fcleft); :}
+              |   RETURN Expression:e MultEOL                                                   {: RESULT = new ReturnExpr(e, eleft); :}
+              |   RETURN:r MultEOL                                                              {: RESULT = new Return(rleft); :}
+              |   FunctionCall:fc MultEOL                                                       {: RESULT = new FunctionCallStmt(fc, fcleft); :}
               |   error EOL
 //              |   SIMULATION NestedId:ni EOL SimSteps:sis Interrupts:is END SIMULATION          {: RESULT = new SimulationStmt(ni, sis, is, nileft); :}
               ;
-Dcl           ::= DECLARE IDENTIFIER:id /*Dcls:ds*/ AS TypeId:ti MultEOL                               {: RESULT = new Dcl(id,/* ds, */ti, idleft); :}
+Dcl           ::= DECLARE DclIds:ds AS TypeId:ti MultEOL                                        {: RESULT = new Dcl(ds, ti, dsleft); :}
               ;
 Assignment    ::= NestedId:ni AssignOp:ao Expression:e MultEOL                                  {: RESULT = new Assignment(ni, ao, e, nileft); :}
               ;
@@ -169,20 +168,20 @@ ForStmt       ::= FOR NestedId:ni ForIterator:fi Expression:e DO Stmts:ss END FO
 //              ;
 //Interrupts    ::= INTERRUPTS EOL Stmts:ss                                                       {: RESULT = new Interrupts(ss, ssleft); :}
 //              ;
-IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                                {: RESULT = new IfStmt(e, ss, els, eleft); :}
+IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                                    {: RESULT = new IfStmt(e, ss, els, eleft); :}
               ;
-ElseStmt      ::= END IF:eif MultEOL                                                                {: RESULT = new EndIfStmt(eifleft); :}
+ElseStmt      ::= END IF:eif MultEOL                                                            {: RESULT = new EndIfStmt(eifleft); :}
               |   ELSE IfStmt:ifs                                                               {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
               |   ELSE Stmts:ss END IF MultEOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
               ;
 SwitchStmt    ::= SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
               ;
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
-              |   MultEOL                                                                           {: RESULT = new SwitchCaseList(0); :}
+              |   MultEOL                                                                       {: RESULT = new SwitchCaseList(0); :}
               ;
-SwitchCase    ::= CASE Expression:v Stmts:ss                                                  {: RESULT = new SwitchCase(v, ss, vleft); :}
+SwitchCase    ::= CASE Expression:v Stmts:ss                                                    {: RESULT = new SwitchCase(v, ss, vleft); :}
               ;
-SwitchDef     ::= DEFAULT:d Stmts:ss                                                        {: RESULT = new SwitchDef(ss, dleft); :}
+SwitchDef     ::= DEFAULT:d Stmts:ss                                                            {: RESULT = new SwitchDef(ss, dleft); :}
               ;
 Expression    ::= Expression:e1 PLUS Expression:e2                                              {: RESULT = new PlusExpr(e1, e2, e1left); :}
               |   Expression:e1 MINUS Expression:e2                                             {: RESULT = new MinusExpr(e1, e2, e1left); :}
@@ -201,7 +200,6 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   MINUS:min Expression:e                                                        {: RESULT = new UnMinusExpr(e, minleft); :} %prec UMINUS
               |   Expression:e PLUSPLUS                                                         {: RESULT = new PlusPlusExpr(e, eleft); :}
               |   Expression:e MINUSMINUS                                                       {: RESULT = new MinusMinusExpr(e, eleft); :}
-//              |   Variable:v                                                                    {: RESULT = new VariableExpr(v, vleft); :}
               |   FunctionCall:fc                                                               {: RESULT = new FunctionCallExpr(fc, fcleft); :}
               |   NestedId:nid                                                                  {: RESULT = new NestedIdExpr(nid, nidleft); :}
               |   StdLiteral:std                                                                {: RESULT = new StdLiteralExpr(std, stdleft); :}
@@ -233,9 +231,9 @@ StdLiteral    ::= DECIMAL_LITERAL:dec                                           
               |   INTEGER_LITERAL:in                                                            {: RESULT = new IntegerLiteral(in, inleft); :}
               |   NULL_LITERAL:nul                                                              {: RESULT = new NullLiteral(nulleft); :}
               ;
-//Dcls          ::= Dcls:ds COMMA IDENTIFIER:id                                                   {: RESULT = ds; ds.addElement(id); :}
-//              |   EOL                                                                              {: RESULT = new DclIdList(0); :}
-//              ;             DENNE SKAL LAVES
+DclIds        ::= DclIds:ds COMMA IDENTIFIER:id                                                 {: RESULT = ds; ds.addElement(id); :}
+              |   IDENTIFIER:id                                                                 {: RESULT = new DclIdList(0); RESULT.addElement(id); :}
+              ;
 TypeId        ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
               |   STRING:s                                                                      {: RESULT = new StringT(sleft); :}
               |   BOOLEAN:b                                                                     {: RESULT = new BooleanT(bleft); :}
