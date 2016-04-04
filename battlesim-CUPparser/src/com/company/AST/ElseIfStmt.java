@@ -3,11 +3,15 @@ package com.company.AST;
 /**
  * Created by joklost on 01-04-16.
  */
-public class ElseIfStmt extends ElseStmt {
-    public IfStmt ifStmt;
+public class ElseIfStmt extends ElifStmt {
+    public Expression expression;
+    public StmtList stmtList;
+    public ElifStmt elifStmt;
 
-    public ElseIfStmt(IfStmt ifs, int ln) {
+    public ElseIfStmt(Expression e, StmtList s, ElifStmt es, int ln) {
         super(ln);
-        this.ifStmt = ifs;
+        this.expression = e;
+        this.stmtList = s;
+        this.elifStmt = es;
     }
 }

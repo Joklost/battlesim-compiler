@@ -88,8 +88,8 @@ nonterminal ForStmt           ForStmt;
 nonterminal Dcl               Dcl;
 nonterminal Assignment        Assignment;
 nonterminal IfStmt            IfStmt;
-nonterminal ElseIfStmt        ElseIfStmt;
-nonterminal ElseStmt          ElseStmt;
+nonterminal ElifStmt          ElseIfStmt;
+nonterminal ElifStmt          ElseStmt;
 nonterminal SwitchStmt        SwitchStmt;
 nonterminal SwitchCaseList    SwitchCases;
 nonterminal SwitchCase        SwitchCase;
@@ -188,8 +188,8 @@ IfStmt        ::= IF Expression:e THEN Stmts:ss ElseIfStmt:els                  
 ElseIfStmt    ::= ELSE IF Expression:e THEN Stmts:s ElseIfStmt:es                               {: RESULT = new ElseIfStmt(e, s, es, eleft); :}
               |   ElseStmt:es                                                                   {: RESULT = es; :}
               ;
-ElseStmt      ::= ELSE Stmts:s END IF                                                           {: RESULT = new ElseStmt(s, sleft); :}
-              |   END:e IF                                                                      {: RESULT = new EndIfStmt(eleft); :}
+ElseStmt      ::= ELSE Stmts:s END IF MultEOL                                                   {: RESULT = new ElseStmt(s, sleft); :}
+              |   END:e IF MultEOL                                                              {: RESULT = new EndIfStmt(eleft); :}
               ;
 
 SwitchStmt    ::= SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}

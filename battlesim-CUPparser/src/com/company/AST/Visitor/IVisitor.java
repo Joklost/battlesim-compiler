@@ -11,13 +11,15 @@ public interface IVisitor {
     void visit(FunctionDcl fd);
     void visit(Param p);
     void visit(Program p);
-    // Simulation
     void visit(Dcl ds);
     void visit(Assignment as);
     void visit(WhileStmt ws);
     void visit(ForeachStmt fes);
     void visit(ForStmt fs);
-    //If else if then do whatever
+    void visit(IfStmt i);
+    void visit(ElseIfStmt e);
+    void visit(ElseStmt e);
+    void visit(EndIfStmt e);
     void visit(SwitchStmt ss);
     void visit(SwitchCase sc);
     void visit(SwitchDef sd);

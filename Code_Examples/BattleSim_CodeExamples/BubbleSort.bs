@@ -19,15 +19,11 @@ Function Void BubbleSort(a as List of Integer)
   c = 0
   For i To (n - 1) Do
     For c To (n - i - 1) Do
-
-/*
       If a[c] > a[c + 1] Then
         t        = a[c]
         a[c]     = a[c + 1]
         a[c + 1] = t
       End If
-*/
-
     End For
   End For
 End Function
@@ -40,36 +36,4 @@ Begin Program
   Foreach Integer num in a Do
     Print(num)
   End Foreach
-
-  Declare test as Integer
-  test = 2
-
-  Switch test
-    Case 1
-      Print(1)
-    Case 2
-      Print(2)
-    Default
-      Print(0)
-  End Switch
-/*
-  If 3 Then
-    Print("test")
-  Else If 4 Then
-    Print("test2")
-  //Else
-    //Print("2")
-  End If
-
-  If 3 Then
-    Print("tis")
-  Else
-    Print("skrald")
-  End If
-
-*/
-
 End Program
-
-Function Void Test()
-End Function

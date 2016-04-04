@@ -205,7 +205,74 @@ public class TreeVisitor extends Visitor implements IVisitor {
         indentLevel--;
     }
 
-    // If skal være her
+    public void visit(IfStmt i) {
+        println("If statement:");
+        indentLevel++;
+
+        println("Boolean expression:");
+        indentLevel++;
+        i.expression.accept(this);
+        indentLevel--;
+
+        println("Statements:");
+        indentLevel++;
+        StmtList stmtList = i.stmtList;
+        for(int k = 0; k < stmtList.size(); k++) {
+            stmtList.elementAt(k).accept(this);
+        }
+        indentLevel--;
+
+        println("Elif:");
+        indentLevel++;
+        i.elseStmt.accept(this);
+        indentLevel--;
+
+        indentLevel--;
+    }
+
+    public void visit(ElseIfStmt e) {
+        println("Else if:");
+        indentLevel++;
+
+        println("Boolean expression:");
+        indentLevel++;
+        e.expression.accept(this);
+        indentLevel--;
+
+        println("Statements:");
+        indentLevel++;
+        StmtList stmtList = e.stmtList;
+        for(int k = 0; k < stmtList.size(); k++) {
+            stmtList.elementAt(k).accept(this);
+        }
+        indentLevel--;
+
+        println("Elif:");
+        indentLevel++;
+        e.elifStmt.accept(this);
+        indentLevel--;
+
+        indentLevel--;
+    }
+
+    public void visit(ElseStmt e) {
+        println("Else:");
+        indentLevel++;
+
+        println("Statements:");
+        indentLevel++;
+        StmtList stmtList = e.stmtList;
+        for(int k = 0; k < stmtList.size(); k++) {
+            stmtList.elementAt(k).accept(this);
+        }
+        indentLevel--;
+
+        indentLevel--;
+    }
+
+    public void visit(EndIfStmt e) {
+        println("End if");
+    }
 
     public void visit(SwitchStmt ss) {
         println("Switch:");
