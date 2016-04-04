@@ -87,7 +87,8 @@ nonterminal ForeachStmt       ForeachStmt;
 nonterminal ForStmt           ForStmt;
 nonterminal Dcl               Dcl;
 nonterminal Assignment        Assignment;
-//nonterminal IfStmt            IfStmt;
+nonterminal IfStmt            IfStmt;
+nonterminal ElseIfStmt        ElseIfStmt;
 nonterminal ElseStmt          ElseStmt;
 nonterminal SwitchStmt        SwitchStmt;
 nonterminal SwitchCaseList    SwitchCases;
@@ -117,6 +118,8 @@ precedence left PLUS, MINUS;
 precedence left MULT, DIV, MOD;
 precedence right NOT, UMINUS;
 precedence left PLUSPLUS, MINUSMINUS;
+
+precedence left ELSE;
 
 /* The grammar */
 start with Start;
@@ -159,7 +162,7 @@ Stmts         ::= Stmts:ss Stmt:s                                               
               ;
 Stmt          ::= Dcl:d                                                                         {: RESULT = d; :}
               |   Assignment:a                                                                  {: RESULT = a; :}
-//              |   IfStmt:is                                                                     {: RESULT = is; :}
+              |   IfStmt:is                                                                     {: RESULT = is; :}
               |   WhileStmt:ws                                                                  {: RESULT = ws; :}
               |   ForeachStmt:fs                                                                {: RESULT = fs; :}
               |   ForStmt:fs                                                                    {: RESULT = fs; :}
@@ -177,16 +180,18 @@ WhileStmt     ::= WHILE Expression:e DO Stmts:ss END WHILE MultEOL              
               ;
 ForeachStmt   ::= FOREACH TypeId:ti Identifier:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
               ;
-ForStmt       ::= FOR Expression:e1 ForIterator:fi Expression:e2 DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(e1, fi, e2, ss, e1left); :}
+ForStmt       ::= FOR Expression:e1 ForIterator:fi Expression:e2 DO Stmts:ss END FOR MultEOL    {: RESULT = new ForStmt(e1, fi, e2, ss, e1left); :}
               ;
-/*
-IfStmt        ::= IF Expression:e THEN Stmts:ss ElseStmt:els                                    {: RESULT = new IfStmt(e, ss, els, eleft); :}
+
+IfStmt        ::= IF Expression:e THEN Stmts:ss ElseIfStmt:els                                  {: RESULT = new IfStmt(e, ss, els, eleft); :}
               ;
-ElseStmt      ::= END IF:eif MultEOL                                                            {: RESULT = new EndIfStmt(eifleft); :}
-              |   ELSE IfStmt:ifs              //if else virker ikke optimalt..                 {: RESULT = new ElseIfStmt(ifs, ifsleft); :}
-              |   ELSE Stmts:ss END IF MultEOL                                                  {: RESULT = new ElseEndStmt(ss, ssleft); :}
+ElseIfStmt    ::= ELSE IF Expression:e THEN Stmts:s ElseIfStmt:es                               {: RESULT = new ElseIfStmt(e, s, es, eleft); :}
+              |   ElseStmt:es                                                                   {: RESULT = es; :}
               ;
-*/
+ElseStmt      ::= ELSE Stmts:s END IF                                                           {: RESULT = new ElseStmt(s, sleft); :}
+              |   END:e IF                                                                      {: RESULT = new EndIfStmt(eleft); :}
+              ;
+
 SwitchStmt    ::= SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH MultEOL           {: RESULT = new SwitchStmt(v, swcs, swd, vleft); :}
               ;
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
