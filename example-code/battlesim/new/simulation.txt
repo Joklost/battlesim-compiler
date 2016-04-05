@@ -53,19 +53,26 @@ Begin Declarations
   Declare enemies as Force
   enemies.AddPlatoons(ePlatoon1)
 
-  //////////////////////////
-  //Declaration of Barriers/
-  //////////////////////////
+//////////////////////////
+//Declaration of Barriers/
+//////////////////////////
 
-  //A barriers shape is defined by its edges
+  //A barriers shape is defined by its vertices
   Declare barrier as Barrier
   barrier.vertex1 = (97,656)
   barrier.vertex2 = (140,720)
 
+//////////////////////////////////
+//Declaration of important Coords/
+//////////////////////////////////
   Declare Base as Coord
   Base = (30,250)
 
 End Declarations
+
+/////////////////////////////
+//Declaration of Simulations/
+/////////////////////////////
 
 Simulation protectGroup2
   Step 1
@@ -75,7 +82,7 @@ Simulation protectGroup2
     allies.Move(250,250)
     enemies.Move(600,250)
   Step 3
-    //Group 1 and 2 starts moving to flanking positions
+    //Group 1 and 3 starts moving to flanking positions
     aGroup1.Move(550,400)
     aGroup2.Move(300,250)
     aGroup3.Move(550,100)
@@ -96,7 +103,6 @@ Simulation protectGroup2
     Else
       aGroup2.Move(Base)
     End If
-  Step 8
 
   Interrupts
     If NOT allies.IsInCombat() AND allies.IsGettingShot()
@@ -112,15 +118,19 @@ Simulation protectGroup2
 
 End Simulation
 
+////////////////
+//Begin Program/
+////////////////
+
 Begin Program
 
   Declare i as Integer
   i = 0
   For i To 10 Do
-    simulation1.Run()
+    protectGroup2.Run()
   End For
 
-  simulation1.Render(1)
+  protectGroup2.Render(1)
   // Render takes a time scale as input, and renders the simulation for the user to view
 
 End Program
