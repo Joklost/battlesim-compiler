@@ -125,6 +125,18 @@ Simulation protectTheGeneral
     End If
   Step 8
 
+  Interrupts
+    If NOT allies.IsInCombat() AND allies.IsGettingShot()
+      allies.StopMovement()
+      allies.TryDetectEnemies(120)
+    End If
+
+    If allies.IsEnemyDetected()
+      allies.StopMovement()
+      allies.Engage(allies.enemy)
+    End If
+  End Interrupts
+
 End Simulation
 
 Simulation clearTheAreaByFlanking
@@ -198,7 +210,6 @@ Begin Program
 
   simulation1.Render(1)
   // Render takes a time scale as input, and renders the simulation for the user to view
-
 
 End Program
 

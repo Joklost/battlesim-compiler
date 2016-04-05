@@ -1,0 +1,136 @@
+Begin Declarations
+// Declaration of global variables
+  Declare terrain as Terrain
+  terrain.height = 500
+  terrain.width = 1000
+
+  ////////////////////////
+  //Declaration of Allies/
+  ////////////////////////
+  Declare aGroup1 as Group
+  aGroup1.coord = (20,30)
+  aGroup1.soldiers = 6
+  aGroup1.magazines = 24
+
+  Declare aGroup2 as Group
+  aGroup2.coord = (30,30)
+  aGroup2.soldiers = 6
+  aGroup2.magazines = 24
+
+  Declare aGroup3 as Group
+  aGroup3.coord = (40,30)
+  aGroup3.soldiers = 6
+  aGroup3.magazines = 24
+
+  Declare aPlatoon1 as Platoon
+  aPlatoon1.AddGroups(aGroup1, aGroup2, aGroup3)
+
+  Declare allies as Force
+  allies.AddPlatoons(aPlatoon1)
+
+  /////////////////////////
+  //Declaration of Enemies/
+  /////////////////////////
+
+  Declare eGroup1 as Group
+  eGroup1.coord = (960,30)
+  eGroup1.soldiers = 6
+  eGroup1.magazines = 24
+
+  Declare eGroup2 as Group
+  eGroup2.coord = (950,30)
+  eGroup2.soldiers = 6
+  eGroup2.magazines = 24
+
+  Declare eGroup3 as Group
+  eGroup3.coord = (940,30)
+  eGroup3.soldiers = 6
+  eGroup3.magazines = 24
+
+  Declare ePlatoon1 as Platoon
+  ePlatoon1.AddGroups(eGroup1, eGroup2, eGroup3)
+
+  Declare enemies as Force
+  enemies.AddPlatoons(ePlatoon1)
+
+//////////////////////////
+//Declaration of Barriers/
+//////////////////////////
+
+  //A barriers shape is defined by its vertices
+  Declare barrier as Barrier
+  barrier.vertex1 = (97,656)
+  barrier.vertex2 = (140,720)
+
+//////////////////////////////////
+//Declaration of important Coords/
+//////////////////////////////////
+  Declare Base as Coord
+  Base = (30,250)
+
+End Declarations
+
+/////////////////////////////
+//Declaration of Simulations/
+/////////////////////////////
+
+Simulation protectGroup2
+  Step 1
+    allies.Move(30,250)
+    enemies.Move(950,250)
+  Step 2
+    allies.Move(250,250)
+    enemies.Move(600,250)
+  Step 3
+    //Group 1 and 3 starts moving to flanking positions
+    aGroup1.Move(550,400)
+    aGroup2.Move(300,250)
+    aGroup3.Move(550,100)
+    enemies.DetectEnemies(1800) // Detect enemies for 30 minuttes
+  Step 4
+    aGroup1.Move(600,400)
+    aGroup3.Move(600,100)
+  Step 5
+    aGroup1.Move(600,300)
+    aGroup3.Move(600,200)
+  Step 6
+    aGroup1.MoveAndDetect(600,250) //Move to location while detection range is increased (velocity should be decreased)
+    aGroup3.MoveAndDetect(600,250)
+    aGroup2.Wait(aGroup1.Step6 AND aGroup3.Step6)
+  Step 7
+    If NOT aGroup1.IsDead AND NOT aGroup3.IsDead
+      aGroup2.Move(600,250)
+    Else
+      aGroup2.Move(Base)
+    End If
+
+  Interrupts
+    If NOT allies.IsInCombat() AND allies.IsGettingShot()
+      allies.StopMovement()
+      allies.TryDetectEnemies(120)
+    End If
+
+    If allies.IsEnemyDetected()
+      allies.StopMovement()
+      allies.Engage(allies.enemy)
+    End If
+  End Interrupts
+
+End Simulation
+
+////////////////
+//Begin Program/
+////////////////
+
+Begin Program
+
+  Declare i as Integer
+  i = 0
+  For i To 10 Do
+    protectGroup2.Run()
+  End For
+
+  protectGroup2.Render(1)
+  // Render takes a time scale as input, and renders the simulation for the user to view
+
+End Program
