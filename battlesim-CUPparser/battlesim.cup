@@ -75,7 +75,7 @@ nonterminal ParamList         ParamList;
 nonterminal Program           Program;
 nonterminal StmtList          Stmts;
 nonterminal Stmt              Stmt;
-/*
+
 nonterminal SimulationList    Simulations;
 nonterminal Simulation        Simulation;
 nonterminal SimStepList       SimSteps;
@@ -124,11 +124,11 @@ precedence left ELSE;
 /* The grammar */
 start with Start;
 
-Start         ::= DclBlock:db /*Simulations:s*/ FunctionDcls:fds1 Program:p FunctionDcls:fds2   {: RESULT = new Start(db, /* s, */fds1, p, fds2, dbleft); :}
+Start         ::= DclBlock:db Simulations:s FunctionDcls:fds1 Program:p FunctionDcls:fds2   {: RESULT = new Start(db, s, fds1, p, fds2, dbleft); :}
               ;
 DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS EOL                              {: RESULT = new DclBlock(ss, ssleft); :}
               ;
-/*
+
 Simulations   ::= Simulations:ss Simulation:s                                                   {: RESULT = ss; ss.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimulationList(0); :}
               ;

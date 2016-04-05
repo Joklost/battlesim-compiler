@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         String path1 = "/home/joklost/git/P4-Code/Code_Examples/NewBattleSim_CodeExamples/new.bs";
-        String path = "/home/joklost/git/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs";
+        String path = "/home/pgug/Code/P4-Code/example-code/battlesim/new/new.bs";
         boolean parseSuccesful = true;
 
         Scanner scanner = null;

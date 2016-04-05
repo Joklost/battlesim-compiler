@@ -915,7 +915,7 @@ class CUP$Parser$actions {
 		int fds2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int fds2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		FunctionDclList fds2 = (FunctionDclList)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = new Start(db, /* s, */fds1, p, fds2, dbleft); 
+		 RESULT = new Start(db,  sl, fds1, p, fds2, dbleft);
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Start",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
