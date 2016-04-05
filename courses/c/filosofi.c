@@ -14,12 +14,12 @@ sem_t spoon[PHILOSOPHER_AMOUNT];
 sem_t room_size;
 
 int main(int argc, char const *argv[]) {
-
-  sem_init(&spoon[0], 0, 1);
-  sem_init(&spoon[1], 0, 1);
-  sem_init(&spoon[2], 0, 1);
-  sem_init(&spoon[3], 0, 1);
-  sem_init(&spoon[4], 0, 1);
+  
+  sem_init(&spoon[0],  0, 1);
+  sem_init(&spoon[1],  0, 1);
+  sem_init(&spoon[2],  0, 1);
+  sem_init(&spoon[3],  0, 1);
+  sem_init(&spoon[4],  0, 1);
   sem_init(&room_size, 0, 4);
 
   pthread_t threads[PHILOSOPHER_AMOUNT];
@@ -49,8 +49,7 @@ void *philosopher(void *arg) {
   input = *((int*) arg);
 
   while (1) {
-
-     sem_wait(&room_size);
+      sem_wait(&room_size);
       printf("Philosopher %d enters room,\n", input+1);
       sem_wait(&spoon[input]);
       sem_wait(&spoon[(input + 1) % 5]);
