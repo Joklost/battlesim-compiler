@@ -307,7 +307,7 @@ NestedId      ::= Identifier:id DOT NestedId:ni                                 
               |   Identifier:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifier1DArrayMember(id, e, ni, idleft); :}
               |   Identifier:id LBRACE Expression:e RBRACE                                      {: RESULT = new NestedIdentifier1DArray(id, e, idleft); :}
               |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifier2DArrayMember(id, e1, e2, ni, idleft); :}
-              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE                                      {: RESULT = new NestedIdentifier2DArray(id, e1, e2, idleft); :}
+              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE         {: RESULT = new NestedIdentifier2DArray(id, e1, e2, idleft); :}
               |   Identifier:id                                                                 {: RESULT = new NestedIdentifier(id, idleft); :}
               ;
 MultEOL       ::= MultEOL EOL
