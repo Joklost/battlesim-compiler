@@ -152,7 +152,7 @@ Param         ::= Identifier:id AS TypeId:ti                                    
 Params        ::= LPAREN:l RPAREN                                                               {: RESULT = new ParamList(lleft); :}
               |   LPAREN ParamList:pl RPAREN                                                    {: RESULT = pl; :}
               ;
-ParamList     ::= Param:p COMMA ParamList:pl                                                    {: RESULT = pl; pl.addElement(p); :}
+ParamList     ::= ParamList:pl COMMA Param:p                                                    {: RESULT = pl; pl.addElement(p); :}
               |   Param:p                                                                       {: RESULT = new ParamList(pleft); RESULT.addElement(p); :}
               ;
 Program       ::= BEGIN PROGRAM Stmts:ss END PROGRAM                                            {: RESULT = new Program(ss, ssleft); :}
