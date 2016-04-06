@@ -11,9 +11,8 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        String path1 = "/home/joklost/git/P4-Code/Code_Examples/NewBattleSim_CodeExamples/new.bs";
-        String path2 = "/home/joklost/git/P4-Code/Code_Examples/BattleSim_CodeExamples/BubbleSort.bs";
-        String path = "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs";
+        String path = "C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\new.bs";
+        System.out.println(path);
         boolean parseSuccesful = true;
 
         Scanner scanner = null;
