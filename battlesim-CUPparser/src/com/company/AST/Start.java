@@ -5,15 +5,15 @@ package com.company.AST;
  */
 public class Start extends ASTNode {
     public DclBlock dclBlock;
-    public SimulationList simulationList;
+    public SimBlock simBlock;
     public FunctionDclList functionDclList1;
     public Program program;
     public FunctionDclList functionDclList2;
 
-    public Start(DclBlock dcls, SimulationList s, FunctionDclList fd1, Program p, FunctionDclList fd2, int ln) {
+    public Start(DclBlock dcls, SimBlock sb, FunctionDclList fd1, Program p, FunctionDclList fd2, int ln) {
         super(ln);
         this.dclBlock = dcls;
-        this.simulationList = s;
+        this.simBlock = sb;
         this.functionDclList1 = fd1;
         this.program = p;
         this.functionDclList2 = fd2;

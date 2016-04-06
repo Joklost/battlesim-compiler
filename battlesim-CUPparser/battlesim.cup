@@ -55,7 +55,7 @@ terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 
 terminal EOL, DOWNTO, TO, THEN, VOID, OF;
 terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
-terminal SIMULATION, STEP, INTERRUPTS;
+terminal SIMULATIONS, SIMULATION, STEP, INTERRUPTS;
 terminal VECTOR, BARRIER;
 
 terminal Boolean BOOLEAN_LITERAL;
@@ -76,6 +76,7 @@ nonterminal Program           Program;
 nonterminal StmtList          Stmts;
 nonterminal Stmt              Stmt;
 
+nonterminal SimBlock          SimBlock;
 nonterminal SimulationList    Simulations;
 nonterminal Simulation        Simulation;
 nonterminal SimStepList       SimSteps;
@@ -124,22 +125,23 @@ precedence left ELSE;
 /* The grammar */
 start with Start;
 
-Start         ::= DclBlock:db Simulations:s FunctionDcls:fds1 Program:p FunctionDcls:fds2   {: RESULT = new Start(db, s, fds1, p, fds2, dbleft); :}
+Start         ::= DclBlock:db SimBlock:s FunctionDcls:fds1 Program:p FunctionDcls:fds2   {: RESULT = new Start(db, s, fds1, p, fds2, dbleft); :}
               ;
-DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS EOL                              {: RESULT = new DclBlock(ss, ssleft); :}
+DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS                               {: RESULT = new DclBlock(ss, ssleft); :}
               ;
-
+SimBlock      ::= BEGIN SIMULATIONS Simulations:s END SIMULATIONS
+              ;
 Simulations   ::= Simulations:ss Simulation:s                                                   {: RESULT = ss; ss.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimulationList(0); :}
               ;
-Simulation    ::= SIMULATION NestedId:ni SimSteps:sis Interrupts:is END SIMULATION MultEOL      {: RESULT = new Simulation(ni, sis, is, nileft); :}
+Simulation    ::= SIMULATION NestedId:ni SimSteps:sis Interrupts:is END SIMULATION       {: RESULT = new Simulation(ni, sis, is, nileft); :}
               ;
 SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimStepList(0); :}
               ;
-SimStep       ::= STEP INTEGER_LITERAL:i Stmts:ss MultEOL                                       {: RESULT = new SimStep(i.intValue, ss, ileft); :}
+SimStep       ::= STEP INTEGER_LITERAL:i Stmts:ss                                       {: RESULT = new SimStep(i.intValue, ss, ileft); :}
               ;
-Interrupts    ::= MultEOL INTERRUPTS Stmts:ss                                                   {: RESULT = new Interrupts(ss, ssleft); :}
+Interrupts    ::= INTERRUPTS Stmts:ss                                                   {: RESULT = new Interrupts(ss, ssleft); :}
               ;
 /**/
 FunctionDcls  ::= MultEOL                                                                       {: RESULT = new FunctionDclList(0); :}
