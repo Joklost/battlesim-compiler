@@ -93,6 +93,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Declarations"          { return symbol(Sym.DECLARATIONS); }
     "Barrier"               { return symbol(Sym.BARRIER); }
     "Vector"                { return symbol(Sym.VECTOR); }
+    "Simulations"           { return symbol(Sym.SIMULATIONS); }
 
     /* Boolean literals */
     "true"                  { return symbol(Sym.BOOLEAN_LITERAL, true); }

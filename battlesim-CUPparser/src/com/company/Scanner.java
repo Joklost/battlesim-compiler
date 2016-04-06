@@ -71,10 +71,11 @@ class Scanner implements java_cup.runtime.Scanner {
     "\1\104\4\10\1\105\11\10\1\106\1\107\1\110\1\10"+
     "\1\111\1\112\1\113\1\10\1\114\1\115\1\116\1\10"+
     "\1\117\1\120\1\10\1\121\1\122\1\123\1\10\1\124"+
-    "\2\10\1\125\4\10\1\126\1\10\1\127\1\10\1\130";
+    "\2\10\1\125\4\10\1\126\1\10\1\127\1\10\1\130"+
+    "\1\131";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[252];
+    int [] result = new int[253];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -130,10 +131,10 @@ class Scanner implements java_cup.runtime.Scanner {
     "\0\u0237\0\u0237\0\u0237\0\u289b\0\u0237\0\u0237\0\u0237\0\u28da"+
     "\0\u0237\0\u0237\0\u2919\0\u0237\0\u0237\0\u0237\0\u2958\0\u0237"+
     "\0\u2997\0\u29d6\0\u0237\0\u2a15\0\u2a54\0\u2a93\0\u2ad2\0\u0237"+
-    "\0\u2b11\0\u0237\0\u2b50\0\u0237";
+    "\0\u2b11\0\u2b50\0\u2b8f\0\u0237\0\u0237";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[252];
+    int [] result = new int[253];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -369,10 +370,12 @@ class Scanner implements java_cup.runtime.Scanner {
     "\12\0\2\14\1\0\6\14\1\372\34\14\11\0\2\14"+
     "\3\0\1\14\12\0\2\14\1\0\6\14\1\373\34\14"+
     "\11\0\2\14\3\0\1\14\12\0\2\14\1\0\27\14"+
-    "\1\374\13\14\11\0\2\14\3\0\1\14\3\0";
+    "\1\374\13\14\11\0\2\14\3\0\1\14\12\0\2\14"+
+    "\1\0\27\14\1\375\13\14\11\0\2\14\3\0\1\14"+
+    "\3\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[11151];
+    int [] result = new int[11214];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -413,10 +416,10 @@ class Scanner implements java_cup.runtime.Scanner {
     "\2\0\1\11\1\1\2\11\32\1\5\11\10\1\1\11"+
     "\2\1\1\11\1\1\1\11\1\1\1\0\2\11\2\0"+
     "\44\1\6\11\2\1\13\11\1\1\2\0\41\1\1\0"+
-    "\147\1";
+    "\150\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[252];
+    int [] result = new int[253];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -895,355 +898,359 @@ class Scanner implements java_cup.runtime.Scanner {
           case 1: 
             { throw new RuntimeException("Illegal character \""+yytext()+"\" at line "+yyline+", column "+yycolumn);
             }
-          case 89: break;
+          case 90: break;
           case 2: 
             { return symbol(Sym.EOL);
             }
-          case 90: break;
+          case 91: break;
           case 3: 
             { /* nothing happens here, maybe */
             }
-          case 91: break;
+          case 92: break;
           case 4: 
             { return symbol(Sym.DIV);
             }
-          case 92: break;
+          case 93: break;
           case 5: 
             { return symbol(Sym.MULT);
             }
-          case 93: break;
+          case 94: break;
           case 6: 
             { return symbol(Sym.INTEGER_LITERAL, new Integer(yytext()));
             }
-          case 94: break;
+          case 95: break;
           case 7: 
             { return symbol(Sym.DOT);
             }
-          case 95: break;
+          case 96: break;
           case 8: 
             { return symbol(Sym.IDENTIFIER, yytext());
             }
-          case 96: break;
+          case 97: break;
           case 9: 
             { return symbol(Sym.LPAREN);
             }
-          case 97: break;
+          case 98: break;
           case 10: 
             { return symbol(Sym.RPAREN);
             }
-          case 98: break;
+          case 99: break;
           case 11: 
             { return symbol(Sym.LBRACE);
             }
-          case 99: break;
+          case 100: break;
           case 12: 
             { return symbol(Sym.RBRACE);
             }
-          case 100: break;
+          case 101: break;
           case 13: 
             { return symbol(Sym.COMMA);
             }
-          case 101: break;
+          case 102: break;
           case 14: 
             { return symbol(Sym.EQ);
             }
-          case 102: break;
+          case 103: break;
           case 15: 
             { return symbol(Sym.PLUS);
             }
-          case 103: break;
+          case 104: break;
           case 16: 
             { return symbol(Sym.MINUS);
             }
-          case 104: break;
+          case 105: break;
           case 17: 
             { return symbol(Sym.MOD);
             }
-          case 105: break;
+          case 106: break;
           case 18: 
             { return symbol(Sym.GREATERTHAN);
             }
-          case 106: break;
+          case 107: break;
           case 19: 
             { return symbol(Sym.LESSTHAN);
             }
-          case 107: break;
+          case 108: break;
           case 20: 
             { yybegin(STRING); string.setLength(0);
             }
-          case 108: break;
+          case 109: break;
           case 21: 
             { string.append( yytext() );
             }
-          case 109: break;
+          case 110: break;
           case 22: 
             { throw new RuntimeException("Unterminated string at end of line");
             }
-          case 110: break;
+          case 111: break;
           case 23: 
             { yybegin(YYINITIAL); return symbol(Sym.STRING_LITERAL, string.toString());
             }
-          case 111: break;
+          case 112: break;
           case 24: 
             { return symbol(Sym.DIVEQ);
             }
-          case 112: break;
+          case 113: break;
           case 25: 
             { return symbol(Sym.MULTEQ);
             }
-          case 113: break;
+          case 114: break;
           case 26: 
             { return symbol(Sym.DECIMAL_LITERAL, new Double(yytext()));
             }
-          case 114: break;
+          case 115: break;
           case 27: 
             { return symbol(Sym.OF);
             }
-          case 115: break;
+          case 116: break;
           case 28: 
             { return symbol(Sym.AS);
             }
-          case 116: break;
+          case 117: break;
           case 29: 
             { return symbol(Sym.IF);
             }
-          case 117: break;
+          case 118: break;
           case 30: 
             { return symbol(Sym.IN);
             }
-          case 118: break;
+          case 119: break;
           case 31: 
             { return symbol(Sym.DO);
             }
-          case 119: break;
+          case 120: break;
           case 32: 
             { return symbol(Sym.TO);
             }
-          case 120: break;
+          case 121: break;
           case 33: 
             { return symbol(Sym.EQUALS);
             }
-          case 121: break;
+          case 122: break;
           case 34: 
             { return symbol(Sym.PLUSEQ);
             }
-          case 122: break;
+          case 123: break;
           case 35: 
             { return symbol(Sym.PLUSPLUS);
             }
-          case 123: break;
+          case 124: break;
           case 36: 
             { return symbol(Sym.MINUSEQ);
             }
-          case 124: break;
+          case 125: break;
           case 37: 
             { return symbol(Sym.MINUSMINUS);
             }
-          case 125: break;
+          case 126: break;
           case 38: 
             { return symbol(Sym.MODEQ);
             }
-          case 126: break;
+          case 127: break;
           case 39: 
             { return symbol(Sym.OR);
             }
-          case 127: break;
+          case 128: break;
           case 40: 
             { return symbol(Sym.GREATERTHANEQUALS);
             }
-          case 128: break;
+          case 129: break;
           case 41: 
             { return symbol(Sym.LESSTHANEQUALS);
             }
-          case 129: break;
+          case 130: break;
           case 42: 
             { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\"");
             }
-          case 130: break;
+          case 131: break;
           case 43: 
             { string.append( '\\' );
             }
-          case 131: break;
+          case 132: break;
           case 44: 
             { string.append( '\n' );
             }
-          case 132: break;
+          case 133: break;
           case 45: 
             { string.append( '\f' );
             }
-          case 133: break;
+          case 134: break;
           case 46: 
             { string.append( '\r' );
             }
-          case 134: break;
+          case 135: break;
           case 47: 
             { string.append( '\t' );
             }
-          case 135: break;
+          case 136: break;
           case 48: 
             { string.append( '\"' );
             }
-          case 136: break;
+          case 137: break;
           case 49: 
             { string.append( '\b' );
             }
-          case 137: break;
+          case 138: break;
           case 50: 
             { string.append( '\'' );
             }
-          case 138: break;
+          case 139: break;
           case 51: 
             { return symbol(Sym.FOR);
             }
-          case 139: break;
+          case 140: break;
           case 52: 
             { return symbol(Sym.END);
             }
-          case 140: break;
+          case 141: break;
           case 53: 
             { return symbol(Sym.NOT);
             }
-          case 141: break;
+          case 142: break;
           case 54: 
             { return symbol(Sym.AND);
             }
-          case 142: break;
+          case 143: break;
           case 55: 
             { return symbol(Sym.BOOLEAN_LITERAL, true);
             }
-          case 143: break;
+          case 144: break;
           case 56: 
             { return symbol(Sym.ELSE);
             }
-          case 144: break;
+          case 145: break;
           case 57: 
             { return symbol(Sym.STEP);
             }
-          case 145: break;
+          case 146: break;
           case 58: 
             { return symbol(Sym.LIST);
             }
-          case 146: break;
+          case 147: break;
           case 59: 
             { return symbol(Sym.NULL_LITERAL);
             }
-          case 147: break;
+          case 148: break;
           case 60: 
             { return symbol(Sym.CASE);
             }
-          case 148: break;
+          case 149: break;
           case 61: 
             { return symbol(Sym.THEN);
             }
-          case 149: break;
+          case 150: break;
           case 62: 
             { return symbol(Sym.VOID);
             }
-          case 150: break;
+          case 151: break;
           case 63: 
             { return symbol(Sym.BEGIN);
             }
-          case 151: break;
+          case 152: break;
           case 64: 
             { return symbol(Sym.BOOLEAN_LITERAL, false);
             }
-          case 152: break;
+          case 153: break;
           case 65: 
             { return symbol(Sym.WHILE);
             }
-          case 153: break;
+          case 154: break;
           case 66: 
             { return symbol(Sym.FORCE);
             }
-          case 154: break;
+          case 155: break;
           case 67: 
             { return symbol(Sym.COORD);
             }
-          case 155: break;
+          case 156: break;
           case 68: 
             { return symbol(Sym.GROUP);
             }
-          case 156: break;
+          case 157: break;
           case 69: 
             { return symbol(Sym.DOWNTO);
             }
-          case 157: break;
+          case 158: break;
           case 70: 
             { return symbol(Sym.STRING);
             }
-          case 158: break;
+          case 159: break;
           case 71: 
             { return symbol(Sym.SWITCH);
             }
-          case 159: break;
+          case 160: break;
           case 72: 
             { return symbol(Sym.RETURN);
             }
-          case 160: break;
+          case 161: break;
           case 73: 
             { return symbol(Sym.VECTOR);
             }
-          case 161: break;
+          case 162: break;
           case 74: 
             { return symbol(Sym.BOOLEAN);
             }
-          case 162: break;
+          case 163: break;
           case 75: 
             { return symbol(Sym.BARRIER);
             }
-          case 163: break;
+          case 164: break;
           case 76: 
             { return symbol(Sym.INTEGER);
             }
-          case 164: break;
+          case 165: break;
           case 77: 
             { return symbol(Sym.DEFAULT);
             }
-          case 165: break;
+          case 166: break;
           case 78: 
             { return symbol(Sym.DECLARE);
             }
-          case 166: break;
+          case 167: break;
           case 79: 
             { return symbol(Sym.DECIMAL);
             }
-          case 167: break;
+          case 168: break;
           case 80: 
             { return symbol(Sym.FOREACH);
             }
-          case 168: break;
+          case 169: break;
           case 81: 
             { return symbol(Sym.PLATOON);
             }
-          case 169: break;
+          case 170: break;
           case 82: 
             { return symbol(Sym.PROGRAM);
             }
-          case 170: break;
+          case 171: break;
           case 83: 
             { return symbol(Sym.SOLDIER);
             }
-          case 171: break;
+          case 172: break;
           case 84: 
             { return symbol(Sym.TERRAIN);
             }
-          case 172: break;
+          case 173: break;
           case 85: 
             { return symbol(Sym.FUNCTION);
             }
-          case 173: break;
+          case 174: break;
           case 86: 
             { return symbol(Sym.INTERRUPTS);
             }
-          case 174: break;
+          case 175: break;
           case 87: 
             { return symbol(Sym.SIMULATION);
             }
-          case 175: break;
+          case 176: break;
           case 88: 
+            { return symbol(Sym.SIMULATIONS);
+            }
+          case 177: break;
+          case 89: 
             { return symbol(Sym.DECLARATIONS);
             }
-          case 176: break;
+          case 178: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
