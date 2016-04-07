@@ -27,7 +27,7 @@ public class Main {
 
         try {
             for (String path : paths) {
-                System.out.println(path);
+                System.out.println(path + "\n");
                 scanner = new Scanner(new java.io.FileReader(path));
                 parser = new Parser(scanner);
                 startNode = (Start)parser.parse().value;

@@ -9,6 +9,8 @@ public class PrettyPrint extends Visitor implements VisitorInterface {
     private int indentLevel;
 
     public PrettyPrint() {
+        System.out.println("Pretty Printing:");
+        System.out.println("----------------\n");
         indentLevel = 0;
     }
 
