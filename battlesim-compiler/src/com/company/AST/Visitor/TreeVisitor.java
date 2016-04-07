@@ -5,7 +5,7 @@ import com.company.AST.*;
 /**
  * Created by joklost on 03-04-16.
  */
-public class TreeVisitor extends Visitor implements IVisitor {
+public class TreeVisitor extends Visitor implements VisitorInterface {
     private int indentLevel;
 
     public TreeVisitor() {

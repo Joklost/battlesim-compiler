@@ -5,7 +5,7 @@ import com.company.AST.*;
 /**
  * Created by joklost on 03-04-16.
  */
-public interface IVisitor {
+public interface VisitorInterface {
 
     void visit(Start s);
     void visit(DclBlock db);
