@@ -9,7 +9,9 @@ Begin Declarations
   a.Add(17)
 End Declarations
 
+Declare Simulations
 
+End Declare Simulations
 
 Function Void BubbleSort(a as List of Integer)
   Declare n as Integer

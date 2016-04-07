@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.AST.Start;
 import com.company.AST.Terrain;
+import com.company.AST.Visitor.PrettyPrint;
 import com.company.AST.Visitor.TreeVisitor;
 import java_cup.runtime.Symbol;
 
@@ -12,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
         String[] paths = {
-                "/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
+                "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
                 //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\new.bs",
         };
 
@@ -22,6 +23,7 @@ public class Main {
         Parser parser = null;
         Start startNode = null;
         TreeVisitor treeVisitor = new TreeVisitor();
+        PrettyPrint prettyPrint = new PrettyPrint();
 
         try {
             for (String path : paths) {
@@ -29,7 +31,7 @@ public class Main {
                 scanner = new Scanner(new java.io.FileReader(path));
                 parser = new Parser(scanner);
                 startNode = (Start)parser.parse().value;
-                startNode.accept(treeVisitor);
+                startNode.accept(prettyPrint);
             }
 
 

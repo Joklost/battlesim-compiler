@@ -215,7 +215,7 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   Expression:e1 GREATERTHAN Expression:e2                                       {: RESULT = new GreaterThanExpr(e1, e2, e1left); :}
               |   Expression:e1 LESSTHANEQUALS Expression:e2                                    {: RESULT = new LessThanEqualsExpr(e1, e2, e1left); :}
               |   Expression:e1 GREATERTHANEQUALS Expression:e2                                 {: RESULT = new GreaterThanEqualsExpr(e1, e2, e1left); :}
-              |   LPAREN Expression:e RPAREN                                                    {: RESULT = e; :}
+              |   LPAREN Expression:e RPAREN /* KAN IKKE PRETTY PRINTES */                      {: RESULT = e; :}
               |   LPAREN Expression:e1 COMMA Expression:e2 RPAREN /* coord */                   {: RESULT = new CoordExpr(e1, e2, e1left); :}
               |   NOT:not Expression:e                                                          {: RESULT = new NotExpr(e, notleft); :}
               |   MINUS:min Expression:e                                                        {: RESULT = new UnMinusExpr(e, minleft); :} %prec UMINUS
@@ -232,8 +232,8 @@ AssignOp      ::= EQ:eq                                                         
               |   MULTEQ:eq                                                                     {: RESULT = new MultEqualsOp(eqleft); :}
               |   DIVEQ:eq                                                                      {: RESULT = new DivEqualsOp(eqleft); :}
               ;
-FunctionCall  ::= NestedId:ni Arguments:arg                                                     {: RESULT = new FunctionCall(ni, arg, nileft); :}
-              ;
+FunctionCall  ::= NestedId:ni Arguments:arg  /* der kan godt være lidt problems her */          {: RESULT = new FunctionCall(ni, arg, nileft); :}
+              ;         /* kan være id[](args). rettes senere, eller? */
 Arguments     ::= LPAREN:l RPAREN                                                               {: RESULT = new ArgumentList(lleft); :}
               |   LPAREN ArgumentList:al RPAREN                                                 {: RESULT = al; :}
               ;

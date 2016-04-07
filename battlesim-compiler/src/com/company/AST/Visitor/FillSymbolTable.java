@@ -5,19 +5,37 @@ import com.company.AST.*;
 /**
  * Created by joklost on 07-04-16.
  */
-public class SymbolTableVisitor extends Visitor implements VisitorInterface {
+public class FillSymbolTable extends Visitor implements VisitorInterface {
 
 
     public void visit(Start s) {
+        s.dclBlock.accept(this);
+        s.simBlock.accept(this);
+
+        for (int i = 0; i < s.functionDclList1.size(); i++) {
+            s.functionDclList1.elementAt(i).accept(this);
+        }
+
+        s.program.accept(this);
+
+        for (int i = 0; i < s.functionDclList1.size(); i++) {
+            s.functionDclList1.elementAt(i).accept(this);
+        }
 
     }
 
     public void visit(DclBlock db) {
 
+
+        for (int i = 0; i < db.stmtLists.size(); i++) {
+            db.stmtLists.elementAt(i).accept(this);
+        }
     }
 
     public void visit(SimBlock s) {
-
+        for (int i = 0; i < s.simulationList.size(); i++) {
+            s.simulationList.elementAt(i).accept(this);
+        }
     }
 
     public void visit(SimStep s) {
