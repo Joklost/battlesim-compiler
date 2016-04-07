@@ -841,7 +841,7 @@ public class Parser extends java_cup.runtime.lr_parser {
     java_cup.runtime.lr_parser parser,
     java.util.Stack            stack,
     int                        top)
-    throws Exception
+    throws java.lang.Exception
   {
     /* call code in generated class */
     return action_obj.CUP$Parser$do_action(act_num, parser, stack, top);
@@ -861,7 +861,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 
   /** Scan to get the next Symbol. */
   public java_cup.runtime.Symbol scan()
-    throws Exception
+    throws java.lang.Exception
     {
  /*token_num++; */return s.next_token(); 
     }
@@ -916,7 +916,7 @@ class CUP$Parser$actions {
     java_cup.runtime.lr_parser CUP$Parser$parser,
     java.util.Stack            CUP$Parser$stack,
     int                        CUP$Parser$top)
-    throws Exception
+    throws java.lang.Exception
     {
       /* Symbol object for return from actions */
       java_cup.runtime.Symbol CUP$Parser$result;
@@ -3001,7 +3001,7 @@ class CUP$Parser$actions {
     java_cup.runtime.lr_parser CUP$Parser$parser,
     java.util.Stack            CUP$Parser$stack,
     int                        CUP$Parser$top)
-    throws Exception
+    throws java.lang.Exception
     {
               return CUP$Parser$do_action_part00000000(
                                CUP$Parser$act_num,
