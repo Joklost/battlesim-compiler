@@ -73,51 +73,62 @@ End Declarations
 /////////////////////////////
 //Declaration of Simulations/
 /////////////////////////////
+Declare Simulations
+  Simulation protectGroup2
+    Step 1
+      allies.Move(30,250)
+      enemies.Move(950,250)
+    Step 2
+      allies.Move(250,250)
+      enemies.Move(600,250)
+    Step 3
+      //Group 1 and 3 starts moving to flanking positions
+      aGroup1.Move(550,400)
+      aGroup2.Move(300,250)
+      aGroup3.Move(550,100) n
+      enemies.DetectEnemies(1800) // Detect enemies for 30 minuttes
+    Step 4
+      aGroup1.Move(600,400)
+      aGroup3.Move(600,100)
+    Step 5
+      aGroup1.Move(600,300)
+      aGroup3.Move(600,200)
+    Step 6
+      aGroup1.MoveAndDetect(600,250) //Move to location while detection range is increased
+      aGroup3.MoveAndDetect(600,250)
+      aGroup2.Wait(aGroup1.Step6 AND aGroup3.Step6)
+    Step 7
+      If NOT aGroup1.IsDead AND NOT aGroup3.IsDead
+        aGroup2.Move(600,250)
+      Else
+        aGroup2.Move(Base)
+      End If
 
-Simulation protectGroup2
-  Step 1
-    allies.Move(30,250)
-    enemies.Move(950,250)
-  Step 2
-    allies.Move(250,250)
-    enemies.Move(600,250)
-  Step 3
-    //Group 1 and 3 starts moving to flanking positions
-    aGroup1.Move(550,400)
-    aGroup2.Move(300,250)
-    aGroup3.Move(550,100)
-    enemies.DetectEnemies(1800) // Detect enemies for 30 minuttes
-  Step 4
-    aGroup1.Move(600,400)
-    aGroup3.Move(600,100)
-  Step 5
-    aGroup1.Move(600,300)
-    aGroup3.Move(600,200)
-  Step 6
-    aGroup1.MoveAndDetect(600,250) //Move to location while detection range is increased (velocity should be decreased)
-    aGroup3.MoveAndDetect(600,250)
-    aGroup2.Wait(aGroup1.Step6 AND aGroup3.Step6)
-  Step 7
-    If NOT aGroup1.IsDead AND NOT aGroup3.IsDead
-      aGroup2.Move(600,250)
-    Else
-      aGroup2.Move(Base)
-    End If
+    Interrupts
+      //allies
+      If NOT allies.IsInCombat() AND allies.IsGettingShot()
+        allies.StopMovement()
+        allies.TryDetectEnemies(120)
+      End If
 
-  Interrupts
-    If NOT allies.IsInCombat() AND allies.IsGettingShot()
-      allies.StopMovement()
-      allies.TryDetectEnemies(120)
-    End If
+      If allies.IsEnemyDetected()
+        allies.StopMovement()
+        allies.Engage(allies.enemy)
+      End If
+      //enemies
+      If NOT enemies.IsInCombat() AND enemies.IsGettingShot() Then
+        enemies.StopMovement()
+        enemies.DetectEnemies(120)
+      End If
 
-    If allies.IsEnemyDetected()
-      allies.StopMovement()
-      allies.Engage(allies.enemy)
-    End If
-  End Interrupts
+      If enemies.IsEnemyDetected() Then
+        enemies.StopMovement()
+        enemies.Engage(enemies.enemy)
+      End If
+    End Interrupts
 
-End Simulation
-
+  End protectGroup2
+End Simulations
 ////////////////
 //Begin Program/
 ////////////////
