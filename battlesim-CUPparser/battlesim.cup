@@ -216,6 +216,7 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   Expression:e1 LESSTHANEQUALS Expression:e2                                    {: RESULT = new LessThanEqualsExpr(e1, e2, e1left); :}
               |   Expression:e1 GREATERTHANEQUALS Expression:e2                                 {: RESULT = new GreaterThanEqualsExpr(e1, e2, e1left); :}
               |   LPAREN Expression:e RPAREN                                                    {: RESULT = e; :}
+              |   LPAREN Expression:e1 COMMA Expression:e2 RPAREN /* coord */                   {: RESULT = new CoordExpr(e1, e2, e1left); :}
               |   NOT:not Expression:e                                                          {: RESULT = new NotExpr(e, notleft); :}
               |   MINUS:min Expression:e                                                        {: RESULT = new UnMinusExpr(e, minleft); :} %prec UMINUS
               |   Expression:e PLUSPLUS                                                         {: RESULT = new PlusPlusExpr(e, eleft); :}
@@ -223,7 +224,6 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   FunctionCall:fc                                                               {: RESULT = new FunctionCallExpr(fc, fcleft); :}
               |   NestedId:nid                                                                  {: RESULT = new NestedIdExpr(nid, nidleft); :}
               |   StdLiteral:std                                                                {: RESULT = new StdLiteralExpr(std, stdleft); :}
-              |   LPAREN Expression:e1 COMMA Expression:e2 RPAREN // coord                      {: RESULT = new CoordExpr(e1, e2, e1left); :}
               ;
 AssignOp      ::= EQ:eq                                                                         {: RESULT = new EqualsOp(eqleft); :}
               |   PLUSEQ:eq                                                                     {: RESULT = new PlusEqualsOp(eqleft); :}

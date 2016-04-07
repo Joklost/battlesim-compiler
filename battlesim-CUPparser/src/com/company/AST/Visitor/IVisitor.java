@@ -27,6 +27,8 @@ public interface IVisitor {
     void visit(SwitchStmt ss);
     void visit(SwitchCase sc);
     void visit(SwitchDef sd);
+    void visit(ReturnExpr r);
+    void visit(Return r);
     void visit(FunctionCallStmt fcs);
     void visit(PlusExpr pe);
     void visit(MinusExpr me);
