@@ -130,7 +130,6 @@ Declare Simulations
       Else
         general.Move(Base)
       End If
-    Step 8
 
     Interrupts
       If NOT allies.IsInCombat() AND allies.IsGettingShot() Then
