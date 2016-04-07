@@ -1,4 +1,3 @@
-
 Simulation protectTheGeneral allies
   Step 1
     allies.Move(30,250)
@@ -30,7 +29,7 @@ Simulation protectTheGeneral allies
   Interrupts
     If NOT allies.IsInCombat() AND allies.IsGettingShot() Then
       allies.StopMovement()
-      allies.TryDetectEnemies(120)
+      allies.DetectEnemies(120)
     End If
 
     If allies.IsEnemyDetected() Then
@@ -39,9 +38,11 @@ Simulation protectTheGeneral allies
     End If
 End protectTheGeneral allies
 
+
 Simulation protectTheGeneral2 allies
 
 End protectTheGeneral2 allies
+
 
 Simulation defend enemies
   Step 1
@@ -49,12 +50,12 @@ Simulation defend enemies
   Step 2
     enemies.Move(600,250)
   Step 3
-    enemies.TryDetectEnemies(30 * 60)
+    enemies.DetectEnemies(30 * 60)
 
   Interrupts
     If NOT enemies.IsInCombat() AND enemies.IsGettingShot() Then
       enemies.StopMovement()
-      enemies.TryDetectEnemies(120)
+      enemies.DetectEnemies(120)
     End If
 
     If enemies.IsEnemyDetected() Then
@@ -66,5 +67,7 @@ Simulation protectTheGeneral enemies
 Begin Program
   RunSimulation(protectTheGeneral, defend);
   RunSimulation(protectTheGeneral2, defend);
+
+  Render(protectTheGeneral, defend);
 
 End Program
