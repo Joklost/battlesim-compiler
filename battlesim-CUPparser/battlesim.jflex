@@ -140,7 +140,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     {LineTerminator}        { return symbol(Sym.EOL); }
 
     /* Ignore these */
-    {Comment}               { /* nothing happens here, maybe */ }
+    {Comment}               { return symbol(Sym.EOL); }
     {WhiteSpace}            { /* nothing happens here, maybe */ }
 
 

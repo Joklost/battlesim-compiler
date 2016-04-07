@@ -6,6 +6,7 @@ import com.company.AST.*;
  * Created by joklost on 03-04-16.
  */
 public interface IVisitor {
+
     void visit(Start s);
     void visit(DclBlock db);
     void visit(SimBlock s);
