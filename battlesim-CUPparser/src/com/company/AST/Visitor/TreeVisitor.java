@@ -24,6 +24,11 @@ public class TreeVisitor extends Visitor implements IVisitor {
         indentLevel++;
         s.dclBlock.accept(this);
 
+        println("Declare simulations:");
+        indentLevel++;
+        s.simBlock.accept(this);
+        indentLevel--;
+
         FunctionDclList functionDcls = s.functionDclList1;
         for (int i = 0; i < functionDcls.size(); i++) {
             functionDcls.elementAt(i).accept(this);
@@ -43,10 +48,65 @@ public class TreeVisitor extends Visitor implements IVisitor {
         indentLevel++;
         println("Body of DclBlock:");
 
+        indentLevel++;
         StmtList stmts = db.stmtLists;
         for (int i = 0; i < stmts.size(); i++) {
             stmts.elementAt(i).accept(this);
         }
+        indentLevel--;
+
+        indentLevel--;
+    }
+
+    public void visit(SimBlock s) {
+        println("Simulation block:");
+        indentLevel++;
+
+        println("Simulations:");
+        indentLevel++;
+        SimulationList sl = s.simulationList;
+        for (int i = 0; i < sl.size(); i++) {
+            sl.elementAt(i).accept(this);
+        }
+        indentLevel--;
+
+        indentLevel--;
+    }
+
+    public void visit(SimStep s) {
+
+    }
+
+    public void visit(Simulation s) {
+        println("Simulation " + s.identifier1.identifier + ":");
+        indentLevel++;
+
+        println("Simulation steps:");
+        indentLevel++;
+
+        SimStepList sl = s.simStepList;
+        for (int i = 0; i < sl.size(); i++) {
+            sl.elementAt(i).accept(this);
+        }
+        indentLevel--;
+
+        println("Interrupts:");
+        indentLevel++;
+        s.interrupts.accept(this);
+        indentLevel--;
+
+        indentLevel--;
+    }
+
+    public void visit(Interrupts is) {
+        println("Interrupt statements:");
+        indentLevel++;
+
+        StmtList sl = is.stmtList;
+        for (int i = 0; i < sl.size(); i++) {
+            sl.elementAt(i).accept(this);
+        }
+
         indentLevel--;
     }
 
@@ -126,6 +186,8 @@ public class TreeVisitor extends Visitor implements IVisitor {
         indentLevel++;
         as.assignOp.accept(this);
         indentLevel--;
+        int ln = as.getLineNumber();
+        println("LINE NUMBER: " + ln);
 
         println("Expression:");
         indentLevel++;
@@ -790,6 +852,10 @@ public class TreeVisitor extends Visitor implements IVisitor {
         println("Void");
     }
 
+    public void visit(Terrain t) {
+        println("Terrain");
+    }
+
     public void visit(Decimal1DArray d) {
         println("Decimal 1d array");
     }
@@ -832,6 +898,10 @@ public class TreeVisitor extends Visitor implements IVisitor {
 
     public void visit(Integer1DArray i) {
         println("Integer 1d array");
+    }
+
+    public void visit(Terrain1DArray t) {
+        println("Terrain 1d array");
     }
 
     public void visit(Decimal2DArray d) {
@@ -878,6 +948,10 @@ public class TreeVisitor extends Visitor implements IVisitor {
         println("Integer 2d array");
     }
 
+    public void visit(Terrain2DArray t) {
+        println("Terrain 2d array");
+    }
+
     public void visit(DecimalList d) {
         println("List of Decimal");
     }
@@ -920,6 +994,10 @@ public class TreeVisitor extends Visitor implements IVisitor {
 
     public void visit(IntegerList i) {
         println("List of Integer");
+    }
+
+    public void visit(TerrainList t) {
+        println("List of Terrain");
     }
 
     public void visit(NestedIdentifierMember n) {

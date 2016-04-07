@@ -8,7 +8,7 @@ Begin Declarations
   //Declaration of Allies/
   ////////////////////////
   Declare aGroup1 as Group
-  aGroup1.coord = (20,30)
+  aGroup1.coord =   30
   aGroup1.soldiers = 6
   aGroup1.magazines = 24
 
@@ -67,138 +67,152 @@ Begin Declarations
 
 End Declarations
 
-Simulation simulation1
-  Step 1
-    enemies.Move(100,715)
-    allies.Move(320,900)
-  Step 2
-    enemies.TryDetectEnemies(1800) //Try to detect enemies for 30 minuttes
-    allies.Move(320,500)
-  Step 3
-    enemies.Move(100,960)
-    allies.Done()
-  Step 4
-    allies.Done()
 
-  Interrupts
-    If NOT allies.IsInCombat() AND allies.IsGettingShot()
-      allies.StopMovement()
-      allies.TryDetectEnemies(120)
-    End If
+Declare Simulations
 
-    If allies.IsEnemyDetected()
-      allies.StopMovement()
-      allies.Engage(allies.enemy)
-    End If
-End Simulation
+  Simulation simulation1
+    Step 1
+      enemies.Move(100,715)
+      allies.Move(320,900)
+    Step 2
+      enemies.TryDetectEnemies(1800)
+      //Try to detect enemies for 30 minuttes
+      allies.Move(320,500)
+    Step 3
+      enemies.Move(100,960)
+      allies.Done()
+    Step 4
+      allies.Done()
+
+    Interrupts
+
+      If NOT allies.IsInCombat() AND allies.IsGettingShot() Then
+        allies.StopMovement()
+        allies.TryDetectEnemies(120)
+      End If
+
+      If allies.IsEnemyDetected() Then
+        allies.StopMovement()
+        allies.Engage(allies.enemy)
+      End If
+
+  End simulation1
 
 
 
-Simulation protectTheGeneral
-  Step 1
-    allies.Move(30,250)
-    enemies.Move(950,250)
-  Step 2
-    allies.Move(250,250)
-    enemies.Move(600,250)
-  Step 3
+  Simulation protectTheGeneral
+    Step 1
+      allies.Move(30,250)
+      enemies.Move(950,250)
+    Step 2
+      allies.Move(250,250)
+      enemies.Move(600,250)
+    Step 3
+      //Group 1 and 3 starts moving to flanking positions
+      general.Move(300,250)
+      aGroup1.Move(550,400)
+      aGroup3.Move(550,100)
+      enemies.TryDetectEnemies(30 * 60)
+    Step 4
+      aGroup1.Move(600,400)
+      aGroup3.Move(600,100)
+    Step 5
+      aGroup1.Move(600,300)
+      aGroup3.Move(600,200)
+    Step 6
+      aGroup1.MoveAndDetect(600,250)
+      //Move to location while detection range is increased (velocity should be decreased)
+      aGroup3.MoveAndDetect(600,250)
+      general.Wait(aGroup1.Step6 AND aGroup3.Step6)
+    Step 7
+      If NOT aGroup1.IsDead AND NOT aGroup3.IsDead Then
+        general.Move(600,250)
+      Else
+        general.Move(Base)
+      End If
+    Step 8
+
+    Interrupts
+      If NOT allies.IsInCombat() AND allies.IsGettingShot() Then
+        allies.StopMovement()
+        allies.TryDetectEnemies(120)
+      End If
+
+      If allies.IsEnemyDetected() Then
+        allies.StopMovement()
+        allies.Engage(allies.enemy)
+      End If
+
+  End protectTheGeneral
+
+  Simulation clearTheAreaByFlanking
+    Step 1
+      allies.Move(30,250)
+    Step 2
+      allies.Move(250,250)
+    Step 3
+      //Group 1 and 3 starts moving to flanking positions
+      general.Move(300,250)
+      aGroup1.Move(550,400)
+      aGroup2.Move(550,100)
+    Step 4
+      aGroup1.Move(600,400)
+      aGroup2.Move(600,100)
+    Step 5
+      aGroup1.Move(600,300)
+      aGroup2.Move(600,200)
+    Step 6
+      aGroup1.MoveAndDetect(600,250)
+      //Move to location while detection range is increased (velocity should be decreased)
+      aGroup3.MoveAndDetect(600,250)
+      general.Wait(aGroup1.Step6 AND aGroup3.Step6)
+    Step 7
+      aGroup1.TryDetectEnemies(10 * 60)
+      aGroup2.TryDetectEnemies(10 * 60)
+      general.Wait(aGroup1.Step7 AND aGroup2.Step7)
+      //Steps are necesarry to do this
+    Step 8
+      If NOT aGroup1.IsDead AND NOT aGroup2.IsDead Then
+        general.Move(600,250)
+      Else
+        general.Move(Base)
+      End If
+
+    Interrupts
+  End clearTheAreaByFlanking
+
+  Simulation flanking
+    Step 1
+      allies.Move(30,250)
+      enemies.Move(950,250)
+    Step 2
+      allies.Move(250,250)
+      enemies.Move(600,250)
+    Step 3
     //Group 1 and 3 starts moving to flanking positions
-    general.Move(300,250)
-    aGroup1.Move(550,400)
-    aGroup3.Move(550,100)
-    enemies.TryDetectEnemies(30m)
-  Step 4
-    aGroup1.Move(600,400)
-    aGroup3.Move(600,100)
-  Step 5
-    aGroup1.Move(600,300)
-    aGroup3.Move(600,200)
-  Step 6
-    aGroup1.MoveAndDetect(600,250) //Move to location while detection range is increased (velocity should be decreased)
-    aGroup3.MoveAndDetect(600,250)
-    general.Wait(aGroup1.Step6 AND aGroup3.Step6)
-  Step 7
-    If NOT aGroup1.IsDead AND NOT aGroup3.IsDead
-      general.Move(600,250)
-    Else
-      general.Move(Base)
-    End If
-  Step 8
+      aGroup1.Move(550,400)
+      aGroup2.Move(300,250)
+      aGroup3.Move(550,100)
+      enemies.TryDetectEnemies(30 * 60)
+    Step 4
+      aGroup1.Move(600,400)
+      aGroup2.Wait(aGroup1.Step4 AND aGroup3.Step4)
+      aGroup3.Move(600,100)
+    Step 5
+      aGroup1.Move(600,300)
+      aGroup2.Move(500,250)
+      aGroup3.Move(600,200)
+    Step 6
+      aGroup1.TryDetectEnemies(2 * 60)
+      aGroup2.TryDetectEnemies(2 * 60)
+      aGroup3.TryDetectEnemies(2 * 60)
+    Step 7
+      allies.Done()
+      enemies.Done()
+    Interrupts
+  End flanking
+End Declare Simulations
 
-  Interrupts
-    If NOT allies.IsInCombat() AND allies.IsGettingShot()
-      allies.StopMovement()
-      allies.TryDetectEnemies(120)
-    End If
-
-    If allies.IsEnemyDetected()
-      allies.StopMovement()
-      allies.Engage(allies.enemy)
-    End If
-  End Interrupts
-
-End Simulation
-
-Simulation clearTheAreaByFlanking
-  Step 1
-    allies.Move(30,250)
-  Step 2
-    allies.Move(250,250)
-  Step 3 //Group 1 and 3 starts moving to flanking positions
-    general.Move(300,250)
-    aGroup1.Move(550,400)
-    aGroup2.Move(550,100)
-  Step 4
-    aGroup1.Move(600,400)
-    aGroup2.Move(600,100)
-  Step 5
-    aGroup1.Move(600,300)
-    aGroup2.Move(600,200)
-  Step 6
-    aGroup1.MoveAndDetect(600,250) //Move to location while detection range is increased (velocity should be decreased)
-    aGroup3.MoveAndDetect(600,250)
-    general.Wait(aGroup1.Step6 AND aGroup3.Step6)
-  Step 7
-    aGroup1.TryDetectEnemies(10m)
-    aGroup2.TryDetectEnemies(10m)
-    general.Wait(aGroup1.Step7 AND aGroup2.Step7) //Steps are necesarry to do this
-  Step 8
-    If NOT aGroup1.IsDead AND NOT aGroup2.IsDead
-      general.Move(600,250)
-    Else
-      general.Move(Base)
-    End If
-
-End Simulation
-
-Simulation flanking
-  Step 1
-    allies.Move(30,250)
-    enemies.Move(950,250)
-  Step 2
-    allies.Move(250,250)
-    enemies.Move(600,250)
-  Step 3 //Group 1 and 3 starts moving to flanking positions
-    aGroup1.Move(550,400)
-    aGroup2.Move(300,250)
-    aGroup3.Move(550,100)
-    enemies.TryDetectEnemies(30m)
-  Step 4
-    aGroup1.Move(600,400)
-    aGroup2.Wait(aGroup1.Step4 AND aGroup3.Step4)
-    aGroup3.Move(600,100)
-  Step 5
-    aGroup1.Move(600,300)
-    aGroup2.Move(500,250)
-    aGroup3.Move(600,200)
-  Step 6
-    aGroup1.TryDetectEnemies(2m)
-    aGroup2.TryDetectEnemies(2m)
-    aGroup3.TryDetectEnemies(2m)
-  Step 7
-    allies.Done()
-    enemies.Done()
-End Simulation
 
 Begin Program
 

@@ -8,6 +8,10 @@ import com.company.AST.*;
 public interface IVisitor {
     void visit(Start s);
     void visit(DclBlock db);
+    void visit(SimBlock s);
+    void visit(SimStep s);
+    void visit(Simulation s);
+    void visit(Interrupts is);
     void visit(FunctionDcl fd);
     void visit(Param p);
     void visit(Program p);
@@ -72,6 +76,7 @@ public interface IVisitor {
     void visit(VectorT v);
     void visit(IntegerT i);
     void visit(VoidT v);
+    void visit(Terrain t);
     void visit(Decimal1DArray d);
     void visit(String1DArray s);
     void visit(Boolean1DArray b);
@@ -83,6 +88,7 @@ public interface IVisitor {
     void visit(Barrier1DArray b);
     void visit(Vector1DArray v);
     void visit(Integer1DArray i);
+    void visit(Terrain1DArray t);
     void visit(Decimal2DArray d);
     void visit(String2DArray s);
     void visit(Boolean2DArray b);
@@ -94,6 +100,7 @@ public interface IVisitor {
     void visit(Barrier2DArray b);
     void visit(Vector2DArray v);
     void visit(Integer2DArray i);
+    void visit(Terrain2DArray t);
     void visit(DecimalList d);
     void visit(StringList s);
     void visit(BooleanList b);
@@ -105,6 +112,7 @@ public interface IVisitor {
     void visit(BarrierList b);
     void visit(VectorList v);
     void visit(IntegerList i);
+    void visit(TerrainList t);
     void visit(NestedIdentifierMember n);
     void visit(NestedIdentifier1DArray n);
     void visit(NestedIdentifier1DArrayMember n);
