@@ -24,10 +24,7 @@ public class TreeVisitor extends Visitor implements IVisitor {
         indentLevel++;
         s.dclBlock.accept(this);
 
-        println("Declare simulations:");
-        indentLevel++;
         s.simBlock.accept(this);
-        indentLevel--;
 
         FunctionDclList functionDcls = s.functionDclList1;
         for (int i = 0; i < functionDcls.size(); i++) {
@@ -46,20 +43,18 @@ public class TreeVisitor extends Visitor implements IVisitor {
     public void visit(DclBlock db) {
         println("DclBlock:");
         indentLevel++;
-        println("Body of DclBlock:");
 
-        indentLevel++;
+
         StmtList stmts = db.stmtLists;
         for (int i = 0; i < stmts.size(); i++) {
             stmts.elementAt(i).accept(this);
         }
-        indentLevel--;
 
         indentLevel--;
     }
 
     public void visit(SimBlock s) {
-        println("Simulation block:");
+        println("Declare simulations:");
         indentLevel++;
 
         println("Simulations:");
@@ -74,7 +69,18 @@ public class TreeVisitor extends Visitor implements IVisitor {
     }
 
     public void visit(SimStep s) {
+        println("Simulation step " + s.stepNumber + ":");
+        indentLevel++;
 
+        println("Statements:");
+        indentLevel++;
+        StmtList sl = s.stmtList;
+        for (int i = 0; i < sl.size(); i++) {
+            sl.elementAt(i).accept(this);
+        }
+        indentLevel--;
+
+        indentLevel--;
     }
 
     public void visit(Simulation s) {
@@ -179,15 +185,18 @@ public class TreeVisitor extends Visitor implements IVisitor {
     }
 
     public void visit(Assignment as) {
-        println("Assignment of variable " + as.nestedIdentifier.identifier.identifier + " to value:");
+        println("Assignment of expression to variable:");
         indentLevel++;
+
+        println("Variable id:");
+        indentLevel++;
+        as.nestedIdentifier.accept(this);
+        indentLevel--;
 
         println("Operator:");
         indentLevel++;
         as.assignOp.accept(this);
         indentLevel--;
-        int ln = as.getLineNumber();
-        println("LINE NUMBER: " + ln);
 
         println("Expression:");
         indentLevel++;
@@ -394,6 +403,19 @@ public class TreeVisitor extends Visitor implements IVisitor {
         indentLevel--;
 
         indentLevel--;
+    }
+
+    public void visit(ReturnExpr r) {
+        println("Return with expression:");
+        indentLevel++;
+
+        r.expression.accept(this);
+
+        indentLevel--;
+    }
+
+    public void visit(Return r) {
+        println("Return");
     }
 
     public void visit(FunctionCallStmt fcs) {
@@ -685,13 +707,10 @@ public class TreeVisitor extends Visitor implements IVisitor {
     }
 
     public void visit(StdLiteralExpr se) {
-        println("Expression standard literal:");
-        indentLevel++;
-
         println("Standard literal:");
         indentLevel++;
+
         se.stdLiteral.accept(this);
-        indentLevel--;
 
         indentLevel--;
     }
@@ -714,32 +733,37 @@ public class TreeVisitor extends Visitor implements IVisitor {
     }
 
     public void visit(EqualsOp eo) {
-        println("Equals");
+        println("=");
     }
 
     public void visit(PlusEqualsOp po) {
-        println("Plus equals");
+        println("+=");
     }
 
     public void visit(MinusEqualsOp mo) {
-        println("Minus equals");
+        println("-=");
     }
 
     public void visit(ModEqualsOp mo) {
-        println("Modulo equals");
+        println("%=");
     }
 
     public void visit(MultEqualsOp mo) {
-        println("Multiplication equals");
+        println("*=");
     }
 
     public void visit(DivEqualsOp deo) {
-        println("Division equals");
+        println("/=");
     }
 
     public void visit(FunctionCall f) {
-        println("Function call for function " + f.nestedIdentifier.identifier.identifier + ":");
+        println("Function call for function:");
         indentLevel++;
+
+        println("Function id:");
+        indentLevel++;
+        f.nestedIdentifier.accept(this);
+        indentLevel--;
 
         println("Argument list:");
         indentLevel++;
@@ -785,19 +809,19 @@ public class TreeVisitor extends Visitor implements IVisitor {
     }
 
     public void visit(DecimalLiteral dl) {
-        println("Decimal literal: " + dl.decimal);
+        println("Decimal literal, value: " + dl.decimal);
     }
 
     public void visit(StringLiteral sl) {
-        println("String literal: " + sl.string);
+        println("String literal, value: " + sl.string);
     }
 
     public void visit(BooleanLiteral bl) {
-        println("Boolean literal: " + bl.bool);
+        println("Boolean literal, value: " + bl.bool);
     }
 
     public void visit(IntegerLiteral il) {
-        println("Integer literal: " + il.integer);
+        println("Integer literal, value: " + il.integer);
     }
 
     public void visit(NullLiteral nl) {
@@ -1001,10 +1025,15 @@ public class TreeVisitor extends Visitor implements IVisitor {
     }
 
     public void visit(NestedIdentifierMember n) {
-        println("Nested id with member for " + n.identifier.identifier + ":");
+        println("Nested id with member:");
         indentLevel++;
 
-        println("Member nested identifier:");
+        println("Parent id:");
+        indentLevel++;
+        n.identifier.accept(this);
+        indentLevel--;
+
+        println("Child id:");
         indentLevel++;
         n.nestedIdentifier.accept(this);
         indentLevel--;
@@ -1081,11 +1110,11 @@ public class TreeVisitor extends Visitor implements IVisitor {
     }
 
     public void visit(NestedIdentifier n) {
-        println("Nested identifier " + n.identifier.identifier);
+        println("'" + n.identifier.identifier + "'");
     }
 
     public void visit(Identifier id) {
-        println("Identifier " + id.identifier);
+        println("'" + id.identifier + "'");
     }
 
 
