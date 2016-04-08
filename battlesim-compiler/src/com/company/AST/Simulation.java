@@ -14,6 +14,7 @@ public class Simulation extends ASTNode {
     public Simulation(Identifier id, NestedIdentifier ni, SimStepList ssl, Interrupts inter, int ln) {
         super(ln);
         this.identifier = id;
+        this.nestedIdentifier = ni;
         this.simStepList = ssl;
         this.interrupts = inter;
     }

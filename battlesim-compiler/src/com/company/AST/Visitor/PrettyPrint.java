@@ -65,26 +65,66 @@ public class PrettyPrint extends Visitor implements VisitorInterface {
         println("End Declarations");
     }
 
-    ///// VENTER LIGE MED DEM
     public void visit(SimBlock s) {
+        println("Declare Simulations");
+        indentLevel++;
 
+        for (int i = 0; i < s.simulationList.size(); i++) {
+            s.simulationList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+
+        println("End Declare Simulations");
     }
 
     public void visit(SimStep s) {
+        printIndent();
+        print("Step " + s.stepNumber.intValue() + "\n");
+
+        indentLevel++;
+
+        for (int i = 0; i < s.stmtList.size(); i++) {
+            s.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
 
     }
 
     public void visit(Simulation s) {
+        printIndent();
+        print("Simulation ");
+        s.identifier.accept(this);
+        print(" ");
+        s.nestedIdentifier.accept(this);
+        print("\n");
 
+        indentLevel++;
+
+        for (int i = 0; i < s.simStepList.size(); i++) {
+            s.simStepList.elementAt(i).accept(this);
+        }
+
+        s.interrupts.accept(this);
+
+        indentLevel--;
+
+        println("End Simulation");
     }
 
     public void visit(Interrupts is) {
+        println("Interrupts");
 
+        indentLevel++;
+
+        for (int i = 0; i < is.stmtList.size(); i++) {
+            is.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
     }
 
-    ///// VENTER LIGE MED DEM
-
-    
     public void visit(FunctionDcl fd) {
         printIndent();
         print("Function ");
@@ -95,7 +135,7 @@ public class PrettyPrint extends Visitor implements VisitorInterface {
 
         for (int i = 0; i < fd.paramList.size(); i++) {
             fd.paramList.elementAt(i).accept(this);
-            if (i > 0 && i != fd.paramList.size()) print(", ");
+            if (i < fd.paramList.size() - 1) print(", ");
         }
 
         print(")\n");
@@ -134,7 +174,7 @@ public class PrettyPrint extends Visitor implements VisitorInterface {
 
         for (int i = 0; i < ds.dclIdList.size(); i++) {
             ds.dclIdList.elementAt(i).accept(this);
-            if (i > 0 && i != ds.dclIdList.size()) print(", ");
+            if (i < ds.dclIdList.size() - 1) print(", ");
         }
 
         print(" as ");
@@ -438,27 +478,27 @@ public class PrettyPrint extends Visitor implements VisitorInterface {
     }
 
     public void visit(EqualsOp eo) {
-        print("=");
+        print(" = ");
     }
 
     public void visit(PlusEqualsOp po) {
-        print("+=");
+        print(" += ");
     }
 
     public void visit(MinusEqualsOp mo) {
-        print("-=");
+        print(" -= ");
     }
 
     public void visit(ModEqualsOp mo) {
-        print("%=");
+        print(" %= ");
     }
 
     public void visit(MultEqualsOp mo) {
-        print("*=");
+        print(" *= ");
     }
 
     public void visit(DivEqualsOp deo) {
-        print("/=");
+        print(" /= ");
     }
 
     public void visit(FunctionCall f) {
@@ -467,7 +507,7 @@ public class PrettyPrint extends Visitor implements VisitorInterface {
 
         for (int i = 0; i < f.argumentList.size(); i++) {
             f.argumentList.elementAt(i).accept(this);
-            if (i > 0 && i != f.argumentList.size()) print(", ");
+            if (i < f.argumentList.size() - 1) print(", ");
         }
 
         print(")");

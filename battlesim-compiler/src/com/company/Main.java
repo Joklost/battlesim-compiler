@@ -13,9 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
         String[] paths = {
-                "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
+                //"/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
                 //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\new.bs",
-                //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
+                "/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
         };
 
         boolean parseSuccesful = true;
