@@ -37,6 +37,7 @@ public class PrettyPrint extends Visitor implements VisitorInterface {
         s.dclBlock.accept(this);
         println("");
 
+
         s.simBlock.accept(this);
         println("");
 
