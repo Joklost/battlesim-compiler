@@ -5,16 +5,15 @@ package com.company.AST;
  */
 public class Simulation extends ASTNode {
 
-    public Identifier identifier1;
-    public Identifier identifier2;
+    public Identifier identifier;
+    public NestedIdentifier nestedIdentifier;
     public SimStepList simStepList;
     public Interrupts interrupts;
 
 
-    public Simulation(Identifier i1, Identifier i2, SimStepList ssl, Interrupts inter, int ln) {
+    public Simulation(Identifier id, NestedIdentifier ni, SimStepList ssl, Interrupts inter, int ln) {
         super(ln);
-        this.identifier1 = i1;
-        this.identifier2 = i2;
+        this.identifier = id;
         this.simStepList = ssl;
         this.interrupts = inter;
     }

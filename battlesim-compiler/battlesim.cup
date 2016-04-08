@@ -129,12 +129,12 @@ Start         ::= DclBlock:db SimBlock:s FunctionDcls:fds1 Program:p FunctionDcl
               ;
 DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               ;
-SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS                               {: RESULT = new SimBlock(s, sleft); :}
+SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS                     {: RESULT = new SimBlock(s, sleft); :}
               ;
 Simulations   ::= Simulations:ss Simulation:s                                                   {: RESULT = ss; ss.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimulationList(0); :}
               ;
-Simulation    ::= SIMULATION Identifier:ni1 SimSteps:sis Interrupts:is END Identifier:ni2 MultEOL           {: RESULT = new Simulation(ni1, ni2, sis, is, ni1left); :}
+Simulation    ::= SIMULATION Identifier:id NestedId:ni SimSteps:sis Interrupts:is END SIMULATION MultEOL           {: RESULT = new Simulation(id, ni, sis, is, idleft); :}
               ;
 SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimStepList(0); :}

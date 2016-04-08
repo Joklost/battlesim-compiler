@@ -84,7 +84,7 @@ public class TreeVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Simulation s) {
-        println("Simulation " + s.identifier1.identifier + ":");
+        println("Simulation " + s.identifier.identifier + ":");
         indentLevel++;
 
         println("Simulation steps:");

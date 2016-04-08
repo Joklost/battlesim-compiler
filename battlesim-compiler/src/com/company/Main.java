@@ -15,13 +15,14 @@ public class Main {
         String[] paths = {
                 "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
                 //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\new.bs",
+                //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
         };
 
         boolean parseSuccesful = true;
 
-        Scanner scanner = null;
-        Parser parser = null;
-        Start startNode = null;
+        Scanner scanner;
+        Parser parser;
+        Start startNode;
         TreeVisitor treeVisitor = new TreeVisitor();
         PrettyPrint prettyPrint = new PrettyPrint();
 

@@ -70,7 +70,7 @@ End Declarations
 
 Declare Simulations
 
-  Simulation simulation1
+  Simulation simulation1 allies
     Step 1
       enemies.Move(100,715)
       allies.Move(320,900)
@@ -96,11 +96,11 @@ Declare Simulations
         allies.Engage(allies.enemy)
       End If
 
-  End simulation1
+  End Simulation
 
 
 
-  Simulation protectTheGeneral
+  Simulation protectTheGeneral enemies
     Step 1
       allies.Move(30,250)
       enemies.Move(950,250)
@@ -142,9 +142,9 @@ Declare Simulations
         allies.Engage(allies.enemy)
       End If
 
-  End protectTheGeneral
+  End Simulation
 
-  Simulation clearTheAreaByFlanking
+  Simulation clearTheAreaByFlanking allies
     Step 1
       allies.Move(30,250)
     Step 2
@@ -178,9 +178,9 @@ Declare Simulations
       End If
 
     Interrupts
-  End clearTheAreaByFlanking
+  End Simulation
 
-  Simulation flanking
+  Simulation flanking allies
     Step 1
       allies.Move(30,250)
       enemies.Move(950,250)
@@ -209,7 +209,7 @@ Declare Simulations
       allies.Done()
       enemies.Done()
     Interrupts
-  End flanking
+  End Simulation
 End Declare Simulations
 
 
