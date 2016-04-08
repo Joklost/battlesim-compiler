@@ -13,9 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
         String[] paths = {
-                //"/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
+                "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
                 //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\new.bs",
-                "/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
+                //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
         };
 
         boolean parseSuccesful = true;
@@ -23,15 +23,19 @@ public class Main {
         Scanner scanner;
         Parser parser;
         Start startNode;
+
         TreeVisitor treeVisitor = new TreeVisitor();
         PrettyPrint prettyPrint = new PrettyPrint();
 
         try {
             for (String path : paths) {
                 System.out.println(path + "\n");
+
                 scanner = new Scanner(new java.io.FileReader(path));
                 parser = new Parser(scanner);
+
                 startNode = (Start)parser.parse().value;
+
                 startNode.accept(prettyPrint);
             }
 
@@ -45,43 +49,4 @@ public class Main {
             System.out.println("The input has been succesfully parsed!");
         }
     }
-
-/*
-    public static void ScanFile(String path) {
-        Scanner scanner = null;
-        int tNum = 1;
-        try {
-            scanner = new Scanner(new java.io.FileReader(path));
-            while (!scanner.getZZAtEOF()) {
-
-                java_cup.runtime.Symbol sym = scanner.next_token();
-
-
-                System.out.print(tNum + ":");
-                if (sym.value != null) {
-                    System.out.print(sym.value + " ");
-                } else {
-                    System.out.print(Sym.terminalNames[sym.sym] + " ");
-                }
-
-                if (sym.sym == Sym.EOL) {
-                    System.out.println();
-                }
-
-                tNum++;
-
-
-            }
-
-        } catch (java.io.FileNotFoundException e) {
-            System.out.println("File not found : \"" + path + "\"");
-        } catch (java.io.IOException e) {
-            System.out.println("IO error scanning file \"" + path + "\"");
-            System.out.println(e);
-        } catch (Exception e) {
-            System.out.println("Unexpected exception:");
-            e.printStackTrace();
-        }
-    }
-    */
 }

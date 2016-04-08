@@ -125,7 +125,7 @@ precedence left ELSE;
 /* The grammar */
 start with Start;
 
-Start         ::= DclBlock:db SimBlock:s FunctionDcls:fds1 Program:p FunctionDcls:fds2   {: RESULT = new Start(db, s, fds1, p, fds2, dbleft); :}
+Start         ::= DclBlock:db SimBlock:s FunctionDcls:fds1 Program:p FunctionDcls:fds2          {: RESULT = new Start(db, s, fds1, p, fds2, dbleft); :}
               ;
 DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               ;
@@ -134,7 +134,7 @@ SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS     
 Simulations   ::= Simulations:ss Simulation:s                                                   {: RESULT = ss; ss.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimulationList(0); :}
               ;
-Simulation    ::= SIMULATION Identifier:id NestedId:ni SimSteps:sis Interrupts:is END SIMULATION MultEOL           {: RESULT = new Simulation(id, ni, sis, is, idleft); :}
+Simulation    ::= SIMULATION Identifier:id NestedId:ni SimSteps:sis Interrupts:is END SIMULATION MultEOL {: RESULT = new Simulation(id, ni, sis, is, idleft); :}
               ;
 SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimStepList(0); :}
@@ -308,7 +308,7 @@ TypeId        ::= DECIMAL:d                                                     
 NestedId      ::= Identifier:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
               |   Identifier:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifier1DArrayMember(id, e, ni, idleft); :}
               |   Identifier:id LBRACE Expression:e RBRACE                                      {: RESULT = new NestedIdentifier1DArray(id, e, idleft); :}
-              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifier2DArrayMember(id, e1, e2, ni, idleft); :}
+              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE DOT NestedId:ni {: RESULT = new NestedIdentifier2DArrayMember(id, e1, e2, ni, idleft); :}
               |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE         {: RESULT = new NestedIdentifier2DArray(id, e1, e2, idleft); :}
               |   Identifier:id                                                                 {: RESULT = new NestedIdentifier(id, idleft); :}
               ;
