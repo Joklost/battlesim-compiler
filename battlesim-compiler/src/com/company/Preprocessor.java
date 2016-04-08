@@ -13,16 +13,20 @@ public class Preprocessor {
     private PrintWriter writer;
     public String inputPath;
     public String outputPath;
+    public String directory;
 
 
     public Preprocessor(String path){
         this.inputPath = path;
-        this.outputPath = path.substring(0, path.lastIndexOf('\\') + 1) + "tmp" + path.substring(path.lastIndexOf('\\') + 1);
+        if(inputPath.contains("/"))
+            this.directory = path.substring(0, path.lastIndexOf('/') + 1);
+        else
+            this.directory = path.substring(0, path.lastIndexOf('\\') + 1);
+
+        this.outputPath = directory + "tmp" + inputPath.substring(directory.length());
     }
 
     public String MakeFile(){
-
-
         //make output file ready
         try {
             writer = new PrintWriter(outputPath);
@@ -35,9 +39,13 @@ public class Preprocessor {
             String line;
             while ((line = br.readLine()) != null) {
 
-                //handle include
+                //include handling
                 if(line.startsWith("#include")){
-                    String includeFile = inputPath.substring(0, inputPath.lastIndexOf('\\') + 1) + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
+                    String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
+                    if(includeFile == inputPath){
+                        throw new Error("Unable to include file " + includeFile + " in " + inputPath);
+                    }
+
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.ReadIncludeFile());
                     for(int i = 0; i < includeLines.size(); i++)
@@ -59,8 +67,8 @@ public class Preprocessor {
             String line;
             while ((line = br.readLine()) != null) {
                 if(line.startsWith("#include")){
-                    String includefile = line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"') - 1);
-                    Preprocessor includePP = new Preprocessor(includefile);
+                    String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"') - 1);
+                    Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.ReadIncludeFile());
                     for(int i = 0; i <= includeLines.size(); i++)
                         lines.add(includeLines.get(i));
