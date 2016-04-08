@@ -13,13 +13,14 @@ public class Main {
 
     public static void main(String[] args) {
         String[] paths = {
-                "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
-                //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\new.bs",
+                //"/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
+                "C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\simWithIncludes\\simWithInclude.bs",
                 //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
         };
 
         boolean parseSuccesful = true;
 
+        Preprocessor preprocessor;
         Scanner scanner;
         Parser parser;
         Start startNode;
@@ -29,10 +30,13 @@ public class Main {
         try {
             for (String path : paths) {
                 System.out.println(path + "\n");
-                scanner = new Scanner(new java.io.FileReader(path));
+                preprocessor = new Preprocessor(path);
+                String newPath = preprocessor.MakeFile();
+                scanner = new Scanner(new java.io.FileReader(newPath));
                 parser = new Parser(scanner);
                 startNode = (Start)parser.parse().value;
                 startNode.accept(prettyPrint);
+                preprocessor.RemoveOutFile();
             }
 
 
