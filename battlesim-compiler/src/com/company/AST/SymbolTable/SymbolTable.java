@@ -23,7 +23,7 @@ public class SymbolTable {
 
     private SymbolTable() {}
 
-    public static void enter(String str, ASTNode def) {
+    public static void enterSymbol(String str, ASTNode def) {
         Bucket buck;
         int i = hash(str);
 
@@ -42,7 +42,7 @@ public class SymbolTable {
         scopeList.setSlink(buck);
     }
 
-    public static ASTNode find(String str) {
+    public static ASTNode retrieveSymbol(String str) {
         int i = hash(str);
         Bucket buck = symbolTable[i];
 
@@ -57,7 +57,7 @@ public class SymbolTable {
         return null;
     }
 
-    public static boolean alreadyDeclared(String str) {
+    public static boolean declaredLocally(String str) {
         int i = hash(str);
         Bucket buck = symbolTable[i];
 
