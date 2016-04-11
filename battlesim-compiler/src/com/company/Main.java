@@ -1,13 +1,8 @@
 package com.company;
 
-import com.company.AST.Start;
-import com.company.AST.Terrain;
+import com.company.AST.Nodes.Start;
 import com.company.AST.Visitor.PrettyPrint;
 import com.company.AST.Visitor.TreeVisitor;
-import java_cup.runtime.Symbol;
-
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 public class Main {
 

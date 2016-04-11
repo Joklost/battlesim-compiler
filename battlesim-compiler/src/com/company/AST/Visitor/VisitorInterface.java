@@ -1,6 +1,6 @@
 package com.company.AST.Visitor;
 
-import com.company.AST.*;
+import com.company.AST.Nodes.*;
 
 /**
  * Created by joklost on 03-04-16.
