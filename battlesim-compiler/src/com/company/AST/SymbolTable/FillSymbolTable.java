@@ -1,6 +1,8 @@
-package com.company.AST.Visitor;
+package com.company.AST.SymbolTable;
 
 import com.company.AST.*;
+import com.company.AST.Visitor.Visitor;
+import com.company.AST.Visitor.VisitorInterface;
 
 /**
  * Created by joklost on 07-04-16.
