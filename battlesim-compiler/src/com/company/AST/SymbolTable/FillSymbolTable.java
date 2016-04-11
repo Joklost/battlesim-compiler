@@ -3,6 +3,7 @@ package com.company.AST.SymbolTable;
 import com.company.AST.Nodes.*;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
+import com.company.Sym;
 
 /**
  * Created by joklost on 07-04-16.
@@ -27,17 +28,17 @@ public class FillSymbolTable extends Visitor implements VisitorInterface {
     }
 
     public void visit(DclBlock db) {
-
-
         for (int i = 0; i < db.stmtLists.size(); i++) {
             db.stmtLists.elementAt(i).accept(this);
         }
     }
 
     public void visit(SimBlock s) {
+        SymbolTable.openScope();
         for (int i = 0; i < s.simulationList.size(); i++) {
             s.simulationList.elementAt(i).accept(this);
         }
+        SymbolTable.closeScope();
     }
 
     public void visit(SimStep s) {
@@ -45,7 +46,12 @@ public class FillSymbolTable extends Visitor implements VisitorInterface {
     }
 
     public void visit(Simulation s) {
+        SymbolTable.openScope();
 
+
+        SymbolTable.enterSymbol(s.identifier.identifier, s);
+
+        SymbolTable.closeScope();
     }
 
     public void visit(Interrupts is) {
