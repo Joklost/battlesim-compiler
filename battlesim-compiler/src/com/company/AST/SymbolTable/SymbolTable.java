@@ -1,9 +1,6 @@
 package com.company.AST.SymbolTable;
 
-import com.company.AST.ASTNode;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.company.AST.Nodes.ASTNode;
 
 /**
  * Created by joklost on 11-04-16.

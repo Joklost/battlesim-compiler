@@ -1,6 +1,6 @@
 package com.company.AST.SymbolTable;
 
-import com.company.AST.*;
+import com.company.AST.Nodes.*;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
 
