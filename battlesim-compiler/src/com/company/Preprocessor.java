@@ -65,16 +65,22 @@ public class Preprocessor {
         List<String> lines = new ArrayList<String>();
         try(BufferedReader br = new BufferedReader(new FileReader(inputPath))) {
             String line;
+            int lineNum = 1;
             while ((line = br.readLine()) != null) {
                 if(line.startsWith("#include")){
-                    String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"') - 1);
+                    System.out.println("Illegal include inside " + inputPath + " on line " + lineNum + ". Include the file inside your main file. Continuing with including the file.");
+                    //Uncomment if you want include files to be able to include other files
+                    /*String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"') - 1);
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.ReadIncludeFile());
                     for(int i = 0; i <= includeLines.size(); i++)
-                        lines.add(includeLines.get(i));
+                        lines.add(includeLines.get(i)); */
+                    lineNum++;
                 }
-                else
+                else{
                     lines.add(line);
+                    lineNum++;
+                }
             }
         } catch (IOException e){
             e.printStackTrace();
