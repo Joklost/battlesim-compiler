@@ -2,10 +2,19 @@ package com.company.AST.Visitor;
 
 import com.company.AST.Nodes.*;
 
+import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
+import static com.company.AST.Visitor.Types.errorType;
+
 /**
  * Created by joklost on 12-04-16.
  */
 public class SemanticsVisitor extends Visitor implements VisitorInterface {
+
+    private void errorNoDeclaration(String var) {
+        System.err.println(var + " has not been declared.");
+    }
+
+
     public void defaultVisit(Object o) {
 
     }
@@ -468,6 +477,17 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(NestedIdentifier n) {
 
+    }
+
+    public void visit(Identifier id) {
+        id.type = errorType;
+        id.def = null;
+        ASTNode newDef = retrieveSymbol(id.name);
+        if (newDef == null) {
+            errorNoDeclaration(id.name);
+        } else {
+
+        }
     }
 
 }
