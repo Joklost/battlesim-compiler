@@ -122,5 +122,4 @@ public interface VisitorInterface {
     void visit(NestedIdentifier2DArray n);
     void visit(NestedIdentifier2DArrayMember n);
     void visit(NestedIdentifier n);
-    void visit(Identifier id);
 }
