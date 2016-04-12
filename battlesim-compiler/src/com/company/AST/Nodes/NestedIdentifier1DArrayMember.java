@@ -7,7 +7,7 @@ public class NestedIdentifier1DArrayMember extends NestedIdentifier {
     public Expression expression;
     public NestedIdentifier nestedIdentifier;
 
-    public NestedIdentifier1DArrayMember(String id, Expression e, NestedIdentifier nid, int ln) {
+    public NestedIdentifier1DArrayMember(Identifier id, Expression e, NestedIdentifier nid, int ln) {
         super(id, ln);
         this.expression = e;
         this.nestedIdentifier = nid;

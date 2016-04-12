@@ -5,8 +5,7 @@ import com.company.AST.Nodes.*;
 /**
  * Created by joklost on 07-04-16.
  */
-public class PrettyPrintVisitor
-        extends Visitor implements VisitorInterface {
+public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     private int indentLevel;
 
     public PrettyPrintVisitor() {
@@ -96,7 +95,9 @@ public class PrettyPrintVisitor
 
     public void visit(Simulation s) {
         printIndent();
-        print("Simulation " + s.identifier + " ");
+        print("Simulation ");
+        s.identifier.accept(this);
+        print(" ");
         s.nestedIdentifier.accept(this);
         print("\n");
 
@@ -129,7 +130,9 @@ public class PrettyPrintVisitor
         printIndent();
         print("Function ");
         fd.returnType.accept(this);
-        print(" " + fd.identifier + "(");
+        print(" ");
+        fd.identifier.accept(this);
+        print("(");
 
         for (int i = 0; i < fd.paramList.size(); i++) {
             fd.paramList.elementAt(i).accept(this);
@@ -149,7 +152,8 @@ public class PrettyPrintVisitor
     }
 
     public void visit(Param p) {
-        print(p.identifier + " as ");
+        p.identifier.accept(this);
+        print(" as ");
         p.typeIdentifier.accept(this);
     }
 
@@ -170,7 +174,7 @@ public class PrettyPrintVisitor
         print("Declare ");
 
         for (int i = 0; i < ds.dclIdList.size(); i++) {
-            print(ds.dclIdList.elementAt(i));
+            ds.dclIdList.elementAt(i).accept(this);
             if (i < ds.dclIdList.size() - 1) print(", ");
         }
 
@@ -211,7 +215,9 @@ public class PrettyPrintVisitor
         printIndent();
         print("Foreach ");
         fes.typeIdentifier.accept(this);
-        print(" " + fes.identifier + " in ");
+        print(" ");
+        fes.identifier.accept(this);
+        print(" in ");
         fes.nestedIdentifier.accept(this);
         print(" Do\n");
 
@@ -741,25 +747,29 @@ public class PrettyPrintVisitor
     }
 
     public void visit(NestedIdentifierMember n) {
-        print(n.identifier + ".");
+        n.identifier.accept(this);
+        print(".");
         n.nestedIdentifier.accept(this);
     }
 
     public void visit(NestedIdentifier1DArray n) {
-        print(n.identifier + "[");
+        n.identifier.accept(this);
+        print("[");
         n.expression.accept(this);
         print("]");
     }
 
     public void visit(NestedIdentifier1DArrayMember n) {
-        print(n.identifier + "[");
+        n.identifier.accept(this);
+        print("[");
         n.expression.accept(this);
         print("].");
         n.nestedIdentifier.accept(this);
     }
 
     public void visit(NestedIdentifier2DArray n) {
-        print(n.identifier + "[");
+        n.identifier.accept(this);
+        print("[");
         n.expression1.accept(this);
         print("][");
         n.expression2.accept(this);
@@ -767,7 +777,8 @@ public class PrettyPrintVisitor
     }
 
     public void visit(NestedIdentifier2DArrayMember n) {
-        print(n.identifier + "[");
+        n.identifier.accept(this);
+        print("[");
         n.expression1.accept(this);
         print("][");
         n.expression2.accept(this);
@@ -776,7 +787,10 @@ public class PrettyPrintVisitor
     }
 
     public void visit(NestedIdentifier n) {
-        print(n.identifier);
+        n.identifier.accept(this);
     }
 
+    public void visit(Identifier id) {
+        print(id.name);
+    }
 }

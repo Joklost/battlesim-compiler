@@ -1,7 +1,7 @@
 package com.company;
 
 import java_cup.runtime.*;
-import com.company.AST.*;
+import com.company.AST.Nodes.*;
 
 parser code {:
     //private int token_num = 0;
@@ -105,8 +105,9 @@ nonterminal Variable          Variable;
 nonterminal StdLiteral        StdLiteral;
 nonterminal DclIdList         DclIds;
 nonterminal TypeIdentifier    TypeId;
+nonterminal TypeName          TypeName;
 nonterminal NestedIdentifier  NestedId;
-nonterminal String            Identifier;
+nonterminal Identifier        Identifier;
 
 nonterminal MultEOL;
 
@@ -255,7 +256,12 @@ StdLiteral    ::= DECIMAL_LITERAL:dec                                           
 DclIds        ::= DclIds:ds COMMA Identifier:id                                                 {: RESULT = ds; ds.addElement(id); :}
               |   Identifier:id                                                                 {: RESULT = new DclIdList(0); RESULT.addElement(id); :}
               ;
-TypeId        ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
+TypeId        ::= TypeName:tn LBRACE Expression:e RBRACE                                        {: RESULT = new Array1D(tn, e, tnleft); :}
+              |   TypeName:tn LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE           {: RESULT = new Array2D(tn, e1, e2, tnleft); :}
+              |   LIST OF TypeName:tn                                                           {: RESULT = new ListOf(tn, tnleft); :}
+              |   TypeName:tn                                                                   {: RESULT = tn; :}
+              ;
+TypeName      ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
               |   STRING:s                                                                      {: RESULT = new StringT(sleft); :}
               |   BOOLEAN:b                                                                     {: RESULT = new BooleanT(bleft); :}
               |   TERRAIN:t                                                                     {: RESULT = new Terrain(tleft); :}
@@ -267,42 +273,6 @@ TypeId        ::= DECIMAL:d                                                     
               |   BARRIER:b                                                                     {: RESULT = new Barrier(bleft); :}
               |   VECTOR:v                                                                      {: RESULT = new VectorT(vleft); :}
               |   INTEGER:i                                                                     {: RESULT = new IntegerT(ileft); :}
-              |   DECIMAL:d LBRACE Expression:e RBRACE                                          {: RESULT = new Decimal1DArray(e, dleft); :}
-              |   STRING:s LBRACE Expression:e RBRACE                                           {: RESULT = new String1DArray(e, sleft); :}
-              |   BOOLEAN:b LBRACE Expression:e RBRACE                                          {: RESULT = new Boolean1DArray(e, bleft); :}
-              |   TERRAIN:t LBRACE Expression:e RBRACE                                          {: RESULT = new Terrain1DArray(e, tleft); :}
-              |   GROUP:g LBRACE Expression:e RBRACE                                            {: RESULT = new Group1DArray(e, gleft); :}
-              |   PLATOON:p LBRACE Expression:e RBRACE                                          {: RESULT = new Platoon1DArray(e, pleft); :}
-              |   FORCE:f LBRACE Expression:e RBRACE                                            {: RESULT = new Force1DArray(e, fleft); :}
-              |   COORD:c LBRACE Expression:e RBRACE                                            {: RESULT = new Coord1DArray(e, cleft); :}
-              |   SOLDIER:s LBRACE Expression:e RBRACE                                          {: RESULT = new Soldier1DArray(e, sleft); :}
-              |   BARRIER:b LBRACE Expression:e RBRACE                                          {: RESULT = new Barrier1DArray(e, bleft); :}
-              |   VECTOR:v LBRACE Expression:e RBRACE                                           {: RESULT = new Vector1DArray(e, vleft); :}
-              |   INTEGER:v LBRACE Expression:e RBRACE                                          {: RESULT = new Integer1DArray(e, vleft); :}
-              |   DECIMAL:d LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Decimal2DArray(e1, e2, dleft); :}
-              |   STRING:s LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE              {: RESULT = new String2DArray(e1, e2, sleft); :}
-              |   BOOLEAN:b LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Boolean2DArray(e1, e2, bleft); :}
-              |   TERRAIN:t LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Terrain2DArray(e1, e2, tleft); :}
-              |   GROUP:g LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE               {: RESULT = new Group2DArray(e1, e2, gleft); :}
-              |   PLATOON:p LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Platoon2DArray(e1, e2, pleft); :}
-              |   FORCE:f LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE               {: RESULT = new Force2DArray(e1, e2, fleft); :}
-              |   COORD:c LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE               {: RESULT = new Coord2DArray(e1, e2, cleft); :}
-              |   SOLDIER:s LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Soldier2DArray(e1, e2, sleft); :}
-              |   BARRIER:b LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Barrier2DArray(e1, e2, bleft); :}
-              |   VECTOR:v LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE              {: RESULT = new Vector2DArray(e1, e2, vleft); :}
-              |   INTEGER:i LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE             {: RESULT = new Integer2DArray(e1, e2, ileft); :}
-              |   LIST OF DECIMAL:d                                                             {: RESULT = new DecimalList(dleft); :}
-              |   LIST OF STRING:s                                                              {: RESULT = new StringList(sleft); :}
-              |   LIST OF BOOLEAN:b                                                             {: RESULT = new BooleanList(bleft); :}
-              |   LIST OF TERRAIN:t                                                             {: RESULT = new TerrainList(tleft); :}
-              |   LIST OF GROUP:g                                                               {: RESULT = new GroupList(gleft); :}
-              |   LIST OF PLATOON:p                                                             {: RESULT = new PlatoonList(pleft); :}
-              |   LIST OF FORCE:f                                                               {: RESULT = new ForceList(fleft); :}
-              |   LIST OF COORD:c                                                               {: RESULT = new CoordList(cleft); :}
-              |   LIST OF SOLDIER:s                                                             {: RESULT = new SoldierList(sleft); :}
-              |   LIST OF BARRIER:b                                                             {: RESULT = new BarrierList(bleft); :}
-              |   LIST OF VECTOR:v                                                              {: RESULT = new VectorList(vleft); :}
-              |   LIST OF INTEGER:v                                                             {: RESULT = new IntegerList(vleft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
               ;
 NestedId      ::= Identifier:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
@@ -315,5 +285,5 @@ NestedId      ::= Identifier:id DOT NestedId:ni                                 
 MultEOL       ::= MultEOL EOL
               |   EOL
               ;
-Identifier    ::= IDENTIFIER:id                                                                 {: RESULT = id; :}
+Identifier    ::= IDENTIFIER:id                                                                 {: RESULT = new Identifier(id, idleft); :}
               ;

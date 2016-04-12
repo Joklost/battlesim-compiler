@@ -6,7 +6,7 @@ package com.company.AST.Nodes;
 public class NestedIdentifier1DArray extends NestedIdentifier {
     public Expression expression;
 
-    public NestedIdentifier1DArray(String id, Expression e, int ln) {
+    public NestedIdentifier1DArray(Identifier id, Expression e, int ln) {
         super(id, ln);
         this.expression = e;
     }

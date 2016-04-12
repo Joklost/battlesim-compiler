@@ -6,7 +6,7 @@ package com.company.AST.Nodes;
 public class NestedIdentifierMember extends NestedIdentifier {
     public NestedIdentifier nestedIdentifier;
 
-    public NestedIdentifierMember(String id, NestedIdentifier nid, int ln) {
+    public NestedIdentifierMember(Identifier id, NestedIdentifier nid, int ln) {
         super(id, ln);
         this.nestedIdentifier = nid;
     }
