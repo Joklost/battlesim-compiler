@@ -37,18 +37,18 @@
     getstatic java/lang/System/out Ljava/io/PrintStream;
     astore_1
 
-    ;    2 - the integer 24 - the counter used in the loop
+    ;    2 - the integer 25 - the counter used in the loop
     bipush 25
     istore_2
 
     ; now loop 25 times printing out number
 Loop:
 
-    ; compute 25 - <local variable 2>, convert this integer to a string,
+    ; compute 26 - <local variable 2>, convert this integer to a string,
     ; and store the string result in local variable 3
     bipush 26
     iload_2
-    isub    ; stack now contains (25 - <locl variable 2>)
+    isub    ; stack now contains (26 - <locl variable 2>)
 
     ; Test if fizzbuzz, fizz, buzz or no condition
 
