@@ -183,7 +183,7 @@ public class PrettyPrintVisitor
 
     public void visit(Assignment as) {
         printIndent();
-        as.nestedIdentifier.accept(this);
+        as.targetName.accept(this);
         as.assignOp.accept(this);
         as.expression.accept(this);
         print("\n");
