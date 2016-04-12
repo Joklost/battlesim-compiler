@@ -6,7 +6,6 @@ package com.company.AST.Nodes;
 public class Identifier extends ASTNode {
     public String name;
     public ASTNode def;
-    public int type;
 
     public Identifier(String id, int ln) {
         super(ln);

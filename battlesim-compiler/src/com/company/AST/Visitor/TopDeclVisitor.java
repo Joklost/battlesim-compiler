@@ -21,7 +21,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
         d.typeIdentifier.accept(typeVisitor);
 
         for (int i = 0; i < d.dclIdList.size(); i++) {
-            String id = d.dclIdList.elementAt(i);
+            String id = d.dclIdList.elementAt(i).name;
             if (declaredLocally(id)) {
                 errorDeclaredLocally(id);
             } else {
@@ -35,10 +35,10 @@ public class TopDeclVisitor extends SemanticsVisitor {
         TypeVisitor typeVisitor = new TypeVisitor();
         f.returnType.accept(typeVisitor);
 
-        if (declaredLocally(f.identifier)) {
-            errorDeclaredLocally(f.identifier);
+        if (declaredLocally(f.identifier.name)) {
+            errorDeclaredLocally(f.identifier.name);
         } else {
-            enterSymbol(f.identifier, f);
+            enterSymbol(f.identifier.name, f);
         }
 
         openScope();
@@ -58,18 +58,18 @@ public class TopDeclVisitor extends SemanticsVisitor {
         TypeVisitor typeVisitor = new TypeVisitor();
         p.typeIdentifier.accept(typeVisitor);
 
-        if (declaredLocally(p.identifier)) {
-            errorDeclaredLocally(p.identifier);
+        if (declaredLocally(p.identifier.name)) {
+            errorDeclaredLocally(p.identifier.name);
         } else {
-            enterSymbol(p.identifier, p.typeIdentifier);
+            enterSymbol(p.identifier.name, p.typeIdentifier);
         }
     }
 
     public void visit(Simulation s) {
-        if (declaredLocally(s.identifier)) {
-            errorDeclaredLocally(s.identifier);
+        if (declaredLocally(s.identifier.name)) {
+            errorDeclaredLocally(s.identifier.name);
         } else {
-            enterSymbol(s.identifier, s);
+            enterSymbol(s.identifier.name, s);
         }
 
         openScope();

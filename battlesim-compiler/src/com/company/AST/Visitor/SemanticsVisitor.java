@@ -259,6 +259,18 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
+    public void visit(Array1D a) {
+
+    }
+
+    public void visit(Array2D a) {
+
+    }
+
+    public void visit(ListOf l) {
+
+    }
+
     public void visit(Decimal d) {
 
     }
@@ -311,150 +323,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
-    public void visit(Decimal1DArray d) {
-
-    }
-
-    public void visit(String1DArray s) {
-
-    }
-
-    public void visit(Boolean1DArray b) {
-
-    }
-
-    public void visit(Group1DArray g) {
-
-    }
-
-    public void visit(Platoon1DArray p) {
-
-    }
-
-    public void visit(Force1DArray f) {
-
-    }
-
-    public void visit(Coord1DArray c) {
-
-    }
-
-    public void visit(Soldier1DArray s) {
-
-    }
-
-    public void visit(Barrier1DArray b) {
-
-    }
-
-    public void visit(Vector1DArray v) {
-
-    }
-
-    public void visit(Integer1DArray i) {
-
-    }
-
-    public void visit(Terrain1DArray t) {
-
-    }
-
-    public void visit(Decimal2DArray d) {
-
-    }
-
-    public void visit(String2DArray s) {
-
-    }
-
-    public void visit(Boolean2DArray b) {
-
-    }
-
-    public void visit(Group2DArray g) {
-
-    }
-
-    public void visit(Platoon2DArray p) {
-
-    }
-
-    public void visit(Force2DArray f) {
-
-    }
-
-    public void visit(Coord2DArray c) {
-
-    }
-
-    public void visit(Soldier2DArray s) {
-
-    }
-
-    public void visit(Barrier2DArray b) {
-
-    }
-
-    public void visit(Vector2DArray v) {
-
-    }
-
-    public void visit(Integer2DArray i) {
-
-    }
-
-    public void visit(Terrain2DArray t) {
-
-    }
-
-    public void visit(DecimalList d) {
-
-    }
-
-    public void visit(StringList s) {
-
-    }
-
-    public void visit(BooleanList b) {
-
-    }
-
-    public void visit(GroupList g) {
-
-    }
-
-    public void visit(PlatoonList p) {
-
-    }
-
-    public void visit(ForceList f) {
-
-    }
-
-    public void visit(CoordList c) {
-
-    }
-
-    public void visit(SoldierList s) {
-
-    }
-
-    public void visit(BarrierList b) {
-
-    }
-
-    public void visit(VectorList v) {
-
-    }
-
-    public void visit(IntegerList i) {
-
-    }
-
-    public void visit(TerrainList t) {
-
-    }
-
     public void visit(NestedIdentifierMember n) {
 
     }
@@ -486,7 +354,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (newDef == null) {
             errorNoDeclaration(id.name);
         } else {
-
+            id.def = newDef;
+            id.type = newDef.type;
         }
     }
 
