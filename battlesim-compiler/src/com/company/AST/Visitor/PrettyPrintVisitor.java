@@ -5,10 +5,11 @@ import com.company.AST.Nodes.*;
 /**
  * Created by joklost on 07-04-16.
  */
-public class PrettyPrint extends Visitor implements VisitorInterface {
+public class PrettyPrintVisitor
+        extends Visitor implements VisitorInterface {
     private int indentLevel;
 
-    public PrettyPrint() {
+    public PrettyPrintVisitor() {
         System.out.println("Pretty Printing:");
         System.out.println("----------------\n");
         indentLevel = 0;

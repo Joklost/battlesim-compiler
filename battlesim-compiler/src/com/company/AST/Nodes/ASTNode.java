@@ -11,7 +11,7 @@ import java.util.HashMap;
 public abstract class ASTNode implements Visitable {
     protected int lineNumber;
     public ASTNode(int ln) {
-        this.lineNumber = ln;
+        this.lineNumber = ln + 1;
     }
 
     public int getLineNumber() {

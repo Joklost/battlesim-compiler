@@ -1,7 +1,7 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
-import com.company.AST.Visitor.PrettyPrint;
+import com.company.AST.Visitor.PrettyPrintVisitor;
 import com.company.AST.Visitor.TreeVisitor;
 
 public class Main {
@@ -21,7 +21,7 @@ public class Main {
         Start startNode;
 
         TreeVisitor treeVisitor = new TreeVisitor();
-        PrettyPrint prettyPrint = new PrettyPrint();
+        PrettyPrintVisitor prettyPrint = new PrettyPrintVisitor();
 
         try {
             for (String path : paths) {

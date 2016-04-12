@@ -106,7 +106,7 @@ nonterminal StdLiteral        StdLiteral;
 nonterminal DclIdList         DclIds;
 nonterminal TypeIdentifier    TypeId;
 nonterminal NestedIdentifier  NestedId;
-nonterminal Identifier        Identifier;
+nonterminal String            Identifier;
 
 nonterminal MultEOL;
 
@@ -315,5 +315,5 @@ NestedId      ::= Identifier:id DOT NestedId:ni                                 
 MultEOL       ::= MultEOL EOL
               |   EOL
               ;
-Identifier    ::= IDENTIFIER:id                                                                 {: RESULT = new Identifier(id, idleft); :}
+Identifier    ::= IDENTIFIER:id                                                                 {: RESULT = id; :}
               ;
