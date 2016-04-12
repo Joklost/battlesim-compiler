@@ -13,12 +13,12 @@ public class DclIdList extends ASTNode {
         list = new Vector();
     }
 
-    public void addElement(String id) {
+    public void addElement(Identifier id) {
         list.addElement(id);
     }
 
-    public String elementAt(int i) {
-        return (String) list.elementAt(i);
+    public Identifier elementAt(int i) {
+        return (Identifier) list.elementAt(i);
     }
 
     public int size() {
