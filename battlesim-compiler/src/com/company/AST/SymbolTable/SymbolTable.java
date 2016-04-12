@@ -23,6 +23,10 @@ public class SymbolTable {
 
     private SymbolTable() {}
 
+    public static int getLevel() {
+        return level;
+    }
+
     public static void enterSymbol(String str, ASTNode def) {
         Bucket buck;
         int i = hash(str);
