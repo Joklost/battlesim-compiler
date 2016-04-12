@@ -28,7 +28,7 @@
 .method public static main([Ljava/lang/String;)V
 
     ; set limits used by this method
-    .limit stack 3
+    .limit stack 5
     .limit locals 4
 
     ; setup local variables:
@@ -52,10 +52,14 @@ Loop:
 
     ; Test if fizzbuzz, fizz, buzz or no condition
 
-    goto PrintString
+    goto PrintFizz
 
 PrintFizz:
     ; Print fizz
+    ; Push the output stream and the string "Hello World" onto the stack,
+    ; then invoke the println method:
+    ldc "fizz"
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
     goto Loop
 PrintBuzz:
     ; print buzz
@@ -64,7 +68,7 @@ PrintFizzBuzz:
     ; print FizzBuzz
     goto Loop
 
-    PrintString:
+PrintString:
     ; convert to string...
     invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
     astore_3
