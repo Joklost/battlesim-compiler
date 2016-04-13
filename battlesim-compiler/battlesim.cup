@@ -106,7 +106,9 @@ nonterminal StdLiteral        StdLiteral;
 nonterminal DclIdList         DclIds;
 nonterminal TypeIdentifier    TypeId;
 nonterminal TypeName          TypeName;
-nonterminal NestedIdentifier  NestedId;
+nonterminal IdentifierReferencing ObjectId;
+nonterminal IdentifierReferencing ArrayRef;
+//nonterminal NestedIdentifier  NestedId;
 nonterminal Identifier        Identifier;
 
 nonterminal MultEOL;
@@ -135,7 +137,7 @@ SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS     
 Simulations   ::= Simulations:ss Simulation:s                                                   {: RESULT = ss; ss.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimulationList(0); :}
               ;
-Simulation    ::= SIMULATION Identifier:id NestedId:ni SimSteps:sis Interrupts:is END SIMULATION MultEOL {: RESULT = new Simulation(id, ni, sis, is, idleft); :}
+Simulation    ::= SIMULATION Identifier:id ObjectId:oi SimSteps:sis Interrupts:is END SIMULATION MultEOL {: RESULT = new Simulation(id, oi, sis, is, idleft); :}
               ;
 SimSteps      ::= SimSteps:sl SimStep:s                                                         {: RESULT = sl; sl.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimStepList(0); :}
@@ -177,11 +179,11 @@ Stmt          ::= Dcl:d                                                         
               ;
 Dcl           ::= DECLARE DclIds:ds AS TypeId:ti MultEOL                                        {: RESULT = new Dcl(ds, ti, dsleft); :}
               ;
-Assignment    ::= NestedId:ni AssignOp:ao Expression:e MultEOL                                  {: RESULT = new Assignment(ni, ao, e, nileft); :}
+Assignment    ::= ObjectId:oi AssignOp:ao Expression:e MultEOL                                  {: RESULT = new Assignment(oi, ao, e, oileft); :}
               ;
 WhileStmt     ::= WHILE Expression:e DO Stmts:ss END WHILE MultEOL                              {: RESULT = new WhileStmt(e, ss, eleft); :}
               ;
-ForeachStmt   ::= FOREACH TypeId:ti Identifier:id IN NestedId:ni DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, ni, s, tileft); :}
+ForeachStmt   ::= FOREACH TypeId:ti Identifier:id IN ObjectId:oi DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, oi, s, tileft); :}
               ;
 ForStmt       ::= FOR Expression:e1 ForIterator:fi Expression:e2 DO Stmts:ss END FOR MultEOL    {: RESULT = new ForStmt(e1, fi, e2, ss, e1left); :}
               ;
@@ -223,7 +225,7 @@ Expression    ::= Expression:e1 PLUS Expression:e2                              
               |   Expression:e PLUSPLUS                                                         {: RESULT = new PlusPlusExpr(e, eleft); :}
               |   Expression:e MINUSMINUS                                                       {: RESULT = new MinusMinusExpr(e, eleft); :}
               |   FunctionCall:fc                                                               {: RESULT = new FunctionCallExpr(fc, fcleft); :}
-              |   NestedId:nid                                                                  {: RESULT = new NestedIdExpr(nid, nidleft); :}
+              |   ObjectId:nid                                                                  {: RESULT = new ObjectIdExpr(nid, nidleft); :}
               |   StdLiteral:std                                                                {: RESULT = new StdLiteralExpr(std, stdleft); :}
               ;
 AssignOp      ::= EQ:eq                                                                         {: RESULT = new EqualsOp(eqleft); :}
@@ -233,8 +235,8 @@ AssignOp      ::= EQ:eq                                                         
               |   MULTEQ:eq                                                                     {: RESULT = new MultEqualsOp(eqleft); :}
               |   DIVEQ:eq                                                                      {: RESULT = new DivEqualsOp(eqleft); :}
               ;
-FunctionCall  ::= NestedId:ni Arguments:arg  /* der kan godt være lidt problems her */          {: RESULT = new FunctionCall(ni, arg, nileft); :}
-              ;         /* kan være id[](args). rettes senere, eller? */
+FunctionCall  ::= ObjectId:ni Arguments:arg  /* der kan godt være lidt problems her */          {: RESULT = new FunctionCall(ni, arg, nileft); :}
+              ;
 Arguments     ::= LPAREN:l RPAREN                                                               {: RESULT = new ArgumentList(lleft); :}
               |   LPAREN ArgumentList:al RPAREN                                                 {: RESULT = al; :}
               ;
@@ -244,7 +246,7 @@ ArgumentList  ::= Expression:e                                                  
 ForIterator   ::= TO:t                                                                          {: RESULT = new ToIterator(tleft); :}
               |   DOWNTO:t                                                                      {: RESULT = new DownToIterator(tleft); :}
               ;
-Variable      ::= NestedId:ni                                                                   {: RESULT = new VariableNestedId(ni, nileft); :}
+Variable      ::= ObjectId:ni                                                                   {: RESULT = new VariableObjectId(ni, nileft); :}
               |   StdLiteral:st                                                                 {: RESULT = new VariableStdLiteral(st, stleft); :}
               ;
 StdLiteral    ::= DECIMAL_LITERAL:dec                                                           {: RESULT = new DecimalLiteral(dec, decleft); :}
@@ -275,13 +277,15 @@ TypeName      ::= DECIMAL:d                                                     
               |   INTEGER:i                                                                     {: RESULT = new IntegerT(ileft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
               ;
-NestedId      ::= Identifier:id DOT NestedId:ni                                                 {: RESULT = new NestedIdentifierMember(id, ni, idleft); :}
-              |   Identifier:id LBRACE Expression:e RBRACE DOT NestedId:ni                      {: RESULT = new NestedIdentifier1DArrayMember(id, e, ni, idleft); :}
-              |   Identifier:id LBRACE Expression:e RBRACE                                      {: RESULT = new NestedIdentifier1DArray(id, e, idleft); :}
-              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE DOT NestedId:ni {: RESULT = new NestedIdentifier2DArrayMember(id, e1, e2, ni, idleft); :}
-              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE         {: RESULT = new NestedIdentifier2DArray(id, e1, e2, idleft); :}
-              |   Identifier:id                                                                 {: RESULT = new NestedIdentifier(id, idleft); :}
+ObjectId      ::= ObjectId:o DOT Identifier:i           /* 1 */                                 {: RESULT = new ObjectReferencing(o, i, oleft); :}
+              |   ObjectId:o DOT ArrayRef:a             /* 2 */                                 {: RESULT = new ObjectReferencing(o, a, oleft); :}
+              |   ArrayRef:a                            /* 3 */                                 {: RESULT = a; :}
+              |   Identifier:i                          /* 4 */                                 {: RESULT = i; :}
               ;
+ArrayRef      ::= Identifier:id LBRACE Expression:e RBRACE      /* 6 */                          {: RESULT = new Array1DReferencing(id, e, idleft); :}
+              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE /* 7 */  {: RESULT = new Array2DReferencing(id, e1, e2, idleft); :}
+              ;
+
 MultEOL       ::= MultEOL EOL
               |   EOL
               ;
