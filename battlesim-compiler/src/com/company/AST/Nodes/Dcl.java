@@ -5,12 +5,12 @@ package com.company.AST.Nodes;
  */
 public class Dcl extends Stmt {
     public DclIdList dclIdList;
-    public TypeIdentifier typeIdentifier;
+    public TypeIdentifier typeName;
 
     public Dcl(DclIdList d, TypeIdentifier t, int ln) {
         super(ln);
         this.dclIdList = d;
-        this.typeIdentifier = t;
+        this.typeName = t;
     }
 
 }

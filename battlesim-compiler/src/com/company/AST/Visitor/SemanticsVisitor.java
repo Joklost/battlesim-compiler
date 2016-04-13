@@ -324,6 +324,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(NestedIdentifierMember n) {
+        // "struct"
+        n.identifier.accept(this);
+        if (n.identifier.type == errorType) {
+            n.type = errorType;
+        } else {
+            if (n.identifier.type != )
+        }
 
     }
 

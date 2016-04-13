@@ -4,6 +4,7 @@ import com.company.AST.Nodes.*;
 import com.company.AST.SymbolTable.SymbolTable;
 
 import static com.company.AST.SymbolTable.SymbolTable.*;
+import static com.company.AST.Visitor.Types.errorType;
 
 /**
  * Created by joklost on 12-04-16.
@@ -18,19 +19,27 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
     public void visit(Dcl d) {
         TypeVisitor typeVisitor = new TypeVisitor();
-        d.typeIdentifier.accept(typeVisitor);
+        d.typeName.accept(typeVisitor);
 
         for (int i = 0; i < d.dclIdList.size(); i++) {
             String id = d.dclIdList.elementAt(i).name;
             if (declaredLocally(id)) {
                 errorDeclaredLocally(id);
+                d.dclIdList.elementAt(i).type = errorType;
+                d.dclIdList.elementAt(i).def = null;
             } else {
-                enterSymbol(id, d.typeIdentifier);
+                d.dclIdList.elementAt(i).type = d.typeName.type;
+                TypeIdentifier def = d.typeName;
+                def.type = d.dclIdList.elementAt(i).type;
+                d.dclIdList.elementAt(i).def = def;
+                enterSymbol(id, def);
             }
         }
 
     }
 
+
+    // skal skrives lidt om
     public void visit(FunctionDcl f) {
         TypeVisitor typeVisitor = new TypeVisitor();
         f.returnType.accept(typeVisitor);

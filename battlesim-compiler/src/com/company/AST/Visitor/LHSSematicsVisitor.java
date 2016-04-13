@@ -30,6 +30,9 @@ public class LHSSematicsVisitor extends SemanticsVisitor {
     }
 
 
+
+
+
     public void visit(Identifier id) {
         SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
         id.accept(semanticsVisitor);
