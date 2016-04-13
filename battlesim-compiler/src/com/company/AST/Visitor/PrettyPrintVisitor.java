@@ -180,7 +180,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
         print(" as ");
 
-        ds.typeIdentifier.accept(this);
+        ds.typeName.accept(this);
 
         print("\n");
     }
@@ -550,6 +550,21 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         print("NULL");
     }
 
+    public void visit(Array1D a) {
+        a.typeName.accept(this);
+        print("[]");
+    }
+
+    public void visit(Array2D a) {
+        a.typeName.accept(this);
+        print("[][]");
+    }
+
+    public void visit(ListOf l) {
+        print("List of ");
+        l.typeName.accept(this);
+    }
+
     public void visit(Decimal d) {
         print("Decimal");
     }
@@ -600,150 +615,6 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(Terrain t) {
         print("Terrain");
-    }
-
-    public void visit(Decimal1DArray d) {
-        print("Decimal[]");
-    }
-
-    public void visit(String1DArray s) {
-        print("String[]");
-    }
-
-    public void visit(Boolean1DArray b) {
-        print("Boolean[]");
-    }
-
-    public void visit(Group1DArray g) {
-        print("Group[]");
-    }
-
-    public void visit(Platoon1DArray p) {
-        print("Platoon[]");
-    }
-
-    public void visit(Force1DArray f) {
-        print("Force[]");
-    }
-
-    public void visit(Coord1DArray c) {
-        print("Coord[]");
-    }
-
-    public void visit(Soldier1DArray s) {
-        print("Solder[]");
-    }
-
-    public void visit(Barrier1DArray b) {
-        print("Barrier[]");
-    }
-
-    public void visit(Vector1DArray v) {
-        print("Vector[]");
-    }
-
-    public void visit(Integer1DArray i) {
-        print("Integer[]");
-    }
-
-    public void visit(Terrain1DArray t) {
-        print("Terrain[]");
-    }
-
-    public void visit(Decimal2DArray d) {
-        print("Decimal[][]");
-    }
-
-    public void visit(String2DArray s) {
-        print("String[][]");
-    }
-
-    public void visit(Boolean2DArray b) {
-        print("Boolean[][]");
-    }
-
-    public void visit(Group2DArray g) {
-        print("Group[][]");
-    }
-
-    public void visit(Platoon2DArray p) {
-        print("Platoon[][]");
-    }
-
-    public void visit(Force2DArray f) {
-        print("Force[][]");
-    }
-
-    public void visit(Coord2DArray c) {
-        print("Coord[][]");
-    }
-
-    public void visit(Soldier2DArray s) {
-        print("Soldier[][]");
-    }
-
-    public void visit(Barrier2DArray b) {
-        print("Barrier[][]");
-    }
-
-    public void visit(Vector2DArray v) {
-        print("Vector[][]");
-    }
-
-    public void visit(Integer2DArray i) {
-        print("Integer[][]");
-    }
-
-    public void visit(Terrain2DArray t) {
-        print("Terrain[][]");
-    }
-
-    public void visit(DecimalList d) {
-        print("List of Decimal");
-    }
-
-    public void visit(StringList s) {
-        print("List of String");
-    }
-
-    public void visit(BooleanList b) {
-        print("List of Boolean");
-    }
-
-    public void visit(GroupList g) {
-        print("List of Group");
-    }
-
-    public void visit(PlatoonList p) {
-        print("List of Platoon");
-    }
-
-    public void visit(ForceList f) {
-        print("List of Force");
-    }
-
-    public void visit(CoordList c) {
-        print("List of Coord");
-    }
-
-    public void visit(SoldierList s) {
-        print("List of Soldier");
-    }
-
-    public void visit(BarrierList b) {
-        print("List of Barrier");
-    }
-
-    public void visit(VectorList v) {
-        print("List of Vector");
-    }
-
-    public void visit(IntegerList i) {
-        print("List of Integer");
-    }
-
-    public void visit(TerrainList t) {
-        print("List of Terrain");
     }
 
     public void visit(NestedIdentifierMember n) {
