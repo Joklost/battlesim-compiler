@@ -19,7 +19,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
     public void visit(Dcl d) {
         TypeVisitor typeVisitor = new TypeVisitor();
-        d.typeName.accept(typeVisitor);
+        d.typeName.accept(typeVisitor);     // sætter d.typename.type
 
         for (int i = 0; i < d.dclIdList.size(); i++) {
             String id = d.dclIdList.elementAt(i).name;
@@ -30,7 +30,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
             } else {
                 d.dclIdList.elementAt(i).type = d.typeName.type;
                 TypeIdentifier def = d.typeName;
-                def.type = d.dclIdList.elementAt(i).type;
+                def.type = d.typeName.type;
                 d.dclIdList.elementAt(i).def = def;
                 enterSymbol(id, def);
             }

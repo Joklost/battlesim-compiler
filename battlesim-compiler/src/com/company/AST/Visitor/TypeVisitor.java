@@ -9,5 +9,5 @@ import static com.company.AST.SymbolTable.SymbolTable.*;
  */
 public class TypeVisitor extends TopDeclVisitor {
 
-    }
 }
+

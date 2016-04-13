@@ -3,7 +3,9 @@ package com.company.AST.Nodes;
 import com.company.AST.Visitor.Visitable;
 import com.company.AST.Visitor.Visitor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.company.AST.Visitor.Types.noType;
 
@@ -11,11 +13,15 @@ import static com.company.AST.Visitor.Types.noType;
  * Created by joklost on 01-04-16.
  */
 public abstract class ASTNode implements Visitable {
+
+    //public List<ASTNode> children;
+
     protected int lineNumber;
     public int type = noType;
 
     public ASTNode(int ln) {
         this.lineNumber = ln + 1;
+        //this.children = new ArrayList<>();
     }
 
     public int getLineNumber() {

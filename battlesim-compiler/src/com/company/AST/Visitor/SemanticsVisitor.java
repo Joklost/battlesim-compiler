@@ -3,7 +3,7 @@ package com.company.AST.Visitor;
 import com.company.AST.Nodes.*;
 
 import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
-import static com.company.AST.Visitor.Types.errorType;
+import static com.company.AST.Visitor.Types.*;
 
 /**
  * Created by joklost on 12-04-16.
@@ -12,6 +12,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     private void errorNoDeclaration(String var) {
         System.err.println(var + " has not been declared.");
+    }
+    private void error(String s) {
+        System.err.println(s);
+    }
+
+    private boolean assignable(int target, int expression) {
+        return true;    // skal laves
     }
 
 
@@ -60,8 +67,19 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Assignment as) {
+        LHSSemanticsVisitor lhsSemanticsVisitor = new LHSSemanticsVisitor();
+        as.targetName.accept(lhsSemanticsVisitor);
+        as.expression.accept(this);
+
+        if (assignable(as.targetName.type, as.expression.type)) {
+            as.type = as.targetName.type;
+        } else {
+            error("Right hand side expression not assignable to left hand side name at line " + as.getLineNumber());
+            as.type = errorType;
+        }
 
     }
+
 
     public void visit(WhileStmt ws) {
 
@@ -183,7 +201,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
-    public void visit(NestedIdExpr ne) {
+    public void visit(ObjectIdExpr ne) {
 
     }
 
@@ -231,7 +249,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
-    public void visit(VariableNestedId vi) {
+    public void visit(VariableObjectId vi) {
 
     }
 
@@ -323,37 +341,71 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
-    public void visit(NestedIdentifierMember n) {
-        // "struct"
-        n.identifier.accept(this);
-        if (n.identifier.type == errorType) {
-            n.type = errorType;
+    public void visit(ObjectReferencing o) {
+        o.objectName.accept(this);
+        if (o.objectName.type == errorType) {
+            o.type = errorType;
         } else {
-            if (n.identifier.type != )
+            if (o.objectName.type != objectTypeDescriptor) {
+                error(o.objectName.name + " does not specify an object.");
+                o.type = errorType;
+            } else {
+                ASTNode def = retrieveSymbol(o.fieldName.name);
+                if (def == null) {
+                    error(o.fieldName.name + " is not a field of " + o.objectName.name);
+                    o.type = errorType;
+                } else {
+                    o.type = def.type;
+                }
+            }
+        }
+    }
+
+    public void visit(Array1DReferencing a) {
+        a.arrayName.accept(this);
+        a.indexExpr.accept(this);
+
+        if (a.arrayName.type == errorType) {
+            a.type = errorType;
+        } else {
+            if (a.arrayName.type != arrayTypeDescriptor) {
+                error(a.arrayName.name + " is not an array."); // [] måske
+                a.type = errorType;
+            } else {
+                a.type = a.arrayName.type; // denne type er bestemt at typen af elementer i arrayet
+            }
+        }
+        if (a.indexExpr.type != errorType && a.indexExpr.type != integerType) {
+            error("Index expression is not an integer. ArrayName: " + a.arrayName.name);
+        }
+    }
+
+    public void visit(Array2DReferencing a) {
+        a.arrayName.accept(this);
+        a.firstIndexExpr.accept(this);
+        a.secondIndexExpr.accept(this);
+
+        if (a.arrayName.type == errorType) {
+            a.type = errorType;
+        } else {
+            if (a.arrayName.type != arrayTypeDescriptor) {
+                error(a.arrayName.name + " is not an array."); // [] måske
+                a.type = errorType;
+            } else {
+                a.type = a.arrayName.type; // denne type er bestemt at typen af elementer i arrayet
+            }
+        }
+        if (a.firstIndexExpr.type != errorType && a.firstIndexExpr.type != integerType) {
+            error("First index expression is not an integer. ArrayName: " + a.arrayName.name);
         }
 
+        if (a.secondIndexExpr.type != errorType && a.secondIndexExpr.type != integerType) {
+            error("Second index expression is not an integer. ArrayName: " + a.arrayName.name);
+        }
     }
 
-    public void visit(NestedIdentifier1DArray n) {
 
-    }
-
-    public void visit(NestedIdentifier1DArrayMember n) {
-
-    }
-
-    public void visit(NestedIdentifier2DArray n) {
-
-    }
-
-    public void visit(NestedIdentifier2DArrayMember n) {
-
-    }
-
-    public void visit(NestedIdentifier n) {
-
-    }
-
+    // tror denne er som den skal være
     public void visit(Identifier id) {
         id.type = errorType;
         id.def = null;

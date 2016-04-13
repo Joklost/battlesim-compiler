@@ -11,5 +11,7 @@ public class Types {
     public static final int booleanType = 3;
     public static final int voidType = 4;
     public static final int nullType = 5;
+    public static final int objectTypeDescriptor = 6;
+    public static final int arrayTypeDescriptor = 7;
 
 }
