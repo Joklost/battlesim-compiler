@@ -98,7 +98,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         print("Simulation ");
         s.identifier.accept(this);
         print(" ");
-        s.nestedIdentifier.accept(this);
+        s.objectIdentifier.accept(this);
         print("\n");
 
         indentLevel++;
@@ -214,11 +214,11 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(ForeachStmt fes) {
         printIndent();
         print("Foreach ");
-        fes.typeIdentifier.accept(this);
+        fes.typeName.accept(this);
         print(" ");
-        fes.identifier.accept(this);
+        fes.localName.accept(this);
         print(" in ");
-        fes.nestedIdentifier.accept(this);
+        fes.objectName.accept(this);
         print(" Do\n");
 
         indentLevel++;
@@ -462,8 +462,8 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         fe.functionCall.accept(this);
     }
 
-    public void visit(NestedIdExpr ne) {
-        ne.nestedIdentifier.accept(this);
+    public void visit(ObjectIdExpr ne) {
+        ne.objectName.accept(this);
     }
 
     public void visit(StdLiteralExpr se) {
@@ -503,7 +503,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(FunctionCall f) {
-        f.nestedIdentifier.accept(this);
+        f.objectName.accept(this);
         print("(");
 
         for (int i = 0; i < f.argumentList.size(); i++) {
@@ -522,8 +522,8 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         print(" DownTo ");
     }
 
-    public void visit(VariableNestedId vi) {
-        vi.nestedIdentifier.accept(this);
+    public void visit(VariableObjectId vi) {
+        vi.objectName.accept(this);
     }
 
     public void visit(VariableStdLiteral vs) {
@@ -617,48 +617,27 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         print("Terrain");
     }
 
-    public void visit(NestedIdentifierMember n) {
-        n.identifier.accept(this);
+    public void visit(ObjectReferencing o) {
+        o.objectName.accept(this);
         print(".");
-        n.nestedIdentifier.accept(this);
+        o.fieldName.accept(this);
     }
 
-    public void visit(NestedIdentifier1DArray n) {
-        n.identifier.accept(this);
+    public void visit(Array1DReferencing a) {
+        a.arrayName.accept(this);
         print("[");
-        n.expression.accept(this);
+        a.indexExpr.accept(this);
         print("]");
     }
 
-    public void visit(NestedIdentifier1DArrayMember n) {
-        n.identifier.accept(this);
+    public void visit(Array2DReferencing a) {
+        a.arrayName.accept(this);
         print("[");
-        n.expression.accept(this);
-        print("].");
-        n.nestedIdentifier.accept(this);
-    }
-
-    public void visit(NestedIdentifier2DArray n) {
-        n.identifier.accept(this);
-        print("[");
-        n.expression1.accept(this);
-        print("][");
-        n.expression2.accept(this);
+        a.firstIndexExpr.accept(this);
         print("]");
-    }
-
-    public void visit(NestedIdentifier2DArrayMember n) {
-        n.identifier.accept(this);
         print("[");
-        n.expression1.accept(this);
-        print("][");
-        n.expression2.accept(this);
-        print("].");
-        n.nestedIdentifier.accept(this);
-    }
-
-    public void visit(NestedIdentifier n) {
-        n.identifier.accept(this);
+        a.secondIndexExpr.accept(this);
+        print("]");
     }
 
     public void visit(Identifier id) {

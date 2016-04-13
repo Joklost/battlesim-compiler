@@ -2,15 +2,14 @@ package com.company;
 
 import com.company.AST.Nodes.Start;
 import com.company.AST.Visitor.PrettyPrintVisitor;
-import com.company.AST.Visitor.TreeVisitor;
 
 public class Main {
 
     public static void main(String[] args) {
         String[] paths = {
                 //"/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
-                "C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\simWithIncludes\\simWithInclude.bs",
-                //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
+                //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\simWithIncludes\\simWithInclude.bs",
+                "/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
         };
 
         boolean parseSuccesful = true;
@@ -20,7 +19,6 @@ public class Main {
         Parser parser;
         Start startNode;
 
-        TreeVisitor treeVisitor = new TreeVisitor();
         PrettyPrintVisitor prettyPrint = new PrettyPrintVisitor();
 
         try {

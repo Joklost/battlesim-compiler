@@ -48,7 +48,7 @@ public interface VisitorInterface {
     void visit(PlusPlusExpr pe);
     void visit(MinusMinusExpr me);
     void visit(FunctionCallExpr fe);
-    void visit(NestedIdExpr ne);
+    void visit(ObjectIdExpr ne);
     void visit(StdLiteralExpr se);
     void visit(CoordExpr ce);
     void visit(EqualsOp eo);
@@ -60,7 +60,7 @@ public interface VisitorInterface {
     void visit(FunctionCall f);
     void visit(ToIterator ti);
     void visit(DownToIterator di);
-    void visit(VariableNestedId vi);
+    void visit(VariableObjectId vi);
     void visit(VariableStdLiteral vs);
     void visit(DecimalLiteral dl);
     void visit(StringLiteral sl);
@@ -83,11 +83,8 @@ public interface VisitorInterface {
     void visit(IntegerT i);
     void visit(VoidT v);
     void visit(Terrain t);
-    void visit(NestedIdentifierMember n);
-    void visit(NestedIdentifier1DArray n);
-    void visit(NestedIdentifier1DArrayMember n);
-    void visit(NestedIdentifier2DArray n);
-    void visit(NestedIdentifier2DArrayMember n);
-    void visit(NestedIdentifier n);
+    void visit(ObjectReferencing o);
+    void visit(Array1DReferencing a);
+    void visit(Array2DReferencing a);
     void visit(Identifier id);
 }
