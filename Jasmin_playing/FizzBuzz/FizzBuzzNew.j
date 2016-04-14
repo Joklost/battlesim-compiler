@@ -62,7 +62,7 @@
 	; get top of stack
 	; top of stack mod 3
 	; if result != 0 goto: TestFizzBuzz
-	goto: TestBuzz ; else test if buzz
+	goto TestBuzz ; else test if buzz
 
 	;==================================
 	; Test if FizzBuzz
@@ -73,7 +73,7 @@
 	; pop top of stack (??? To get rid of top of stack mod 3 ???)
 	; top of stack mod 5
 	; if result == 0 goto: PrintFizzBuzz
-	; (else) goto: PrintFizz
+	goto PrintFizz
 	
 	;==================================
 	; Test if Buzz
@@ -89,7 +89,7 @@
 	; if none of the following
 	; goto PrintString
 	;==================================
-	goto: PrintString
+	goto PrintString
 
     ;==================================
 	; Print fizz
