@@ -3,8 +3,7 @@ package com.company.ContextualAnalysis;
 import com.company.AST.Nodes.*;
 
 import static com.company.AST.SymbolTable.SymbolTable.*;
-import static com.company.ContextualAnalysis.TypeConsts.errorType;
-import static com.company.ContextualAnalysis.TypeConsts.functionType;
+import static com.company.ContextualAnalysis.TypeConsts.*;
 
 /**
  * Created by joklost on 12-04-16.
@@ -90,8 +89,10 @@ public class TopDeclVisitor extends SemanticsVisitor {
     public void visit(Simulation s) {
         if (declaredLocally(s.identifier.name)) {
             errorDeclaredLocally(s.identifier.name);
+            s.type = errorType;
         } else {
             enterSymbol(s.identifier.name, s);
+            s.type = simulationType;
         }
 
         openScope();
@@ -110,8 +111,10 @@ public class TopDeclVisitor extends SemanticsVisitor {
     public void visit(SimStep s) {
         if (declaredLocally("Step" + s.stepNumber)) {
             errorDeclaredLocally("Step" + s.stepNumber);
+            s.type = errorType;
         } else {
             enterSymbol("Step" + s.stepNumber, s);
+            s.type = simulationStepType;
         }
 
         openScope();

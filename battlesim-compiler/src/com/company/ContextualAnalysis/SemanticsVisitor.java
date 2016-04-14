@@ -1,8 +1,10 @@
 package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
+import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 
 import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
 import static com.company.ContextualAnalysis.TypeConsts.*;
@@ -260,87 +262,87 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(DecimalLiteral dl) {
-
+        dl.type = decimalType;
     }
 
     public void visit(StringLiteral sl) {
-
+        sl.type = stringType;
     }
 
     public void visit(BooleanLiteral bl) {
-
+        bl.type = booleanType;
     }
 
     public void visit(IntegerLiteral il) {
-
+        il.type = integerType;
     }
 
     public void visit(NullLiteral nl) {
-
+        nl.type = nullType;
     }
 
     public void visit(Array1D a) {
-
+        //TODO typeVisitor -> arrayDefining
     }
 
     public void visit(Array2D a) {
-
+        //TODO typeVisitor -> arrayDefining
     }
 
     public void visit(ListOf l) {
-
+        //TODO typeVisitor -> arrayDefining
     }
 
     public void visit(Decimal d) {
-
+        d.type = decimalType;
     }
 
     public void visit(StringT s) {
-
+        s.type = stringType;
     }
 
     public void visit(BooleanT b) {
-
+        b.type = booleanType;
     }
 
     public void visit(Group g) {
-
+        g.type = groupType;
     }
 
     public void visit(Platoon p) {
-
+        p.type = platoonType;
     }
 
     public void visit(Force f) {
-
+        f.type = forceType;
     }
 
     public void visit(Coord c) {
-
+        c.type = coordType;
     }
 
     public void visit(Soldier s) {
-
+        s.type = soldierType;
     }
 
     public void visit(Barrier b) {
-
+        b.type = barrierType;
     }
 
     public void visit(VectorT v) {
-
+        v.type = vectorType;
     }
 
     public void visit(IntegerT i) {
-
+        i.type = integerType;
     }
 
     public void visit(VoidT v) {
-
+        v.type = voidType;
     }
 
     public void visit(Terrain t) {
-
+        t.type = terrainType;
     }
 
     public void visit(Array1DReferencing a) {
@@ -396,8 +398,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 o.type = errorType;
             } else {
 
-                ///
-                ASTNode def = retrieveSymbol(o.fieldName.name);
+                ObjectTypeDescriptor obj = (ObjectTypeDescriptor)o.objectName.typeDescriptor;
+                SymbolTable st = obj.fields;;
+                // Skulle helst ikke smide en exception.. - jkj
+                
+                ASTNode def = st.retrieveSymbol(o.fieldName.name);
                 if (def == null) {
                     error(o.fieldName.name + " is not a field of " + o.objectName.name);
                     o.type = errorType;
@@ -409,7 +414,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
 
-    // tror denne er som den skal være
+    // tror denne er som den skal være - jkj
     public void visit(Identifier id) {
         id.type = errorType;
         id.def = null;
