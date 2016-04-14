@@ -20,69 +20,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         System.err.println(s);
     }
 
-    private boolean assignable(int target, int expression) {
-        return true;    // skal laves
+    public SemanticsVisitor() {
+
     }
 
-    private int binaryResultType(int operator, int leftType, int rightType) {
-
-        if (operator == coordOperator) {
-            if (leftType == integerType && rightType == integerType) return coordType;
-        }
-
-        if (operator == plusOperator) {
-            if (leftType == stringType && rightType == stringType) return stringType;
-            if ((leftType == integerType && rightType == stringType) || (leftType == stringType && rightType == integerType)) return stringType;
-            if ((leftType == decimalType && rightType == stringType) || (leftType == stringType && rightType == decimalType)) return stringType;
-            if ((leftType == booleanType && rightType == stringType) || (leftType == stringType && rightType == booleanType)) return stringType;
-        }
-
-        if (arrayContains(arithmeticBinaryOperators, operator)) {
-            if (leftType == integerType && rightType == integerType) return integerType;
-            if ((leftType == integerType && rightType == decimalType) || (leftType == decimalType && rightType == integerType)) return decimalType;
-            if (leftType == decimalType && rightType == decimalType) return decimalType;
-        }
-
-        if (arrayContains(booleanBinaryOperators, operator)) {
-            if (leftType == booleanType && rightType == booleanType) return booleanType;
-        }
-
-        if (operator == logicEqualsOperator) {
-            if (leftType == stringType && rightType == stringType) return booleanType;
-        }
-
-        if (arrayContains(booleanComparisonOperators, operator)) {
-            if (leftType == integerType && rightType == integerType) return booleanType;
-            if (leftType == decimalType && rightType == decimalType) return booleanType;
-            if ((leftType == integerType && rightType == decimalType) || (leftType == decimalType && rightType == integerType)) return booleanType;
-        }
-
-        // No proper binary result type was found
-        return errorType;
-    }
-
-    private int unaryResultType(int operator, int type) {
-
-        if (operator == notOperator) {
-            if (type == booleanType) return booleanType;
-        }
-
-        if (arrayContains(arithmeticUnaryOperators, operator)) {
-            if (type == integerType) return integerType;
-            if (type == decimalType) return decimalType;
-        }
-
-        return errorType;
-    }
-
-    private boolean arrayContains(int[] array, int value) {
-        for (int index: array) {
-            if (index == value) return true;
-        }
-
-        return false;
-    }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void defaultVisit(Object o) {
 
@@ -128,12 +72,16 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public void visit(Assignment as) {
         LHSSemanticsVisitor lhsSemanticsVisitor = new LHSSemanticsVisitor();
         as.targetName.accept(lhsSemanticsVisitor);
         as.expression.accept(this);
 
-        if (assignable(as.targetName.type, as.expression.type)) {
+        if (assignable(as.targetName.type, as.expression.type)) {       // TODO
             as.type = as.targetName.type;
         } else {
             error("Right hand side expression not assignable to left hand side name at line " + as.getLineNumber());
@@ -142,6 +90,9 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void visit(WhileStmt ws) {
 
@@ -195,7 +146,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public void visit(PlusExpr pe) {
         // binary
         pe.leftExpr.accept(this);
@@ -323,11 +277,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(CoordExpr ce) {
         ce.expression1.accept(this);
         ce.expression2.accept(this);
-
+        // coord operator = (e1, e2)
         ce.type = binaryResultType(coordOperator, ce.expression1.type, ce.expression2.type);
     }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void visit(EqualsOp eo) {
 
@@ -364,6 +320,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(DownToIterator di) {
 
     }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     public void visit(VariableObjectId vi) {
         vi.objectName.accept(this);
@@ -540,5 +501,79 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             id.type = newDef.type;
         }
     }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private boolean assignable(int target, int expression) {
+        return true;    // skal laves
+    }
+
+    private int binaryResultType(int operator, int leftType, int rightType) {
+
+        if (operator == coordOperator) {
+            if (leftType == integerType && rightType == integerType) return coordType;
+        }
+
+        // string arithmetics
+        if (operator == plusOperator) {
+            if (leftType == stringType && rightType == stringType) return stringType;
+            if ((leftType == integerType && rightType == stringType)
+                    || (leftType == stringType && rightType == integerType)) return stringType;
+            if ((leftType == decimalType && rightType == stringType)
+                    || (leftType == stringType && rightType == decimalType)) return stringType;
+            if ((leftType == booleanType && rightType == stringType)
+                    || (leftType == stringType && rightType == booleanType)) return stringType;
+        }
+
+        if (arrayContains(arithmeticBinaryOperators, operator)) {
+            if (leftType == integerType && rightType == integerType) return integerType;
+            if ((leftType == integerType && rightType == decimalType)
+                    || (leftType == decimalType && rightType == integerType)) return decimalType;
+            if (leftType == decimalType && rightType == decimalType) return decimalType;
+        }
+
+        if (arrayContains(booleanBinaryOperators, operator)) {
+            if (leftType == booleanType && rightType == booleanType) return booleanType;
+        }
+
+        if (operator == logicEqualsOperator) {
+            if (leftType == stringType && rightType == stringType) return booleanType;
+        }
+
+        if (arrayContains(booleanComparisonOperators, operator)) {
+            if (leftType == integerType && rightType == integerType) return booleanType;
+            if (leftType == decimalType && rightType == decimalType) return booleanType;
+            if ((leftType == integerType && rightType == decimalType)
+                    || (leftType == decimalType && rightType == integerType)) return booleanType;
+        }
+
+        // No proper binary result type was found
+        return errorType;
+    }
+
+    private int unaryResultType(int operator, int type) {
+
+        if (operator == notOperator) {
+            if (type == booleanType) return booleanType;
+        }
+
+        if (arrayContains(arithmeticUnaryOperators, operator)) {
+            if (type == integerType) return integerType;
+            if (type == decimalType) return decimalType;
+        }
+
+        return errorType;
+    }
+
+    private boolean arrayContains(int[] array, int value) {
+        for (int index: array) {
+            if (index == value) return true;
+        }
+
+        return false;
+    }
+
 
 }

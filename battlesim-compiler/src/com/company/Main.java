@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.AST.Nodes.Start;
 import com.company.AST.Visitor.PrettyPrintVisitor;
+import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
 import com.company.SyntaxAnalysis.Preprocessor;
 import com.company.SyntaxAnalysis.Scanner;
@@ -23,6 +24,7 @@ public class Main {
         Start startNode;
 
         PrettyPrintVisitor prettyPrint = new PrettyPrintVisitor();
+        SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
 
         try {
             for (String path : paths) {
@@ -34,7 +36,7 @@ public class Main {
 
                 startNode = (Start)parser.parse().value;
 
-                startNode.accept(prettyPrint);
+                startNode.accept(semanticsVisitor);
                 preprocessor.RemoveOutFile();
             }
 

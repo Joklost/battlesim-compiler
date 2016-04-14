@@ -3,6 +3,7 @@ package com.company.ContextualAnalysis;
 import com.company.AST.Nodes.*;
 
 import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
+import static com.company.ContextualAnalysis.TypeConsts.errorType;
 
 /**
  * Created by joklost on 12-04-16.
@@ -37,7 +38,7 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
 
         if (!isAssignable(id.def)) {
             error(id.name + " is not assignable.");
-            id.type = TypeConsts.errorType;
+            id.type = errorType;
             id.def = null;
         }
     }
@@ -58,7 +59,7 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
         SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
         o.accept(semanticsVisitor);
 
-        if (o.type != TypeConsts.errorType) {
+        if (o.type != errorType) {
             o.objectName.accept(this);
             ASTNode def = retrieveSymbol(o.fieldName.name);
             if (!isAssignable(def)) {
