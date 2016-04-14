@@ -2,7 +2,7 @@ package com.company.ContextualAnalysis;
 
 import com.company.AST.SymbolTable.SymbolTable;
 
-public class ObjectTypeDescriptor {
+public class ObjectTypeDescriptor extends TypeDescriptor {
     public SymbolTable fields;
-    public int type = Types.noType;
+    public int type = TypeConsts.noType;
 }
