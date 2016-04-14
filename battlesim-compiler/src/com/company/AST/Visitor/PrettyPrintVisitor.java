@@ -131,7 +131,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         print("Function ");
         fd.returnType.accept(this);
         print(" ");
-        fd.identifier.accept(this);
+        fd.functionName.accept(this);
         print("(");
 
         for (int i = 0; i < fd.paramList.size(); i++) {

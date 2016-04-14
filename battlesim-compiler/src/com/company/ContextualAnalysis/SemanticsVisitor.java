@@ -1,9 +1,11 @@
-package com.company.AST.Visitor;
+package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
+import com.company.AST.Visitor.Visitor;
+import com.company.AST.Visitor.VisitorInterface;
 
 import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
-import static com.company.AST.Visitor.Types.*;
+import static com.company.ContextualAnalysis.Types.*;
 
 /**
  * Created by joklost on 12-04-16.
@@ -341,26 +343,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     }
 
-    public void visit(ObjectReferencing o) {
-        o.objectName.accept(this);
-        if (o.objectName.type == errorType) {
-            o.type = errorType;
-        } else {
-            if (o.objectName.type != objectTypeDescriptor) {
-                error(o.objectName.name + " does not specify an object.");
-                o.type = errorType;
-            } else {
-                ASTNode def = retrieveSymbol(o.fieldName.name);
-                if (def == null) {
-                    error(o.fieldName.name + " is not a field of " + o.objectName.name);
-                    o.type = errorType;
-                } else {
-                    o.type = def.type;
-                }
-            }
-        }
-    }
-
     public void visit(Array1DReferencing a) {
         a.arrayName.accept(this);
         a.indexExpr.accept(this);
@@ -401,6 +383,28 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
         if (a.secondIndexExpr.type != errorType && a.secondIndexExpr.type != integerType) {
             error("Second index expression is not an integer. ArrayName: " + a.arrayName.name);
+        }
+    }
+
+    public void visit(ObjectReferencing o) {
+        o.objectName.accept(this);
+        if (o.objectName.type == errorType) {
+            o.type = errorType;
+        } else {
+            if (o.objectName.type != objectTypeDescriptor) {
+                error(o.objectName.name + " does not specify an object.");
+                o.type = errorType;
+            } else {
+
+                ///
+                ASTNode def = retrieveSymbol(o.fieldName.name);
+                if (def == null) {
+                    error(o.fieldName.name + " is not a field of " + o.objectName.name);
+                    o.type = errorType;
+                } else {
+                    o.type = def.type;
+                }
+            }
         }
     }
 

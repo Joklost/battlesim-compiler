@@ -21,7 +21,7 @@ public class SymbolTable {
     private static int level = 0;
     private static Scope scopeList = new Scope();
 
-    private SymbolTable() {}
+    public SymbolTable() {}
 
     public static int getLevel() {
         return level;

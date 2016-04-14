@@ -1,10 +1,10 @@
-package com.company.AST.Visitor;
+package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
-import com.company.AST.SymbolTable.SymbolTable;
 
 import static com.company.AST.SymbolTable.SymbolTable.*;
-import static com.company.AST.Visitor.Types.errorType;
+import static com.company.ContextualAnalysis.Types.errorType;
+import static com.company.ContextualAnalysis.Types.functionType;
 
 /**
  * Created by joklost on 12-04-16.
@@ -17,9 +17,11 @@ public class TopDeclVisitor extends SemanticsVisitor {
         System.err.println(id + " has already been declared at level " + getLevel() + ".");
     }
 
+    // Tror den er crisp - jkj
     public void visit(Dcl d) {
         TypeVisitor typeVisitor = new TypeVisitor();
         d.typeName.accept(typeVisitor);     // sætter d.typename.type
+        // s. 311 i bogen: ArrayDefining foregår i typeVisitor
 
         for (int i = 0; i < d.dclIdList.size(); i++) {
             String id = d.dclIdList.elementAt(i).name;
@@ -39,15 +41,23 @@ public class TopDeclVisitor extends SemanticsVisitor {
     }
 
 
-    // skal skrives lidt om
+    // Tror den er crisp - jkj
     public void visit(FunctionDcl f) {
         TypeVisitor typeVisitor = new TypeVisitor();
         f.returnType.accept(typeVisitor);
 
-        if (declaredLocally(f.identifier.name)) {
-            errorDeclaredLocally(f.identifier.name);
+        //FunctionAttributes fatt = new FunctionAttributes(f.getLineNumber());
+        //fatt.returnType = f.returnType.type;
+        //fatt.locals = new SymbolTable();
+        // dette vil bogen, men giver ingen mening for vores sprog
+
+
+        if (declaredLocally(f.functionName.name)) {
+            errorDeclaredLocally(f.functionName.name);
+            f.type = errorType;
         } else {
-            enterSymbol(f.identifier.name, f);
+            enterSymbol(f.functionName.name, f);
+            f.type = functionType;
         }
 
         openScope();
@@ -61,6 +71,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
         }
 
         closeScope();
+
     }
 
     public void visit(Param p) {
@@ -69,8 +80,10 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         if (declaredLocally(p.identifier.name)) {
             errorDeclaredLocally(p.identifier.name);
+            p.type = errorType;
         } else {
             enterSymbol(p.identifier.name, p.typeIdentifier);
+            p.type = p.typeIdentifier.type;
         }
     }
 
