@@ -1,6 +1,6 @@
 package com.company.AST.Nodes;
 
-import com.company.AST.Visitor.ObjectTypeDescriptor;
+import com.company.ContextualAnalysis.ObjectTypeDescriptor;
 
 /**
  * Created by joklost on 13-04-16.

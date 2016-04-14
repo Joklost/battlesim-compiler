@@ -1,9 +1,6 @@
-package com.company.AST.Visitor;
+package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
-import com.company.AST.SymbolTable.SymbolTable;
-
-import static com.company.AST.SymbolTable.SymbolTable.*;
 
 /**
  * Created by joklost on 12-04-16.

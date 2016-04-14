@@ -1,4 +1,4 @@
-package com.company.AST.Visitor;
+package com.company.ContextualAnalysis;
 
 import com.company.AST.SymbolTable.SymbolTable;
 

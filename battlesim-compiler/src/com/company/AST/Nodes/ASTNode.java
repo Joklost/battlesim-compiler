@@ -3,11 +3,9 @@ package com.company.AST.Nodes;
 import com.company.AST.Visitor.Visitable;
 import com.company.AST.Visitor.Visitor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import static com.company.AST.Visitor.Types.noType;
+import static com.company.ContextualAnalysis.Types.noType;
 
 /**
  * Created by joklost on 01-04-16.

@@ -1,8 +1,10 @@
-package com.company;
+package com.company.SyntaxAnalysis;
 import java_cup.runtime.*;
+
 
 %%
 %class Scanner
+%public
 %unicode
 %cup
 %line

@@ -1,9 +1,11 @@
-package com.company.AST.Visitor;
+package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
+import com.company.AST.Visitor.Visitor;
+import com.company.AST.Visitor.VisitorInterface;
 
 import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
-import static com.company.AST.Visitor.Types.*;
+import static com.company.ContextualAnalysis.Types.*;
 
 /**
  * Created by joklost on 12-04-16.
