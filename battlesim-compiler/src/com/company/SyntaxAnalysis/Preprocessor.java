@@ -1,6 +1,5 @@
-package com.company;
+package com.company.SyntaxAnalysis;
 import java.io.*;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,9 +91,9 @@ public class Preprocessor {
     public void RemoveOutFile(){
         boolean succes = (new File(outputPath)).delete();
         if(succes)
-            System.out.println("Temporary files have been deleted");
+            System.out.println("Temp files have been deleted");
         else
-            System.out.println("Temporary files could not be deleted");
+            System.out.println("Temp files could not be deleted");
     }
 }
 

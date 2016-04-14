@@ -3,6 +3,7 @@ package com.company;
 import com.company.AST.Nodes.Start;
 import com.company.AST.Visitor.PrettyPrintVisitor;
 import com.company.SyntaxAnalysis.Parser;
+import com.company.SyntaxAnalysis.Preprocessor;
 import com.company.SyntaxAnalysis.Scanner;
 
 public class Main {
