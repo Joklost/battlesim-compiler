@@ -5,7 +5,7 @@ import com.company.AST.SymbolTable.SymbolTable;
 /**
  * Created by joklost on 12-04-16.
  */
-public class Types {
+public class TypeConsts {
     public static final int errorType = -1;
     public static final int noType = -2;
     public static final int integerType = 1;

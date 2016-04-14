@@ -3,8 +3,8 @@ package com.company.ContextualAnalysis;
 import com.company.AST.Nodes.*;
 
 import static com.company.AST.SymbolTable.SymbolTable.*;
-import static com.company.ContextualAnalysis.Types.errorType;
-import static com.company.ContextualAnalysis.Types.functionType;
+import static com.company.ContextualAnalysis.TypeConsts.errorType;
+import static com.company.ContextualAnalysis.TypeConsts.functionType;
 
 /**
  * Created by joklost on 12-04-16.

@@ -5,7 +5,7 @@ import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
 
 import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
-import static com.company.ContextualAnalysis.Types.*;
+import static com.company.ContextualAnalysis.TypeConsts.*;
 
 /**
  * Created by joklost on 12-04-16.

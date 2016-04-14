@@ -37,7 +37,7 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
 
         if (!isAssignable(id.def)) {
             error(id.name + " is not assignable.");
-            id.type = Types.errorType;
+            id.type = TypeConsts.errorType;
             id.def = null;
         }
     }
@@ -58,7 +58,7 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
         SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
         o.accept(semanticsVisitor);
 
-        if (o.type != Types.errorType) {
+        if (o.type != TypeConsts.errorType) {
             o.objectName.accept(this);
             ASTNode def = retrieveSymbol(o.fieldName.name);
             if (!isAssignable(def)) {

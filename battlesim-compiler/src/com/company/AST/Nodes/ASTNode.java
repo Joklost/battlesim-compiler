@@ -5,7 +5,7 @@ import com.company.AST.Visitor.Visitor;
 
 import java.util.HashMap;
 
-import static com.company.ContextualAnalysis.Types.noType;
+import static com.company.ContextualAnalysis.TypeConsts.noType;
 
 /**
  * Created by joklost on 01-04-16.
