@@ -1,7 +1,5 @@
 package com.company.ContextualAnalysis;
 
-import com.company.AST.SymbolTable.SymbolTable;
-
 /**
  * Created by joklost on 12-04-16.
  */
@@ -28,6 +26,30 @@ public class TypeConsts {
     public static final int vectorType = 18;
     public static final int terrainType = 19;
 
+    public static final int coordOperator = 100;
+    public static final int plusOperator = 101;
+    public static final int minusOperator = 102;
+    public static final int multiplicationOperator = 103;
+    public static final int divisionOperator = 104;
+    public static final int moduluOperator = 105;
+    public static final int andOperator = 106;
+    public static final int orOperator = 107;
+    public static final int logicEqualsOperator = 108;
+    public static final int lessThanOperator = 109;
+    public static final int greaterThanOperator = 110;
+    public static final int lessThanEqualsOperator = 111;
+    public static final int greaterThanEqualsOperator = 112;
+
+    public static final int notOperator = 113;
+    public static final int plusplusOperator = 114;
+    public static final int minusminusOperator = 115;
+    public static final int unaryMinusOperator = 116;
+
+    public static final int[] arithmeticBinaryOperators  = new int[] { plusOperator, minusOperator, multiplicationOperator, divisionOperator, moduluOperator };
+    public static final int[] booleanBinaryOperators     = new int[] { andOperator, orOperator };
+    public static final int[] booleanComparisonOperators = new int[] {logicEqualsOperator, lessThanOperator, greaterThanOperator, lessThanEqualsOperator, greaterThanEqualsOperator };
+
+    public static final int[] arithmeticUnaryOperators   = new int[] {  plusplusOperator, minusminusOperator, unaryMinusOperator };
 }
 
 
