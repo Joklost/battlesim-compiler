@@ -4,7 +4,9 @@ import com.company.AST.Nodes.*;
 import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
-import com.sun.xml.internal.bind.v2.model.core.ErrorHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.company.AST.SymbolTable.SymbolTable.closeScope;
 import static com.company.AST.SymbolTable.SymbolTable.openScope;
@@ -26,19 +28,20 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     protected FunctionDcl currentFunction;
 
     public SemanticsVisitor() {
-
+        createStdLib();
     }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void defaultVisit(Object o) {
-
+        error("Did not find visit method for " + o.getClass());
     }
 
     public void visit(Start s) {
-        s.accept(this);
+        s.dclBlock.accept(this);
         s.simBlock.accept(this);
 
         for (int i = 0; i < s.functionDclList1.size(); i++) {
@@ -54,7 +57,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(DclBlock db) {
         for (int i = 0; i < db.stmtLists.size(); i++) {
-            db.stmtLists.accept(this);
+            //System.out.println(db.stmtLists.elementAt(i).getClass());
+            db.stmtLists.elementAt(i).accept(this);
         }
     }
 
@@ -112,7 +116,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (assignable(as.targetName.type, as.expression.type)) {       // TODO
             as.type = as.targetName.type;
         } else {
-            error("Right hand side condition not assignable to left hand side name at line " + as.getLineNumber());
+            error("Right hand side expression not assignable to left hand side name at line " + as.getLineNumber());
             as.type = errorType;
         }
 
@@ -159,11 +163,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     // der kan ikke deklareres typer i en for loop
-    // så scopet åbnes efter condition - jkj
+    // så scopet åbnes efter toExpr - jkj
     public void visit(ForStmt fs) {
         fs.initialExpr.accept(this);
         fs.forIterator.accept(this);
-        fs.condition.accept(this);
+        fs.toExpr.accept(this);
 
         openScope();
 
@@ -172,10 +176,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         }
 
         closeScope();
-
-        if (fs.condition != null) {
-            checkBoolean(fs.condition);
-        }
     }
 
     public void visit(IfStmt i) {
@@ -225,15 +225,54 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(SwitchStmt ss) {
+        ss.variable.accept(this);
+        if (ss.variable.type != errorType && !assignable(integerType, ss.variable.type) && !assignable(stringType, ss.variable.type)) {
+            error("Illegal type for Switch statement at line " + ss.getLineNumber());
+            ss.type = errorType;
+        } else {
+            ss.type = ss.variable.type;
+        }
+
+        for (int i = 0; i < ss.switchCaseList.size(); i++) {
+            ss.switchCaseList.elementAt(i).accept(this);
+            if (ss.switchCaseList.elementAt(i).type != ss.type) {
+                error("Mismatched types in switch case at line " + ss.switchCaseList.elementAt(i).getLineNumber());
+                ss.type = errorType;
+            }
+        }
+
+
+        // Nedenstående kan gøres smartere... -jkj
+        if (ss.type == stringType) {
+            List<String> labelList = gatherLabelsString(ss.switchCaseList);
+            checkForDupesString(labelList);
+        } else if (ss.type == integerType) {
+            List<Integer> labelList = gatherLabelsInteger(ss.switchCaseList);
+            checkForDupesInt(labelList);
+        }
 
     }
 
     public void visit(SwitchCase sc) {
+        sc.label.accept(this);
 
+        openScope();
+
+        for (int i = 0; i < sc.stmtList.size(); i++) {
+            sc.stmtList.elementAt(i).accept(this);
+        }
+
+        closeScope();
     }
 
     public void visit(SwitchDef sd) {
+        openScope();
 
+        for (int i = 0; i < sd.stmtList.size(); i++) {
+            sd.stmtList.elementAt(i).accept(this);
+        }
+
+        closeScope();
     }
 
     public void visit(ReturnExpr r) {
@@ -271,8 +310,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         pe.rightExpr.accept(this);
         pe.type = binaryResultType(plusOperator, pe.leftExpr.type, pe.rightExpr.type);
     }
-
-
 
     public void visit(MinusExpr me) {
         // binary
@@ -434,6 +471,46 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(FunctionCall f) {
         //f.type = returnType
+        f.objectName.accept(this);
+
+        int[] argTypeList = new int[f.argumentList.size()];
+        for (int i = 0; i < f.argumentList.size(); i++) {
+            f.argumentList.elementAt(i).accept(this);
+            argTypeList[i] = f.argumentList.elementAt(i).type;
+        }
+
+        if (f.objectName.type == errorType) {
+            error("Function " + f.objectName.name + " has not been declared. Line: " + f.getLineNumber());
+            f.type = errorType;
+        } else {
+            ASTNode def = retrieveSymbol(f.objectName.name);
+            FunctionDcl function = null;
+
+            if (!(def instanceof FunctionDcl)) {
+                error("Function " + f.objectName.name + " is not a function. Line: " + f.getLineNumber());
+                f.type = errorType;
+            } else {
+                function = (FunctionDcl) def;
+
+                if (argTypeList.length != function.paramList.size()) {
+                    error("Found " + argTypeList.length + " function arguments. Needs " + function.paramList.size() + ".");
+                    f.type = errorType;
+                } else {
+                    boolean misMatchedArgsFound = false;
+                    for (int i = 0; i < function.paramList.size(); i++) {
+                        if (argTypeList[i] != function.paramList.elementAt(i).type) {
+                            error("Argument " + i + " of function " + f.objectName.name + " does not match with parameter.");
+                            f.type = errorType;
+                            misMatchedArgsFound = true;
+                        }
+                    }
+
+                    if (!misMatchedArgsFound) {
+                        f.type = function.returnType.type;
+                    }
+                }
+            }
+        }
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -570,7 +647,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             }
         }
         if (a.indexExpr.type != errorType && a.indexExpr.type != integerType) {
-            error("Index condition is not an integer. ArrayName: " + a.arrayName.name);
+            error("Index con is not an integer. ArrayName: " + a.arrayName.name);
         }
     }
 
@@ -590,11 +667,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             }
         }
         if (a.firstIndexExpr.type != errorType && a.firstIndexExpr.type != integerType) {
-            error("First index condition is not an integer. ArrayName: " + a.arrayName.name);
+            error("First index expression is not an integer. ArrayName: " + a.arrayName.name);
         }
 
         if (a.secondIndexExpr.type != errorType && a.secondIndexExpr.type != integerType) {
-            error("Second index condition is not an integer. ArrayName: " + a.arrayName.name);
+            error("Second index expression is not an integer. ArrayName: " + a.arrayName.name);
         }
     }
 
@@ -630,6 +707,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         id.def = null;
         ASTNode newDef = retrieveSymbol(id.name);
         if (newDef == null) {
+
+
             errorNoDeclaration(id.name);
         } else {
             id.def = newDef;
@@ -712,6 +791,53 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (n.type != booleanType && n.type != errorType) {
             error("A Boolean type is required at:" + n.getLineNumber());
         }
+    }
+
+
+    // tror den er som den skal være.. -jkj
+    private List<String> gatherLabelsString(SwitchCaseList switchCaseList) {
+        List<String> labels = new ArrayList<>();
+        for (int i = 0; i < switchCaseList.size(); i++) {
+            labels.add(switchCaseList.elementAt(i).label.value.toString());
+        }
+        return labels;
+    }
+
+    private List<Integer> gatherLabelsInteger(SwitchCaseList switchCaseList) {
+        List<Integer> labels = new ArrayList<>();
+        for (int i = 0; i < switchCaseList.size(); i++) {
+            labels.add((Integer)switchCaseList.elementAt(i).label.value);
+        }
+        return labels;
+    }
+
+
+    private void checkForDupesString(List<String> labelList) {
+        if (labelList.size() > 1) {
+            List<String> dupeList = new ArrayList<>();
+            for (String s : labelList) {
+                if (dupeList.contains(s)) {
+                    error("Duplicate case label: " + s);
+                }
+                dupeList.add(s);
+            }
+        }
+    }
+
+    private void checkForDupesInt(List<Integer> labelList) {
+        if (labelList.size() > 1) {
+            List<Integer> dupeList = new ArrayList<>();
+            for (Integer i : labelList) {
+                if (dupeList.contains(i)) {
+                    error("Duplicate case label: " + i.toString());
+                }
+                dupeList.add(i);
+            }
+        }
+    }
+
+
+    private void createStdLib() {
     }
 
 

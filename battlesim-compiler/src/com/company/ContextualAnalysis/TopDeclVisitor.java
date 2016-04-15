@@ -33,6 +33,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
                 TypeIdentifier def = d.typeName;
                 def.type = d.typeName.type;
                 d.dclIdList.elementAt(i).def = def;
+                //System.out.println(id);
                 enterSymbol(id, def);
             }
         }

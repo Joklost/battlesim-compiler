@@ -1,4 +1,4 @@
-package com.company;
+package com.company.SyntaxAnalysis;
 
 import java_cup.runtime.*;
 import com.company.AST.Nodes.*;
@@ -6,7 +6,7 @@ import com.company.AST.Nodes.*;
 parser code {:
     //private int token_num = 0;
     private Scanner s;
-    public Parser(Scanner s) {
+    public Parser(com.company.SyntaxAnalysis.Scanner s, boolean useMe   ) {
         super(s);
         this.s = s;
     }

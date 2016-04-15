@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
+import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.PrettyPrintVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
@@ -11,9 +12,10 @@ public class Main {
 
     public static void main(String[] args) {
         String[] paths = {
-                //"/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
+                "/home/joklost/git/P4-Code/example-code/battlesim/semtester.bs",
+//                "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
                 //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\simWithIncludes\\simWithInclude.bs",
-                "/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
+                //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
         };
 
         boolean parseSuccesful = true;
@@ -32,12 +34,14 @@ public class Main {
                 preprocessor = new Preprocessor(path);
                 String newPath = preprocessor.MakeFile();
                 scanner = new Scanner(new java.io.FileReader(newPath));
-                parser = new Parser(scanner);
+                parser = new Parser(scanner, true);
 
                 startNode = (Start)parser.parse().value;
 
                 startNode.accept(semanticsVisitor);
                 preprocessor.RemoveOutFile();
+
+                SymbolTable.printTable();
             }
 
 

@@ -237,7 +237,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         print("For ");
         fs.initialExpr.accept(this);
         fs.forIterator.accept(this);
-        fs.condition.accept(this);
+        fs.toExpr.accept(this);
         print(" Do\n");
 
         indentLevel++;
@@ -325,7 +325,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(SwitchCase sc) {
         printIndent();
         print("Case ");
-        sc.expression.accept(this);
+        sc.label.accept(this);
         print("\n");
 
         indentLevel++;
@@ -531,7 +531,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(DecimalLiteral dl) {
-        print(dl.decimal.toString());
+        print(dl.value.toString());
     }
 
     public void visit(StringLiteral sl) {
@@ -539,11 +539,11 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(BooleanLiteral bl) {
-        print(bl.bool.toString());
+        print(bl.value.toString());
     }
 
     public void visit(IntegerLiteral il) {
-        print(il.integer.toString());
+        print(il.value.toString());
     }
 
     public void visit(NullLiteral nl) {

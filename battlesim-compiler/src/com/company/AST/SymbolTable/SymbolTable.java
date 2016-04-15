@@ -11,7 +11,7 @@ public class SymbolTable {
 
     private static void debugMsg(String s) {
         if (debug) {
-            System.err.println(s);
+            System.err.println("    " + s);
         }
     }
 
@@ -31,7 +31,7 @@ public class SymbolTable {
         Bucket buck;
         int i = hash(str);
 
-        debugMsg("Enter called with '" + str + "'");
+        debugMsg("Enter called with '" + str + "'. Def: " + def.getClass());
 
         buck = new Bucket();
         buck.setId(str);
@@ -44,16 +44,19 @@ public class SymbolTable {
 
         buck.setSlink(scopeList.getSlink());
         scopeList.setSlink(buck);
+
     }
 
     public static ASTNode retrieveSymbol(String str) {
         int i = hash(str);
         Bucket buck = symbolTable[i];
 
-        debugMsg("Find called with '" + str + "'");
+        debugMsg("Retrieve called with '" + str + "'");
 
         while (buck != null) {
-            if (buck.getId() == str) {
+            debugMsg("Retrieve checking '" + buck.getId() + "'");
+            if (buck.getId().equals(str)) {
+                debugMsg("Retrieve found def: " + buck.getDef().getClass());
                 return buck.getDef();
             }
             buck = buck.getNext();
