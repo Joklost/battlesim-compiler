@@ -1,4 +1,4 @@
-.class public Employee
+k.class public Employee
 .super java/lang/Object
 
 .field private name Ljava/lang/String;

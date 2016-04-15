@@ -9,7 +9,7 @@
 ; Default constructor
 ;==================================
 .method public <init>()V
-    
+
     aload_0
 
     invokespecial java/lang/Object/<init>()V
@@ -37,9 +37,9 @@
     istore_2
 
     ;==================================
-	; Start the loop
-	;==================================
-	Loop:
+    ; Start the loop
+    ;==================================
+    Loop:
 
     ; compute 26 - <local variable 2>, convert this integer to a string,
     ; and store the string result in local variable 3
@@ -48,87 +48,87 @@
     isub    ; stack now contains (26 - <locl variable 2>)
 
     ;==================================
-	; Test if fizz, FizzBuzz or buzz
-	; if it is fizz we test if it is also
-	; buzz. If not fizz we test if it is
-	; then buzz. If none we goto PrintStream
-	;==================================
-		
-	;==================================
-	; Test if fizz
-	; then goto testFizzBuzz
-	;==================================
-	; TODO: Not impelemented yet		
-	; get top of stack
-	; top of stack mod 3
-	; if result != 0 goto: TestFizzBuzz
-	goto TestBuzz ; else test if buzz
-
-	;==================================
-	; Test if FizzBuzz
-	; then goto testFizzBuzz
-	;==================================
-	TestFizzBuzz:
-	; TODO: Not impelemented yet		
-	; pop top of stack (??? To get rid of top of stack mod 3 ???)
-	; top of stack mod 5
-	; if result == 0 goto: PrintFizzBuzz
-	goto PrintFizz
-	
-	;==================================
-	; Test if Buzz
-	; then goto PrintBuzz
-	;==================================
-	TestBuzz:
-	; TODO: Not impelemented yey
-	; pop top of stack (??? To get rid of top of stack mod 3 ???)
-	; top of stack mod 5
-	; if result == 0 goto: PrintBuzz
-	
-	;==================================
-	; if none of the following
-	; goto PrintString
-	;==================================
-	goto PrintString
+    ; Test if fizz, FizzBuzz or buzz
+    ; if it is fizz we test if it is also
+    ; buzz. If not fizz we test if it is
+    ; then buzz. If none we goto PrintStream
+    ;==================================
+        
+    ;==================================
+    ; Test if fizz
+    ; then goto testFizzBuzz
+    ;==================================
+    ; TODO: Not impelemented yet        
+    ; get top of stack
+    ; top of stack mod 3
+    ; if result != 0 goto: TestFizzBuzz
+    goto TestBuzz ; else test if buzz
 
     ;==================================
-	; Print fizz
-	; only happens if explecit goto
-	; when finished go back in loop
-	;==================================
-	PrintFizz:
+    ; Test if FizzBuzz
+    ; then goto testFizzBuzz
+    ;==================================
+    TestFizzBuzz:
+    ; TODO: Not impelemented yet        
+    ; pop top of stack (??? To get rid of top of stack mod 3 ???)
+    ; top of stack mod 5
+    ; if result == 0 goto: PrintFizzBuzz
+    goto PrintFizz
+    
+    ;==================================
+    ; Test if Buzz
+    ; then goto PrintBuzz
+    ;==================================
+    TestBuzz:
+    ; TODO: Not impelemented yey
+    ; pop top of stack (??? To get rid of top of stack mod 3 ???)
+    ; top of stack mod 5
+    ; if result == 0 goto: PrintBuzz
+    
+    ;==================================
+    ; if none of the following
+    ; goto PrintString
+    ;==================================
+    goto PrintString
+
+    ;==================================
+    ; Print fizz
+    ; only happens if explecit goto
+    ; when finished go back in loop
+    ;==================================
+    PrintFizz:
     ; Push the output stream and the string "Hello World" onto the stack,
     ; then invoke the println method:
     ldc "fizz"
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
     goto Loop
 
-	;==================================
-	; Print buzz
-	; only happens if explecit goto
-	; when finished go back in loop
-	;==================================
-	PrintBuzz:
+    ;==================================
+    ; Print buzz
+    ; only happens if explecit goto
+    ; when finished go back in loop
+    ;==================================
+    PrintBuzz:
     ; print buzz
     ; This is not impelemented yet
     goto Loop
 
     ;==================================
-	; Print fizzbuzz
-	; only happens if explecit goto
-	; when finished go back in loop
-	;==================================
-	PrintFizzBuzz:
+    ; Print fizzbuzz
+    ; only happens if explecit goto
+    ; when finished go back in loop
+    ;==================================
+    PrintFizzBuzz:
     ; print FizzBuzz
     ; This is not impelemented yet
     goto Loop
 
-	;==================================
-	; Print the number
-	; happens if nothing else is specified
-	; then go back in loop
-	;==================================
-	PrintString:
+    ;==================================
+    ; Print the number
+    ; happens if nothing else is specified
+    ; then go back in loop
+    ;==================================
+    PrintString:
     ; convert to string...
     invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
     astore_3
@@ -139,17 +139,17 @@
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
     ;==================================
-	; When done printing decrement the
-	; counter loop
-	;==================================
+    ; When done printing decrement the
+    ; counter loop
+    ;==================================
     iinc 2 -1
     iload_2
     ifne Loop
 
     ;==================================
-	; When the function is done
-	; return from it
-	;==================================
+    ; When the function is done
+    ; return from it
+    ;==================================
     return
 
  .end method
