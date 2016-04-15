@@ -4,7 +4,10 @@ import com.company.AST.Nodes.*;
 import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
+import com.sun.xml.internal.bind.v2.model.core.ErrorHandler;
 
+import static com.company.AST.SymbolTable.SymbolTable.closeScope;
+import static com.company.AST.SymbolTable.SymbolTable.openScope;
 import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
 import static com.company.ContextualAnalysis.TypeConsts.*;
 
@@ -20,6 +23,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         System.err.println(s);
     }
 
+    protected FunctionDcl currentFunction;
+
     public SemanticsVisitor() {
 
     }
@@ -33,48 +38,71 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Start s) {
+        s.accept(this);
+        s.simBlock.accept(this);
 
+        for (int i = 0; i < s.functionDclList1.size(); i++) {
+            s.functionDclList1.elementAt(i).accept(this);
+        }
+
+        s.program.accept(this);
+
+        for (int i = 0; i < s.functionDclList2.size(); i++) {
+            s.functionDclList2.elementAt(i).accept(this);
+        }
     }
 
     public void visit(DclBlock db) {
-
+        for (int i = 0; i < db.stmtLists.size(); i++) {
+            db.stmtLists.accept(this);
+        }
     }
 
     public void visit(SimBlock s) {
-
+        for (int i = 0; i < s.simulationList.size(); i++) {
+            s.simulationList.accept(this);
+        }
     }
 
     public void visit(SimStep s) {
-
+        TopDeclVisitor topDeclVisitor = new TopDeclVisitor();
+        s.accept(topDeclVisitor);
     }
 
     public void visit(Simulation s) {
-
+        TopDeclVisitor topDeclVisitor = new TopDeclVisitor();
+        s.accept(topDeclVisitor);
     }
 
     public void visit(Interrupts is) {
-
+        // bliver aldrig kaldt med SemanticsVisitor - jkj
+        error("Visiting Interrupts with SemanticsVisitor, which should not happen... (Line number: " + is.getLineNumber() + ")");
     }
 
     public void visit(FunctionDcl fd) {
-
+        TopDeclVisitor topDeclVisitor = new TopDeclVisitor();
+        fd.accept(topDeclVisitor);
     }
 
     public void visit(Param p) {
-
+        TopDeclVisitor topDeclVisitor = new TopDeclVisitor();
+        p.accept(topDeclVisitor);
     }
 
     public void visit(Program p) {
+        openScope();
 
+        for (int i = 0; i < p.stmtList.size(); i++) {
+            p.stmtList.elementAt(i).accept(this);
+        }
+
+        closeScope();
     }
 
     public void visit(Dcl ds) {
-
+        TopDeclVisitor topDeclVisitor = new TopDeclVisitor();
+        ds.accept(topDeclVisitor);
     }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void visit(Assignment as) {
         LHSSemanticsVisitor lhsSemanticsVisitor = new LHSSemanticsVisitor();
@@ -84,42 +112,116 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (assignable(as.targetName.type, as.expression.type)) {       // TODO
             as.type = as.targetName.type;
         } else {
-            error("Right hand side expression not assignable to left hand side name at line " + as.getLineNumber());
+            error("Right hand side condition not assignable to left hand side name at line " + as.getLineNumber());
             as.type = errorType;
         }
 
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     public void visit(WhileStmt ws) {
+        ws.condition.accept(this);
 
+        openScope();
+
+        for (int i = 0; i < ws.stmtList.size(); i++) {
+            ws.stmtList.elementAt(i).accept(this);
+        }
+
+        closeScope();
+
+        if (ws.condition != null) {
+            checkBoolean(ws.condition);
+        }
     }
 
     public void visit(ForeachStmt fes) {
+        //fes.typeName.type == fes.objectName.type
+        openScope();
+        fes.typeName.accept(this);
+        fes.localName.accept(this);     // TODO skal måske være en speciel declare??
+        fes.objectName.accept(this);
 
+        for (int i = 0; i < fes.stmtList.size(); i++) {
+            fes.stmtList.elementAt(i).accept(this);
+        }
+
+        closeScope();
+
+        if (fes.typeName.type != fes.objectName.type) {
+            error("Mismatched types in foreach statement at line: " + fes.getLineNumber());
+            fes.type = errorType;
+        }
+
+        if ((fes.objectName.type != listType) && (fes.objectName.type != array1DType) && (fes.objectName.type != array2DType)) {
+            error("Object in foreach statement is not a list or array, at Line: " + fes.getLineNumber());
+            fes.type = errorType;
+        }
     }
 
+    // der kan ikke deklareres typer i en for loop
+    // så scopet åbnes efter condition - jkj
     public void visit(ForStmt fs) {
+        fs.initialExpr.accept(this);
+        fs.forIterator.accept(this);
+        fs.condition.accept(this);
 
+        openScope();
+
+        for (int i = 0; i < fs.stmtList.size(); i++) {
+            fs.stmtList.elementAt(i).accept(this);
+        }
+
+        closeScope();
+
+        if (fs.condition != null) {
+            checkBoolean(fs.condition);
+        }
     }
 
     public void visit(IfStmt i) {
+        i.condition.accept(this);
 
+        openScope();
+
+        for (int k = 0; k < i.stmtList.size(); k++) {
+            i.stmtList.elementAt(k).accept(this);
+        }
+
+        closeScope();
+
+        i.elseStmt.accept(this);
+
+        checkBoolean(i.condition);
     }
 
     public void visit(ElseIfStmt e) {
+        e.condition.accept(this);
 
+        openScope();
+
+        for (int i = 0; i < e.stmtList.size(); i++) {
+            e.stmtList.elementAt(i).accept(this);
+        }
+
+        closeScope();
+
+        e.elifStmt.accept(this);
+
+        checkBoolean(e.condition);
     }
 
     public void visit(ElseStmt e) {
+        openScope();
 
+        for (int i = 0; i < e.stmtList.size(); i++) {
+            e.stmtList.elementAt(i);
+        }
+
+        closeScope();
     }
 
     public void visit(EndIfStmt e) {
-
+        // den er tom - jkj
     }
 
     public void visit(SwitchStmt ss) {
@@ -135,20 +237,33 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ReturnExpr r) {
-
+        r.returnVal.accept(this);
+        FunctionDcl curFunction = currentFunction;
+        if (r.returnVal != null) {
+            if (curFunction == null) {
+                error("A value may not be returned from outside of a function.");
+            } else {
+                if (!assignable(curFunction.returnType.type, r.returnVal.type)) {
+                    error("Illegal return type at line: " + r.getLineNumber());
+                }
+            }
+        } else {
+            if (curFunction != null && curFunction.returnType.type != voidType) {
+                error("A value must be returned from function at line: " + curFunction.getLineNumber());
+            }
+        }
     }
 
     public void visit(Return r) {
-
+        FunctionDcl curFunction = currentFunction;
+        if (curFunction != null && curFunction.returnType.type != voidType) {
+            error("A value must be returned from function at line: " + curFunction.getLineNumber());
+        }
     }
 
     public void visit(FunctionCallStmt fcs) {
-
+        fcs.functionCall.accept(this);
     }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void visit(PlusExpr pe) {
         // binary
@@ -281,50 +396,67 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         ce.type = binaryResultType(coordOperator, ce.expression1.type, ce.expression2.type);
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     public void visit(EqualsOp eo) {
-
+        eo.type = equalsAssignmentOperator;
     }
 
     public void visit(PlusEqualsOp po) {
-
+        po.type = plusEqualsAssignmentOperator;
     }
 
     public void visit(MinusEqualsOp mo) {
-
+        mo.type = minusEqualsAssignmentOperator;
     }
 
     public void visit(ModEqualsOp mo) {
-
+        mo.type = modEqualsAssignmentOperator;
     }
 
     public void visit(MultEqualsOp mo) {
-
+        mo.type = multEqualsAssignmentOperator;
     }
 
     public void visit(DivEqualsOp deo) {
-
+        deo.type = divEqualsAssignmentOperator;
     }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void visit(FunctionCall f) {
-
+        //f.type = returnType
     }
 
-    public void visit(ToIterator ti) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    public void visit(ToIterator ti) {
+        ti.type = toIterator;
     }
 
     public void visit(DownToIterator di) {
-
+        di.type = downToIterator;
     }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     public void visit(VariableObjectId vi) {
         vi.objectName.accept(this);
@@ -357,15 +489,18 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Array1D a) {
-        //TODO typeVisitor -> arrayDefining
+        TypeVisitor typeVisitor = new TypeVisitor();
+        a.accept(typeVisitor);
     }
 
     public void visit(Array2D a) {
-        //TODO typeVisitor -> arrayDefining
+        TypeVisitor typeVisitor = new TypeVisitor();
+        a.accept(typeVisitor);
     }
 
     public void visit(ListOf l) {
-        //TODO typeVisitor -> arrayDefining
+        TypeVisitor typeVisitor = new TypeVisitor();
+        l.accept(typeVisitor);
     }
 
     public void visit(Decimal d) {
@@ -435,7 +570,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             }
         }
         if (a.indexExpr.type != errorType && a.indexExpr.type != integerType) {
-            error("Index expression is not an integer. ArrayName: " + a.arrayName.name);
+            error("Index condition is not an integer. ArrayName: " + a.arrayName.name);
         }
     }
 
@@ -455,11 +590,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             }
         }
         if (a.firstIndexExpr.type != errorType && a.firstIndexExpr.type != integerType) {
-            error("First index expression is not an integer. ArrayName: " + a.arrayName.name);
+            error("First index condition is not an integer. ArrayName: " + a.arrayName.name);
         }
 
         if (a.secondIndexExpr.type != errorType && a.secondIndexExpr.type != integerType) {
-            error("Second index expression is not an integer. ArrayName: " + a.arrayName.name);
+            error("Second index condition is not an integer. ArrayName: " + a.arrayName.name);
         }
     }
 
@@ -507,7 +642,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private boolean assignable(int target, int expression) {
-        return true;    // skal laves
+        if (target == expression) return true;
+        if (target == decimalType && expression == integerType) return true;
+
+        return false;    // skal laves
     }
 
     private int binaryResultType(int operator, int leftType, int rightType) {
@@ -519,18 +657,14 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         // string arithmetics
         if (operator == plusOperator) {
             if (leftType == stringType && rightType == stringType) return stringType;
-            if ((leftType == integerType && rightType == stringType)
-                    || (leftType == stringType && rightType == integerType)) return stringType;
-            if ((leftType == decimalType && rightType == stringType)
-                    || (leftType == stringType && rightType == decimalType)) return stringType;
-            if ((leftType == booleanType && rightType == stringType)
-                    || (leftType == stringType && rightType == booleanType)) return stringType;
+            if ((leftType == integerType && rightType == stringType) || (leftType == stringType && rightType == integerType)) return stringType;
+            if ((leftType == decimalType && rightType == stringType) || (leftType == stringType && rightType == decimalType)) return stringType;
+            if ((leftType == booleanType && rightType == stringType) || (leftType == stringType && rightType == booleanType)) return stringType;
         }
 
         if (arrayContains(arithmeticBinaryOperators, operator)) {
             if (leftType == integerType && rightType == integerType) return integerType;
-            if ((leftType == integerType && rightType == decimalType)
-                    || (leftType == decimalType && rightType == integerType)) return decimalType;
+            if ((leftType == integerType && rightType == decimalType) || (leftType == decimalType && rightType == integerType)) return decimalType;
             if (leftType == decimalType && rightType == decimalType) return decimalType;
         }
 
@@ -545,8 +679,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (arrayContains(booleanComparisonOperators, operator)) {
             if (leftType == integerType && rightType == integerType) return booleanType;
             if (leftType == decimalType && rightType == decimalType) return booleanType;
-            if ((leftType == integerType && rightType == decimalType)
-                    || (leftType == decimalType && rightType == integerType)) return booleanType;
+            if ((leftType == integerType && rightType == decimalType) || (leftType == decimalType && rightType == integerType)) return booleanType;
         }
 
         // No proper binary result type was found
@@ -573,6 +706,12 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         }
 
         return false;
+    }
+
+    private void checkBoolean(ASTNode n) {
+        if (n.type != booleanType && n.type != errorType) {
+            error("A Boolean type is required at:" + n.getLineNumber());
+        }
     }
 
 

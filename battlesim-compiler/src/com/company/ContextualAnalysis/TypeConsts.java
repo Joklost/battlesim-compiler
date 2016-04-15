@@ -25,6 +25,9 @@ public class TypeConsts {
     public static final int barrierType = 17;
     public static final int vectorType = 18;
     public static final int terrainType = 19;
+    public static final int listType = 20;
+    public static final int array1DType = 21;
+    public static final int array2DType = 22;
 
     public static final int coordOperator = 100;
     public static final int plusOperator = 101;
@@ -48,8 +51,18 @@ public class TypeConsts {
     public static final int[] arithmeticBinaryOperators  = new int[] { plusOperator, minusOperator, multiplicationOperator, divisionOperator, moduluOperator };
     public static final int[] booleanBinaryOperators     = new int[] { andOperator, orOperator };
     public static final int[] booleanComparisonOperators = new int[] {logicEqualsOperator, lessThanOperator, greaterThanOperator, lessThanEqualsOperator, greaterThanEqualsOperator };
-
     public static final int[] arithmeticUnaryOperators   = new int[] {  plusplusOperator, minusminusOperator, unaryMinusOperator };
+
+    public static final int equalsAssignmentOperator = 130;
+    public static final int plusEqualsAssignmentOperator = 131;
+    public static final int minusEqualsAssignmentOperator = 132;
+    public static final int modEqualsAssignmentOperator = 133;
+    public static final int multEqualsAssignmentOperator = 134;
+    public static final int divEqualsAssignmentOperator = 135;
+
+    public static final int toIterator = 140;
+    public static final int downToIterator = 141;
+
 }
 
 

@@ -1,5 +1,8 @@
 package com.company.AST.Nodes;
 
+import com.company.ContextualAnalysis.Array1DTypeDescriptor;
+import com.company.ContextualAnalysis.Array2DTypeDescriptor;
+
 /**
  * Created by joklost on 12-04-16.
  */
@@ -7,6 +10,7 @@ public class Array2D extends TypeIdentifier {
     public TypeName typeName;
     public Expression index1;
     public Expression index2;
+    public Array2DTypeDescriptor typeDesc;
 
     public Array2D(TypeName tn, Expression e1, Expression e2, int ln) {
         super(ln);
