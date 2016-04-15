@@ -33,6 +33,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
                 TypeIdentifier def = d.typeName;
                 def.type = d.typeName.type;
                 d.dclIdList.elementAt(i).def = def;
+                //System.out.println(id);
                 enterSymbol(id, def);
             }
         }
@@ -45,12 +46,6 @@ public class TopDeclVisitor extends SemanticsVisitor {
         TypeVisitor typeVisitor = new TypeVisitor();
         f.returnType.accept(typeVisitor);
 
-        //FunctionAttributes fatt = new FunctionAttributes(f.getLineNumber());
-        //fatt.returnType = f.returnType.type;
-        //fatt.locals = new SymbolTable();
-        // dette vil bogen, men giver ingen mening for vores sprog
-
-
         if (declaredLocally(f.functionName.name)) {
             errorDeclaredLocally(f.functionName.name);
             f.type = errorType;
@@ -61,6 +56,9 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         openScope();
 
+        FunctionDcl oldCurrentFunction = currentFunction;
+        currentFunction = f;
+
         for (int i = 0; i < f.paramList.size(); i++) {
             f.paramList.elementAt(i).accept(this);
         }
@@ -68,6 +66,8 @@ public class TopDeclVisitor extends SemanticsVisitor {
         for (int i = 0; i < f.stmtList.size(); i++) {
             f.stmtList.elementAt(i).accept(this);
         }
+
+        currentFunction = oldCurrentFunction;
 
         closeScope();
 

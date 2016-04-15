@@ -7,7 +7,7 @@ import com.company.AST.Nodes.*;
  */
 public class TypeVisitor extends TopDeclVisitor {
 
-    // objekter defineres ud fra stdlib
+    // TODO objekter defineres ud fra stdlib
 
     //public void visit(ObjectDefining o) {
         //o.typeDescriptor = new ObjectTypeDescriptor()
@@ -19,13 +19,29 @@ public class TypeVisitor extends TopDeclVisitor {
 
 
     public void visit(Array1D a) {
+        a.typeName.accept(this);
+        a.index.accept(this);
 
+        a.typeDesc = new Array1DTypeDescriptor();
+        a.typeDesc.elementType = a.typeName.type;
+        a.typeDesc.arraySize = a.index;
     }
 
     public void visit(Array2D a) {
+        a.typeName.accept(this);
+        a.index1.accept(this);
+        a.index2.accept(this);
 
+        a.typeDesc = new Array2DTypeDescriptor();
+        a.typeDesc.elementType = a.typeName.type;
+        a.typeDesc.arraySize1 = a.index1;
+        a.typeDesc.arraySize2 = a.index2;
     }
 
+    public void visit(ListOf l) {
+        l.typeName.accept(this);
+        l.type = l.typeName.type;
+    }
 
 }
 

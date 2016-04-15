@@ -1,4 +1,4 @@
-package com.company;
+package com.company.SyntaxAnalysis;
 
 import java_cup.runtime.*;
 import com.company.AST.Nodes.*;
@@ -6,7 +6,7 @@ import com.company.AST.Nodes.*;
 parser code {:
     //private int token_num = 0;
     private Scanner s;
-    public Parser(Scanner s) {
+    public Parser(com.company.SyntaxAnalysis.Scanner s, boolean useMe   ) {
         super(s);
         this.s = s;
     }
@@ -202,7 +202,7 @@ SwitchStmt    ::= SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH Mu
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
               |   MultEOL                                                                       {: RESULT = new SwitchCaseList(0); :}
               ;
-SwitchCase    ::= CASE Expression:v Stmts:ss                                                    {: RESULT = new SwitchCase(v, ss, vleft); :}
+SwitchCase    ::= CASE StdLiteral:v Stmts:ss                                                    {: RESULT = new SwitchCase(v, ss, vleft); :}
               ;
 SwitchDef     ::= DEFAULT:d Stmts:ss                                                            {: RESULT = new SwitchDef(ss, dleft); :}
               ;
