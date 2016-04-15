@@ -202,7 +202,7 @@ SwitchStmt    ::= SWITCH Variable:v SwitchCases:swcs SwitchDef:swd END SWITCH Mu
 SwitchCases   ::= SwitchCases:swcs SwitchCase:swc                                               {: swcs.addElement(swc); RESULT = swcs; :}
               |   MultEOL                                                                       {: RESULT = new SwitchCaseList(0); :}
               ;
-SwitchCase    ::= CASE Expression:v Stmts:ss                                                    {: RESULT = new SwitchCase(v, ss, vleft); :}
+SwitchCase    ::= CASE StdLiteral:v Stmts:ss                                                    {: RESULT = new SwitchCase(v, ss, vleft); :}
               ;
 SwitchDef     ::= DEFAULT:d Stmts:ss                                                            {: RESULT = new SwitchDef(ss, dleft); :}
               ;
