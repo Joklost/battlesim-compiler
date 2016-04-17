@@ -1,0 +1,54 @@
+Begin Declarations
+
+    Declare a, aa as Integer
+    a = 10
+    aa = 0
+    Declare b, bb as Decimal
+    b = 4.7
+    bb = 4
+    Declare c, cc as Boolean
+    c = false
+    cc = true
+    Declare d, dd as String
+    d = "test"
+    dd = "test2"
+
+    Declare str1, str2 as String
+    str1 = "tis"
+    str2 = "tis"
+
+End Declarations
+
+Declare Simulations
+
+
+End Declare Simulations
+
+Begin Program
+
+    // tester assignable:
+    a = a + b  // giver en fejl, da Integer + Decimal ikke implicit konverteres
+    b = b + a  // derimod virker denne, da Integer konverteres til decimal implicit
+
+
+
+
+    For a To 100 Do     // skal give en fejl, da det eneste der kan itereres over er ints
+        a = a++
+        //b++             // giver syntax error, da det i grammatikken ikke er lovligt at skrive var++ som en statement..
+    End For
+
+    If b > a Then
+        b = a
+    Else
+        a = 10
+    End If
+
+
+    If str1 == str2 Then
+
+    End If
+
+
+
+End Program

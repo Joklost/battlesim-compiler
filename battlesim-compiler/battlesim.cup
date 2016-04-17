@@ -4,37 +4,28 @@ import java_cup.runtime.*;
 import com.company.AST.Nodes.*;
 
 parser code {:
-    //private int token_num = 0;
+    public boolean errorFound = false;
     private Scanner s;
     public Parser(com.company.SyntaxAnalysis.Scanner s, boolean useMe   ) {
         super(s);
         this.s = s;
     }
-/*
-    public void syntax_error(Symbol cur_token) {
-        report_error("Syntax error at line " + (cur_token.left + 1) + " column " + (cur_token.right + 1) + " of input.", null);
-        //  : " + Sym.terminalNames[cur_token.sym] + (cur_token.value == null ? "" : " value: " + cur_token.value), null
-    }
 
-    public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
-        this.report_fatal_error("Couldn\'t repair and continue parse", cur_token);
-    }
-    */
 
     public void report_error(String message, Object info) {
-    System.err.print(message);
-    System.err.flush();
-    if(info instanceof Symbol) {
-        if(((Symbol)info).left != -1) {
-            System.err.println(" at line " + (((Symbol)info).left + 1) + " column " + (((Symbol)info).right + 1) + " of input");
+        System.err.print(message);
+        System.err.flush();
+        if (info instanceof Symbol) {
+            if (((Symbol)info).left != -1) {
+                System.err.println(" at line " + (((Symbol)info).left + 1) + " column " + (((Symbol)info).right + 1) + " of input");
+            } else {
+                System.err.println("");
+            }
         } else {
             System.err.println("");
         }
-    } else {
-        System.err.println("");
-    }
 
-}
+    }
 :};
 
 /* Preliminaries to set up and use the scanner.  */

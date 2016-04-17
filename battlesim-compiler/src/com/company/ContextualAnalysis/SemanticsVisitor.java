@@ -12,6 +12,7 @@ import static com.company.AST.SymbolTable.SymbolTable.closeScope;
 import static com.company.AST.SymbolTable.SymbolTable.openScope;
 import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
 import static com.company.ContextualAnalysis.TypeConsts.*;
+import static com.company.Main.currentFile;
 
 /**
  * Created by joklost on 12-04-16.
@@ -21,8 +22,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     private void errorNoDeclaration(String var) {
         System.err.println(var + " has not been declared.");
     }
-    private void error(String s) {
-        System.err.println(s);
+    private void error(int ln, String s) {
+        System.err.println(currentFile + ": line " + ln + ": error: " + s);
     }
 
     protected FunctionDcl currentFunction;
@@ -37,7 +38,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void defaultVisit(Object o) {
-        error("Did not find visit method for " + o.getClass());
+        error(-1, "Did not find visit method for " + o.getClass());
     }
 
     public void visit(Start s) {
@@ -80,7 +81,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(Interrupts is) {
         // bliver aldrig kaldt med SemanticsVisitor - jkj
-        error("Visiting Interrupts with SemanticsVisitor, which should not happen... (Line number: " + is.getLineNumber() + ")");
+        error(is.getLineNumber(), "Visiting Interrupts with SemanticsVisitor, which should not happen...");
     }
 
     public void visit(FunctionDcl fd) {
@@ -116,7 +117,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (assignable(as.targetName.type, as.expression.type)) {       // TODO
             as.type = as.targetName.type;
         } else {
-            error("Right hand side expression not assignable to left hand side name at line " + as.getLineNumber());
+            error(as.getLineNumber(), "Right hand side expression not assignable to left hand side.");
             as.type = errorType;
         }
 
@@ -152,12 +153,12 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         closeScope();
 
         if (fes.typeName.type != fes.objectName.type) {
-            error("Mismatched types in foreach statement at line: " + fes.getLineNumber());
+            error(fes.getLineNumber(), "Mismatched types in foreach statement.");
             fes.type = errorType;
         }
 
         if ((fes.objectName.type != listType) && (fes.objectName.type != array1DType) && (fes.objectName.type != array2DType)) {
-            error("Object in foreach statement is not a list or array, at Line: " + fes.getLineNumber());
+            error(fes.getLineNumber(), "Object in foreach statement is not a list or array.");
             fes.type = errorType;
         }
     }
@@ -176,6 +177,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         }
 
         closeScope();
+
+        if (fs.initialExpr.type != integerType) {
+            error(fs.getLineNumber(), "Inital expression in for statement has to be an integer.");
+            fs.type = errorType;
+        }
     }
 
     public void visit(IfStmt i) {
@@ -227,7 +233,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(SwitchStmt ss) {
         ss.variable.accept(this);
         if (ss.variable.type != errorType && !assignable(integerType, ss.variable.type) && !assignable(stringType, ss.variable.type)) {
-            error("Illegal type for Switch statement at line " + ss.getLineNumber());
+            error(ss.getLineNumber(), "Illegal type for Switch statemen.");
             ss.type = errorType;
         } else {
             ss.type = ss.variable.type;
@@ -236,7 +242,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         for (int i = 0; i < ss.switchCaseList.size(); i++) {
             ss.switchCaseList.elementAt(i).accept(this);
             if (ss.switchCaseList.elementAt(i).type != ss.type) {
-                error("Mismatched types in switch case at line " + ss.switchCaseList.elementAt(i).getLineNumber());
+                error(ss.switchCaseList.elementAt(i).getLineNumber(), "Mismatched types in switch case.");
                 ss.type = errorType;
             }
         }
@@ -280,15 +286,15 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         FunctionDcl curFunction = currentFunction;
         if (r.returnVal != null) {
             if (curFunction == null) {
-                error("A value may not be returned from outside of a function.");
+                error(r.getLineNumber(), "A value may not be returned from outside of a function.");
             } else {
                 if (!assignable(curFunction.returnType.type, r.returnVal.type)) {
-                    error("Illegal return type at line: " + r.getLineNumber());
+                    error(r.getLineNumber(), "Illegal return type.");
                 }
             }
         } else {
             if (curFunction != null && curFunction.returnType.type != voidType) {
-                error("A value must be returned from function at line: " + curFunction.getLineNumber());
+                error(curFunction.getLineNumber(), "A value must be returned from function.");
             }
         }
     }
@@ -296,7 +302,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(Return r) {
         FunctionDcl curFunction = currentFunction;
         if (curFunction != null && curFunction.returnType.type != voidType) {
-            error("A value must be returned from function at line: " + curFunction.getLineNumber());
+            error(curFunction.getLineNumber(), "A value must be returned from function.");
         }
     }
 
@@ -480,26 +486,26 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         }
 
         if (f.objectName.type == errorType) {
-            error("Function " + f.objectName.name + " has not been declared. Line: " + f.getLineNumber());
+            error(f.getLineNumber(), "Function " + f.objectName.name + " has not been declared.");
             f.type = errorType;
         } else {
             ASTNode def = retrieveSymbol(f.objectName.name);
             FunctionDcl function = null;
 
             if (!(def instanceof FunctionDcl)) {
-                error("Function " + f.objectName.name + " is not a function. Line: " + f.getLineNumber());
+                error(f.getLineNumber(), "Function " + f.objectName.name + " is not a function.");
                 f.type = errorType;
             } else {
                 function = (FunctionDcl) def;
 
                 if (argTypeList.length != function.paramList.size()) {
-                    error("Found " + argTypeList.length + " function arguments. Needs " + function.paramList.size() + ".");
+                    error(f.getLineNumber(), "Found " + argTypeList.length + " function arguments. Needs " + function.paramList.size() + ".");
                     f.type = errorType;
                 } else {
                     boolean misMatchedArgsFound = false;
                     for (int i = 0; i < function.paramList.size(); i++) {
                         if (argTypeList[i] != function.paramList.elementAt(i).type) {
-                            error("Argument " + i + " of function " + f.objectName.name + " does not match with parameter.");
+                            error(f.getLineNumber(), "Argument " + i + " of function " + f.objectName.name + " does not match with parameter.");
                             f.type = errorType;
                             misMatchedArgsFound = true;
                         }
@@ -640,14 +646,14 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             a.type = errorType;
         } else {
             if (a.arrayName.type != arrayTypeDescriptor) {
-                error(a.arrayName.name + " is not an array."); // [] måske
+                error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
                 a.type = a.arrayName.type; // denne type er bestemt at typen af elementer i arrayet
             }
         }
         if (a.indexExpr.type != errorType && a.indexExpr.type != integerType) {
-            error("Index con is not an integer. ArrayName: " + a.arrayName.name);
+            error(a.getLineNumber(), "Index condition is not an integer. ArrayName: " + a.arrayName.name);
         }
     }
 
@@ -660,18 +666,18 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             a.type = errorType;
         } else {
             if (a.arrayName.type != arrayTypeDescriptor) {
-                error(a.arrayName.name + " is not an array."); // [] måske
+                error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
                 a.type = a.arrayName.type; // denne type er bestemt at typen af elementer i arrayet
             }
         }
         if (a.firstIndexExpr.type != errorType && a.firstIndexExpr.type != integerType) {
-            error("First index expression is not an integer. ArrayName: " + a.arrayName.name);
+            error(a.getLineNumber(), "First index expression is not an integer. ArrayName: " + a.arrayName.name);
         }
 
         if (a.secondIndexExpr.type != errorType && a.secondIndexExpr.type != integerType) {
-            error("Second index expression is not an integer. ArrayName: " + a.arrayName.name);
+            error(a.getLineNumber(), "Second index expression is not an integer. ArrayName: " + a.arrayName.name);
         }
     }
 
@@ -681,7 +687,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             o.type = errorType;
         } else {
             if (o.objectName.type != objectTypeDescriptor) {
-                error(o.objectName.name + " does not specify an object.");
+                error(o.getLineNumber(), o.objectName.name + " does not specify an object.");
                 o.type = errorType;
             } else {
 
@@ -691,7 +697,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
                 ASTNode def = st.retrieveSymbol(o.fieldName.name);
                 if (def == null) {
-                    error(o.fieldName.name + " is not a field of " + o.objectName.name);
+                    error(o.getLineNumber(), o.fieldName.name + " is not a field of " + o.objectName.name);
                     o.type = errorType;
                 } else {
                     o.type = def.type;
@@ -788,8 +794,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     private void checkBoolean(ASTNode n) {
-        if (n.type != booleanType && n.type != errorType) {
-            error("A Boolean type is required at:" + n.getLineNumber());
+        if (n.type != booleanType) {
+            error(n.getLineNumber(), "A Boolean type is required.");
         }
     }
 
@@ -817,7 +823,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             List<String> dupeList = new ArrayList<>();
             for (String s : labelList) {
                 if (dupeList.contains(s)) {
-                    error("Duplicate case label: " + s);
+                    System.err.println("Duplicate case label: " + s);
                 }
                 dupeList.add(s);
             }
@@ -829,7 +835,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             List<Integer> dupeList = new ArrayList<>();
             for (Integer i : labelList) {
                 if (dupeList.contains(i)) {
-                    error("Duplicate case label: " + i.toString());
+                    System.err.println(("Duplicate case label: " + i.toString()));
                 }
                 dupeList.add(i);
             }

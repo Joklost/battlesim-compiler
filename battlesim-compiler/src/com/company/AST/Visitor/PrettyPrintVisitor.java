@@ -9,8 +9,6 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     private int indentLevel;
 
     public PrettyPrintVisitor() {
-        System.out.println("Pretty Printing:");
-        System.out.println("----------------\n");
         indentLevel = 0;
     }
 
@@ -34,6 +32,9 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Start s) {
+        System.out.println("Pretty Printing:");
+        System.out.println("----------------\n");
+
         s.dclBlock.accept(this);
         println("");
 

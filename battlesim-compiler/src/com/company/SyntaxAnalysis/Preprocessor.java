@@ -90,9 +90,8 @@ public class Preprocessor {
 
     public void RemoveOutFile(){
         boolean succes = (new File(outputPath)).delete();
-        if(succes)
-            System.out.println("Temp files have been deleted");
-        else
+        if(!succes)
+            //System.out.println("Temp files have been deleted");
             System.out.println("Temp files could not be deleted");
     }
 }

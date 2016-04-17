@@ -8,14 +8,19 @@ import com.company.SyntaxAnalysis.Parser;
 import com.company.SyntaxAnalysis.Preprocessor;
 import com.company.SyntaxAnalysis.Scanner;
 
+import java.io.File;
+
 public class Main {
+
+    public static String currentFile;
 
     public static void main(String[] args) {
         String[] paths = {
-                "/home/joklost/git/P4-Code/example-code/battlesim/semtester.bs",
+                //"/home/joklost/git/P4-Code/example-code/battlesim/semtester.bs",
 //                "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
                 //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\simWithIncludes\\simWithInclude.bs",
                 //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
+                "/home/joklost/git/P4-Code/battlesim-compiler/battlesim/tester.bs",
         };
 
         boolean parseSuccesful = true;
@@ -30,7 +35,9 @@ public class Main {
 
         try {
             for (String path : paths) {
-                System.out.println(path + "\n");
+                File f = new File(path);
+                currentFile = f.getName();
+                //System.out.println(path + "\n");
                 preprocessor = new Preprocessor(path);
                 String newPath = preprocessor.MakeFile();
                 scanner = new Scanner(new java.io.FileReader(newPath));
@@ -38,20 +45,16 @@ public class Main {
 
                 startNode = (Start)parser.parse().value;
 
-                startNode.accept(semanticsVisitor);
-                preprocessor.RemoveOutFile();
+                //if (!parser.getErrorFound()) {
+                    startNode.accept(semanticsVisitor);
+                ///}
 
-                SymbolTable.printTable();
+                preprocessor.RemoveOutFile();
             }
 
 
         } catch (Exception e) {
-            parseSuccesful = false;
             e.printStackTrace();
-        }
-
-        if (parseSuccesful) {
-            System.out.println("The input has been succesfully parsed!");
         }
     }
 }
