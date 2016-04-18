@@ -25,7 +25,7 @@ public class Preprocessor {
         this.outputPath = directory + "tmp" + inputPath.substring(directory.length());
     }
 
-    public String MakeFile(){
+    public String makeFile(){
         //make output file ready
         try {
             writer = new PrintWriter(outputPath);
@@ -46,7 +46,7 @@ public class Preprocessor {
                     }
 
                     Preprocessor includePP = new Preprocessor(includeFile);
-                    List<String> includeLines = new ArrayList<>(includePP.ReadIncludeFile());
+                    List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
                     for(int i = 0; i < includeLines.size(); i++)
                         writer.println(includeLines.get(i));
                 }
@@ -60,7 +60,7 @@ public class Preprocessor {
         return outputPath;
     }
 
-    public List<String> ReadIncludeFile(){
+    public List<String> readIncludeFile(){
         List<String> lines = new ArrayList<String>();
         try(BufferedReader br = new BufferedReader(new FileReader(inputPath))) {
             String line;
@@ -71,7 +71,7 @@ public class Preprocessor {
                     //Uncomment if you want include files to be able to include other files
                     /*String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"') - 1);
                     Preprocessor includePP = new Preprocessor(includeFile);
-                    List<String> includeLines = new ArrayList<>(includePP.ReadIncludeFile());
+                    List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
                     for(int i = 0; i <= includeLines.size(); i++)
                         lines.add(includeLines.get(i)); */
                     lineNum++;
@@ -88,7 +88,7 @@ public class Preprocessor {
         return lines;
     }
 
-    public void RemoveOutFile(){
+    public void removeOutFile(){
         boolean succes = (new File(outputPath)).delete();
         if(!succes)
             //System.out.println("Temp files have been deleted");
