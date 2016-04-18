@@ -108,13 +108,14 @@ public class TopDeclVisitor extends SemanticsVisitor {
             s.type = simulationType;
         }
 
+        s.objectIdentifier.accept(this);
+
         openScope();
 
         for (int i = 0; i < s.simStepList.size(); i++) {
             s.simStepList.elementAt(i).accept(this);
         }
 
-        // er ikke sikker på den her
         s.interrupts.accept(this);
 
         closeScope();

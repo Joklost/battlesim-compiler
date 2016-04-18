@@ -78,8 +78,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Interrupts is) {
-        // bliver aldrig kaldt med SemanticsVisitor - jkj
-        error(is.getLineNumber(), "Visiting Interrupts with SemanticsVisitor, which should not happen...");
+        openScope();
+
+        for (int i = 0; i < is.stmtList.size(); i++) {
+            is.stmtList.elementAt(i).accept(this);
+        }
+
+        closeScope();
     }
 
     public void visit(FunctionDcl fd) {
