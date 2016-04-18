@@ -517,7 +517,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                     boolean misMatchedArgsFound = false;
                     for (int i = 0; i < function.paramList.size(); i++) {
                         if (argTypeList[i] != function.paramList.elementAt(i).type) {
-                            error(f.getLineNumber(), "Argument " + i + " of function " + f.objectName.name + " does not match with parameter.");
+                            error(f.getLineNumber(), "Argument " + (i + 1) + " in function call of " + f.objectName.name + " does not match with parameter.");
                             f.type = errorType;
                             misMatchedArgsFound = true;
                         }
@@ -643,11 +643,22 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (a.arrayName.type == errorType) {
             a.type = errorType;
         } else {
-            if (a.arrayName.type != arrayTypeDescriptor) {
+            if (a.arrayName.type != array1DType) {
                 error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
-                a.type = a.arrayName.type; // denne type er bestemt at typen af elementer i arrayet
+                if (!declaredLocally(a.arrayName.name)) {
+                    errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
+                    a.type = errorType;
+                } else {
+                    ASTNode def = retrieveSymbol(a.arrayName.name);
+                    if (def instanceof Array1D) {
+                        a.type = ((Array1D) def).typeName.type;
+                    } else {
+                        error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
+                        a.type = errorType;
+                    }
+                }
             }
         }
         if (a.indexExpr.type != errorType && a.indexExpr.type != integerType) {
@@ -663,11 +674,22 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (a.arrayName.type == errorType) {
             a.type = errorType;
         } else {
-            if (a.arrayName.type != arrayTypeDescriptor) {
+            if (a.arrayName.type != array2DType) {
                 error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
-                a.type = a.arrayName.type; // denne type er bestemt at typen af elementer i arrayet
+                if (!declaredLocally(a.arrayName.name)) {
+                    errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
+                    a.type = errorType;
+                } else {
+                    ASTNode def = retrieveSymbol(a.arrayName.name);
+                    if (def instanceof Array2D) {
+                        a.type = ((Array2D) def).typeName.type;
+                    } else {
+                        error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
+                        a.type = errorType;
+                    }
+                }
             }
         }
         if (a.firstIndexExpr.type != errorType && a.firstIndexExpr.type != integerType) {

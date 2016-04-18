@@ -193,6 +193,20 @@ Begin Program
   //  Default
   //End Switch
 
+  Test(1)
+  //Test()          // Test kræver 1 argument af typen int
+  //Test("hej")       // Test kræver 1 argument af typen int
+  a = Test(2)
+  //a = Hej()        // Hej har ingen retur type
+  //Print("Hej")    // er ikke blevet declared
   Return          // er lovligt, da det er en måde hvor man kan afslutte programmet før tid
+
+  Declare aaa as Integer[10]
+  aaa[0] = 1
+  a = aaa[0]
+
+  Declare bbb as Integer[10][10]
+  bbb[0][0] = 2
+  a = bbb[1][1]
 
 End Program
