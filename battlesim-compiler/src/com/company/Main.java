@@ -1,7 +1,6 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
-import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.PrettyPrintVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
@@ -25,7 +24,7 @@ public class Main {
 
         boolean parseSuccesful = true;
 
-        Preprocessor preprocessor;
+        Preprocessor preprocessor = null;
         Scanner scanner;
         Parser parser;
         Start startNode;
@@ -35,25 +34,28 @@ public class Main {
 
         try {
             for (String path : paths) {
+                preprocessor = new Preprocessor(path);
                 File f = new File(path);
                 currentFile = f.getName();
                 //System.out.println(path + "\n");
-                preprocessor = new Preprocessor(path);
-                String newPath = preprocessor.MakeFile();
+                String newPath = preprocessor.makeFile();
                 scanner = new Scanner(new java.io.FileReader(newPath));
                 parser = new Parser(scanner, true);
 
                 startNode = (Start)parser.parse().value;
 
-                //if (!parser.getErrorFound()) {
+                if (!parser.errorFound) {
                     startNode.accept(semanticsVisitor);
-                ///}
+                }
 
-                preprocessor.RemoveOutFile();
+                preprocessor.removeOutFile();
             }
 
 
         } catch (Exception e) {
+            if (preprocessor != null) {
+                preprocessor.removeOutFile();
+            }
             e.printStackTrace();
         }
     }
