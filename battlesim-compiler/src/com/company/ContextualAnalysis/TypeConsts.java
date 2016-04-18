@@ -1,5 +1,7 @@
 package com.company.ContextualAnalysis;
 
+import java.util.HashMap;
+
 /**
  * Created by joklost on 12-04-16.
  */
@@ -62,6 +64,77 @@ public class TypeConsts {
 
     public static final int toIterator = 140;
     public static final int downToIterator = 141;
+
+
+
+
+
+
+    private static HashMap<Integer, String> typeNames = new HashMap<>();
+    static {
+        typeNames.put(errorType, "ERROR");
+        typeNames.put(noType, "No Type"); // skal nok laves om
+        typeNames.put(integerType, "Integer");
+        typeNames.put(stringType, "String");
+        typeNames.put(booleanType, "Boolean");
+        typeNames.put(voidType, "Void");
+        typeNames.put(nullType, "NULL");
+        typeNames.put(decimalType, "Decimal");
+        typeNames.put(objectTypeDescriptor, "Object");
+        typeNames.put(arrayTypeDescriptor, "Array");
+        typeNames.put(functionType, "Function");
+        typeNames.put(simulationType, "Simulation");
+        typeNames.put(simulationStepType, "Simulation Step");
+        typeNames.put(groupType, "Group");
+        typeNames.put(platoonType, "Platoon");
+        typeNames.put(forceType, "Force");
+        typeNames.put(coordType, "Coord");
+        typeNames.put(soldierType, "Soldier");
+        typeNames.put(barrierType, "Barrier");
+        typeNames.put(vectorType, "Vector");
+        typeNames.put(terrainType, "Terrain");
+        typeNames.put(listType, "List");
+        typeNames.put(array1DType, "1D Array");
+        typeNames.put(array2DType, "2D Array");
+
+
+        typeNames.put(coordOperator, "( , )");
+        typeNames.put(plusOperator, "+");
+        typeNames.put(minusOperator, "-");
+        typeNames.put(multiplicationOperator, "*");
+        typeNames.put(divisionOperator, "/");
+        typeNames.put(moduluOperator, "%");
+        typeNames.put(andOperator, "AND");
+        typeNames.put(orOperator, "OR");
+        typeNames.put(logicEqualsOperator, "==");
+        typeNames.put(lessThanOperator, "<");
+        typeNames.put(greaterThanOperator, ">");
+        typeNames.put(lessThanEqualsOperator, "<=");
+        typeNames.put(greaterThanEqualsOperator, ">=");
+
+        typeNames.put(notOperator, "NOT");
+        typeNames.put(plusplusOperator, "++");
+        typeNames.put(minusminusOperator, "--");
+        typeNames.put(unaryMinusOperator, "-");
+
+        typeNames.put(equalsAssignmentOperator, "=");
+        typeNames.put(plusEqualsAssignmentOperator, "+=");
+        typeNames.put(minusEqualsAssignmentOperator, "-=");
+        typeNames.put(modEqualsAssignmentOperator, "%=");
+        typeNames.put(multEqualsAssignmentOperator, "*=");
+        typeNames.put(divEqualsAssignmentOperator, "/=");
+
+        typeNames.put(toIterator, "To");
+        typeNames.put(downToIterator, "DownTo");
+
+
+    }
+
+    public static String getTypeName(int type) {
+        return typeNames.get(type);
+    }
+
+
 
 }
 

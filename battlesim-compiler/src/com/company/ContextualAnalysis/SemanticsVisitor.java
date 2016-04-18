@@ -117,7 +117,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (assignable(as.targetName.type, as.expression.type)) {       // TODO
             as.type = as.targetName.type;
         } else {
-            error(as.getLineNumber(), "Right hand side expression not assignable to left hand side.");
+            error(as.getLineNumber(), "Unable to assign " + getTypeName(as.expression.type) + " to " + getTypeName(as.targetName.type) + ".");
             as.type = errorType;
         }
 
@@ -729,6 +729,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     private boolean assignable(int target, int expression) {
         if (target == expression) return true;
         if (target == decimalType && expression == integerType) return true;
+        if (target == stringType && expression == nullType) return true;
 
         return false;    // skal laves
     }

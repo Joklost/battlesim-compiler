@@ -12,6 +12,8 @@ Begin Declarations
     Declare d, dd as String
     d = "test"
     dd = "test2"
+    Declare e as Void
+
 
     Declare str1, str2 as String
     str1 = "tis"
@@ -27,10 +29,19 @@ End Declare Simulations
 Begin Program
 
     // tester assignable:
-    a = a + b  // giver en fejl, da Integer + Decimal ikke implicit konverteres
-    b = b + a  // derimod virker denne, da Integer konverteres til decimal implicit
-
-
+    a = a + b   // giver en fejl, da Integer + Decimal ikke implicit konverteres til Integer
+    b = b + a   // derimod virker denne, da Integer konverteres til decimal implicit
+    c = 3       // giver en fejl, da c er af typen Boolean
+    c = true
+    d = 3       // giver en fejl, da Integer ikke implicit konverteres til string
+    d = dd
+    dd = "hej"
+    d = c       // giver en fejl, da d er String og c er Boolean
+    e = 3       // giver en fejl, da e er Void
+    dd = NULL   // giver ikke fejl, da String kan være NULL
+    a = NULL    // er ikke sikker om dette skal være muligt
+    b = NULL    // er ikke sikker om dette skal være muligt
+    c = NULL    // er ikke sikker om dette skal være muligt
 
 
     For a To 100 Do     // skal give en fejl, da det eneste der kan itereres over er ints
