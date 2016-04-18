@@ -705,6 +705,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 
 
     public void report_error(String message, Object info) {
+        errorFound = true;
         System.err.print(message);
         System.err.flush();
         if (info instanceof Symbol) {

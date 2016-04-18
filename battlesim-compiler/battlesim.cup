@@ -13,6 +13,7 @@ parser code {:
 
 
     public void report_error(String message, Object info) {
+        errorFound = true;
         System.err.print(message);
         System.err.flush();
         if (info instanceof Symbol) {
