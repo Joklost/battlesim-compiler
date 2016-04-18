@@ -71,6 +71,19 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         closeScope();
 
+        boolean containsReturnExpr = false;
+        if (f.returnType.type != voidType && f.returnType.type != errorType) {
+            for (int i = 0; i < f.stmtList.size(); i++) {
+                if (f.stmtList.elementAt(i) instanceof ReturnExpr) {
+                    containsReturnExpr = true;
+                }
+            }
+
+            if (!containsReturnExpr) {
+                error(f.getLineNumber(), "Function " + f.functionName.name + " must return a value.");
+                f.type = errorType;
+            }
+        }
     }
 
     public void visit(Param p) {
