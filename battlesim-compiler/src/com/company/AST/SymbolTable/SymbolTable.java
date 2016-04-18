@@ -71,7 +71,7 @@ public class SymbolTable {
         debugMsg("Already declared called with '" + str + "'");
 
         while (buck != null) {
-            if (buck.getId() == str) {
+            if (buck.getId().equals(str)) {
                 return (buck.getScope() == level);
             }
             buck = buck.getNext();
