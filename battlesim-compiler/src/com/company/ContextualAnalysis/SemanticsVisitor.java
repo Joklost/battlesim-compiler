@@ -8,9 +8,7 @@ import com.company.AST.Visitor.VisitorInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.company.AST.SymbolTable.SymbolTable.closeScope;
-import static com.company.AST.SymbolTable.SymbolTable.openScope;
-import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
+import static com.company.AST.SymbolTable.SymbolTable.*;
 import static com.company.ContextualAnalysis.TypeConsts.*;
 import static com.company.Main.currentFile;
 
@@ -22,7 +20,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     private void errorNoDeclaration(int ln, String var) {
         error(ln, var + " has not been declared.");
     }
-    private void error(int ln, String s) {
+    protected void error(int ln, String s) {
         System.err.println(currentFile + ": line " + ln + ": error: " + s);
     }
 
@@ -143,7 +141,12 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         //fes.typeName.type == fes.objectName.type
         openScope();
         fes.typeName.accept(this);
-        fes.localName.accept(this);     // TODO skal måske være en speciel declare??
+
+        fes.localName.type = fes.typeName.type;
+
+        enterSymbol(fes.localName.name, fes.localName);
+        fes.localName.accept(this);
+
         fes.objectName.accept(this);
 
         for (int i = 0; i < fes.stmtList.size(); i++) {
@@ -152,14 +155,29 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
         closeScope();
 
-        if (fes.typeName.type != fes.objectName.type) {
-            error(fes.getLineNumber(), "Mismatched types in foreach statement.");
+        if ((fes.objectName.type != listType) && (fes.objectName.type != array1DType)) {
+            error(fes.getLineNumber(), "Object in foreach statement is not a list or 1d array.");
             fes.type = errorType;
-        }
+        } else {
+            ASTNode def = retrieveSymbol(fes.objectName.name);
 
-        if ((fes.objectName.type != listType) && (fes.objectName.type != array1DType) && (fes.objectName.type != array2DType)) {
-            error(fes.getLineNumber(), "Object in foreach statement is not a list or array.");
-            fes.type = errorType;
+            if (def != null) {
+                int type = noType;
+                if (def.type == listType) {
+                    type = ((ListOf) def).typeName.type;
+                } else if (def.type == array1DType) {
+                    type = ((Array1D) def).typeName.type;
+                }
+
+                if (fes.typeName.type != type) {
+                    error(fes.getLineNumber(), "Mismatched types in foreach statement.");
+                    fes.type = errorType;
+                }
+            } else {
+                errorNoDeclaration(fes.getLineNumber(), fes.objectName.name);
+                fes.type = errorType;
+            }
+
         }
     }
 
@@ -180,6 +198,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
         if (fs.initialExpr.type != integerType) {
             error(fs.getLineNumber(), "Inital expression in for statement has to be an integer.");
+            fs.type = errorType;
+        }
+        if (fs.toExpr.type != integerType) {
+            error(fs.getLineNumber(), "To expression in for statement has to be an integer.");
             fs.type = errorType;
         }
     }
@@ -233,7 +255,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(SwitchStmt ss) {
         ss.variable.accept(this);
         if (ss.variable.type != errorType && !assignable(integerType, ss.variable.type) && !assignable(stringType, ss.variable.type)) {
-            error(ss.getLineNumber(), "Illegal type for Switch statemen.");
+            error(ss.getLineNumber(), "Illegal type for Switch statement.");
             ss.type = errorType;
         } else {
             ss.type = ss.variable.type;
@@ -249,6 +271,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
 
         // Nedenstående kan gøres smartere... -jkj
+        // line number skal med når der er dupes
         if (ss.type == stringType) {
             List<String> labelList = gatherLabelsString(ss.switchCaseList);
             checkForDupesString(labelList);
@@ -261,6 +284,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(SwitchCase sc) {
         sc.label.accept(this);
+        sc.type = sc.label.type;
 
         openScope();
 
@@ -289,7 +313,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 error(r.getLineNumber(), "A value may not be returned from outside of a function.");
             } else {
                 if (!assignable(curFunction.returnType.type, r.returnVal.type)) {
-                    error(r.getLineNumber(), "Illegal return type.");
+                    error(r.getLineNumber(), "Illegal return value.");
                 }
             }
         } else {
@@ -691,8 +715,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
             errorNoDeclaration(id.getLineNumber(), id.name);
         } else {
+
             id.def = newDef;
             id.type = newDef.type;
+
         }
     }
 
@@ -704,6 +730,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (target == expression) return true;
         if (target == decimalType && expression == integerType) return true;
         if (target == stringType && expression == nullType) return true;
+        if ((target == array1DType || target == array2DType || target == listType) && expression == nullType) return true;
+        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == vectorType || target == terrainType) && expression == nullType) return true;
 
         return false;    // skal laves
     }
@@ -720,6 +748,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             if ((leftType == integerType && rightType == stringType) || (leftType == stringType && rightType == integerType)) return stringType;
             if ((leftType == decimalType && rightType == stringType) || (leftType == stringType && rightType == decimalType)) return stringType;
             if ((leftType == booleanType && rightType == stringType) || (leftType == stringType && rightType == booleanType)) return stringType;
+            if ((leftType == stringType && rightType == coordType)   || (leftType == coordType && rightType == stringType))   return stringType;
         }
 
         if (arrayContains(arithmeticBinaryOperators, operator)) {
@@ -734,6 +763,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
         if (operator == logicEqualsOperator) {
             if (leftType == stringType && rightType == stringType) return booleanType;
+            if (leftType == coordType && rightType == coordType) return booleanType;
+            if (leftType == booleanType && rightType == booleanType) return booleanType;
         }
 
         if (arrayContains(booleanComparisonOperators, operator)) {
