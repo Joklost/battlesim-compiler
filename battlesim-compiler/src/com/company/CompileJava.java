@@ -15,10 +15,12 @@ import java.util.List;
 public class CompileJava {
     private String fileName;
     private List<String> code;
+
+    public boolean deleteOutput = true;
+
     public CompileJava(String file, List<String> code) {
         this.fileName = file;
         this.code = code;
-
     }
 
     private void writeCodeToFile() throws IOException {
@@ -31,6 +33,7 @@ public class CompileJava {
         dir.mkdir();
         Path file = Paths.get(dir.getPath() + File.separator + "MANIFEST.MF");
 
+        // skal muligvis autogenereres
         ArrayList<String> manifest = new ArrayList<>();
         manifest.add("Manifest-Version: 1.0");
         manifest.add("Created-By: 1.8.0_77 (Oracle Corporation)");
@@ -41,8 +44,8 @@ public class CompileJava {
 
     private void runProcess(String command) throws IOException, InterruptedException {
         Process pro = Runtime.getRuntime().exec(command);
-        printLines(command + " stdout:", pro.getInputStream());
-        printLines(command + " stderr:", pro.getErrorStream());
+        printLines(command + ": stdout:", pro.getInputStream());
+        printLines(command + ": stderr:", pro.getErrorStream());
         pro.waitFor();
         //System.out.println(command + " exitValue() " + pro.exitValue());
     }
@@ -62,17 +65,19 @@ public class CompileJava {
             createManifest();
             runProcess("javac Main.java");
             //runProcess("java Main");
-            runProcess("jar cmvf META-INF" + File.separator + "MANIFEST.MF " + fileName + ".jar " + fileName + ".class");
-            runProcess("java -jar Main.jar");
-            if (!deleteFiles()) {
+            runProcess("jar cvmf META-INF" + File.separator + "MANIFEST.MF " + fileName + ".jar " + fileName + ".class");
+            //runProcess("java -jar Main.jar");
+            if (deleteOutput && !deleteFiles()) {
                 System.err.println("Unable to delete generated files.");
-            } else {
-
             }
         } catch (Exception e) {
+            if (deleteOutput && !deleteFiles()) {
+                System.err.println("Unable to delete generated files.");
+            }
             e.printStackTrace();
         }
     }
+
 
     private boolean deleteFiles() {
         boolean successJava = true;
@@ -83,7 +88,6 @@ public class CompileJava {
         successManifest = deleteDir(new File("META-INF"));
         return successJava && successClass && successManifest;
     }
-
 
     private boolean deleteDir(File dir) {
         if (dir.isDirectory()) {

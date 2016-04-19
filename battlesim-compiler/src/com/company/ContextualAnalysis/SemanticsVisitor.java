@@ -880,6 +880,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
 
     private void createStdLib() {
+        // Print
         TypeIdentifier tPrint = new VoidT(-1);
         tPrint.type = voidType;
         Identifier iPrint = new Identifier("Print", -1);
@@ -888,7 +889,38 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         ppPrint.type = stringType;
         pPrint.addElement(ppPrint);
         FunctionDcl fPrint = new FunctionDcl(tPrint, iPrint, pPrint, null, -1);
-        enterSymbol("Print", fPrint);
+        enterSymbol(iPrint.name, fPrint);
+
+        //PrintLine
+        TypeIdentifier tPrintLine = new VoidT(-1);
+        tPrintLine.type = voidType;
+        Identifier iPrintLine = new Identifier("PrintLine", -1);
+        ParamList pPrintLine = new ParamList(-1);
+        Param ppPrintLine = new Param(new Identifier("s", -1), new StringT(-1), -1);
+        ppPrintLine.type = stringType;
+        pPrintLine.addElement(ppPrintLine);
+        FunctionDcl fPrintLine = new FunctionDcl(tPrintLine, iPrintLine, pPrintLine, null, -1);
+        enterSymbol(iPrintLine.name, fPrintLine);
+
+        //Input
+        TypeIdentifier tInput = new StringT(-1);
+        tInput.type = stringType;
+        Identifier iInput = new Identifier("Input", -1);
+        ParamList pInput = new ParamList(-1);
+        FunctionDcl fInput = new FunctionDcl(tInput, iInput, pInput, null, -1);
+        enterSymbol(iInput.name, fInput);
+
+        //ConvertToInteger(string)
+        TypeIdentifier ci = new IntegerT(-1);
+        ci.type = integerType;
+        Identifier cii = new Identifier("ConvertToInteger", -1);
+        ParamList pci = new ParamList(-1);
+        Param ppci = new Param(new Identifier("s", -1), new StringT(-1), -1);
+        ppci.type = stringType;
+        pci.addElement(ppci);
+        FunctionDcl fci = new FunctionDcl(ci, cii, pci, null, -1);
+        fci.type = integerType;
+        enterSymbol(cii.name, fci);
     }
 
 

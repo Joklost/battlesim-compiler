@@ -4,21 +4,21 @@ import com.company.AST.Nodes.*;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.company.ContextualAnalysis.TypeConsts.listType;
-import static com.company.ContextualAnalysis.TypeConsts.voidType;
+import static com.company.ContextualAnalysis.TypeConsts.*;
+
 
 /**
  * Created by joklost on 18-04-16.
  */
-public class GenerateJava extends Visitor implements VisitorInterface {
+
+public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     private List<String> code;
     private int indentLevel;
 
-    public GenerateJava() {
+    public GenerateJavaVisitor() {
         code = new ArrayList<>();
     }
 
@@ -34,7 +34,13 @@ public class GenerateJava extends Visitor implements VisitorInterface {
         code.add(spaces);
     }
 
+    private void emitIndentation(String s) {
+        emitIndentation();
+        emit(s);
+    }
+
     private void emitComment(String s) {
+        emitIndentation();
         emit("// " + s);
     }
 
@@ -49,10 +55,11 @@ public class GenerateJava extends Visitor implements VisitorInterface {
     public void visit(Start s) {
         //emitIndentation();
         //emit("package com.BattleSim;\n");
-        emitIndentation();
+        emitIndentation("import java.io.*;\n");
+        emitIndentation("import java.util.Scanner;\n");
+        //emit("import static com.company.StdLib.IO.*;");
         emitComment("BattleSim automatically generated code file.\n");
-        emitIndentation();
-        emit("public class Main {\n");
+        emitIndentation("public class Main {\n");
 
         indentLevel++;
 
@@ -62,16 +69,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
 
         /////
         // stdlib
-
-        emitIndentation();
-        emit("public static void Print(String s) {\n");
-        indentLevel++;
-        emitIndentation();
-        emit("System.out.println(s);\n");
-        indentLevel--;
-        emitIndentation();
-        emit("}\n");
-
+        emitStdLib();
         /////
 
 
@@ -86,8 +84,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
         }
 
         indentLevel--;
-        emitIndentation();
-        emit("}\n");
+        emitIndentation("}\n");
     }
 
     public void visit(DclBlock db) {
@@ -116,7 +113,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
 
     public void visit(FunctionDcl fd) {
         emitIndentation();
-        emit("public ");
+        emitIndentation("public ");
         fd.returnType.accept(this);
         emit(" ");
         fd.functionName.accept(this);
@@ -135,8 +132,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
 
         indentLevel--;
 
-        emitIndentation();
-        emit("}\n");
+        emitIndentation("}\n");
     }
 
     public void visit(Param p) {
@@ -147,8 +143,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
     }
 
     public void visit(Program p) {
-        emitIndentation();
-        emit("public static void main(String[] args) {\n");
+        emitIndentation("public static void main(String[] args) {\n");
         indentLevel++;
 
         for (int i = 0; i < p.stmtList.size(); i++) {
@@ -156,8 +151,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
         }
 
         indentLevel--;
-        emitIndentation();
-        emit("}\n");
+        emitIndentation("}\n");
     }
 
     public void visit(Dcl ds) {
@@ -186,8 +180,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
     }
 
     public void visit(WhileStmt ws) {
-        emitIndentation();
-        emit("while (");
+        emitIndentation("while (");
         ws.condition.accept(this);
         emit(") {\n");
         indentLevel++;
@@ -197,14 +190,12 @@ public class GenerateJava extends Visitor implements VisitorInterface {
         }
 
         indentLevel--;
-        emitIndentation();
-        emit("}\n");
+        emitIndentation("}\n");
     }
 
     public void visit(ForeachStmt fes) {
         // TODO
-        emitIndentation();
-        emit("for (");
+        emitIndentation("for (");
         fes.typeName.accept(this);
         emit(" ");
         fes.localName.accept(this);
@@ -220,8 +211,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
 
         indentLevel--;
 
-        emitIndentation();
-        emit("}\n");
+        emitIndentation("}\n");
     }
 
     public void visit(ForStmt fs) {
@@ -264,20 +254,19 @@ public class GenerateJava extends Visitor implements VisitorInterface {
     }
 
     public void visit(ReturnExpr r) {
-        emitIndentation();
-        emit("return ");
+        emitIndentation("return ");
         r.returnVal.accept(this);
         emit(";\n");
     }
 
     public void visit(Return r) {
-        emitIndentation();
-        emit("return;\n");
+        emitIndentation("return;\n");
     }
 
     public void visit(FunctionCallStmt fcs) {
         emitIndentation();
         fcs.functionCall.accept(this);
+        emit(";\n");
     }
 
     public void visit(PlusExpr pe) {
@@ -448,7 +437,7 @@ public class GenerateJava extends Visitor implements VisitorInterface {
             f.argumentList.elementAt(i).accept(this);
             if (i < f.argumentList.size() - 1) emit(", ");
         }
-        emit(");\n");
+        emit(")");
 
     }
 
@@ -580,5 +569,70 @@ public class GenerateJava extends Visitor implements VisitorInterface {
 
     public void visit(Identifier id) {
         emit(id.name);
+    }
+
+
+
+
+
+    private void emitStdLib() {
+        // Print
+        emitIndentation();
+        emit("public static void Print(String s) {\n");
+        indentLevel++;
+        emitIndentation();
+        emit("System.out.print(s);\n");
+        indentLevel--;
+        emitIndentation();
+        emit("}\n");
+
+        //PrintLine
+        emitIndentation("public static void PrintLine(String s) {\n");
+        indentLevel++;
+        emitIndentation("System.out.println(s);");
+        indentLevel--;
+        emitIndentation("}\n");
+
+        //Input
+        emitIndentation("public static String Input() {\n");
+        indentLevel++;
+        emitIndentation("Scanner sc = new Scanner(System.in);\n");
+        emitIndentation("return sc.nextLine();\n");
+        indentLevel--;
+        emitIndentation("}\n");
+
+
+        //ConvertToInteger
+        emitIndentation("public static int ConvertToInteger(String s) {\n");
+        indentLevel++;
+
+        emitIndentation("if (!isIntegerParsable(s)) {\n");
+        indentLevel++;
+        emitIndentation("System.err.println(\"String \" + s + \" is not an Integer.\");\n");
+        emitIndentation("return 0;\n");
+        indentLevel--;
+        emitIndentation("} else {\n");
+        indentLevel++;
+
+        emitIndentation("return Integer.parseInt(s);\n");
+
+        indentLevel--;
+        emitIndentation("}\n");
+
+        indentLevel--;
+        emitIndentation("}\n");
+
+        // IsInteger?
+        emitIndentation("public static boolean isIntegerParsable(String str) {\n");
+        indentLevel++;
+        emitIndentation("try {\n");
+        indentLevel++;
+        emitIndentation("Integer.parseInt(str);\n");
+        emitIndentation("return true;\n");
+        indentLevel--;
+        emitIndentation("} catch (NumberFormatException nfe) {}\n");
+        emitIndentation("return false;\n");
+        indentLevel--;
+        emitIndentation("}\n");
     }
 }

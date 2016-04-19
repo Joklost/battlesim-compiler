@@ -1,9 +1,8 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
-import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.PrettyPrintVisitor;
-import com.company.CodeGeneration.GenerateJava;
+import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
 import com.company.SyntaxAnalysis.Preprocessor;
@@ -25,7 +24,7 @@ public class Main {
                 "/home/joklost/git/P4-Code/battlesim-compiler/battlesim/javatest.bs",
         };
 
-        boolean runGeneratedCode = true;
+        boolean generatedCode = false;
 
         Preprocessor preprocessor = null;
         Scanner scanner;
@@ -34,7 +33,7 @@ public class Main {
 
         PrettyPrintVisitor prettyPrint = new PrettyPrintVisitor();
         SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
-        GenerateJava gj = new GenerateJava();
+        GenerateJavaVisitor generateJavaVisitor = new GenerateJavaVisitor();
 
         try {
             for (String path : paths) {
@@ -50,23 +49,26 @@ public class Main {
 
                 if (!parser.errorFound) {
                     startNode.accept(semanticsVisitor);
-                }
 
-                if (!semanticsVisitor.errorFound) {
-                    startNode.accept(gj);
-                    if (!runGeneratedCode) {
-                        for (String s : gj.getCode()) {
-                            System.out.print(s);
+                    if (!semanticsVisitor.errorFound) {
+                        startNode.accept(generateJavaVisitor);
+
+                        if (!generatedCode) {
+                            for (String s : generateJavaVisitor.getCode()) {
+                                System.out.print(s);
+                            }
                         }
+
+                        CompileJava cj = new CompileJava("Main", generateJavaVisitor.getCode());
+                        cj.compile();
                     }
                 }
 
+
+
                 preprocessor.removeOutFile();
 
-                if (runGeneratedCode) {
-                    CompileJava cj = new CompileJava("Main", gj.getCode());
-                    cj.compile();
-                }
+
 
 
                 //SymbolTable.printTable();
