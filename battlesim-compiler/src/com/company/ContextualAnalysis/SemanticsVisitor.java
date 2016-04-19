@@ -17,10 +17,13 @@ import static com.company.Main.currentFile;
  */
 public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
+    public boolean errorFound = false;
+
     private void errorNoDeclaration(int ln, String var) {
         error(ln, var + " has not been declared.");
     }
     protected void error(int ln, String s) {
+        errorFound = true;
         System.err.println(currentFile + ": line " + ln + ": error: " + s);
     }
 
@@ -515,14 +518,14 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             } else {
                 function = (FunctionDcl) def;
 
-                if (argTypeList.length != function.paramList.size()) {
-                    error(f.getLineNumber(), "Found " + argTypeList.length + " function arguments. Needs " + function.paramList.size() + ".");
+                if (f.argumentList.size() != function.paramList.size()) {
+                    error(f.getLineNumber(), "Found " + f.argumentList.size() + " function arguments. Needs " + function.paramList.size() + ".");
                     f.type = errorType;
                 } else {
                     boolean misMatchedArgsFound = false;
                     for (int i = 0; i < function.paramList.size(); i++) {
-                        if (argTypeList[i] != function.paramList.elementAt(i).type) {
-                            error(f.getLineNumber(), "Argument " + (i + 1) + " in function call of " + f.objectName.name + " does not match with parameter.");
+                        if (f.argumentList.elementAt(i).type != function.paramList.elementAt(i).type) {
+                            error(f.getLineNumber(), "Argument " + (i + 1) + " in function call of " + f.objectName.name + " does not match with parameter. Type: " + getTypeName(f.argumentList.elementAt(i).type));
                             f.type = errorType;
                             misMatchedArgsFound = true;
                         }
@@ -877,6 +880,15 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
 
     private void createStdLib() {
+        TypeIdentifier tPrint = new VoidT(-1);
+        tPrint.type = voidType;
+        Identifier iPrint = new Identifier("Print", -1);
+        ParamList pPrint = new ParamList(-1);
+        Param ppPrint = new Param(new Identifier("s", -1), new StringT(-1), -1);
+        ppPrint.type = stringType;
+        pPrint.addElement(ppPrint);
+        FunctionDcl fPrint = new FunctionDcl(tPrint, iPrint, pPrint, null, -1);
+        enterSymbol("Print", fPrint);
     }
 
 

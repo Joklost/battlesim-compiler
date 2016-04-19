@@ -1,0 +1,39 @@
+Begin Declarations
+
+End Declarations
+
+
+Declare Simulations
+
+
+End Declare Simulations
+
+/*
+Function Void Test(s as String)
+    Declare x as Integer
+End Function
+*/
+
+Begin Program
+    Print("hej Magnus!!!")
+    Print("Hej verden")
+
+/*
+    Declare a, b, c as Integer
+    a = 1 + 1
+
+    Declare arr as Integer[10]
+
+    While true Do
+        a = a++
+    End While
+
+    a = 15 + 50 * 14
+
+    Declare al as List of String
+
+    Foreach String it in al Do
+        it = it
+    End Foreach
+*/
+End Program

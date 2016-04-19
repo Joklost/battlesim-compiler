@@ -3,6 +3,7 @@ package com.company;
 import com.company.AST.Nodes.Start;
 import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.PrettyPrintVisitor;
+import com.company.CodeGeneration.GenerateJava;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
 import com.company.SyntaxAnalysis.Preprocessor;
@@ -20,10 +21,11 @@ public class Main {
 //                "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
                 //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\simWithIncludes\\simWithInclude.bs",
                 //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
-                "/home/joklost/git/P4-Code/battlesim-compiler/battlesim/tester.bs",
+                //"/home/joklost/git/P4-Code/battlesim-compiler/battlesim/tester.bs",
+                "/home/joklost/git/P4-Code/battlesim-compiler/battlesim/javatest.bs",
         };
 
-        boolean parseSuccesful = true;
+        boolean runGeneratedCode = true;
 
         Preprocessor preprocessor = null;
         Scanner scanner;
@@ -32,6 +34,7 @@ public class Main {
 
         PrettyPrintVisitor prettyPrint = new PrettyPrintVisitor();
         SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
+        GenerateJava gj = new GenerateJava();
 
         try {
             for (String path : paths) {
@@ -49,7 +52,22 @@ public class Main {
                     startNode.accept(semanticsVisitor);
                 }
 
+                if (!semanticsVisitor.errorFound) {
+                    startNode.accept(gj);
+                    if (!runGeneratedCode) {
+                        for (String s : gj.getCode()) {
+                            System.out.print(s);
+                        }
+                    }
+                }
+
                 preprocessor.removeOutFile();
+
+                if (runGeneratedCode) {
+                    CompileJava cj = new CompileJava("Main", gj.getCode());
+                    cj.compile();
+                }
+
 
                 //SymbolTable.printTable();
             }
