@@ -27,11 +27,15 @@ public class CompileJava {
     }
 
     private void createManifest() throws IOException {
-        Path file = Paths.get("META-INF/MANIFEST.MF");
+        File dir = new File("META-INF");
+        dir.mkdir();
+        Path file = Paths.get(dir.getPath() + File.separator + "MANIFEST.MF");
+
         ArrayList<String> manifest = new ArrayList<>();
         manifest.add("Manifest-Version: 1.0");
         manifest.add("Created-By: 1.8.0_77 (Oracle Corporation)");
         manifest.add("Main-Class: Main");
+
         Files.write(file, manifest, Charset.forName("UTF-8"));
     }
 
@@ -55,16 +59,15 @@ public class CompileJava {
     public void compile() {
         try {
             writeCodeToFile();
-            runProcess("mkdir META-INF");
             createManifest();
             runProcess("javac Main.java");
             //runProcess("java Main");
-            runProcess("jar cmvf META-INF/MANIFEST.MF " + fileName + ".jar " + fileName + ".class");
+            runProcess("jar cmvf META-INF" + File.separator + "MANIFEST.MF " + fileName + ".jar " + fileName + ".class");
             runProcess("java -jar Main.jar");
             if (!deleteFiles()) {
                 System.err.println("Unable to delete generated files.");
             } else {
-                runProcess("rmdir META-INF");
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,14 +75,27 @@ public class CompileJava {
     }
 
     private boolean deleteFiles() {
-        boolean succesJava = true;
-        boolean succesClass = true;
-        boolean succesManifest = true;
-        succesJava = (new File(fileName + ".java")).delete();
-        succesClass = (new File(fileName + ".class")).delete();
-        succesManifest = (new File("META-INF/MANIFEST.MF").delete());
-        return succesJava && succesClass && succesManifest;
+        boolean successJava = true;
+        boolean successClass = true;
+        boolean successManifest = true;
+        successJava = (new File(fileName + ".java")).delete();
+        successClass = (new File(fileName + ".class")).delete();
+        successManifest = deleteDir(new File("META-INF"));
+        return successJava && successClass && successManifest;
     }
 
+
+    private boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String child : children) {
+                boolean success = deleteDir(new File(dir, child));
+                if (!success){
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
 
 }
