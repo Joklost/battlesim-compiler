@@ -12,6 +12,7 @@ import java.io.File;
 
 public class Main {
 
+    public static boolean errorFound = false;
     public static String currentFile;
 
     public static void main(String[] args) {
@@ -24,7 +25,7 @@ public class Main {
                 "/home/joklost/git/P4-Code/battlesim-compiler/battlesim/javatest.bs",
         };
 
-        boolean generatedCode = false;
+        boolean generatedCode = true;
 
         Preprocessor preprocessor = null;
         Scanner scanner;
@@ -49,8 +50,7 @@ public class Main {
 
                 if (!parser.errorFound) {
                     startNode.accept(semanticsVisitor);
-
-                    if (!semanticsVisitor.errorFound) {
+                    if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
 
                         if (!generatedCode) {
@@ -59,8 +59,10 @@ public class Main {
                             }
                         }
 
-                        CompileJava cj = new CompileJava("Main", generateJavaVisitor.getCode());
-                        cj.compile();
+                        if (generatedCode) {
+                            CompileJava cj = new CompileJava("Main", generateJavaVisitor.getCode());
+                            cj.compile();
+                        }
                     }
                 }
 

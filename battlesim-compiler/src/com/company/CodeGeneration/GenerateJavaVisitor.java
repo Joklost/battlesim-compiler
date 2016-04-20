@@ -112,8 +112,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(FunctionDcl fd) {
-        emitIndentation();
-        emitIndentation("public ");
+        emitIndentation("public static ");
         fd.returnType.accept(this);
         emit(" ");
         fd.functionName.accept(this);

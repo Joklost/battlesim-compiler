@@ -1,6 +1,7 @@
 package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
+import com.company.Main;
 
 import static com.company.AST.SymbolTable.SymbolTable.*;
 import static com.company.ContextualAnalysis.TypeConsts.*;
@@ -10,10 +11,13 @@ import static com.company.ContextualAnalysis.TypeConsts.*;
  */
 public class TopDeclVisitor extends SemanticsVisitor {
 
-    private boolean debug = false;
-
     private void errorDeclaredLocally(String id) {
+        Main.errorFound = true;
         System.err.println(id + " has already been declared at level " + getLevel() + ".");
+    }
+
+    public TopDeclVisitor() {
+
     }
 
     // Tror den er crisp - jkj

@@ -4,6 +4,7 @@ import com.company.AST.Nodes.*;
 import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
+import com.company.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,11 @@ import static com.company.Main.currentFile;
  */
 public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
-    public boolean errorFound = false;
-
     private void errorNoDeclaration(int ln, String var) {
         error(ln, var + " has not been declared.");
     }
     protected void error(int ln, String s) {
-        errorFound = true;
+        Main.errorFound = true;
         System.err.println(currentFile + ": line " + ln + ": error: " + s);
     }
 
@@ -32,7 +31,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public SemanticsVisitor() {
         createStdLib();
     }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

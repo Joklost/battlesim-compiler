@@ -11,14 +11,31 @@ End Declare Simulations
 
 
 
+Function Void PrintTen()
+    Declare i as Integer
+    i = 0
+    While i < 10 Do
+        PrintLine(i + "")
+        i = i + 1
+    End While
 
+    PrintLine(Three() + "")
 
+End Function
+
+Function Integer Three()
+    Return 3
+End Function
 
 Begin Program
 
     Declare s as String
 
-    Declare a as Integer
+    Declare a, b as Integer
+
+    PrintTen()
+
+    b = Three()
 
     While true Do
         Print("Enter string: ")
