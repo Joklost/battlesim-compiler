@@ -16,7 +16,7 @@ public class CompileJava {
     private String fileName;
     private List<String> code;
 
-    public boolean deleteOutput = true;
+    public boolean deleteOutput = false;
 
     public CompileJava(String file, List<String> code) {
         this.fileName = file;
@@ -64,13 +64,14 @@ public class CompileJava {
             createManifest();
             runProcess("javac Main.java");
             //runProcess("java Main");
+
             runProcess("jar cfmv " + fileName + ".jar Manifest.txt " + fileName + ".class");
             runProcess("java -jar Main.jar");
-            if (deleteOutput && !deleteFiles()) {
+            if (!deleteFiles()) {
                 System.err.println("Unable to delete generated files.");
             }
         } catch (Exception e) {
-            if (deleteOutput && !deleteFiles()) {
+            if (!deleteFiles()) {
                 System.err.println("Unable to delete generated files.");
             }
             e.printStackTrace();

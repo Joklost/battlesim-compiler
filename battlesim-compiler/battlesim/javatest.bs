@@ -8,7 +8,7 @@ Declare Simulations
 
 End Declare Simulations
 
-/*
+
 Function Integer Factorial(n as Integer)
     If n <= 1 Then
         Return 1
@@ -32,41 +32,81 @@ Function Void PrintTen()
     PrintLine(Three() + "")
 
 End Function
-*/
+
+Function Void math(n as Integer)
+
+    Declare k as Decimal
+    k = 19.8
+
+    PrintLine("TEST MATH")
+
+    PrintLine(42 % n + "") // Comment testes
+    PrintLine(42 / n + "")
+    PrintLine(n++ + "")
+    PrintLine(n++ + n++ + "")
+    PrintLine(n-- + "")
+    PrintLine(k / n + "")
+    PrintLine(n / k + "")
+    PrintLine(n * k + "")
+    PrintLine(n++ * k-- + "")
+    PrintLine(k++ % n++ + "")
+    //PrintLine(k + 999999999999 + "") // Number overflow, kills it...
+    PrintLine(-20 + k + "")
+    PrintLine(n + -200 + "")
+    PrintLine(n-- + -900 + "")
+    PrintLine(n-- + -900 + "" + 100 + "")
+    PrintLine(n-- + -900 + "" + 100)
+    PrintLine(n-- + -900 + "" + (-3 + ""))
+    PrintLine(n-- % k++ + "")
+
+End Function
+
+Function Void testFuckingOperator()
+
+    Declare no as Boolean
+    Declare da as Boolean
+    no = false
+    da = true
+
+    PrintLine("Test bool 'n shit")
+
+    PrintLine(no + "")
+    PrintLine(da + "")
+    PrintLine((da AND da) + "")
+    PrintLine((da AND no) + "")
+    PrintLine((da OR no) + "")
+    PrintLine((no AND no) + "")
+    PrintLine((NOT da AND da) + "")
+    PrintLine((NOT no AND da) + "")
+    PrintLine((NOT NOT NOT NOT NOT no) + "")
+    PrintLine((NOT NOT da OR no) + "")
+    PrintLine(((NOT NOT da) OR (da AND (NOT no))) + "")
+
+    If da Then
+        PrintLine("True it was")
+    Enf if
+
+End Function
 
 Begin Program
-/*
+
     Declare s as String
 
     Declare a, b as Integer
 
-    //PrintTen()
+    PrintLine("Skriv tal fra 0 til 9")
+
+    PrintTen()
 
     b = Three()
 
-     // switch:
-    Switch b
-        Case 1
-            PrintLine("b is 1")
-        Case 2
-            PrintLine("b is 2")
-        Case 3
-            PrintLine("b is 3")
-        Default
-            PrintLine("b is not 1, 2 or 3")
-    End Switch
+    PrintLine("Factorial of 10")
 
-    PrintLine("Factorial of 10 is " + Factorial(10) + "")
-*/
-    Declare list as List of String
-    Declare array as String[3]
-    array[0] = "Hej"
-    array[1] = "Hej igen"
-    array[2] = "Hej tredje gang"
-    Foreach String sa in array Do
-        PrintLine(sa)
-    End Foreach
+    PrintLine(Factorial(10) + "")
 
+    math(8)
+
+    testFuckingOperator()
 /*
     While true Do
         Print("Enter string: ")
@@ -76,7 +116,13 @@ Begin Program
     End While
 */
 
-
-
+    Declare list as List of String
+    Declare array as String[3]
+    array[0] = "Hej"
+    array[1] = "Hej igen"
+    array[2] = "Hej tredje gang"
+    Foreach String sa in array Do
+        PrintLine(sa)
+    End Foreach
 
 End Program

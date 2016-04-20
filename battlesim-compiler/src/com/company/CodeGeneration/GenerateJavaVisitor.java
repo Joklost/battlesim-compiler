@@ -176,6 +176,8 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             emit("][");
             ((Array2D) ds.typeName).index2.accept(this);
             emit("]");
+        } else if (ds.typeName instanceof BooleanT) {
+            emit(" = false");
         }
 
         emit(";\n");
