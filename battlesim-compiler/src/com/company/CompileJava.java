@@ -29,15 +29,14 @@ public class CompileJava {
     }
 
     private void createManifest() throws IOException {
-        File dir = new File("META-INF");
-        dir.mkdir();
-        Path file = Paths.get(dir.getPath() + File.separator + "MANIFEST.MF");
+        //File dir = new File("META-INF");
+        //dir.mkdir();
+        //Path file = Paths.get(dir.getPath() + File.separator + "MANIFEST.MF");
+        Path file = Paths.get("Manifest.txt");
 
         // skal muligvis autogenereres
         ArrayList<String> manifest = new ArrayList<>();
-        manifest.add("Manifest-Version: 1.0");
-        manifest.add("Created-By: 1.8.0_77 (Oracle Corporation)");
-        manifest.add("Main-Class: Main");
+        manifest.add("Main-Class: Main\n");
 
         Files.write(file, manifest, Charset.forName("UTF-8"));
     }
@@ -65,8 +64,8 @@ public class CompileJava {
             createManifest();
             runProcess("javac Main.java");
             //runProcess("java Main");
-            runProcess("jar cvmf META-INF" + File.separator + "MANIFEST.MF " + fileName + ".jar " + fileName + ".class");
-            //runProcess("java -jar Main.jar");
+            runProcess("jar cfmv " + fileName + ".jar Manifest.txt " + fileName + ".class");
+            runProcess("java -jar Main.jar");
             if (deleteOutput && !deleteFiles()) {
                 System.err.println("Unable to delete generated files.");
             }
@@ -85,7 +84,7 @@ public class CompileJava {
         boolean successManifest = true;
         successJava = (new File(fileName + ".java")).delete();
         successClass = (new File(fileName + ".class")).delete();
-        successManifest = deleteDir(new File("META-INF"));
+        successManifest = (new File("Manifest.txt")).delete();
         return successJava && successClass && successManifest;
     }
 

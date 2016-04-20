@@ -8,7 +8,7 @@ Declare Simulations
 
 End Declare Simulations
 
-
+/*
 Function Integer Factorial(n as Integer)
     If n <= 1 Then
         Return 1
@@ -32,19 +32,41 @@ Function Void PrintTen()
     PrintLine(Three() + "")
 
 End Function
-
+*/
 
 Begin Program
-
+/*
     Declare s as String
 
     Declare a, b as Integer
 
-    PrintTen()
+    //PrintTen()
 
     b = Three()
 
-    PrintLine(Factorial(10) + "")
+     // switch:
+    Switch b
+        Case 1
+            PrintLine("b is 1")
+        Case 2
+            PrintLine("b is 2")
+        Case 3
+            PrintLine("b is 3")
+        Default
+            PrintLine("b is not 1, 2 or 3")
+    End Switch
+
+    PrintLine("Factorial of 10 is " + Factorial(10) + "")
+*/
+    Declare list as List of String
+    Declare array as String[3]
+    array[0] = "Hej"
+    array[1] = "Hej igen"
+    array[2] = "Hej tredje gang"
+    Foreach String sa in array Do
+        PrintLine(sa)
+    End Foreach
+
 /*
     While true Do
         Print("Enter string: ")
@@ -53,4 +75,8 @@ Begin Program
         a = ConvertToInteger(s)
     End While
 */
+
+
+
+
 End Program

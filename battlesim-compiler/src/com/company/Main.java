@@ -25,6 +25,7 @@ public class Main {
                 "/home/joklost/git/P4-Code/battlesim-compiler/battlesim/javatest.bs",
         };
 
+        boolean printCode = true;
         boolean generatedCode = true;
 
         Preprocessor preprocessor = null;
@@ -53,7 +54,7 @@ public class Main {
                     if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
 
-                        if (generatedCode) {
+                        if (printCode) {
                             for (String s : generateJavaVisitor.getCode()) {
                                 System.out.print(s);
                             }

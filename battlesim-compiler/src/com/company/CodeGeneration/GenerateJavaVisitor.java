@@ -56,6 +56,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         //emitIndentation();
         //emit("package com.BattleSim;\n");
         emitIndentation("import java.io.*;\n");
+        emitIndentation("import java.util.*;\n");
         emitIndentation("import java.util.Scanner;\n");
         //emit("import static com.company.StdLib.IO.*;");
         emitComment("BattleSim automatically generated code file.\n");
@@ -158,8 +159,23 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             if (i < ds.dclIdList.size() - 1) emit(", ");
         }
 
-        if (ds.typeName.type == listType) {
+        if (ds.typeName instanceof ListOf) {
             emit(" = new ArrayList<>()");
+        } else if (ds.typeName instanceof Array1D) {
+            //int[] navn = new int[10];
+            emit(" = new ");
+            ((Array1D) ds.typeName).typeName.accept(this);
+            emit("[");
+            ((Array1D) ds.typeName).index.accept(this);
+            emit("]");
+        } else if (ds.typeName instanceof Array2D) {
+            emit(" = new ");
+            ((Array2D) ds.typeName).typeName.accept(this);
+            emit("[");
+            ((Array2D) ds.typeName).index1.accept(this);
+            emit("][");
+            ((Array2D) ds.typeName).index2.accept(this);
+            emit("]");
         }
 
         emit(";\n");
@@ -189,6 +205,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     public void visit(ForeachStmt fes) {
         // TODO
+
         emitIndentation("for (");
         fes.typeName.accept(this);
         emit(" ");
@@ -268,16 +285,52 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     public void visit(SwitchStmt ss) {
         // TODO
+        emitIndentation("switch (");
+        ss.variable.accept(this);
+        emit(") {\n");
+
+        indentLevel++;
+
+        for (int i = 0; i < ss.switchCaseList.size(); i++) {
+            ss.switchCaseList.elementAt(i).accept(this);
+        }
+
+        ss.switchDef.accept(this);
+
+        indentLevel--;
+
+        emitIndentation("}\n");
 
     }
 
     public void visit(SwitchCase sc) {
-        // TODO
+        emitIndentation("case ");
+        sc.label.accept(this);
+        emit(":\n");
 
+        indentLevel++;
+
+        for (int i = 0; i < sc.stmtList.size(); i++) {
+            sc.stmtList.elementAt(i).accept(this);
+        }
+
+        emitIndentation("break;\n");
+
+        indentLevel--;
     }
 
     public void visit(SwitchDef sd) {
-        // TODO
+        emitIndentation("default:\n");
+        indentLevel++;
+
+        for (int i = 0; i < sd.stmtList.size(); i++) {
+            sd.stmtList.elementAt(i).accept(this);
+        }
+
+
+        emitIndentation("break;\n");
+
+        indentLevel--;
     }
 
     public void visit(ReturnExpr r) {
@@ -507,18 +560,27 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Array1D a) {
-        // TODO
-
+        a.typeName.accept(this);
+        emit("[]");
+        //int[] navn = new int[10];
     }
 
     public void visit(Array2D a) {
-        // TODO
-
+        a.typeName.accept(this);
+        emit("[][]");
     }
 
     public void visit(ListOf l) {
         emit("ArrayList<");
-        l.typeName.accept(this);
+        if (l.typeName.type == integerType) {
+            emit("Integer");
+        } else if (l.typeName.type == stringType) {
+            emit("String");
+        } else if (l.typeName.type == booleanType) {
+            emit("Boolean");
+        } else if (l.typeName.type == decimalType) {
+            emit("Double");
+        }
         emit(">");
     }
 
@@ -587,7 +649,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Array1DReferencing a) {
-
+        a.arrayName.accept(this);
+        emit("[");
+        a.indexExpr.accept(this);
+        emit("]");
     }
 
     public void visit(Array2DReferencing a) {

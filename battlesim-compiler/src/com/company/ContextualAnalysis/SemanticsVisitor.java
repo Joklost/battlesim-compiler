@@ -146,7 +146,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
         fes.localName.type = fes.typeName.type;
 
-        enterSymbol(fes.localName.name, fes.localName);
+        enterSymbol(fes.localName.name, fes.typeName);
         fes.localName.accept(this);
 
         fes.objectName.accept(this);
