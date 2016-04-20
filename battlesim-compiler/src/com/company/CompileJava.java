@@ -16,7 +16,7 @@ public class CompileJava {
     private String fileName;
     private List<String> code;
 
-    public boolean deleteOutput = true;
+    public boolean deleteOutput = false;
 
     public CompileJava(String file, List<String> code) {
         this.fileName = file;
@@ -67,9 +67,9 @@ public class CompileJava {
             //runProcess("java Main");
             runProcess("jar cvmf META-INF" + File.separator + "MANIFEST.MF " + fileName + ".jar " + fileName + ".class");
             //runProcess("java -jar Main.jar");
-            if (deleteOutput && !deleteFiles()) {
+            /*if (deleteOutput && !deleteFiles()) {
                 System.err.println("Unable to delete generated files.");
-            }
+            }*/
         } catch (Exception e) {
             if (deleteOutput && !deleteFiles()) {
                 System.err.println("Unable to delete generated files.");

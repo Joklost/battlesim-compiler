@@ -158,8 +158,25 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             if (i < ds.dclIdList.size() - 1) emit(", ");
         }
 
-        if (ds.typeName.type == listType) {
+        if (ds.typeName instanceof ListOf) {
             emit(" = new ArrayList<>()");
+        } else if (ds.typeName instanceof Array1D) {
+            //int[] navn = new int[10];
+            emit(" = new ");
+            ((Array1D) ds.typeName).typeName.accept(this);
+            emit("[");
+            ((Array1D) ds.typeName).index.accept(this);
+            emit("]");
+        } else if (ds.typeName instanceof Array2D) {
+            emit(" = new ");
+            ((Array2D) ds.typeName).typeName.accept(this);
+            emit("[");
+            ((Array2D) ds.typeName).index1.accept(this);
+            emit("][");
+            ((Array2D) ds.typeName).index2.accept(this);
+            emit("]");
+        } else if (ds.typeName instanceof BooleanT) {
+            emit(" = false");
         }
 
         emit(";\n");
