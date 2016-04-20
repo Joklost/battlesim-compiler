@@ -50,9 +50,6 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         s.program.accept(this);
         println("");
 
-        for (int i = 0; i < s.functionDclList2.size(); i++) {
-            s.functionDclList2.elementAt(i).accept(this);
-        }
     }
 
     public void visit(DclBlock db) {

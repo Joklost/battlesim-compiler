@@ -9,7 +9,9 @@ Declare Simulations
 End Declare Simulations
 
 
-
+Function Integer Three()
+    Return 3
+End Function
 
 Function Void PrintTen()
     Declare i as Integer
@@ -23,9 +25,6 @@ Function Void PrintTen()
 
 End Function
 
-Function Integer Three()
-    Return 3
-End Function
 
 Begin Program
 

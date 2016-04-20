@@ -66,22 +66,17 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         s.dclBlock.accept(this);
         s.simBlock.accept(this);
 
-
-        /////
-        // stdlib
+        /////////////
+        // stdlib ///
         emitStdLib();
-        /////
-
+        /////////////
+        /////////////
 
         for (int i = 0; i < s.functionDclList1.size(); i++) {
             s.functionDclList1.elementAt(i).accept(this);
         }
 
         s.program.accept(this);
-
-        for (int i = 0; i < s.functionDclList2.size(); i++) {
-            s.functionDclList2.elementAt(i).accept(this);
-        }
 
         indentLevel--;
         emitIndentation("}\n");

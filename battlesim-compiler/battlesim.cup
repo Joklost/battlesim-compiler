@@ -120,7 +120,7 @@ precedence left ELSE;
 /* The grammar */
 start with Start;
 
-Start         ::= DclBlock:db SimBlock:s FunctionDcls:fds1 Program:p FunctionDcls:fds2          {: RESULT = new Start(db, s, fds1, p, fds2, dbleft); :}
+Start         ::= DclBlock:db SimBlock:s FunctionDcls:fds1 Program:p                            {: RESULT = new Start(db, s, fds1, p, dbleft); :}
               ;
 DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               ;
@@ -152,7 +152,7 @@ Params        ::= LPAREN:l RPAREN                                               
 ParamList     ::= ParamList:pl COMMA Param:p                                                    {: RESULT = pl; pl.addElement(p); :}
               |   Param:p                                                                       {: RESULT = new ParamList(pleft); RESULT.addElement(p); :}
               ;
-Program       ::= BEGIN PROGRAM Stmts:ss END PROGRAM                                            {: RESULT = new Program(ss, ssleft); :}
+Program       ::= BEGIN PROGRAM Stmts:ss END PROGRAM MultEOL                                    {: RESULT = new Program(ss, ssleft); :}
               ;
 Stmts         ::= Stmts:ss Stmt:s                                                               {: ss.addElement(s); RESULT = ss; :}
               |   MultEOL                                                                       {: RESULT = new StmtList(0); :}
