@@ -81,6 +81,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
                 if (f.stmtList.elementAt(i) instanceof ReturnExpr) {
                     containsReturnExpr = true;
                 }
+
             }
 
             if (!containsReturnExpr) {

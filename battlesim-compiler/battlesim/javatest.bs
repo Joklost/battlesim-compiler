@@ -9,6 +9,14 @@ Declare Simulations
 End Declare Simulations
 
 
+Function Integer Factorial(n as Integer)
+    If n <= 1 Then
+        Return 1
+    End If
+
+    Return Factorial(n - 1) * n
+End Function
+
 Function Integer Three()
     Return 3
 End Function
@@ -36,11 +44,13 @@ Begin Program
 
     b = Three()
 
+    PrintLine(Factorial(10) + "")
+/*
     While true Do
         Print("Enter string: ")
         s = Input()
         PrintLine("Your string was: " + s)
         a = ConvertToInteger(s)
     End While
-
+*/
 End Program

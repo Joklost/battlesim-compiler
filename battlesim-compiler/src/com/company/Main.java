@@ -53,7 +53,7 @@ public class Main {
                     if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
 
-                        if (!generatedCode) {
+                        if (generatedCode) {
                             for (String s : generateJavaVisitor.getCode()) {
                                 System.out.print(s);
                             }

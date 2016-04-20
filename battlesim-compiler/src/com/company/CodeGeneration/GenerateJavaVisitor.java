@@ -210,27 +210,60 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     public void visit(ForStmt fs) {
         // TODO
-
     }
 
     public void visit(IfStmt i) {
-        // TODO
+        emitIndentation("if (");
+        i.condition.accept(this);
+        emit(") {\n");
 
+        indentLevel++;
+
+        for (int k = 0; k < i.stmtList.size(); k++) {
+            i.stmtList.elementAt(k).accept(this);
+        }
+
+        indentLevel--;
+
+        emitIndentation("} ");
+        i.elseStmt.accept(this);
     }
 
     public void visit(ElseIfStmt e) {
         // TODO
+        emit("else if (");
+        e.condition.accept(this);
+        emit(") {\n");
 
+        indentLevel++;
+
+        for (int i = 0; i < e.stmtList.size(); i++) {
+            e.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+
+        emitIndentation("} ");
+        e.elifStmt.accept(this);
     }
 
     public void visit(ElseStmt e) {
-        // TODO
+        emit("else {\n");
+
+        indentLevel++;
+
+        for (int i = 0; i < e.stmtList.size(); i++) {
+            e.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+
+        emitIndentation("}\n");
 
     }
 
     public void visit(EndIfStmt e) {
-        // TODO
-
+        emit("\n");
     }
 
     public void visit(SwitchStmt ss) {
