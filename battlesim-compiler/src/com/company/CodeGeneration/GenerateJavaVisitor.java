@@ -178,6 +178,12 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             emit("]");
         } else if (ds.typeName instanceof BooleanT) {
             emit(" = false");
+        } else if (ds.typeName instanceof IntegerT) {
+            emit(" = 0");
+        } else if (ds.typeName instanceof StringT) {
+            emit(" = \"\"");
+        } else if (ds.typeName instanceof Decimal) {
+            emit(" = 0.0");
         }
 
         emit(";\n");
@@ -206,8 +212,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ForeachStmt fes) {
-        // TODO
-
         emitIndentation("for (");
         fes.typeName.accept(this);
         emit(" ");
@@ -228,7 +232,28 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ForStmt fs) {
-        // TODO
+        emitIndentation("for (int i795030_forloop=");
+        fs.initialExpr.accept(this);
+        emit("; ");
+        if (fs.forIterator instanceof ToIterator) {
+            emit("i795030_forloop<");
+            fs.toExpr.accept(this);
+            emit("; i795030_forloop++) {\n");
+        } else {
+            emit("i795030_forloop>");
+            fs.toExpr.accept(this);
+            emit("; i795030_forloop--) {\n");
+        }
+
+        indentLevel++;
+
+        for (int i = 0; i < fs.stmtList.size(); i++) {
+            fs.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+
+        emitIndentation("}\n");
     }
 
     public void visit(IfStmt i) {
@@ -249,7 +274,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ElseIfStmt e) {
-        // TODO
         emit("else if (");
         e.condition.accept(this);
         emit(") {\n");
@@ -286,7 +310,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(SwitchStmt ss) {
-        // TODO
         emitIndentation("switch (");
         ss.variable.accept(this);
         emit(") {\n");
@@ -484,8 +507,11 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(CoordExpr ce) {
-        // TODO
-
+        emit("(");
+        ce.expression1.accept(this);
+        emit(", ");
+        ce.expression2.accept(this);
+        emit(")");
     }
 
     public void visit(EqualsOp eo) {
@@ -520,18 +546,11 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             if (i < f.argumentList.size() - 1) emit(", ");
         }
         emit(")");
-
     }
 
-    public void visit(ToIterator ti) {
-        // TODO
+    public void visit(ToIterator ti) {}
 
-    }
-
-    public void visit(DownToIterator di) {
-        // TODO
-
-    }
+    public void visit(DownToIterator di) {}
 
     public void visit(VariableObjectId vi) {
         vi.objectName.accept(this);
@@ -658,7 +677,12 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Array2DReferencing a) {
-
+        a.arrayName.accept(this);
+        emit("[");
+        a.firstIndexExpr.accept(this);
+        emit("][");
+        a.secondIndexExpr.accept(this);
+        emit("]");
     }
 
     public void visit(Identifier id) {

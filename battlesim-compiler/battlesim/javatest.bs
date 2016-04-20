@@ -84,7 +84,7 @@ Function Void testFuckingOperator()
 
     If da Then
         PrintLine("True it was")
-    Enf if
+    End If
 
 End Function
 

@@ -18,12 +18,13 @@ public class Main {
     public static void main(String[] args) {
         String[] paths = {
                 //"/home/joklost/git/P4-Code/example-code/battlesim/semtester.bs",
-//                "/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
+                //"/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
                 //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\simWithIncludes\\simWithInclude.bs",
                 //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
                 //"/home/joklost/git/P4-Code/battlesim-compiler/battlesim/tester.bs",
+                "/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs",
                 //"/home/joklost/git/P4-Code/battlesim-compiler/battlesim/javatest.bs",
-                "/home/pgug/Code/P4-Code/battlesim-compiler/battlesim/javatest.bs",
+                //"/home/pgug/Code/P4-Code/battlesim-compiler/battlesim/javatest.bs",
         };
 
         boolean printCode = true;
