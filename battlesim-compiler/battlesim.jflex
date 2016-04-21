@@ -1,4 +1,4 @@
-package com.company.SyntaxAnalysis;
+*package com.company.SyntaxAnalysis;
 import java_cup.runtime.*;
 
 
