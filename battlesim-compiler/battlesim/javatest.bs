@@ -59,6 +59,22 @@ Function Void math(n as Integer)
     PrintLine(n-- + -900 + "" + (-3 + ""))
     PrintLine(n-- % k++ + "")
 
+    PrintLine("Test funny equals")
+
+    Declare Maria as Integer
+    Maria = 42
+    PrintLine(Maria + "")
+    Maria += 8
+    PrintLine(Maria + "")
+    Maria -= 8
+    PrintLine(Maria + "")
+    Maria /= 8
+    PrintLine(Maria + "")
+    Maria %= 8
+    PrintLine(Maria + "")
+    Maria *= 8
+    PrintLine(Maria + "")
+
 End Function
 
 Function Void testFuckingOperator()
@@ -124,6 +140,24 @@ Function Void testFuckingOperator()
         PrintLine("1 is 1 and true is true")
     End If
 
+    If true == NOT false Then
+        PrintLine("true == NOT false")
+    End If
+
+    If NOT (true == false) Then
+        PrintLine("true != false")
+    End If
+
+    If NOT (no == da) Then
+        PrintLine("no != da")
+    End If
+
+    If NOT (no == no) Then
+        PrintLine("Det her kan ikke lade sig gøre")
+    Else
+        PrintLine("Det her er bedre")
+    End If
+
 End Function
 
 Begin Program
@@ -132,19 +166,19 @@ Begin Program
 
     Declare a, b as Integer
 
-    PrintLine("Skriv tal fra 0 til 9")
+    //PrintLine("Skriv tal fra 0 til 9")
 
-    PrintTen()
+    //PrintTen()
 
-    b = Three()
+    //b = Three()
 
-    PrintLine("Factorial of 10")
+    //PrintLine("Factorial of 10")
 
-    PrintLine(Factorial(10) + "")
+    //PrintLine(Factorial(10) + "")
 
     math(8)
 
-    testFuckingOperator()
+    //testFuckingOperator()
 /*
     While true Do
         Print("Enter string: ")
@@ -160,7 +194,7 @@ Begin Program
     array[1] = "Hej igen"
     array[2] = "Hej tredje gang"
     Foreach String sa in array Do
-        PrintLine(sa)
+    //    PrintLine(sa)
     End Foreach
 
 End Program
