@@ -87,4 +87,5 @@ public interface VisitorInterface {
     void visit(Array1DReferencing a);
     void visit(Array2DReferencing a);
     void visit(Identifier id);
+    void visit(JavaString j);
 }

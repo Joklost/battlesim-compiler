@@ -36,6 +36,9 @@ MultiLineComment    = "/*" [^*] ~"*/" | "/*" "*"+ "/"   /* Traditional Comment l
 EndOfLineComment    = "//" {InputCharacter}* {LineTerminator}?
 /* Comments */
 
+/* Code injection */
+CodeInjection       = "%``" {InputCharacter}* {LineTerminator}?
+
 /* StringLiteral       = "([^"\\]*(\\.[^"\\]*)*)" */
 /* BooleanLiteral      = (true | false) */
 
@@ -148,6 +151,8 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
 
     /* Identifiers */
     {Identifier}            { return symbol(Sym.IDENTIFIER, yytext()); }
+
+    {CodeInjection}         { return symbol(Sym.JAVASTRING, yytext()); }
 
 }
 

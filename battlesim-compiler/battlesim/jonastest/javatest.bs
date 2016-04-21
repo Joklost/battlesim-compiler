@@ -8,6 +8,8 @@ Declare Simulations
 
 End Declare Simulations
 
+#Include("stdlib.bsi")
+
 
 Begin Program
 /*
@@ -26,7 +28,7 @@ Begin Program
         PrintLine(i + "")
         i = i + 1
     End For
-*/
+
 
     Declare n as Integer
 
@@ -43,5 +45,13 @@ Begin Program
 
         n = n + 1
     End For
-
+*/
+    Declare a as Decimal
+    Declare s as String
+    While true Do
+        PrintLine("Enter decimal:")
+        s = Input()
+        a = ConvertToDecimal(s)
+        PrintLine(a + "")
+    End While
 End Program

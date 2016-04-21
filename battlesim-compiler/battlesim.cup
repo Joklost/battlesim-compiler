@@ -53,7 +53,7 @@ terminal VECTOR, BARRIER;
 terminal Boolean BOOLEAN_LITERAL;
 terminal Integer INTEGER_LITERAL;
 terminal Double DECIMAL_LITERAL;
-terminal String STRING_LITERAL, IDENTIFIER;
+terminal String STRING_LITERAL, IDENTIFIER, JAVASTRING;
 
 /* Non-terminals */
 
@@ -168,6 +168,7 @@ Stmt          ::= Dcl:d                                                         
               |   RETURN:r MultEOL                                                              {: RESULT = new Return(rleft); :}
               |   FunctionCall:fc MultEOL                                                       {: RESULT = new FunctionCallStmt(fc, fcleft); :}
               |   error EOL
+              |   JAVASTRING:j                                                                  {: RESULT = new JavaString(j, jleft); :}
               ;
 Dcl           ::= DECLARE DclIds:ds AS TypeId:ti MultEOL                                        {: RESULT = new Dcl(ds, ti, dsleft); :}
               ;

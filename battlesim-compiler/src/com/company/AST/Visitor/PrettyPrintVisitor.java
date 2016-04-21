@@ -641,4 +641,8 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(Identifier id) {
         print(id.name);
     }
+
+    public void visit(JavaString j) {
+        System.out.println("Java String - Pretty Print");
+    }
 }
