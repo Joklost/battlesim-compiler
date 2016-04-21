@@ -13,6 +13,7 @@ public class Sym {
   public static final int INTERRUPTS = 69;
   public static final int SOLDIER = 65;
   public static final int FORCE = 63;
+  public static final int JAVASTRING = 77;
   public static final int GROUP = 61;
   public static final int GREATERTHANEQUALS = 51;
   public static final int BARRIER = 71;
@@ -162,7 +163,8 @@ public class Sym {
   "INTEGER_LITERAL",
   "DECIMAL_LITERAL",
   "STRING_LITERAL",
-  "IDENTIFIER"
+  "IDENTIFIER",
+  "JAVASTRING"
   };
 }
 

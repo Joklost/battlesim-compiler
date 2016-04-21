@@ -746,6 +746,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         }
     }
 
+    public void visit(JavaString j) {
+        System.out.println("JavaString - Semantics");
+    }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -875,6 +879,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     private void createStdLib() {
         // Print
+/*
         TypeIdentifier tPrint = new VoidT(-1);
         tPrint.type = voidType;
         Identifier iPrint = new Identifier("Print", -1);
@@ -915,6 +920,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         FunctionDcl fci = new FunctionDcl(ci, cii, pci, null, -1);
         fci.type = integerType;
         enterSymbol(cii.name, fci);
+        */
     }
 
 

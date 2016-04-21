@@ -689,38 +689,14 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emit(id.name);
     }
 
-
-
+    public void visit(JavaString j) {
+        emitIndentation(j.javaCode.substring(3));
+    }
 
 
     private void emitStdLib() {
-        // Print
-        emitIndentation();
-        emit("public static void Print(String s) {\n");
-        indentLevel++;
-        emitIndentation();
-        emit("System.out.print(s);\n");
-        indentLevel--;
-        emitIndentation();
-        emit("}\n");
-
-        //PrintLine
-        emitIndentation("public static void PrintLine(String s) {\n");
-        indentLevel++;
-        emitIndentation("System.out.println(s);");
-        indentLevel--;
-        emitIndentation("}\n");
-
-        //Input
-        emitIndentation("public static String Input() {\n");
-        indentLevel++;
-        emitIndentation("Scanner sc = new Scanner(System.in);\n");
-        emitIndentation("return sc.nextLine();\n");
-        indentLevel--;
-        emitIndentation("}\n");
-
-
-        //ConvertToInteger
+/*
+            //ConvertToInteger
         emitIndentation("public static int ConvertToInteger(String s) {\n");
         indentLevel++;
 
@@ -752,5 +728,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitIndentation("return false;\n");
         indentLevel--;
         emitIndentation("}\n");
+        */
     }
 }

@@ -39,7 +39,7 @@ public class Preprocessor {
             while ((line = br.readLine()) != null) {
 
                 //include handling
-                if(line.startsWith("#include")){
+                if(line.startsWith("#Include")){
                     String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
                     if(includeFile == inputPath){
                         throw new Error("Unable to include file " + includeFile + " in " + inputPath);

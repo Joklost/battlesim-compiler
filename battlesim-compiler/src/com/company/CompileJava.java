@@ -63,10 +63,8 @@ public class CompileJava {
             writeCodeToFile();
             createManifest();
             runProcess("javac Main.java");
-            //runProcess("java Main");
-
             runProcess("jar cfmv " + fileName + ".jar Manifest.txt " + fileName + ".class");
-            runProcess("java -jar Main.jar");
+            //runProcess("java -jar Main.jar");
             if (!deleteFiles()) {
                 System.err.println("Unable to delete generated files.");
             }
