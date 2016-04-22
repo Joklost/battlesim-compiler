@@ -20,13 +20,20 @@ Function Decimal ReturnDecimal()
     Return 3.50
 End Function
 
-// Test while
+// Test while, test plus plus
 // TEST: Success
 Function Void TestWhile()
     i = 0
     While i < 10 Do
         PrintLine((i + 1) + "")
+        i = i++
         i++
+    End While
+
+    i = 10
+    While i > 0 Do
+        PrintLine((i + 1) + "")
+        i--
     End While
 End Function
 

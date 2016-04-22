@@ -87,6 +87,7 @@ nonterminal SwitchStmt        SwitchStmt;
 nonterminal SwitchCaseList    SwitchCases;
 nonterminal SwitchCase        SwitchCase;
 nonterminal SwitchDef         SwitchDef;
+nonterminal UnaryStmt         UnaryStmt;
 nonterminal Expression        Expression;
 nonterminal AssignOp          AssignOp;
 nonterminal FunctionCall      FunctionCall;
@@ -169,8 +170,10 @@ Stmt          ::= Dcl:d                                                         
               |   FunctionCall:fc MultEOL                                                       {: RESULT = new FunctionCallStmt(fc, fcleft); :}
               |   error EOL
               |   JAVASTRING:j                                                                  {: RESULT = new JavaString(j, jleft); :}
-              |   ObjectId:oi PLUSPLUS                                                          {: RESULT = new PlusPlusStmt(oi, oileft); :}
-              |   ObjectId:oi MINUSMINUS                                                        {: RESULT = new MinusMinusStmt(oi, oileft); :}
+              |   UnaryStmt:u                                                                   {: RESULT = u; :}
+              ;
+UnaryStmt     ::= ObjectId:oi PLUSPLUS                                                          {: RESULT = new PlusPlusStmt(oi, oileft); :}
+              |   ObjectId:oi MINUSMINUS                                                       {: RESULT = new MinusMinusStmt(oi, oileft); :}
               ;
 Dcl           ::= DECLARE DclIds:ds AS TypeId:ti MultEOL                                        {: RESULT = new Dcl(ds, ti, dsleft); :}
               ;
