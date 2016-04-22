@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="battlesim-compiler:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/battlesim_compiler_jar</output-path>
+  <artifact type="jar" name="compiler.jar">
+    <output-path>$PROJECT_DIR$</output-path>
     <root id="archive" name="battlesim-compiler.jar">
       <element id="module-output" name="battlesim-compiler" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/vbmacher/java-cup-runtime/11b/java-cup-runtime-11b.jar" path-in-jar="/" />
