@@ -1,7 +1,13 @@
 Begin Declarations
-    Declare test as Integer // test I can declare something
-                            // what I can declare I can't
-                            // access
+    Declare da as Boolean
+    Declare no as Boolean
+    Declare k as Decimal
+    Declare foo as Integer
+    Declare s as String
+    Declare a as Integer
+    Declare list as List of String
+    Declare array as String[3]
+    Declare i as Integer
 End Declarations
 // ^
 // Test declerations
@@ -40,8 +46,8 @@ Begin Program
     PrintLine("while success")
 
     // Test array and Foreach
-    TestArrayForeach()
-    PrintLine("array and foreach success")
+    //TestArrayForeach()
+    //PrintLine("array and foreach success")
 
     // Test math
     math(12)
