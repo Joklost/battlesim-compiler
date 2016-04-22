@@ -50,7 +50,8 @@ public class Main {
             }
         } else {
             // stier skal ind her, hvis det skal køres fra IntelliJ
-            paths.add("/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs");
+            //paths.add("/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs");
+            paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
         }
 
         Preprocessor preprocessor = null;
