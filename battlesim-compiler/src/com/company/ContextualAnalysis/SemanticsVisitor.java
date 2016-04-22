@@ -336,6 +336,16 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         fcs.functionCall.accept(this);
     }
 
+    public void visit(PlusPlusStmt s) {
+        s.id.accept(this);
+        s.type = unaryResultType(plusplusOperator, s.id.type);
+    }
+
+    public void visit(MinusMinusStmt s) {
+        s.id.accept(this);
+        s.type = unaryResultType(minusminusOperator, s.id.type);
+    }
+
     public void visit(PlusExpr pe) {
         // binary
         pe.leftExpr.accept(this);

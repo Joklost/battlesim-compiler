@@ -31,6 +31,8 @@ public interface VisitorInterface {
     void visit(ReturnExpr r);
     void visit(Return r);
     void visit(FunctionCallStmt fcs);
+    void visit(PlusPlusStmt s);
+    void visit(MinusMinusStmt s);
     void visit(PlusExpr pe);
     void visit(MinusExpr me);
     void visit(MultExpr me);
