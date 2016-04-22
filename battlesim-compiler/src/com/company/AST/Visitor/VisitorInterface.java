@@ -81,6 +81,7 @@ public interface VisitorInterface {
     void visit(Coord c);
     void visit(Soldier s);
     void visit(Barrier b);
+    void visit(VectorT v);
     void visit(IntegerT i);
     void visit(VoidT v);
     void visit(Terrain t);

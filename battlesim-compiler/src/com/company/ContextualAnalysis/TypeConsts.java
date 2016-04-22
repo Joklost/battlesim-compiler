@@ -25,6 +25,7 @@ public class TypeConsts {
     public static final int coordType = 15;
     public static final int soldierType = 16;
     public static final int barrierType = 17;
+    public static final int vectorType = 18;
     public static final int terrainType = 19;
     public static final int listType = 20;
     public static final int array1DType = 21;
@@ -90,6 +91,7 @@ public class TypeConsts {
         typeNames.put(coordType, "Coord");
         typeNames.put(soldierType, "Soldier");
         typeNames.put(barrierType, "Barrier");
+        typeNames.put(vectorType, "Vector");
         typeNames.put(terrainType, "Terrain");
         typeNames.put(listType, "List");
         typeNames.put(array1DType, "1D Array");
