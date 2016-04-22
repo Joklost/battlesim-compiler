@@ -7,36 +7,46 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by joklost on 19-04-16.
  */
 public class CompileJava {
-    private String fileName;
-    private List<String> code;
+    private String outputName;
+    private List<String> fileNames;
+    private Map<String, List<String>> code;
 
     public boolean deleteOutput = false;
 
-    public CompileJava(String file, List<String> code) {
-        this.fileName = file;
+    public CompileJava(String outputName, Map<String, List<String>> code) {
+        this.outputName = outputName;
         this.code = code;
     }
 
     private void writeCodeToFile() throws IOException {
-        Path file = Paths.get(fileName + ".java");
-        Files.write(file, code, Charset.forName("UTF-8"));
+        File com = new File("com");
+        if (!com.mkdir()) {
+            throw new Error("Unable to create directory: " + com.getAbsolutePath());
+        }
+        File battleSim = new File(com.getAbsoluteFile() + File.separator + "BattleSim");
+        if (!battleSim.mkdir()) {
+            throw new Error("Unable to create directory: " + battleSim.getAbsolutePath());
+        }
+
+        for (String key : code.keySet()) {
+            Path file = Paths.get(battleSim.getAbsolutePath() + File.separator + key + ".java");
+            Files.write(file, code.get(key), Charset.forName("UTF-8"));
+        }
     }
 
     private void createManifest() throws IOException {
-        //File dir = new File("META-INF");
-        //dir.mkdir();
-        //Path file = Paths.get(dir.getPath() + File.separator + "MANIFEST.MF");
         Path file = Paths.get("Manifest.txt");
 
-        // skal muligvis autogenereres
         ArrayList<String> manifest = new ArrayList<>();
-        manifest.add("Main-Class: Main\n");
+        manifest.add("Main-Class: com.BattleSim.Main\n");
 
         Files.write(file, manifest, Charset.forName("UTF-8"));
     }
@@ -61,10 +71,19 @@ public class CompileJava {
     public void compile() {
         try {
             writeCodeToFile();
+
+            String dotJavaFiles = "";
+            String dotClassFiles = "";
+            for (String s : code.keySet()) {
+                String path = "com" + File.separator + "BattleSim" + File.separator + s;
+                dotJavaFiles += path + ".java ";
+                dotClassFiles += path + ".class ";
+            }
+
+            runProcess("javac " + dotJavaFiles);
             createManifest();
-            runProcess("javac Main.java");
-            runProcess("jar cfmv " + fileName + ".jar Manifest.txt " + fileName + ".class");
-            //runProcess("java -jar Main.jar");
+            runProcess("jar cfmv " + outputName + ".jar Manifest.txt " + dotClassFiles);
+            runProcess("java -jar " + outputName + ".jar");
             if (!deleteFiles()) {
                 System.err.println("Unable to delete generated files.");
             }
@@ -78,13 +97,8 @@ public class CompileJava {
 
 
     private boolean deleteFiles() {
-        boolean successJava = true;
-        boolean successClass = true;
-        boolean successManifest = true;
-        successJava = (new File(fileName + ".java")).delete();
-        successClass = (new File(fileName + ".class")).delete();
-        successManifest = (new File("Manifest.txt")).delete();
-        return successJava && successClass && successManifest;
+        //return true;
+        return deleteDir(new File("com")) && (new File("Manifest.txt")).delete();
     }
 
     private boolean deleteDir(File dir) {

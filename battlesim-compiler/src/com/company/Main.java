@@ -10,6 +10,7 @@ import com.company.SyntaxAnalysis.Scanner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -20,20 +21,37 @@ public class Main {
 
         List<String> paths = new ArrayList<>();
 
+        boolean printCode = false;
+        boolean generatedCode = true;
+        String outputName = "Main";
+
+
+        int readArgs = 0;
         if (args.length > 0) {
             for (String s : args) {
-                File f = new File(System.getProperty("user.dir") + File.separator + args[0]);
-                if (f.isFile()) {
-                    paths.add(f.getAbsolutePath());
+                switch (s) {
+                    case "-pc":
+                        printCode = true;
+                        break;
+                    case "-o":
+                        outputName = args[1 + readArgs];
+
+                        break;
+                    default:
+                        if (args[readArgs].contains(".bs")) {
+                            File f = new File(System.getProperty("user.dir") + File.separator + args[readArgs]);
+                            if (f.isFile()) {
+                                paths.add(f.getAbsolutePath());
+                            }
+                        }
+                        break;
                 }
+                readArgs++;
             }
         } else {
             // stier skal ind her, hvis det skal køres fra IntelliJ
             paths.add("/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs");
         }
-
-        boolean printCode = true;
-        boolean generatedCode = true;
 
         Preprocessor preprocessor = null;
         Scanner scanner;
@@ -48,7 +66,7 @@ public class Main {
                 preprocessor = new Preprocessor(path);
                 File f = new File(path);
                 currentFile = f.getName();
-                //System.out.println(path + "\n");
+
                 String newPath = preprocessor.makeFile();
                 scanner = new Scanner(new java.io.FileReader(newPath));
                 parser = new Parser(scanner, true);
@@ -59,15 +77,18 @@ public class Main {
                     startNode.accept(semanticsVisitor);
                     if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
-
+                        Map<String, List<String>> map = generateJavaVisitor.getCode();
                         if (printCode) {
-                            for (String s : generateJavaVisitor.getCode()) {
-                                System.out.print(s);
+                            for (String s : map.keySet()) {
+                                List<String> ls = map.get(s);
+                                for (String ss : ls) {
+                                    System.out.print(ss);
+                                }
                             }
                         }
 
                         if (generatedCode) {
-                            CompileJava cj = new CompileJava("Main", generateJavaVisitor.getCode());
+                            CompileJava cj = new CompileJava(outputName, generateJavaVisitor.getCode());
                             cj.compile();
                         }
                     }

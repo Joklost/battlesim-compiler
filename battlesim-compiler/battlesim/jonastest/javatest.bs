@@ -1,5 +1,8 @@
 Begin Declarations
-
+    Declare dclI as Integer
+    dclI = 15
+    Declare dclA as String
+    dclA = "tester dcl"
 End Declarations
 
 
@@ -12,7 +15,9 @@ End Declare Simulations
 
 
 Begin Program
-/*
+    PrintLine(dclI + "")
+    dclI = 16
+    PrintLine(dclI + "")
     Declare list as List of String
     Declare array as String[3]
     array[0] = "Hej"
@@ -31,7 +36,7 @@ Begin Program
 
 
     Declare n as Integer
-
+/*
     For n To 101 Do
         If ((n % 3) == 0) AND ((n % 5) == 0) Then
             PrintLine("FizzBuzz")
@@ -45,7 +50,7 @@ Begin Program
 
         n = n + 1
     End For
-*/
+/*
     Declare a as Decimal
     Declare s as String
     While true Do
@@ -54,4 +59,5 @@ Begin Program
         a = ConvertToDecimal(s)
         PrintLine(a + "")
     End While
+*/
 End Program
