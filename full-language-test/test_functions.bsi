@@ -23,7 +23,6 @@ End Function
 // Test while
 // TEST: Success
 Function Void TestWhile()
-    Declare i as Integer
     i = 0
     While i < 10 Do
         PrintLine((i + 1) + "")
@@ -34,24 +33,19 @@ End Function
 // Test array
 // Test Foreach
 // TEST: Success
-Function Void TestArrayForeach()
-    Declare list as List of String
-    Declare array as String[3]
+/*Function Void TestArrayForeach()
     array[0] = "Hej"
     array[1] = "Hej igen"
     array[2] = "Hej tredje gang"
     Foreach String say in array Do
         PrintLine(say)
     End Foreach
-End Function
+End Function*/
 
 // Test Input
 // Test ConvertToInteger
 // Test FAILED: Vent slut!
 Function Void TestInput()
-    Declare s as String
-    Declare a as Integer
-
     While true Do
         Print("Enter string: ")
         s = Input()
@@ -63,9 +57,7 @@ End Function
 // Test matematik funktioner
 // TEST: Success
 Function Void math(n as Integer)
-    Declare k as Decimal
     k = 19.8
-    Declare foo as Integer
     foo = 42
 
     PrintLine("TEST MATH")
@@ -165,8 +157,6 @@ End Function
 
 // Test bool
 Function Void TestBool()
-    Declare no as Boolean
-    Declare da as Boolean
     no = false
     da = true
 
@@ -192,8 +182,6 @@ Function Void TestBool()
 End Function
 
 Function Void TestIf()
-    Declare da as Boolean
-    Declare no as Boolean
     da = true
     no = false
 
