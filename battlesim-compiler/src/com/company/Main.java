@@ -1,7 +1,6 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
-import com.company.AST.Visitor.PrettyPrintVisitor;
 import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
