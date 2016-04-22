@@ -1,0 +1,275 @@
+// Test reccursiv fuktion
+// TEST: Success
+Function Integer Factorial(n as Integer)
+    If n <= 1 Then
+        Return 1
+    End If
+
+    Return Factorial(n - 1) * n
+End Function
+
+// Test funktion retunerer Integer
+// TEST: Success
+Function Integer ReturnInt()
+    Return 42
+End Function
+
+// Test funktion return Decimal
+// TEST: Success
+Function Decimal ReturnDecimal()
+    Return 3.50
+End Function
+
+// Test while
+// TEST: Success
+Function Void TestWhile()
+    Declare i as Integer
+    i = 0
+    While i < 10 Do
+        PrintLine((i + 1) + "")
+        i = i + 1
+    End While
+End Function
+
+// Test array
+// Test Foreach
+// TEST: Success
+Function Void TestArrayForeach()
+    Declare list as List of String
+    Declare array as String[3]
+    array[0] = "Hej"
+    array[1] = "Hej igen"
+    array[2] = "Hej tredje gang"
+    Foreach String say in array Do
+        PrintLine(say)
+    End Foreach
+End Function
+
+// Test Input
+// Test ConvertToInteger
+// Test FAILED: Vent slut!
+Function Void TestInput()
+    Declare s as String
+    Declare a as Integer
+
+    While true Do
+        Print("Enter string: ")
+        s = Input()
+        PrintLine("Your string was: " + s)
+        a = ConvertToInteger(s)
+    End While
+End Function
+
+// Test matematik funktioner
+// TEST: Success
+Function Void math(n as Integer)
+    Declare k as Decimal
+    k = 19.8
+    Declare foo as Integer
+    foo = 42
+
+    PrintLine("TEST MATH")
+
+    // Test for int
+    PrintLine(42 + n + "")
+    PrintLine(42 - n + "")
+    PrintLine(42 / n + "")
+    PrintLine(42 * n + "")
+    PrintLine(42 % n + "")
+    // Test for int++ og int--
+    PrintLine(42 + n++ + "")
+    PrintLine(42 + n-- + "")
+    PrintLine(42 - n++ + "")
+    PrintLine(42 - n-- + "")
+    PrintLine(42 / n++ + "")
+    PrintLine(42 / n-- + "")
+    PrintLine(42 * n++ + "")
+    PrintLine(42 * n-- + "")
+    PrintLine(42 % n++ + "")
+    PrintLine(42 % n-- + "")
+
+    // Test for decimal
+    PrintLine(42.0 + k + "")
+    PrintLine(42.0 - k + "")
+    PrintLine(42.0 / k + "")
+    PrintLine(42.0 * k + "")
+    PrintLine(42.0 % k + "")
+    // Test for decimal++ og decimal--
+    PrintLine(42.0 + k++ + "")
+    PrintLine(42.0 + k-- + "")
+    PrintLine(42.0 - k++ + "")
+    PrintLine(42.0 - k-- + "")
+    PrintLine(42.0 / k++ + "")
+    PrintLine(42.0 / k-- + "")
+    PrintLine(42.0 * k++ + "")
+    PrintLine(42.0 * k-- + "")
+    PrintLine(42.0 % k++ + "")
+    PrintLine(42.0 % k-- + "")
+
+    // Test for decimal and Integer
+    PrintLine(n + k + "")
+    PrintLine(n - k + "")
+    PrintLine(n / k + "")
+    PrintLine(n * k + "")
+    PrintLine(n % k + "")
+    // Test for decimal++ og decimal--
+    PrintLine(n + k++ + "")
+    PrintLine(n + k-- + "")
+    PrintLine(n - k++ + "")
+    PrintLine(n - k-- + "")
+    PrintLine(n / k++ + "")
+    PrintLine(n / k-- + "")
+    PrintLine(n * k++ + "")
+    PrintLine(n * k-- + "")
+    PrintLine(n % k++ + "")
+    PrintLine(n % k-- + "")
+    // Test for int++ og int--
+    PrintLine(n++ + k + "")
+    PrintLine(n-- + k + "")
+    PrintLine(n++ - k + "")
+    PrintLine(n-- - k + "")
+    PrintLine(n++ / k + "")
+    PrintLine(n-- / k + "")
+    PrintLine(n++ * k + "")
+    PrintLine(n-- * k + "")
+    PrintLine(n++ % k + "")
+    PrintLine(n-- % k + "")
+
+    // Test matematical assignment
+    // for int
+    PrintLine(foo + "")
+    foo += 8
+    PrintLine(foo + "")
+    foo -= 8
+    PrintLine(foo + "")
+    foo /= 8
+    PrintLine(foo + "")
+    foo %= 8
+    PrintLine(foo + "")
+    foo *= 8
+    PrintLine(foo + "")
+    // for deciaml
+    PrintLine(foo + "")
+    k += 8
+    PrintLine(k + "")
+    k -= 8
+    PrintLine(k + "")
+    k /= 8
+    PrintLine(k + "")
+    k %= 8
+    PrintLine(k + "")
+    k *= 8
+    PrintLine(k + "")
+
+End Function
+
+// Test bool
+Function Void TestBool()
+    Declare no as Boolean
+    Declare da as Boolean
+    no = false
+    da = true
+
+    PrintLine(no + "")
+    PrintLine(da + "")
+
+    PrintLine((da AND da) + "")
+    PrintLine((no AND no) + "")
+    PrintLine((da AND no) + "")
+
+    PrintLine((da OR da) + "")
+    PrintLine((no OR no) + "")
+    PrintLine((da OR no) + "")
+
+    PrintLine((NOT da AND da) + "")
+    PrintLine((NOT no AND da) + "")
+    PrintLine((NOT no AND NOT no) + "")
+    PrintLine((NOT da AND NOT da) + "")
+
+    PrintLine((NOT NOT NOT NOT NOT no) + "")
+    PrintLine((NOT NOT da OR no) + "")
+    PrintLine(((NOT NOT da) OR (da AND (NOT no))) + "")
+End Function
+
+Function Void TestIf()
+    Declare da as Boolean
+    Declare no as Boolean
+    da = true
+    no = false
+
+    If da Then
+        PrintLine("da")
+    End If
+
+    If no Then
+        PrintLine("no")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else
+        PrintLine("else")
+    End If
+
+    If da AND NOT no Then
+        PrintLine("da AND NOT no")
+    End If
+
+    If NOT da OR no Then
+        PrintLine("NOT da OR no")
+    Else If ((NOT no) OR da) OR (1 == 2) Then
+        PrintLine("Else If ((NOT no) OR da) OR (1 == 2)")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else If da Then
+        PrintLine("Else If da")
+    End If
+
+    If 1 == 1 Then
+        PrintLine("1 == 1")
+    End If
+
+    If (true OR da) OR no Then
+        PrintLine("(true OR da) OR no")
+    End If
+
+    If true OR 1 == 2 Then
+        PrintLine("true OR 1 == 2")
+    End If
+
+    If NOT no Then
+        PrintLine("NOT no")
+    End If
+
+    If no OR da Then
+        PrintLine("no OR da")
+    End If
+
+    If da AND da Then
+        PrintLine("da AND da")
+    End If
+
+    If 1 == 1 AND true == da Then
+        PrintLine("1 == 1 AND true == da")
+    End If
+
+    If true == NOT false Then
+        PrintLine("true == NOT false")
+    End If
+
+    If NOT (true == false) Then
+        PrintLine("NOT (true == false)")
+    End If
+
+    If NOT (no == da) Then
+        PrintLine("NOT (no == da)")
+    End If
+
+    If NOT (no == no) Then
+        PrintLine("(no == no)")
+    Else
+        PrintLine("else")
+    End If
+End Function

@@ -1,0 +1,57 @@
+Begin Declarations
+    Declare test as Integer // test I can declare something
+                            // what I can declare I can't
+                            // access
+End Declarations
+// ^
+// Test declerations
+// Declarations er påkrævet
+// TEST: Success
+
+// Test declerations
+// Declerations er påkrævet
+// TEST: Success
+Declare Simulations
+End Declare Simulations
+
+// Test Include
+// Include kan først komme efter simulations og declerations
+//  ellers gives fejl
+// TEST: Success
+#Include("stdlib.bsi")
+#Include("test_functions.bsi") // Include all
+                               // our test functions
+
+Begin Program
+    // Run test for reccursiv functions
+    PrintLine(Factorial(5) + "")
+    PrintLine("Factorial success")
+
+    // Run test for return Integer
+    PrintLine(ReturnInt() + "")
+    PrintLine("return Integer success")
+
+    // Run test for return Decimal
+    PrintLine(ReturnDecimal() + "")
+    PrintLine("return dedimal success")
+
+    // Run test for while
+    TestWhile()
+    PrintLine("while success")
+
+    // Test array and Foreach
+    TestArrayForeach()
+    PrintLine("array and foreach success")
+
+    // Test math
+    math(12)
+    PrintLine("math tested success")
+
+    // Test bool
+    TestBool()
+    PrintLine("bool tested success")
+
+    // Test if
+    TestIf()
+    PrintLine("If tested success")
+End Program
