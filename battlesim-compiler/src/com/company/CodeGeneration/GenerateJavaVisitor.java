@@ -700,11 +700,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     }
 
-    public void visit(VectorT v) {
-        // TODO
-
-    }
-
     public void visit(IntegerT i) {
         emit("int");
     }

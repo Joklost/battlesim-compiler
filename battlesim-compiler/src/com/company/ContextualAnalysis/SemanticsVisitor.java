@@ -622,10 +622,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         b.type = barrierType;
     }
 
-    public void visit(VectorT v) {
-        v.type = vectorType;
-    }
-
     public void visit(IntegerT i) {
         i.type = integerType;
     }
@@ -757,7 +753,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (target == decimalType && expression == integerType) return true;
         if (target == stringType && expression == nullType) return true;
         if ((target == array1DType || target == array2DType || target == listType) && expression == nullType) return true;
-        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == vectorType || target == terrainType) && expression == nullType) return true;
+        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == terrainType) && expression == nullType) return true;
 
         return false;    // skal laves
     }
