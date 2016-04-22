@@ -48,7 +48,7 @@ terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 terminal EOL, DOWNTO, TO, THEN, VOID, OF;
 terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
 terminal SIMULATIONS, SIMULATION, STEP, INTERRUPTS;
-terminal VECTOR, BARRIER;
+terminal BARRIER;
 
 terminal Boolean BOOLEAN_LITERAL;
 terminal Integer INTEGER_LITERAL;
@@ -169,6 +169,8 @@ Stmt          ::= Dcl:d                                                         
               |   FunctionCall:fc MultEOL                                                       {: RESULT = new FunctionCallStmt(fc, fcleft); :}
               |   error EOL
               |   JAVASTRING:j                                                                  {: RESULT = new JavaString(j, jleft); :}
+              |   ObjectId:oi PLUSPLUS                                                          {: RESULT = new PlusPlusStmt(oi, oileft); :}
+              |   ObjectId:oi MINUSMINUS                                                        {: RESULT = new MinusMinusStmt(oi, oileft); :}
               ;
 Dcl           ::= DECLARE DclIds:ds AS TypeId:ti MultEOL                                        {: RESULT = new Dcl(ds, ti, dsleft); :}
               ;
@@ -266,7 +268,6 @@ TypeName      ::= DECIMAL:d                                                     
               |   COORD:c                                                                       {: RESULT = new Coord(cleft); :}
               |   SOLDIER:s                                                                     {: RESULT = new Soldier(sleft); :}
               |   BARRIER:b                                                                     {: RESULT = new Barrier(bleft); :}
-              |   VECTOR:v                                                                      {: RESULT = new VectorT(vleft); :}
               |   INTEGER:i                                                                     {: RESULT = new IntegerT(ileft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
               ;

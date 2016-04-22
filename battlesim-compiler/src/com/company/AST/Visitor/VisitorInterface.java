@@ -31,6 +31,8 @@ public interface VisitorInterface {
     void visit(ReturnExpr r);
     void visit(Return r);
     void visit(FunctionCallStmt fcs);
+    void visit(PlusPlusStmt s);
+    void visit(MinusMinusStmt s);
     void visit(PlusExpr pe);
     void visit(MinusExpr me);
     void visit(MultExpr me);
@@ -79,7 +81,6 @@ public interface VisitorInterface {
     void visit(Coord c);
     void visit(Soldier s);
     void visit(Barrier b);
-    void visit(VectorT v);
     void visit(IntegerT i);
     void visit(VoidT v);
     void visit(Terrain t);

@@ -427,6 +427,18 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emit(";\n");
     }
 
+    public void visit(PlusPlusStmt s) {
+        emitIndentation();
+        s.id.accept(this);
+        emit("++;\n");
+    }
+
+    public void visit(MinusMinusStmt s) {
+        emitIndentation();
+        s.id.accept(this);
+        emit("--;\n");
+    }
+
     public void visit(PlusExpr pe) {
         emit("(");
         pe.leftExpr.accept(this);
@@ -696,11 +708,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Barrier b) {
-        // TODO
-
-    }
-
-    public void visit(VectorT v) {
         // TODO
 
     }

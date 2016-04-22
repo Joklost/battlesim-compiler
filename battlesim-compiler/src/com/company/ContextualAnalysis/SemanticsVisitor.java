@@ -336,6 +336,16 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         fcs.functionCall.accept(this);
     }
 
+    public void visit(PlusPlusStmt s) {
+        s.id.accept(this);
+        s.type = unaryResultType(plusplusOperator, s.id.type);
+    }
+
+    public void visit(MinusMinusStmt s) {
+        s.id.accept(this);
+        s.type = unaryResultType(minusminusOperator, s.id.type);
+    }
+
     public void visit(PlusExpr pe) {
         // binary
         pe.leftExpr.accept(this);
@@ -622,10 +632,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         b.type = barrierType;
     }
 
-    public void visit(VectorT v) {
-        v.type = vectorType;
-    }
-
     public void visit(IntegerT i) {
         i.type = integerType;
     }
@@ -757,7 +763,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (target == decimalType && expression == integerType) return true;
         if (target == stringType && expression == nullType) return true;
         if ((target == array1DType || target == array2DType || target == listType) && expression == nullType) return true;
-        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == vectorType || target == terrainType) && expression == nullType) return true;
+        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == terrainType) && expression == nullType) return true;
 
         return false;    // skal laves
     }
