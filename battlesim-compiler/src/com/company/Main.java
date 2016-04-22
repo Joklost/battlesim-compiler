@@ -9,6 +9,8 @@ import com.company.SyntaxAnalysis.Preprocessor;
 import com.company.SyntaxAnalysis.Scanner;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -16,16 +18,20 @@ public class Main {
     public static String currentFile;
 
     public static void main(String[] args) {
-        String[] paths = {
-                //"/home/joklost/git/P4-Code/example-code/battlesim/semtester.bs",
-                //"/home/joklost/git/P4-Code/example-code/battlesim/BubbleSort.bs",
-                //"C:\\Users\\Magnus\\Documents\\P4-Code\\example-code\\battlesim\\new\\simWithIncludes\\simWithInclude.bs",
-                //"/home/joklost/git/P4-Code/example-code/battlesim/new/new.bs",
-                //"/home/joklost/git/P4-Code/battlesim-compiler/battlesim/tester.bs",
-                //"/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs",
-                "C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\javatest.bs",
-                //"/home/pgug/Code/P4-Code/battlesim-compiler/battlesim/javatest.bs",
-        };
+
+        List<String> paths = new ArrayList<>();
+
+        if (args.length > 0) {
+            for (String s : args) {
+                File f = new File(System.getProperty("user.dir") + File.separator + args[0]);
+                if (f.isFile()) {
+                    paths.add(f.getAbsolutePath());
+                }
+            }
+        } else {
+            // stier skal ind her, hvis det skal køres fra IntelliJ
+            paths.add("/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs");
+        }
 
         boolean printCode = true;
         boolean generatedCode = true;
@@ -35,7 +41,6 @@ public class Main {
         Parser parser;
         Start startNode;
 
-        PrettyPrintVisitor prettyPrint = new PrettyPrintVisitor();
         SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
         GenerateJavaVisitor generateJavaVisitor = new GenerateJavaVisitor();
 
