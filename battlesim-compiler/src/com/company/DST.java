@@ -68,7 +68,7 @@ class Map{
 }
 
 class Soldier {
-    private double DefaultVelocity = 3; //Change this because this is a random number
+    public final double DefaultVelocity = 3; //Change this because this is a random number
     private int Size = 4;            //Change this because this is a random number
 
     public double Velocity = 0;
@@ -107,6 +107,15 @@ class Group{
         SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
     }
 
+    public void Move(Coord target){
+        for(Soldier s : Soldiers){
+            if(s.Velocity == 0){
+                s.Velocity = s.DefaultVelocity;
+            }
+        }
+        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
+    }
+
     public void SetVelocity(double velocity){
         for(Soldier s : Soldiers)
             s.Velocity = velocity;
@@ -140,6 +149,26 @@ class Platoon{
         for(Soldier s: soldiers)
             nGroup.AddSoldiers(s);
         AddGroups(nGroup);
+    }
+
+    public void Move(Coord target, double velocity){
+        for(Group g : Groups){
+            g.SetVelocity(velocity);
+        }
+        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
+    }
+
+    public void SetDirection(Vector direction){
+        for(Group g : Groups){
+            g.SetDirection(direction);
+        }
+    }
+
+    public List<Coord> GetCoordList(){
+        List<Coord> res = new ArrayList<>();
+        for(Group g : Groups)
+            res.addAll(g.GetCoordList());
+        return res;
     }
 }
 
