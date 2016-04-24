@@ -158,6 +158,11 @@ class Platoon{
         SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
     }
 
+    public void SetVelocity(double velocity){
+        for(Group g : Groups)
+            g.SetVelocity(velocity);
+    }
+
     public void SetDirection(Vector direction){
         for(Group g : Groups){
             g.SetDirection(direction);
@@ -194,5 +199,23 @@ class Force{
         for(Soldier s : soldiers)
             nGroup.AddSoldiers(s);
         AddGroups(nGroup);
+    }
+
+    public void Move(Coord target, double velocity){
+        for(Platoon p : Platoons)
+            p.SetVelocity(velocity);
+        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(GetCoordList()), target));
+    }
+
+    public void SetDirection(Vector direction){
+        for(Platoon p : Platoons)
+            p.SetDirection(direction);
+    }
+
+    public List<Coord> GetCoordList(){
+        List<Coord> res = new ArrayList<>();
+        for(Platoon p : Platoons)
+            res.addAll(p.GetCoordList());
+        return res;
     }
 }
