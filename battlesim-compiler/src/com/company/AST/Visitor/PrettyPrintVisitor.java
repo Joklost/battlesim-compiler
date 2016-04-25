@@ -108,20 +108,81 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         println("End Simulation");
     }
 
-    /*public void visit(Interrupts is){
+    public void visit(Interrupts is){
+        println("Interrupts");
 
+        indentLevel++;
+        for (int i = 0; i < is.stmtList.size(); i++){
+            is.stmtList.elementAt(i).accept(this);
+        }
+        indentLevel--;
     }
 
-    void visit(FunctionDcl fd){
+    public void visit(FunctionDcl fd){
+        printIndent();
+        print("Function ");
+        fd.returnType.accept(this);
+        print(" ");
+        fd.functionName.accept(this);
+        print("(");
+
+        for (int i = 0; i < fd.paramList.size(); i++){
+            fd.paramList.elementAt(i).accept(this);
+        }
+
+        print(")\n");
+        indentLevel++;
+
+        for (int i = 0; i < fd.stmtList.size(); i++){
+            fd.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+        println("End Function");
     }
-    void visit(Param p){
+
+    public void visit(Param p){
+        p.identifier.accept(this);
+        print(" as ");
+        p.typeIdentifier.accept(this);
     }
-    void visit(Program p){
+
+    public void visit(Program p){
+        println("Begin Program");
+        indentLevel++;
+
+        for (int i = 0; i < p.stmtList.size(); i++){
+            p.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+        println("End Program");
     }
-    void visit(Dcl ds){
+
+    public void visit(Dcl ds){
+        printIndent();
+        println("Declare ");
+
+        for (int i = 0; i < ds.dclIdList.size(); i++){
+            ds.dclIdList.elementAt(i).accept(this);
+            if (i < ds.dclIdList.size() - 1)
+                print(", ");
+
+        }
+
+        print(" as ");
+        ds.typeName.accept(this);
+        print("\n");
     }
-    void visit(Assignment as){
+
+    public void visit(Assignment as){
+        printIndent();
+        as.targetName.accept(this);
+        as.assignOp.accept(this);
+        as.expression.accept(this);
     }
+
+    /*
     void visit(WhileStmt ws){
     }
     void visit(ForeachStmt fes){
