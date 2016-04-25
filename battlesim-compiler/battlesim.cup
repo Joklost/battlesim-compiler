@@ -123,7 +123,7 @@ start with Start;
 
 Start         ::= DclBlock:db SimBlock:s FunctionDcls:fds1 Program:p                            {: RESULT = new Start(db, s, fds1, p, dbleft); :}
               ;
-DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
+DclBlock      ::= MultEOL BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                  {: RESULT = new DclBlock(ss, ssleft); :}
               ;
 SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS                     {: RESULT = new SimBlock(s, sleft); :}
               ;
