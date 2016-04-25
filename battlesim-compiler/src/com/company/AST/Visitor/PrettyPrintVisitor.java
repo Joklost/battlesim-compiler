@@ -182,13 +182,45 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         as.expression.accept(this);
     }
 
+
+    public void visit(WhileStmt ws){
+        printIndent();
+        print("While ");
+        ws.condition.accept(this);
+        print(" Do\n");
+
+        indentLevel++;
+        for (int i = 0; i < ws.stmtList.size(); i++){
+            ws.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+        println("End While");
+    }
+
+    public void visit(ForeachStmt fes){
+        printIndent();
+        print("For ");
+        fes.typeName.accept(this);
+        print(" ");
+        fes.localName.accept(this);
+        print(" in ");
+        fes.objectName.accept(this);
+        print(" Do\n");
+
+        indentLevel++;
+        for (int i = 0; i < fes.stmtList.size(); i++){
+            fes.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+        println("End For");
+    }
+
+    public void visit(ForStmt fs){/*
+
+    }
     /*
-    void visit(WhileStmt ws){
-    }
-    void visit(ForeachStmt fes){
-    }
-    void visit(ForStmt fs){
-    }
     void visit(IfStmt i){
     }
     void visit(ElseIfStmt e){
