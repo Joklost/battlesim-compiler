@@ -217,8 +217,22 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         println("End For");
     }
 
-    public void visit(ForStmt fs){/*
-    */
+    public void visit(ForStmt fs){
+        printIndent();
+        fs.initialExpr.accept(this);
+        print("For ");
+        fs.forIterator.accept(this);
+        print(" To ");
+        fs.toExpr.accept(this);
+        print(" Do\n");
+
+        indentLevel++;
+        for (int i = 0; i < fs.stmtList.size(); i++){
+            fs.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+        println("End For"); /*TODO*/
     }
 
     public void visit(IfStmt i){
@@ -278,21 +292,36 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(EndIfStmt e){
-        /*øhhhhh*/
+        //øhhhhh
+    }
+
+    public void visit(SwitchStmt ss){
+
     }
     /*
-    void visit(SwitchStmt ss){
-    }
     void visit(SwitchCase sc){
     }
     void visit(SwitchDef sd){
     }
-    void visit(ReturnExpr r){
+    */
+
+    public void visit(ReturnExpr r){
+        printIndent();
+        print("Return ");
+        r.returnVal.accept(this);
+        print("\n");
     }
+    /*
     void visit(Return r){
+    }*/
+
+    public void visit(FunctionCallStmt fcs){
+        printIndent();
+        fcs.functionCall.accept(this);
+        //TODO
     }
-    void visit(FunctionCallStmt fcs){
-    }
+
+    /*
     void visit(PlusPlusStmt s){
     }
     void visit(MinusMinusStmt s){
