@@ -218,17 +218,69 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ForStmt fs){/*
+    */
+    }
 
+    public void visit(IfStmt i){
+        printIndent();
+        print("If ");
+        i.condition.accept(this);
+        print(" Then\n");
+
+        indentLevel++;
+        for (int k = 0; k < i.stmtList.size(); k++){
+            i.stmtList.elementAt(k).accept(this);
+        }
+        indentLevel--;
+
+        if(i.elseStmt != null) {
+            println("Else");
+            indentLevel++;
+            i.elseStmt.accept(this);
+            indentLevel--;
+        }
+        println("End If");
+    }
+
+    public void visit(ElseIfStmt e){
+        printIndent();
+        print("Else If ");
+        e.condition.accept(this);
+        print(" Then\n");
+
+        indentLevel++;
+        for (int i = 0; i < e.stmtList.size(); i++){
+            e.stmtList.elementAt(i).accept(this);
+        }
+        indentLevel--;
+
+        if (e.elifStmt != null){
+            println("Else");
+            indentLevel++;
+            e.elifStmt.accept(this);
+            indentLevel--;
+        }
+
+        println("End If");
+    }
+
+    public void visit(ElseStmt e){
+        printIndent();
+        println("Else");
+
+        indentLevel++;
+        for (int i = 0; i < e.stmtList.size(); i++){
+            e.stmtList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+        println("Else If");
+    }
+
+    public void visit(EndIfStmt e){
+        /*øhhhhh*/
     }
     /*
-    void visit(IfStmt i){
-    }
-    void visit(ElseIfStmt e){
-    }
-    void visit(ElseStmt e){
-    }
-    void visit(EndIfStmt e){
-    }
     void visit(SwitchStmt ss){
     }
     void visit(SwitchCase sc){
