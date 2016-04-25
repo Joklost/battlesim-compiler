@@ -30,252 +30,240 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void defaultVisit(Object o) {
         println("Error with object: " + o.getClass());
     }
-/*
-    void visit(Start s)
-    {
+
+
+    public void visit(Start s){
+        System.out.println("Pretty Printing:");
+        System.out.println("----------------\n");
+
+        s.dclBlock.accept(this);
+        println("");
+
+
+        s.simBlock.accept(this);
+        println("");
+
+        for (int i = 0; i < s.functionDclList1.size(); i++) {
+            s.functionDclList1.elementAt(i).accept(this);
+            println("");
+        }
+
+        s.program.accept(this);
+        println("");
+    }
+
+    public void visit(DclBlock db){
+        println("Begin Declarations");
+        indentLevel++;
+
+        for (int i = 0; i < db.stmtLists.size(); i++){
+            db.stmtLists.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+        println("End Declarations");
+    }
+
+    public void visit(SimBlock s){
+        println("Begin Simulations");
+        indentLevel++;
+
+        for (int i = 0; i < s.simulationList.size(); i++){
+            s.simulationList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+        println("End Simulations");
     }
-    void visit(DclBlock db)
-    {
+
+    public void visit(SimStep s){
+        printIndent();
+        print("Step " + s.stepNumber.intValue() + "\n");
+
+        indentLevel++;
+
+        for (int i = 0; i < s.stmtList.size(); i++){
+            s.stmtList.elementAt(i).accept(this);
+        }
+        indentLevel--;
     }
-    void visit(SimBlock s)
-    {
+
+    public void visit(Simulation s){
+        printIndent();
+        print("Simulation ");
+        s.identifier.accept(this);
+        print(" ");
+        s.objectIdentifier.accept(this);
+        print("\n");
+
+        indentLevel++;
+        for (int i = 0; i < s.simStepList.size(); i++){
+            s.simStepList.elementAt(i).accept(this);
+        }
+
+        s.interrupts.accept(this);
+
+        indentLevel--;
+
+        println("End Simulation");
     }
-    void visit(SimStep s)
-    {
+
+    /*public void visit(Interrupts is){
+
     }
-    void visit(Simulation s)
-    {
+
+    void visit(FunctionDcl fd){
     }
-    void visit(Interrupts is)
-    {
+    void visit(Param p){
     }
-    void visit(FunctionDcl fd)
-    {
+    void visit(Program p){
     }
-    void visit(Param p)
-    {
+    void visit(Dcl ds){
     }
-    void visit(Program p)
-    {
+    void visit(Assignment as){
     }
-    void visit(Dcl ds)
-    {
+    void visit(WhileStmt ws){
     }
-    void visit(Assignment as)
-    {
+    void visit(ForeachStmt fes){
     }
-    void visit(WhileStmt ws)
-    {
+    void visit(ForStmt fs){
     }
-    void visit(ForeachStmt fes)
-    {
+    void visit(IfStmt i){
     }
-    void visit(ForStmt fs)
-    {
+    void visit(ElseIfStmt e){
     }
-    void visit(IfStmt i)
-    {
+    void visit(ElseStmt e){
     }
-    void visit(ElseIfStmt e)
-    {
+    void visit(EndIfStmt e){
     }
-    void visit(ElseStmt e)
-    {
+    void visit(SwitchStmt ss){
     }
-    void visit(EndIfStmt e)
-    {
+    void visit(SwitchCase sc){
     }
-    void visit(SwitchStmt ss)
-    {
+    void visit(SwitchDef sd){
     }
-    void visit(SwitchCase sc)
-    {
+    void visit(ReturnExpr r){
     }
-    void visit(SwitchDef sd)
-    {
+    void visit(Return r){
     }
-    void visit(ReturnExpr r)
-    {
+    void visit(FunctionCallStmt fcs){
     }
-    void visit(Return r)
-    {
+    void visit(PlusPlusStmt s){
     }
-    void visit(FunctionCallStmt fcs)
-    {
+    void visit(MinusMinusStmt s){
     }
-    void visit(PlusPlusStmt s)
-    {
+    void visit(PlusExpr pe){
     }
-    void visit(MinusMinusStmt s)
-    {
+    void visit(MinusExpr me){
     }
-    void visit(PlusExpr pe)
-    {
+    void visit(MultExpr me){
     }
-    void visit(MinusExpr me)
-    {
+    void visit(DivExpr de){
     }
-    void visit(MultExpr me)
-    {
+    void visit(ModExpr me){
     }
-    void visit(DivExpr de)
-    {
+    void visit(AndExpr ae){
     }
-    void visit(ModExpr me)
-    {
+    void visit(OrExpr oe){
     }
-    void visit(AndExpr ae)
-    {
+    void visit(LogicEqualsExpr le){
     }
-    void visit(OrExpr oe)
-    {
+    void visit(LessThanExpr le){
     }
-    void visit(LogicEqualsExpr le)
-    {
+    void visit(GreaterThanExpr ge){
     }
-    void visit(LessThanExpr le)
-    {
+    void visit(LessThanEqualsExpr le){
     }
-    void visit(GreaterThanExpr ge)
-    {
+    void visit(GreaterThanEqualsExpr ge){
     }
-    void visit(LessThanEqualsExpr le)
-    {
+    void visit(NotExpr ne){
     }
-    void visit(GreaterThanEqualsExpr ge)
-    {
+    void visit(UnMinusExpr ue){
     }
-    void visit(NotExpr ne)
-    {
+    void visit(PlusPlusExpr pe){
     }
-    void visit(UnMinusExpr ue)
-    {
+    void visit(MinusMinusExpr me){
     }
-    void visit(PlusPlusExpr pe)
-    {
+    void visit(FunctionCallExpr fe){
     }
-    void visit(MinusMinusExpr me)
-    {
+    void visit(ObjectIdExpr ne){
     }
-    void visit(FunctionCallExpr fe)
-    {
+    void visit(StdLiteralExpr se){
     }
-    void visit(ObjectIdExpr ne)
-    {
+    void visit(CoordExpr ce){
     }
-    void visit(StdLiteralExpr se)
-    {
+    void visit(EqualsOp eo){
     }
-    void visit(CoordExpr ce)
-    {
+    void visit(PlusEqualsOp po){
     }
-    void visit(EqualsOp eo)
-    {
+    void visit(MinusEqualsOp mo){
     }
-    void visit(PlusEqualsOp po)
-    {
+    void visit(ModEqualsOp mo){
     }
-    void visit(MinusEqualsOp mo)
-    {
+    void visit(MultEqualsOp mo){
     }
-    void visit(ModEqualsOp mo)
-    {
+    void visit(DivEqualsOp deo){
     }
-    void visit(MultEqualsOp mo)
-    {
+    void visit(FunctionCall f){
     }
-    void visit(DivEqualsOp deo)
-    {
+    void visit(ToIterator ti){
     }
-    void visit(FunctionCall f)
-    {
+    void visit(DownToIterator di){
     }
-    void visit(ToIterator ti)
-    {
+    void visit(VariableObjectId vi){
     }
-    void visit(DownToIterator di)
-    {
+    void visit(VariableStdLiteral vs){
     }
-    void visit(VariableObjectId vi)
-    {
+    void visit(DecimalLiteral dl){
     }
-    void visit(VariableStdLiteral vs)
-    {
+    void visit(StringLiteral sl){
     }
-    void visit(DecimalLiteral dl)
-    {
+    void visit(BooleanLiteral bl){
     }
-    void visit(StringLiteral sl)
-    {
+    void visit(IntegerLiteral il){
     }
-    void visit(BooleanLiteral bl)
-    {
+    void visit(NullLiteral nl){
     }
-    void visit(IntegerLiteral il)
-    {
+    void visit(Array1D a){
     }
-    void visit(NullLiteral nl)
-    {
+    void visit(Array2D a){
     }
-    void visit(Array1D a)
-    {
+    void visit(ListOf l){
     }
-    void visit(Array2D a)
-    {
+    void visit(Decimal d){
     }
-    void visit(ListOf l)
-    {
+    void visit(StringT s){
     }
-    void visit(Decimal d)
-    {
+    void visit(BooleanT b){
     }
-    void visit(StringT s)
-    {
+    void visit(Group g){
     }
-    void visit(BooleanT b)
-    {
+    void visit(Platoon p){
     }
-    void visit(Group g)
-    {
+    void visit(Force f){
     }
-    void visit(Platoon p)
-    {
+    void visit(Coord c){
     }
-    void visit(Force f)
-    {
+    void visit(Soldier s){
     }
-    void visit(Coord c)
-    {
+    void visit(Barrier b){
     }
-    void visit(Soldier s)
-    {
+    void visit(IntegerT i){
     }
-    void visit(Barrier b)
-    {
+    void visit(VoidT v){
     }
-    void visit(IntegerT i)
-    {
+    void visit(Terrain t){
     }
-    void visit(VoidT v)
-    {
+    void visit(ObjectReferencing o){
     }
-    void visit(Terrain t)
-    {
+    void visit(Array1DReferencing a){
     }
-    void visit(ObjectReferencing o)
-    {
+    void visit(Array2DReferencing a){
     }
-    void visit(Array1DReferencing a)
-    {
+    void visit(Identifier id){
     }
-    void visit(Array2DReferencing a)
-    {
+    void visit(JavaString j){
     }
-    void visit(Identifier id)
-    {
-    }
-    void visit(JavaString j)
-    {
-    }
+
     */
 }
