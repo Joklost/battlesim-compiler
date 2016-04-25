@@ -9,6 +9,7 @@ import com.company.SyntaxAnalysis.Scanner;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +80,7 @@ public class Main {
                     if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
                         Map<String, List<String>> map = generateJavaVisitor.getCode();
+                        map.putAll(DST.getDST());
                         if (printCode) {
                             for (String s : map.keySet()) {
                                 List<String> ls = map.get(s);
@@ -89,7 +91,8 @@ public class Main {
                         }
 
                         if (generatedCode) {
-                            CompileJava cj = new CompileJava(outputName, generateJavaVisitor.getCode());
+
+                            CompileJava cj = new CompileJava(outputName, map);
                             cj.compile();
                         }
                     }
