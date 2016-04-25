@@ -84,6 +84,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitIndentation("import java.io.*;\n");
         emitIndentation("import java.util.*;\n");
         emitIndentation("import java.util.Scanner;\n");
+        emitIndentation("import static com.BattleSim.Soldier.*;\n");
         emitComment("BattleSim automatically generated code file.\n");
         emitIndentation("public class Declarations {\n");
         indentLevel++;
@@ -687,32 +688,32 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Group g) {
-        // TODO
+        emit("Group");
 
     }
 
     public void visit(Platoon p) {
-        // TODO
+        emit("Platoon");
 
     }
 
     public void visit(Force f) {
-        // TODO
+        emit("Force");
 
     }
 
     public void visit(Coord c) {
-        // TODO
+        emit("Coord");
 
     }
 
     public void visit(Soldier s) {
-        // TODO
+        emit("Soldier");
 
     }
 
     public void visit(Barrier b) {
-        // TODO
+        emit("Barrier");
 
     }
 
@@ -731,7 +732,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Terrain t) {
-        // TODO
+        emit("Map");
     }
 
     public void visit(ObjectReferencing o) {
