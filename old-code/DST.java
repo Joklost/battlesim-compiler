@@ -1,6 +1,5 @@
-package com.company;
-
-import com.sun.deploy.services.PlatformType;
+//package com.company;
+package com.BattleSim;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +19,14 @@ class DSTFunctions{
     }
 
     public static Coord CenterOfMass(List<Coord> coords){
-        Coord res = new Coord();        
+        Coord res = new Coord();
         for(Coord coord : coords){
             res.X += coord.X;
             res.Y += coord.Y;
         }
         res.X /= coords.size();
         res.Y /= coords.size();
-        
+
         return res;
     }
 }
@@ -55,10 +54,10 @@ class Vector{
 }
 
 class Barrier{
-    public List<Coord> Verticies;
+    public List<Coord> Vertices;
 
-    public void AddVerticy(Coord vertex){
-        this.Verticies.add(vertex);
+    public void AddVertex(Coord vertex){
+        this.Vertices.add(vertex);
     }
 }
 
