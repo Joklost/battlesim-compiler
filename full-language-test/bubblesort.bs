@@ -1,0 +1,46 @@
+Begin Declarations
+  
+End Declarations
+
+Declare Simulations
+
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Void BubbleSort(a as Decimal[7])
+  Declare n as Integer
+  n = 7
+  Declare i, c, t as Integer
+  i = 0
+  c = 0
+  For i To (n - 1) Do
+    For c To (n - i - 1) Do
+      If a[c] > a[c + 1] Then
+        t        = a[c]
+        a[c]     = a[c + 1]
+        a[c + 1] = t
+      End If
+    End For
+  End For
+End Function
+
+Begin Program
+
+  Declare a as Decimal[7]
+  a[0] = 12
+  a[1] = 24
+  a[2] = 13
+  a[3] = 9
+  a[4] = 16
+  a[5] = -4
+  a[6] = 17
+  
+  /*Foreach Integer num in a Do
+    Print(num)
+  End Foreach*/
+  BubbleSort(a)
+  /*Foreach Integer num in a Do
+    Print(num)
+  End Foreach*/
+End Program
