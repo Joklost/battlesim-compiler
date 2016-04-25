@@ -321,37 +321,71 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         //TODO
     }
 
-    /*
-    void visit(PlusPlusStmt s){
+
+    public void visit(PlusPlusStmt s){
+        printIndent();
+        s.id.accept(this);
+        print("++\n");
     }
-    void visit(MinusMinusStmt s){
+
+    public void visit(MinusMinusStmt s){
+        printIndent();
+        s.id.accept(this);
+        print("--\n ");
     }
-    void visit(PlusExpr pe){
+
+
+    public void visit(PlusExpr pe){
+        leftRightStmt(pe.leftExpr, pe.rightExpr, "=" );
     }
-    void visit(MinusExpr me){
+
+    public void visit(MinusExpr me){
+        leftRightStmt(me.leftExpr, me.rightExpr, "=");
     }
-    void visit(MultExpr me){
+
+    public void visit(MultExpr me){
+        leftRightStmt(me.leftExpr, me.rightExpr, "=");
     }
-    void visit(DivExpr de){
+
+    public void visit(DivExpr de){
+        leftRightStmt(de.leftExpr, de.rightExpr, "=");
     }
-    void visit(ModExpr me){
+
+    public void visit(ModExpr me){
+        leftRightStmt(me.leftExpr, me.rightExpr, "=");
     }
-    void visit(AndExpr ae){
+
+    public void visit(AndExpr ae){
+        leftRightStmt(ae.leftExpr, ae.rightExpr, "&&");
     }
-    void visit(OrExpr oe){
+
+    public void visit(OrExpr oe){
+        leftRightStmt(oe.leftExpr, oe.rightExpr, "||");
     }
-    void visit(LogicEqualsExpr le){
+
+    public void visit(LogicEqualsExpr le){
+        leftRightStmt(le.leftExpr, le.rightExpr, "==");
     }
-    void visit(LessThanExpr le){
+
+    public void visit(LessThanExpr le){
+        leftRightStmt(le.leftExpr, le.rightExpr, "<");
     }
-    void visit(GreaterThanExpr ge){
+
+    public void visit(GreaterThanExpr ge){
+        leftRightStmt(ge.leftExpr, ge.rightExpr, ">");
     }
-    void visit(LessThanEqualsExpr le){
+
+    public void visit(LessThanEqualsExpr le){
+        leftRightStmt(le.leftExpr, le.rightExpr, "<=");
     }
-    void visit(GreaterThanEqualsExpr ge){
+
+    public void visit(GreaterThanEqualsExpr ge){
+        leftRightStmt(ge.leftExpr, ge.rightExpr, ">=");
     }
+
     void visit(NotExpr ne){
     }
+
     void visit(UnMinusExpr ue){
     }
     void visit(PlusPlusExpr pe){
@@ -439,5 +473,12 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     void visit(JavaString j){
     }
 
-    */
+    public void leftRightStmt(Expression left, Expression right, String symbol){
+        printIndent();
+        left.accept(this);
+        print(" " + symbol +" ");
+        right.accept(this);
+        print("\n");
+    }
+
 }
