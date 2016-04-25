@@ -26,28 +26,28 @@ Function Void TestWhile()
     i = 0
     While i < 10 Do
         PrintLine((i + 1) + "")
-        i = i++
-        i++
+        i = i + 1
     End While
 
     i = 10
     While i > 0 Do
-        PrintLine((i + 1) + "")
-        i--
+        PrintLine((i) + "")
+        i = i - 1
     End While
 End Function
 
 // Test array
 // Test Foreach
 // TEST: Success
-/*Function Void TestArrayForeach()
+Function Void TestArrayForeach()
+    Declare array as String[3]
     array[0] = "Hej"
     array[1] = "Hej igen"
     array[2] = "Hej tredje gang"
     Foreach String say in array Do
         PrintLine(say)
     End Foreach
-End Function*/
+End Function
 
 // Test Input
 // Test ConvertToInteger
@@ -266,5 +266,16 @@ Function Void TestIf()
         PrintLine("(no == no)")
     Else
         PrintLine("else")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else If no Then
+        PrintLine("Still no")
+    Else If no Then
+        PrintLine("Not at all")
+    Else
+        PrintLine("True")
+        PrintLine("Multiline statments in if testes")
     End If
 End Function

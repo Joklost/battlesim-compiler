@@ -6,7 +6,6 @@ Begin Declarations
     Declare s as String
     Declare a as Integer
     Declare list as List of String
-    Declare array as String[3]
     Declare i as Integer
 End Declarations
 // ^
@@ -29,6 +28,10 @@ End Declare Simulations
                                // our test functions
 
 Begin Program
+
+    /*
+        Testing block comment
+    */
     // Run test for reccursiv functions
     PrintLine(Factorial(5) + "")
     PrintLine("Factorial success")
@@ -46,8 +49,8 @@ Begin Program
     PrintLine("while success")
 
     // Test array and Foreach
-    //TestArrayForeach()
-    //PrintLine("array and foreach success")
+    TestArrayForeach()
+    PrintLine("array and foreach success")
 
     // Test math
     math(12)
