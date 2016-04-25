@@ -19,7 +19,7 @@ public class CompileJava {
     private List<String> fileNames;
     private Map<String, List<String>> code;
 
-    public boolean deleteOutput = false;
+    public boolean deleteOutput = true;
 
     public CompileJava(String outputName, Map<String, List<String>> code) {
         this.outputName = outputName;
@@ -84,8 +84,10 @@ public class CompileJava {
             createManifest();
             runProcess("jar cfm " + outputName + ".jar Manifest.txt " + dotClassFiles);
             //runProcess("java -jar " + outputName + ".jar");
-            if (!deleteFiles()) {
-                System.err.println("Unable to delete generated files.");
+            if(deleteOutput){
+                if (!deleteFiles()) {
+                    System.err.println("Unable to delete generated files.");
+                }
             }
         } catch (Exception e) {
             if (!deleteFiles()) {
