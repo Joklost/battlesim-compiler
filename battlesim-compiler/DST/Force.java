@@ -1,4 +1,4 @@
-package com.company.DST;
+package com.BattleSim;
 
 import java.util.ArrayList;
 import java.util.List;

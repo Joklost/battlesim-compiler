@@ -3,6 +3,13 @@ Begin Declarations
     dclI = 15
     Declare dclA as String
     dclA = "tester dcl"
+    Declare s1 as Soldier
+    Declare g as Group
+    Declare p as Platoon
+    Declare f as Force
+    Declare c as Coord
+    Declare b as Barrier
+    Declare t as Terrain
 End Declarations
 
 

@@ -1,4 +1,4 @@
-package com.company.DST;
+package com.BattleSim;
 
 /**
  * Created by Magnus on 25-04-2016.
