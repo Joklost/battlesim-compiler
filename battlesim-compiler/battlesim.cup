@@ -48,7 +48,7 @@ terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 terminal EOL, DOWNTO, TO, THEN, VOID, OF;
 terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
 terminal SIMULATIONS, SIMULATION, STEP, INTERRUPTS;
-terminal VECTOR, BARRIER;
+terminal VECTOR, BARRIER, TYPE;
 
 terminal Boolean BOOLEAN_LITERAL;
 terminal Integer INTEGER_LITERAL;
@@ -101,8 +101,11 @@ nonterminal TypeIdentifier    TypeId;
 nonterminal TypeName          TypeName;
 nonterminal IdentifierReferencing ObjectId;
 nonterminal IdentifierReferencing ArrayRef;
-//nonterminal NestedIdentifier  NestedId;
 nonterminal Identifier        Identifier;
+
+nonterminal TypeDeclarationList TypeDcls;
+nonterminal TypeDeclaration   TypeDcl;
+nonterminal DeclarationList   Dcls;
 
 nonterminal MultEOL;
 
@@ -121,7 +124,7 @@ precedence left ELSE;
 /* The grammar */
 start with Start;
 
-Start         ::= DclBlock:db SimBlock:s FunctionDcls:fds1 Program:p                            {: RESULT = new Start(db, s, fds1, p, dbleft); :}
+Start         ::= DclBlock:db SimBlock:s TypeDcls:tl FunctionDcls:fds1 Program:p                {: RESULT = new Start(db, s, tl, fds1, p, dbleft); :}
               ;
 DclBlock      ::= MultEOL BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                  {: RESULT = new DclBlock(ss, ssleft); :}
               |   BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
@@ -141,10 +144,19 @@ SimStep       ::= STEP INTEGER_LITERAL:i Stmts:ss                               
 Interrupts    ::= INTERRUPTS Stmts:ss                                                           {: RESULT = new Interrupts(ss, ssleft); :}
               ;
 /**/
-FunctionDcls  ::= MultEOL                                                                       {: RESULT = new FunctionDclList(0); :}
-              |   FunctionDcls:fds FunctionDcl:fd MultEOL                                       {: RESULT = fds; fds.addElement(fd); :}
+TypeDcls      ::= TypeDcls:tl TypeDcl:t                                                         {: RESULT = tl; tl.addElement(t); :}
+              |   MultEOL                                                                       {: RESULT = new TypeDeclarationList(0); :}
               ;
-FunctionDcl   ::= FUNCTION TypeId:ti Identifier:id Params:p Stmts:ss END FUNCTION               {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
+TypeDcl       ::= TYPE Identifier:i MultEOL Dcls:dl FunctionDcls:fdl END TYPE MultEOL           {: RESULT = new TypeDeclaration(i, dl, fdl, ileft); :}
+              ;
+Dcls          ::= Dcls:dl Dcl:d                                                                 {: RESULT = dl; dl.addElement(d); :}
+              |   Dcl:d                                                                         {: RESULT = new DeclarationList(0); RESULT.addElement(d); :}
+              ;
+/**/
+FunctionDcls  ::= FunctionDcl:fd                                                                {: RESULT = new FunctionDclList(0); RESULT.addElement(fd); :}
+              |   FunctionDcls:fds FunctionDcl:fd                                               {: RESULT = fds; fds.addElement(fd); :}
+              ;
+FunctionDcl   ::= FUNCTION TypeId:ti Identifier:id Params:p Stmts:ss END FUNCTION MultEOL       {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
               ;
 Param         ::= Identifier:id AS TypeId:ti                                                    {: RESULT = new Param(id, ti, idleft); :}
               ;

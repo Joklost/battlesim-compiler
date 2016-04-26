@@ -1,4 +1,4 @@
-*package com.company.SyntaxAnalysis;
+package com.company.SyntaxAnalysis;
 import java_cup.runtime.*;
 
 
@@ -65,7 +65,7 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "Begin"                 { return symbol(Sym.BEGIN); }
     "Program"               { return symbol(Sym.PROGRAM); }
     "For"                   { return symbol(Sym.FOR); }
-    //"Type"                  { return symbol(Sym.TYPE); }
+    "Type"                  { return symbol(Sym.TYPE); }
     "Integer"               { return symbol(Sym.INTEGER); }
     "as"                    { return symbol(Sym.AS); }
     "Decimal"               { return symbol(Sym.DECIMAL); }
