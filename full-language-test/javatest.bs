@@ -70,4 +70,12 @@ Begin Program
     TestFor()
     PrintLine("For loops tested success")
 
+    // Ej muligt
+    //PrintLine("Test \"escape\"...")
+    // Test \n. \n virker kun med workaround #15
+    Print("New line \\n")
+
+    Print("Test print")
+    PrintLine("")
+
 End Program
