@@ -9,6 +9,10 @@ import java.util.List;
 public class Platoon {
     public List<Group> Groups;
 
+    public Platoon(){
+
+    }
+
     public void AddGroups(Group ... groups){
         for(Group g : groups)
             this.Groups.add(g);

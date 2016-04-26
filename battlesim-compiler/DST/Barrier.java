@@ -8,6 +8,10 @@ import java.util.List;
 public class Barrier {
     public List<Coord> Vertices;
 
+    public Barrier(){
+
+    }
+
     public void AddVertex(Coord vertex){
         this.Vertices.add(vertex);
     }

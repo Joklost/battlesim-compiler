@@ -12,6 +12,9 @@ public class Soldier {
     public Coord SCoord;
     public int Magazines = 4;
 
+    public Soldier(){
+    }
+
     public void Move(Coord target){
         if(Velocity == 0){
             Velocity = DefaultVelocity;

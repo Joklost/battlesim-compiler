@@ -9,6 +9,10 @@ import java.util.List;
 public class Force {
     public List<Platoon> Platoons;
 
+    public Force(){
+
+    }
+
     public void AddPlatoons(Platoon ... platoons){
         for(Platoon p : platoons)
             this.Platoons.add(p);

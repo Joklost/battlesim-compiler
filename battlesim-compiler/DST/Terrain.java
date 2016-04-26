@@ -3,7 +3,11 @@ package com.BattleSim;
 /**
  * Created by Magnus on 25-04-2016.
  */
-public class Map {
+public class Terrain {
     public int Width = 0;
     public int Height = 0;
+
+    public Terrain(){
+
+    }
 }

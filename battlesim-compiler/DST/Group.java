@@ -9,6 +9,10 @@ import java.util.List;
 public class Group {
     public List<Soldier> Soldiers;
 
+    public Group(){
+
+    }
+
     public void AddSoldiers(Soldier ... soldiers){
         for(Soldier s : soldiers)
             this.Soldiers.add(s);
