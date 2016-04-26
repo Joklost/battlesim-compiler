@@ -86,18 +86,20 @@ Identifier          = [a-zA-Z_] [a-zA-Z0-9_]*
     "To"                    { return symbol(Sym.TO); }
     "Then"                  { return symbol(Sym.THEN); }
     "Void"                  { return symbol(Sym.VOID); }
+/*
     "Terrain"               { return symbol(Sym.TERRAIN); }
     "Group"                 { return symbol(Sym.GROUP); }
     "Platoon"               { return symbol(Sym.PLATOON); }
     "Force"                 { return symbol(Sym.FORCE); }
     "Coord"                 { return symbol(Sym.COORD); }
     "Soldier"               { return symbol(Sym.SOLDIER); }
+    "Barrier"               { return symbol(Sym.BARRIER); }
+    "Vector"                { return symbol(Sym.VECTOR); }
+*/
     "Simulation"            { return symbol(Sym.SIMULATION); }
     "Step"                  { return symbol(Sym.STEP); }
     "Interrupts"            { return symbol(Sym.INTERRUPTS); }
     "Declarations"          { return symbol(Sym.DECLARATIONS); }
-    "Barrier"               { return symbol(Sym.BARRIER); }
-    "Vector"                { return symbol(Sym.VECTOR); }
     "Simulations"           { return symbol(Sym.SIMULATIONS); }
 
     /* Boolean literals */

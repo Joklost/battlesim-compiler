@@ -46,9 +46,10 @@ terminal MODEQ, AND, OR, NOT, EQUALS, GREATERTHAN;
 terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 
 terminal EOL, DOWNTO, TO, THEN, VOID, OF;
-terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
+//terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
 terminal SIMULATIONS, SIMULATION, STEP, INTERRUPTS;
-terminal VECTOR, BARRIER, TYPE;
+//terminal VECTOR, BARRIER, TYPE;
+terminal TYPE;
 
 terminal Boolean BOOLEAN_LITERAL;
 terminal Integer INTEGER_LITERAL;
@@ -277,6 +278,7 @@ TypeId        ::= TypeName:tn LBRACE Expression:e RBRACE                        
 TypeName      ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
               |   STRING:s                                                                      {: RESULT = new StringT(sleft); :}
               |   BOOLEAN:b                                                                     {: RESULT = new BooleanT(bleft); :}
+/*  DISSE KOMMER FRA STDLIB
               |   TERRAIN:t                                                                     {: RESULT = new Terrain(tleft); :}
               |   GROUP:g                                                                       {: RESULT = new Group(gleft); :}
               |   PLATOON:p                                                                     {: RESULT = new Platoon(pleft); :}
@@ -285,8 +287,10 @@ TypeName      ::= DECIMAL:d                                                     
               |   SOLDIER:s                                                                     {: RESULT = new Soldier(sleft); :}
               |   BARRIER:b                                                                     {: RESULT = new Barrier(bleft); :}
               |   VECTOR:v                                                                      {: RESULT = new VectorT(vleft); :}
+*/
               |   INTEGER:i                                                                     {: RESULT = new IntegerT(ileft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
+              |   Identifier:id                                                                 {: RESULT = new CustomTypeIdentifier(id, idleft); :}
               ;
 ObjectId      ::= ObjectId:o DOT Identifier:i           /* 1 */                                 {: RESULT = new ObjectReferencing(o, i, oleft); :}
               |   ObjectId:o DOT ArrayRef:a             /* 2 */                                 {: RESULT = new ObjectReferencing(o, a, oleft); :}

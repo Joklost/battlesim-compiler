@@ -75,7 +75,7 @@ public class Main {
                 parser = new Parser(scanner, true);
 
                 startNode = (Start)parser.parse().value;
-
+/*
                 if (!parser.errorFound) {
                     startNode.accept(semanticsVisitor);
                     if (!errorFound) {
@@ -97,7 +97,7 @@ public class Main {
                             cj.compile();
                         }
                     }
-                }
+                }*/
 
 
 
