@@ -292,18 +292,21 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(EndIfStmt e){
-        //øhhhhh
+        //TODO
     }
 
     public void visit(SwitchStmt ss){
+        //TODO
+    }
 
+    public void visit(SwitchCase sc){
+        //TODO
     }
-    /*
-    void visit(SwitchCase sc){
+
+    public void visit(SwitchDef sd){
+        //TODO
     }
-    void visit(SwitchDef sd){
-    }
-    */
+
 
     public void visit(ReturnExpr r){
         printIndent();
@@ -311,9 +314,10 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         r.returnVal.accept(this);
         print("\n");
     }
-    /*
-    void visit(Return r){
-    }*/
+
+    public void visit(Return r){
+        //TODO
+    }
 
     public void visit(FunctionCallStmt fcs){
         printIndent();
@@ -356,15 +360,15 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(AndExpr ae){
-        leftRightStmt(ae.leftExpr, ae.rightExpr, "&&");
+        leftRightStmt(ae.leftExpr, ae.rightExpr, "AND");
     }
 
     public void visit(OrExpr oe){
-        leftRightStmt(oe.leftExpr, oe.rightExpr, "||");
+        leftRightStmt(oe.leftExpr, oe.rightExpr, "OR");
     }
 
     public void visit(LogicEqualsExpr le){
-        leftRightStmt(le.leftExpr, le.rightExpr, "==");
+        leftRightStmt(le.leftExpr, le.rightExpr, "EQUALS");
     }
 
     public void visit(LessThanExpr le){
@@ -383,37 +387,89 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         leftRightStmt(ge.leftExpr, ge.rightExpr, ">=");
     }
 
-    void visit(NotExpr ne){
+    public void visit(NotExpr ne){
+        printIndent();
+        print("NOT ");
+        ne.expression.accept(this);
+        print("\n");
     }
 
-    void visit(UnMinusExpr ue){
+    public void visit(UnMinusExpr ue){
+        //TODO
     }
-    void visit(PlusPlusExpr pe){
+
+    public void visit(PlusPlusExpr pe){
+        //TODO
     }
-    void visit(MinusMinusExpr me){
+
+    public void visit(MinusMinusExpr me){
+        //TODO
     }
-    void visit(FunctionCallExpr fe){
+
+    public void visit(FunctionCallExpr fe){
+        printIndent();
+        fe.functionCall.accept(this);
+        print("\n");
     }
-    void visit(ObjectIdExpr ne){
+
+    public void visit(ObjectIdExpr ne){
+        printIndent();
+        ne.objectName.accept(this);
+        print("\n");
     }
-    void visit(StdLiteralExpr se){
+
+    public void visit(StdLiteralExpr se){
+        printIndent();
+        se.stdLiteral.accept(this);
+        print("\n");
     }
-    void visit(CoordExpr ce){
+
+    public void visit(CoordExpr ce){
+        printIndent();
+        print("coord = (");
+        ce.expression1.accept(this);
+        print(", ");
+        ce.expression2.accept(this);
+        print(")\n");
     }
-    void visit(EqualsOp eo){
+
+    public void visit(EqualsOp eo){
+        //TODO
     }
-    void visit(PlusEqualsOp po){
+
+    public void visit(PlusEqualsOp po){
+        //TODO
     }
-    void visit(MinusEqualsOp mo){
+
+    public void visit(MinusEqualsOp mo){
+        //TODO
     }
-    void visit(ModEqualsOp mo){
+
+    public void visit(ModEqualsOp mo){
+        //TODO
     }
-    void visit(MultEqualsOp mo){
+
+    public void visit(MultEqualsOp mo){
+        //TODO
     }
-    void visit(DivEqualsOp deo){
+
+    public void visit(DivEqualsOp deo){
+        //TODO
     }
-    void visit(FunctionCall f){
+
+    public void visit(FunctionCall f){
+        printIndent();
+        f.objectName.accept(this);
+        print(" (");
+
+        for (int i = 0; i < f.argumentList.size(); i++){
+            f.argumentList.elementAt(i).accept(this);
+            if (i < f.argumentList.size() - 1)
+                print(", ");
+        }
+        print(")\n");
     }
+
     void visit(ToIterator ti){
     }
     void visit(DownToIterator di){
