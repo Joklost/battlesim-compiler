@@ -13,7 +13,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
     private void errorDeclaredLocally(String id) {
         Main.errorFound = true;
-        System.err.println(id + " has already been declared at level " + getLevel() + ".");
+        System.err.println(id + " has already been declared at level " + symbolTable.getLevel() + ".");
     }
 
     public TopDeclVisitor() {
@@ -28,7 +28,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         for (int i = 0; i < d.dclIdList.size(); i++) {
             String id = d.dclIdList.elementAt(i).name;
-            if (declaredLocally(id)) {
+            if (symbolTable.declaredLocally(id)) {
                 errorDeclaredLocally(id);
                 d.dclIdList.elementAt(i).type = errorType;
                 d.dclIdList.elementAt(i).def = null;
@@ -38,7 +38,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
                 def.type = d.typeName.type;
                 d.dclIdList.elementAt(i).def = def;
                 //System.out.println(id);
-                enterSymbol(id, def);
+                symbolTable.enterSymbol(id, def);
             }
         }
 
@@ -50,15 +50,15 @@ public class TopDeclVisitor extends SemanticsVisitor {
         TypeVisitor typeVisitor = new TypeVisitor();
         f.returnType.accept(typeVisitor);
 
-        if (declaredLocally(f.functionName.name)) {
+        if (symbolTable.declaredLocally(f.functionName.name)) {
             errorDeclaredLocally(f.functionName.name);
             f.type = errorType;
         } else {
-            enterSymbol(f.functionName.name, f);
+            symbolTable.enterSymbol(f.functionName.name, f);
             f.type = functionType;
         }
 
-        openScope();
+        symbolTable.openScope();
 
         FunctionDcl oldCurrentFunction = currentFunction;
         currentFunction = f;
@@ -73,7 +73,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         currentFunction = oldCurrentFunction;
 
-        closeScope();
+        symbolTable.closeScope();
 
         boolean containsReturnExpr = false;
         if (f.returnType.type != voidType && f.returnType.type != errorType) {
@@ -95,27 +95,27 @@ public class TopDeclVisitor extends SemanticsVisitor {
         TypeVisitor typeVisitor = new TypeVisitor();
         p.typeIdentifier.accept(typeVisitor);
 
-        if (declaredLocally(p.identifier.name)) {
+        if (symbolTable.declaredLocally(p.identifier.name)) {
             errorDeclaredLocally(p.identifier.name);
             p.type = errorType;
         } else {
-            enterSymbol(p.identifier.name, p.typeIdentifier);
+            symbolTable.enterSymbol(p.identifier.name, p.typeIdentifier);
             p.type = p.typeIdentifier.type;
         }
     }
 
     public void visit(Simulation s) {
-        if (declaredLocally(s.identifier.name)) {
+        if (symbolTable.declaredLocally(s.identifier.name)) {
             errorDeclaredLocally(s.identifier.name);
             s.type = errorType;
         } else {
-            enterSymbol(s.identifier.name, s);
+            symbolTable.enterSymbol(s.identifier.name, s);
             s.type = simulationType;
         }
 
         s.objectIdentifier.accept(this);
 
-        openScope();
+        symbolTable.openScope();
 
         for (int i = 0; i < s.simStepList.size(); i++) {
             s.simStepList.elementAt(i).accept(this);
@@ -123,26 +123,26 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         s.interrupts.accept(this);
 
-        closeScope();
+        symbolTable.closeScope();
 
     }
 
     public void visit(SimStep s) {
-        if (declaredLocally("Step" + s.stepNumber)) {
+        if (symbolTable.declaredLocally("Step" + s.stepNumber)) {
             errorDeclaredLocally("Step" + s.stepNumber);
             s.type = errorType;
         } else {
-            enterSymbol("Step" + s.stepNumber, s);
+            symbolTable.enterSymbol("Step" + s.stepNumber, s);
             s.type = simulationStepType;
         }
 
-        openScope();
+        symbolTable.openScope();
 
         for (int i = 0; i < s.stmtList.size(); i++) {
             s.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        symbolTable.closeScope();
     }
     
 }

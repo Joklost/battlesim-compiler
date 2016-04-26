@@ -2,7 +2,6 @@ package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
 
-import static com.company.AST.SymbolTable.SymbolTable.retrieveSymbol;
 import static com.company.ContextualAnalysis.TypeConsts.errorType;
 
 /**
@@ -61,7 +60,7 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
 
         if (o.type != errorType) {
             o.objectName.accept(this);
-            ASTNode def = retrieveSymbol(o.fieldName.name);
+            ASTNode def = symbolTable.retrieveSymbol(o.fieldName.name);
             if (!isAssignable(def)) {
                 error(o.fieldName.name + " is not an assignable field.");
             }

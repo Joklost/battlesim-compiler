@@ -29,7 +29,7 @@ public class TypeVisitor extends TopDeclVisitor {
             t.declarationList.elementAt(i).typeName.accept(this);
             for (int k = 0; k < t.declarationList.elementAt(i).dclIdList.size(); k++) {
                 if (t.typeDescriptor.fields.declaredLocally(t.declarationList.elementAt(i).dclIdList.elementAt(k).name)) {
-                    error(t.getLineNumber(), t.declarationList.elementAt(i).dclIdList.elementAt(k).name + " cannot be redeclared.");
+                    error(t.getLineNumber(), "Field " + t.declarationList.elementAt(i).dclIdList.elementAt(k).name + " cannot be redeclared.");
                     t.declarationList.elementAt(i).dclIdList.elementAt(k).type = errorType;
                     t.declarationList.elementAt(i).dclIdList.elementAt(k).def = null;
                 } else {
@@ -39,11 +39,60 @@ public class TypeVisitor extends TopDeclVisitor {
                     t.declarationList.elementAt(i).dclIdList.elementAt(k).type = t.declarationList.elementAt(i).typeName.type;
                     t.declarationList.elementAt(i).dclIdList.elementAt(k).def = def;
 
-                    t.typeDescriptor.fields.printTable();
+                    //t.typeDescriptor.fields.printTable();
                 }
             }
         }
+
+        for (int i = 0; i < t.functionDclList.size(); i++) {
+            t.functionDclList.elementAt(i).returnType.accept(this);
+            if (t.typeDescriptor.fields.declaredLocally(t.functionDclList.elementAt(i).functionName.name)) {
+                error(t.getLineNumber(), "Function " + t.functionDclList.elementAt(i).functionName.name + " cannot be redeclared.");
+                t.functionDclList.elementAt(i).functionName.type = errorType;
+                t.functionDclList.elementAt(i).functionName.def = null;
+            } else {
+                t.typeDescriptor.fields.enterSymbol(t.functionDclList.elementAt(i).functionName.name, t.functionDclList.elementAt(i));
+                t.functionDclList.elementAt(i).type = functionType;
+            }
+
+            t.typeDescriptor.fields.openScope();
+
+            FunctionDcl oldCurrentFunction = currentFunction;
+            currentFunction = t.functionDclList.elementAt(i);
+
+
+            for (int k = 0; k < t.functionDclList.elementAt(i).paramList.size(); k++) {
+                t.functionDclList.elementAt(i).paramList.elementAt(k).accept(this);
+            }
+
+            for (int k = 0; k < t.functionDclList.elementAt(i).stmtList.size(); k++) {
+                t.functionDclList.elementAt(i).stmtList.elementAt(k).accept(this);
+            }
+
+            currentFunction = oldCurrentFunction;
+
+            t.typeDescriptor.fields.closeScope();
+
+            boolean containsReturnStmt = false;
+
+            if (t.functionDclList.elementAt(i).returnType.type != voidType && t.functionDclList.elementAt(i).type != errorType) {
+                for (int k = 0; k < t.functionDclList.elementAt(i).stmtList.size(); k++) {
+                    if (t.functionDclList.elementAt(i).stmtList.elementAt(k) instanceof ReturnExpr) {
+                        containsReturnStmt = true;
+                    }
+                }
+
+                if (!containsReturnStmt) {
+                    error(t.functionDclList.elementAt(i).getLineNumber(), "Field function " + t.functionDclList.elementAt(i).functionName.name + " must return a value.");
+                    t.functionDclList.elementAt(i).type = errorType;
+                }
+            }
+        }
+
+        t.typeDescriptor.fields.printTable();
+
     }
+
 
     /*
     TypeVisitor typeVisitor = new TypeVisitor();

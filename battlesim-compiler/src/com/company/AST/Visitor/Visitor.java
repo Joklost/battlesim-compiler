@@ -16,7 +16,7 @@ public abstract class Visitor {
 
     private void debugMsg(String s) {
         if (this.debug) {
-            System.err.println(s);
+            System.out.println(s);
         }
     }
 
