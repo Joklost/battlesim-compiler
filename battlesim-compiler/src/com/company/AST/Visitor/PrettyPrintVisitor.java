@@ -161,7 +161,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(Dcl ds){
         printIndent();
-        println("Declare ");
+        print("Declare ");
 
         for (int i = 0; i < ds.dclIdList.size(); i++){
             ds.dclIdList.elementAt(i).accept(this);
@@ -180,6 +180,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         as.targetName.accept(this);
         as.assignOp.accept(this);
         as.expression.accept(this);
+        print("\n");
     }
 
 
@@ -200,7 +201,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(ForeachStmt fes){
         printIndent();
-        print("For ");
+        print("Foreach ");
         fes.typeName.accept(this);
         print(" ");
         fes.localName.accept(this);
@@ -214,7 +215,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         }
 
         indentLevel--;
-        println("End For");
+        println("End Foreach");
     }
 
     public void visit(ForStmt fs){
@@ -246,14 +247,14 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
             i.stmtList.elementAt(k).accept(this);
         }
         indentLevel--;
+        println("End If");
 
-        if(i.elseStmt != null) {
+        /*if(i.elseStmt != null) {
             println("Else");
             indentLevel++;
             i.elseStmt.accept(this);
             indentLevel--;
-        }
-        println("End If");
+        }*/
     }
 
     public void visit(ElseIfStmt e){
@@ -341,19 +342,19 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(ReturnExpr r){
         printIndent();
-        print("Return ");
+        print("Return");
         r.returnVal.accept(this);
         print("\n");
     }
 
     public void visit(Return r){
-        print("Return");
+        print("Return ");
     }
 
     public void visit(FunctionCallStmt fcs){
         printIndent();
         fcs.functionCall.accept(this);
-        print("\n");
+        print("");
     }
 
 
@@ -422,7 +423,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         printIndent();
         print("NOT ");
         ne.expression.accept(this);
-        print("\n");
+        print(" ");
     }
 
     public void visit(UnMinusExpr ue){
@@ -443,19 +444,19 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(FunctionCallExpr fe){
         printIndent();
         fe.functionCall.accept(this);
-        print("\n");
+        print("");
     }
 
     public void visit(ObjectIdExpr ne){
         printIndent();
         ne.objectName.accept(this);
-        print("\n");
+        print(" ");
     }
 
     public void visit(StdLiteralExpr se){
         printIndent();
         se.stdLiteral.accept(this);
-        print("\n");
+        print(" ");
     }
 
     public void visit(CoordExpr ce){
@@ -501,7 +502,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
             if (i < f.argumentList.size() - 1)
                 print(", ");
         }
-        print(")\n");
+        print(")");
     }
 
     public void visit(ToIterator ti){
@@ -528,9 +529,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         print(sl.string);
     }
 
-    public void visit(BooleanLiteral bl){
-        print(bl.value.toString());
-    }
+    public void visit(BooleanLiteral bl){ print(bl.value.toString()); }
 
     public void visit(IntegerLiteral il){
         print(il.value.toString());
@@ -541,7 +540,6 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Array1D a){
-        printIndent();
         a.typeName.accept(this);
         print("[");
         a.index.accept(this);
@@ -559,7 +557,6 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ListOf l){
-        printIndent();
         print("List Of ");
         l.typeName.accept(this);
         print("\n");
@@ -617,14 +614,13 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         o.objectName.accept(this);
         print(".");
         o.fieldName.accept(this);
-        print("\n");
     }
 
     public void visit(Array1DReferencing a){
         a.arrayName.accept(this);
         print("[");
         a.indexExpr.accept(this);
-        print("]\n");
+        print("]");
     }
 
     public void visit(Array2DReferencing a){
@@ -633,23 +629,21 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         a.firstIndexExpr.accept(this);
         print("][");
         a.secondIndexExpr.accept(this);
-        print("]\n");
+        print("]");
     }
 
     public void visit(Identifier id){
-        print(id.name.toLowerCase());
+        print(id.name);
     }
 
     public void visit(JavaString j){
-        print(j.javaCode.toString());
+        print(j.javaCode);
     }
 
-    public void leftRightStmt(Expression left, Expression right, String symbol){
-        printIndent();
+    private void leftRightStmt(Expression left, Expression right, String symbol){
         left.accept(this);
-        print(" " + symbol +" ");
+        print(symbol);
         right.accept(this);
-        print("\n");
     }
 
 }
