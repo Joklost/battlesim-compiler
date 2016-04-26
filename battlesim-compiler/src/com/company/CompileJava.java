@@ -83,7 +83,7 @@ public class CompileJava {
             runProcess("javac " + dotJavaFiles);
             createManifest();
             runProcess("jar cfm " + outputName + ".jar Manifest.txt " + dotClassFiles);
-            runProcess("java -jar " + outputName + ".jar");
+            //runProcess("java -jar " + outputName + ".jar");
             if(deleteOutput){
                 if (!deleteFiles()) {
                     System.err.println("Unable to delete generated files.");

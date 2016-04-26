@@ -84,7 +84,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitIndentation("import java.io.*;\n");
         emitIndentation("import java.util.*;\n");
         emitIndentation("import java.util.Scanner;\n");
-        emitIndentation("import static com.BattleSim.Soldier.*;\n");
         emitComment("BattleSim automatically generated code file.\n");
         emitIndentation("public class Declarations {\n");
         indentLevel++;
