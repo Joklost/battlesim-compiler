@@ -6,6 +6,7 @@ package com.company.AST.Nodes;
 public class Start extends ASTNode {
     public DclBlock dclBlock;
     public SimBlock simBlock;
+    public TypeDeclarationList typeDeclarationList;
     public FunctionDclList functionDclList1;
     public Program program;
 
