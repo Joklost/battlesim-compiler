@@ -1,3 +1,6 @@
+// Test declerations
+// Declarations er påkrævet
+// TEST: Success
 Begin Declarations
     Declare da as Boolean
     Declare no as Boolean
@@ -8,10 +11,6 @@ Begin Declarations
     Declare list as List of String
     Declare i as Integer
 End Declarations
-// ^
-// Test declerations
-// Declarations er påkrævet
-// TEST: Success
 
 // Test declerations
 // Declerations er påkrævet
