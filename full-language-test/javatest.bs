@@ -10,6 +10,7 @@ Begin Declarations
     Declare a as Integer
     Declare list as List of String
     Declare i as Integer
+    i = 5
 End Declarations
 
 // Test declerations
@@ -76,5 +77,7 @@ Begin Program
 
     Print("Test print")
     PrintLine("")
+
+    TestScope()
 
 End Program
