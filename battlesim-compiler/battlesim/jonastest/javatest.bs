@@ -1,3 +1,4 @@
+
 Begin Declarations
     Declare dclI as Integer
     dclI = 15
@@ -10,6 +11,7 @@ Begin Declarations
     Declare c as Coord
     Declare b as Barrier
     Declare t as Terrain
+    Declare x as List of String
 End Declarations
 
 

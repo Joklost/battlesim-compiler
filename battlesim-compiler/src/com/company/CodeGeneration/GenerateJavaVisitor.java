@@ -238,8 +238,21 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             emit(" = \"\"");
         } else if (ds.typeName instanceof Decimal) {
             emit(" = 0.0");
+        } else if (ds.typeName instanceof Barrier){
+            emit(" = new Barrier()");
+        } else if (ds.typeName instanceof Coord){
+            emit(" = new Coord()");
+        } else if (ds.typeName instanceof Force){
+            emit(" = new Force()");
+        } else if (ds.typeName instanceof Group){
+            emit(" = new Group()");
+        } else if (ds.typeName instanceof Terrain){
+            emit(" = new Terrain()");
+        } else if (ds.typeName instanceof Platoon){
+            emit(" = new Platoon()");
+        } else if (ds.typeName instanceof Soldier) {
+            emit(" = new Soldier()");
         }
-
         emit(";\n");
     }
 
@@ -732,7 +745,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Terrain t) {
-        emit("Map");
+        emit("Terrain");
     }
 
     public void visit(ObjectReferencing o) {
