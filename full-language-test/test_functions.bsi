@@ -279,3 +279,17 @@ Function Void TestIf()
         PrintLine("Multiline statments in if testes")
     End If
 End Function
+
+Function Void TestSwitch()
+    Declare swinr as Integer
+    swinr = ReturnInt()
+
+    Switch swinr
+        Case 1
+            PrintLine("The number was oddly enough one")
+        Case 42
+            PrintLine("Yeah, the number was " + swinr + "")
+        Default
+            PrintLine("This is the default")
+      End Switch
+End Function

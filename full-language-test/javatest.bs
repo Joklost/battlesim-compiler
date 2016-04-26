@@ -64,4 +64,8 @@ Begin Program
     // Test if
     TestIf()
     PrintLine("If tested success")
+
+    TestSwitch()
+    PrintLine("Switch tested success")
+
 End Program
