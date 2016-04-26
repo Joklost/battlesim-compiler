@@ -1,3 +1,4 @@
+
 Begin Declarations
     Declare da as Boolean
     Declare no as Boolean
