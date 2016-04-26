@@ -2271,7 +2271,7 @@ class CUP$Parser$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Identifier id = (Identifier)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = new CustomTypeIdentifier(id, idleft); 
+		 RESULT = new ObjectDefining(id, idleft); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("TypeName",39, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

@@ -290,7 +290,7 @@ TypeName      ::= DECIMAL:d                                                     
 */
               |   INTEGER:i                                                                     {: RESULT = new IntegerT(ileft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
-              |   Identifier:id                                                                 {: RESULT = new CustomTypeIdentifier(id, idleft); :}
+              |   Identifier:id                                                                 {: RESULT = new ObjectDefining(id, idleft); :}
               ;
 ObjectId      ::= ObjectId:o DOT Identifier:i           /* 1 */                                 {: RESULT = new ObjectReferencing(o, i, oleft); :}
               |   ObjectId:o DOT ArrayRef:a             /* 2 */                                 {: RESULT = new ObjectReferencing(o, a, oleft); :}
