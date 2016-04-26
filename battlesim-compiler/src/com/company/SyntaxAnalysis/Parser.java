@@ -7,7 +7,6 @@ package com.company.SyntaxAnalysis;
 
 import java_cup.runtime.*;
 import com.company.AST.Nodes.*;
-import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20150930 (SVN rev 66) generated parser.
   */
@@ -2271,7 +2270,7 @@ class CUP$Parser$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Identifier id = (Identifier)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = new ObjectDefining(id, idleft); 
+		 RESULT = new CustomTypeIdentifier(id, idleft);
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("TypeName",39, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
