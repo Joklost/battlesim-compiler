@@ -78,7 +78,7 @@ public interface VisitorInterface {
     void visit(BooleanT b);
     void visit(IntegerT i);
     void visit(VoidT v);
-    void visit(ObjectDefining o);
+    void visit(CustomTypeIdentifier o);
     /*
     void visit(Group g);
     void visit(Platoon p);
