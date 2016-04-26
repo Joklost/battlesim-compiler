@@ -293,3 +293,16 @@ Function Void TestSwitch()
             PrintLine("This is the default")
       End Switch
 End Function
+
+Function Void TestFor()
+    Declare i as Integer
+    i = 0
+    For i To 10 Do
+        PrintLine("Num: " + i + "")
+    End For
+
+    i = 10
+    For i DownTo 10 Do
+        PrintLine("Num: " + i + "")
+    End For
+End Function

@@ -68,4 +68,7 @@ Begin Program
     TestSwitch()
     PrintLine("Switch tested success")
 
+    TestFor()
+    PrintLine("For loops tested success")
+
 End Program
