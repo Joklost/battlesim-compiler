@@ -44,6 +44,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         s.dclBlock.accept(this);
         s.simBlock.accept(this);
 
+        for (int i = 0; i < s.typeDeclarationList.size(); i++) {
+            s.typeDeclarationList.elementAt(i).accept(this);
+        }
+
         for (int i = 0; i < s.functionDclList1.size(); i++) {
             s.functionDclList1.elementAt(i).accept(this);
         }
@@ -84,6 +88,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         closeScope();
     }
 
+    public void visit(TypeDeclaration t) {
+        TypeVisitor typeVisitor = new TypeVisitor();
+        t.accept(typeVisitor);
+    }
+
     public void visit(FunctionDcl fd) {
         TopDeclVisitor topDeclVisitor = new TopDeclVisitor();
         fd.accept(topDeclVisitor);
@@ -114,7 +123,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         as.targetName.accept(lhsSemanticsVisitor);
         as.expression.accept(this);
 
-        if (assignable(as.targetName.type, as.expression.type)) {       // TODO
+        if (assignable(as.targetName.type, as.expression.type)) {
             as.type = as.targetName.type;
         } else {
             error(as.getLineNumber(), "Unable to assign " + getTypeName(as.expression.type) + " to " + getTypeName(as.targetName.type) + ".");
@@ -608,34 +617,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         b.type = booleanType;
     }
 
-    public void visit(Group g) {
-        g.type = groupType;
-    }
-
-    public void visit(Platoon p) {
-        p.type = platoonType;
-    }
-
-    public void visit(Force f) {
-        f.type = forceType;
-    }
-
-    public void visit(Coord c) {
-        c.type = coordType;
-    }
-
-    public void visit(Soldier s) {
-        s.type = soldierType;
-    }
-
-    public void visit(Barrier b) {
-        b.type = barrierType;
-    }
-
-    public void visit(VectorT v) {
-        v.type = vectorType;
-    }
-
     public void visit(IntegerT i) {
         i.type = integerType;
     }
@@ -644,8 +625,9 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         v.type = voidType;
     }
 
-    public void visit(Terrain t) {
-        t.type = terrainType;
+    public void visit(CustomTypeIdentifier o) {
+        //o.name.accept(this);
+        o.type = objectType;
     }
 
     public void visit(Array1DReferencing a) {
@@ -718,7 +700,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (o.objectName.type == errorType) {
             o.type = errorType;
         } else {
-            if (o.objectName.type != objectTypeDescriptor) {
+            if (o.objectName.type != objectType) {
                 error(o.getLineNumber(), o.objectName.name + " does not specify an object.");
                 o.type = errorType;
             } else {
@@ -767,7 +749,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (target == decimalType && expression == integerType) return true;
         if (target == stringType && expression == nullType) return true;
         if ((target == array1DType || target == array2DType || target == listType) && expression == nullType) return true;
-        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == vectorType || target == terrainType) && expression == nullType) return true;
+//        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == vectorType || target == terrainType) && expression == nullType) return true;
+        if ((target == objectType) && expression == nullType) return true;
 
         return false;    // skal laves
     }

@@ -51,7 +51,7 @@ public class Main {
             }
         } else {
             // stier skal ind her, hvis det skal køres fra IntelliJ
-            //paths.add("/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs");
+            paths.add("/home/joklost/scopetest.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
             //paths.add("/home/pgug/Code/P4-Code/full-language-test/javatest.bs");
         }
@@ -75,10 +75,10 @@ public class Main {
                 parser = new Parser(scanner, true);
 
                 startNode = (Start)parser.parse().value;
-/*
+
                 if (!parser.errorFound) {
                     startNode.accept(semanticsVisitor);
-                    if (!errorFound) {
+                    /*if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
                         Map<String, List<String>> map = generateJavaVisitor.getCode();
                         map.putAll(DST.getDST());
@@ -96,8 +96,8 @@ public class Main {
                             CompileJava cj = new CompileJava(outputName, map);
                             cj.compile();
                         }
-                    }
-                }*/
+                    }*/
+                }
 
 
 

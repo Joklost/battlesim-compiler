@@ -12,6 +12,7 @@ import java.util.Map;
 import static com.company.ContextualAnalysis.TypeConsts.*;
 
 
+
 /**
  * Created by joklost on 18-04-16.
  */
@@ -157,6 +158,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     public void visit(Interrupts is) {
         // TODO
 
+    }
+
+    public void visit(TypeDeclaration t) {
+        // TOOD
     }
 
     public void visit(FunctionDcl fd) {
@@ -740,6 +745,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     public void visit(VoidT v) {
         emit("void");
+
+    }
+
+    public void visit(CustomTypeIdentifier o) {
 
     }
 
