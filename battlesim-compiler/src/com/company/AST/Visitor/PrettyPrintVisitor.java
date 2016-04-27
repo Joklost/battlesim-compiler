@@ -128,6 +128,8 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
         for (int i = 0; i < fd.paramList.size(); i++){
             fd.paramList.elementAt(i).accept(this);
+            if (i < fd.paramList.size() -1)
+                print(", ");
         }
 
         print(")\n");
@@ -247,14 +249,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
             i.stmtList.elementAt(k).accept(this);
         }
         indentLevel--;
-        println("End If");
-
-        /*if(i.elseStmt != null) {
-            println("Else");
-            indentLevel++;
-            i.elseStmt.accept(this);
-            indentLevel--;
-        }*/
+        i.elseStmt.accept(this);
     }
 
     public void visit(ElseIfStmt e){
@@ -268,15 +263,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
             e.stmtList.elementAt(i).accept(this);
         }
         indentLevel--;
-
-        if (e.elifStmt != null){
-            println("Else");
-            indentLevel++;
-            e.elifStmt.accept(this);
-            indentLevel--;
-        }
-
-        println("End If");
+        e.elifStmt.accept(this);
     }
 
     public void visit(ElseStmt e){
@@ -289,7 +276,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         }
 
         indentLevel--;
-        println("Else If");
+        println("End If");
     }
 
     public void visit(EndIfStmt e){
@@ -315,7 +302,6 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(SwitchCase sc){
-        printIndent();
         print("Case ");
         sc.label.accept(this);
         print("\n");
@@ -329,7 +315,6 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(SwitchDef sd){
-        printIndent();
         println("Default");
 
         indentLevel++;
@@ -354,69 +339,91 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(FunctionCallStmt fcs){
         printIndent();
         fcs.functionCall.accept(this);
-        print("");
+        print("\n");
     }
 
 
     public void visit(PlusPlusStmt s){
-        printIndent();
         s.id.accept(this);
         print("++\n");
     }
 
     public void visit(MinusMinusStmt s){
-        printIndent();
         s.id.accept(this);
         print("--\n ");
     }
 
 
     public void visit(PlusExpr pe){
-        leftRightStmt(pe.leftExpr, pe.rightExpr, "+" );
+        pe.leftExpr.accept(this);
+        print("+");
+        pe.rightExpr.accept(this);
     }
 
     public void visit(MinusExpr me){
-        leftRightStmt(me.leftExpr, me.rightExpr, "-");
+        me.leftExpr.accept(this);
+        print("-");
+        me.rightExpr.accept(this);
     }
 
     public void visit(MultExpr me){
-        leftRightStmt(me.leftExpr, me.rightExpr, "*");
+        me.leftExpr.accept(this);
+        print("*");
+        me.rightExpr.accept(this);
     }
 
     public void visit(DivExpr de){
-        leftRightStmt(de.leftExpr, de.rightExpr, "/");
+        de.leftExpr.accept(this);
+        print("/");
+        de.rightExpr.accept(this);
     }
 
     public void visit(ModExpr me){
-        leftRightStmt(me.leftExpr, me.rightExpr, "%");
+        me.leftExpr.accept(this);
+        print("%");
+        me.rightExpr.accept(this);
     }
 
     public void visit(AndExpr ae){
-        leftRightStmt(ae.leftExpr, ae.rightExpr, "AND");
+        ae.leftExpr.accept(this);
+        print("AND");
+        ae.rightExpr.accept(this);
     }
 
     public void visit(OrExpr oe){
-        leftRightStmt(oe.leftExpr, oe.rightExpr, "OR");
+        oe.leftExpr.accept(this);
+        print("OR");
+        oe.rightExpr.accept(this);
     }
 
     public void visit(LogicEqualsExpr le){
-        leftRightStmt(le.leftExpr, le.rightExpr, "EQUALS");
+        le.leftExpr.accept(this);
+        print("EQUALS");
+        le.rightExpr.accept(this);
     }
 
     public void visit(LessThanExpr le){
-        leftRightStmt(le.leftExpr, le.rightExpr, "<");
+        le.leftExpr.accept(this);
+        print("<");
+        le.rightExpr.accept(this);
     }
 
     public void visit(GreaterThanExpr ge){
-        leftRightStmt(ge.leftExpr, ge.rightExpr, ">");
+        ge.leftExpr.accept(this);
+        print(">");
+        ge.rightExpr.accept(this);
     }
 
     public void visit(LessThanEqualsExpr le){
-        leftRightStmt(le.leftExpr, le.rightExpr, "<=");
+        le.leftExpr.accept(this);
+        print("<=");
+        le.rightExpr.accept(this);
     }
 
     public void visit(GreaterThanEqualsExpr ge){
-        leftRightStmt(ge.leftExpr, ge.rightExpr, ">=");
+        ge.leftExpr.accept(this);
+        print(">=");
+        ge.rightExpr.accept(this);
     }
 
     public void visit(NotExpr ne){
@@ -493,7 +500,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(FunctionCall f){
-        printIndent();
+        //printIndent();
         f.objectName.accept(this);
         print(" (");
 
@@ -639,11 +646,4 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(JavaString j){
         print(j.javaCode);
     }
-
-    private void leftRightStmt(Expression left, Expression right, String symbol){
-        left.accept(this);
-        print(symbol);
-        right.accept(this);
-    }
-
 }
