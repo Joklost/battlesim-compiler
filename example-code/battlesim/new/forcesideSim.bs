@@ -1,26 +1,18 @@
 Simulation protectTheGeneral allies
   Step 1
-    Move(30,250)
-  Step 2
-    Move(250,250)
-  Step 3
-    //Group 1 and 3 starts moving to flanking positions
+    //Group 1 and 2 starts moving to flanking positions
     general.Move(300,250)
     aGroup1.Move(550,400)
-    aGroup3.Move(550,100)
-  Step 4
-    aGroup1.Move(600,400)
-    aGroup3.Move(600,100)
-  Step 5
+    aGroup2.Move(550,100)
+  Step 2
     aGroup1.Move(600,300)
-    aGroup3.Move(600,200)
-  Step 6
+    aGroup2.Move(600,200)
+  Step 3
     aGroup1.MoveAndDetect(600,250)
-    //Move to location while detection range is increased (velocity should be decreased)
-    aGroup3.MoveAndDetect(600,250)
-    general.Wait(aGroup1.Step6 AND aGroup3.Step6)
-  Step 7
-    If NOT aGroup1.IsDead AND NOT aGroup3.IsDead Then
+    aGroup2.MoveAndDetect(600,250)
+    general.Wait(aGroup1.Step3 AND aGroup2.Step3)
+  Step 4
+    If NOT aGroup1.IsDead AND NOT aGroup2.IsDead Then
       general.Move(600,250)
     Else
       general.Move(Base)
@@ -34,40 +26,31 @@ Simulation protectTheGeneral allies
 
     If IsEnemyDetected() Then
       StopMovement()
-      Engage(allies.enemy)
+      Engage()
     End If
 End Simulation
 
-
-Simulation protectTheGeneral2 allies
-
-End protectTheGeneral2 allies
-
-
 Simulation defend enemies
   Step 1
-    enemies.Move(950,250)
+    Move(950,250)
   Step 2
-    enemies.Move(600,250)
+    Move(600,250)
   Step 3
-    enemies.DetectEnemies(30 * 60)
+    DetectEnemies(30 * 60)
 
   Interrupts
-    If NOT enemies.IsInCombat() AND enemies.IsGettingShot() Then
-      enemies.StopMovement()
-      enemies.DetectEnemies(120)
+    If NOT IsInCombat() AND IsGettingShot() Then
+      StopMovement()
+      DetectEnemies(120)
     End If
 
-    If enemies.IsEnemyDetected() Then
-      enemies.StopMovement()
-      enemies.Engage(enemies.enemy)
+    If IsEnemyDetected() Then
+      StopMovement()
+      Engage()
     End If
-Simulation protectTheGeneral enemies
+End Simulation
 
 Begin Program
   RunSimulation(protectTheGeneral, defend);
-  RunSimulation(protectTheGeneral2, defend);
-
   Render(protectTheGeneral, defend);
-
 End Program
