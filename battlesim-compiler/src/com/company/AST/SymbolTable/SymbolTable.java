@@ -17,7 +17,7 @@ public class SymbolTable {
 
     private final int HASH_TABLE_SIZE = 211;
     private Bucket[] symbolTable = new Bucket [HASH_TABLE_SIZE];
-    //private static List<Bucket> symbolTable = new ArrayList<>();
+    //private static List<Bucket> currentSymbolTable = new ArrayList<>();
     private int level = 0;
     private Scope scopeList = new Scope();
 

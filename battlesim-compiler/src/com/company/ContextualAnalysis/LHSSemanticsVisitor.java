@@ -1,17 +1,16 @@
 package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
+import com.company.Main;
 
 import static com.company.ContextualAnalysis.TypeConsts.errorType;
+import static com.company.ContextualAnalysis.TypeConsts.getTypeName;
 
 /**
  * Created by joklost on 12-04-16.
  */
 public class LHSSemanticsVisitor extends SemanticsVisitor {
 
-    private void error(String s) {
-        System.err.println(s);
-    }
 
     private boolean isAssignable(ASTNode a) {
         if (a == null) return false;
@@ -36,7 +35,7 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
         id.accept(semanticsVisitor);
 
         if (!isAssignable(id.def)) {
-            error(id.name + " is not assignable.");
+            error(id.getLineNumber(), id.name + " is not assignable. Type: " + getTypeName(id.type));
             id.type = errorType;
             id.def = null;
         }
@@ -60,9 +59,9 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
 
         if (o.type != errorType) {
             o.objectName.accept(this);
-            ASTNode def = symbolTable.retrieveSymbol(o.fieldName.name);
+            ASTNode def = Main.currentSymbolTable.retrieveSymbol(o.fieldName.name);
             if (!isAssignable(def)) {
-                error(o.fieldName.name + " is not an assignable field.");
+                error(o.getLineNumber(), o.fieldName.name + " is not an assignable field.");
             }
         }
     }

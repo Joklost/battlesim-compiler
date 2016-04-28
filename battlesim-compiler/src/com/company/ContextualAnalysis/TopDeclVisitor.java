@@ -3,7 +3,6 @@ package com.company.ContextualAnalysis;
 import com.company.AST.Nodes.*;
 import com.company.Main;
 
-import static com.company.AST.SymbolTable.SymbolTable.*;
 import static com.company.ContextualAnalysis.TypeConsts.*;
 
 /**
@@ -13,7 +12,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
     private void errorDeclaredLocally(String id) {
         Main.errorFound = true;
-        System.err.println(id + " has already been declared at level " + symbolTable.getLevel() + ".");
+        System.err.println(id + " has already been declared at level " + Main.currentSymbolTable.getLevel() + ".");
     }
 
     public TopDeclVisitor() {
@@ -28,7 +27,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         for (int i = 0; i < d.dclIdList.size(); i++) {
             String id = d.dclIdList.elementAt(i).name;
-            if (symbolTable.declaredLocally(id)) {
+            if (Main.currentSymbolTable.declaredLocally(id)) {
                 errorDeclaredLocally(id);
                 d.dclIdList.elementAt(i).type = errorType;
                 d.dclIdList.elementAt(i).def = null;
@@ -38,7 +37,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
                 def.type = d.typeName.type;
                 d.dclIdList.elementAt(i).def = def;
                 //System.out.println(id);
-                symbolTable.enterSymbol(id, def);
+                Main.currentSymbolTable.enterSymbol(id, def);
             }
         }
 
@@ -50,15 +49,15 @@ public class TopDeclVisitor extends SemanticsVisitor {
         TypeVisitor typeVisitor = new TypeVisitor();
         f.returnType.accept(typeVisitor);
 
-        if (symbolTable.declaredLocally(f.functionName.name)) {
+        if (Main.currentSymbolTable.declaredLocally(f.functionName.name)) {
             errorDeclaredLocally(f.functionName.name);
             f.type = errorType;
         } else {
-            symbolTable.enterSymbol(f.functionName.name, f);
+            Main.currentSymbolTable.enterSymbol(f.functionName.name, f);
             f.type = functionType;
         }
 
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         FunctionDcl oldCurrentFunction = currentFunction;
         currentFunction = f;
@@ -73,7 +72,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         currentFunction = oldCurrentFunction;
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
 
         boolean containsReturnExpr = false;
         if (f.returnType.type != voidType && f.returnType.type != errorType) {
@@ -95,27 +94,27 @@ public class TopDeclVisitor extends SemanticsVisitor {
         TypeVisitor typeVisitor = new TypeVisitor();
         p.typeIdentifier.accept(typeVisitor);
 
-        if (symbolTable.declaredLocally(p.identifier.name)) {
+        if (Main.currentSymbolTable.declaredLocally(p.identifier.name)) {
             errorDeclaredLocally(p.identifier.name);
             p.type = errorType;
         } else {
-            symbolTable.enterSymbol(p.identifier.name, p.typeIdentifier);
+            Main.currentSymbolTable.enterSymbol(p.identifier.name, p.typeIdentifier);
             p.type = p.typeIdentifier.type;
         }
     }
 
     public void visit(Simulation s) {
-        if (symbolTable.declaredLocally(s.identifier.name)) {
+        if (Main.currentSymbolTable.declaredLocally(s.identifier.name)) {
             errorDeclaredLocally(s.identifier.name);
             s.type = errorType;
         } else {
-            symbolTable.enterSymbol(s.identifier.name, s);
+            Main.currentSymbolTable.enterSymbol(s.identifier.name, s);
             s.type = simulationType;
         }
 
         s.objectIdentifier.accept(this);
 
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < s.simStepList.size(); i++) {
             s.simStepList.elementAt(i).accept(this);
@@ -123,26 +122,26 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         s.interrupts.accept(this);
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
 
     }
 
     public void visit(SimStep s) {
-        if (symbolTable.declaredLocally("Step" + s.stepNumber)) {
+        if (Main.currentSymbolTable.declaredLocally("Step" + s.stepNumber)) {
             errorDeclaredLocally("Step" + s.stepNumber);
             s.type = errorType;
         } else {
-            symbolTable.enterSymbol("Step" + s.stepNumber, s);
+            Main.currentSymbolTable.enterSymbol("Step" + s.stepNumber, s);
             s.type = simulationStepType;
         }
 
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < s.stmtList.size(); i++) {
             s.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
     }
     
 }

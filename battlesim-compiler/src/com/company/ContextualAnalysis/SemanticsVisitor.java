@@ -26,7 +26,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     FunctionDcl currentFunction;
-    protected SymbolTable symbolTable = new SymbolTable();
 
     public SemanticsVisitor() {
     }
@@ -59,8 +58,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             //System.out.println(db.stmtLists.elementAt(i).getClass());
             db.stmtLists.elementAt(i).accept(this);
         }
-
-        symbolTable.printTable();
     }
 
     public void visit(SimBlock s) {
@@ -80,13 +77,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Interrupts is) {
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < is.stmtList.size(); i++) {
             is.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(TypeDeclaration t) {
@@ -105,13 +102,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Program p) {
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < p.stmtList.size(); i++) {
             p.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(Dcl ds) {
@@ -136,13 +133,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(WhileStmt ws) {
         ws.condition.accept(this);
 
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < ws.stmtList.size(); i++) {
             ws.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
 
         if (ws.condition != null) {
             checkBoolean(ws.condition);
@@ -151,12 +148,12 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(ForeachStmt fes) {
         //fes.typeName.type == fes.objectName.type
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
         fes.typeName.accept(this);
 
         fes.localName.type = fes.typeName.type;
 
-        symbolTable.enterSymbol(fes.localName.name, fes.typeName);
+        Main.currentSymbolTable.enterSymbol(fes.localName.name, fes.typeName);
         fes.localName.accept(this);
 
         fes.objectName.accept(this);
@@ -165,13 +162,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             fes.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
 
         if ((fes.objectName.type != listType) && (fes.objectName.type != array1DType)) {
             error(fes.getLineNumber(), "Object in foreach statement is not a list or 1d array.");
             fes.type = errorType;
         } else {
-            ASTNode def = symbolTable.retrieveSymbol(fes.objectName.name);
+            ASTNode def = Main.currentSymbolTable.retrieveSymbol(fes.objectName.name);
 
             if (def != null) {
                 int type = noType;
@@ -200,13 +197,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         fs.forIterator.accept(this);
         fs.toExpr.accept(this);
 
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < fs.stmtList.size(); i++) {
             fs.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
 
         if (fs.initialExpr.type != integerType) {
             error(fs.getLineNumber(), "Inital expression in for statement has to be an integer.");
@@ -221,13 +218,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(IfStmt i) {
         i.condition.accept(this);
 
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int k = 0; k < i.stmtList.size(); k++) {
             i.stmtList.elementAt(k).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
 
         i.elseStmt.accept(this);
 
@@ -237,13 +234,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(ElseIfStmt e) {
         e.condition.accept(this);
 
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < e.stmtList.size(); i++) {
             e.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
 
         e.elifStmt.accept(this);
 
@@ -251,13 +248,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ElseStmt e) {
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < e.stmtList.size(); i++) {
             e.stmtList.elementAt(i);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(EndIfStmt e) {
@@ -298,23 +295,23 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         sc.label.accept(this);
         sc.type = sc.label.type;
 
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < sc.stmtList.size(); i++) {
             sc.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(SwitchDef sd) {
-        symbolTable.openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < sd.stmtList.size(); i++) {
             sd.stmtList.elementAt(i).accept(this);
         }
 
-        symbolTable.closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(ReturnExpr r) {
@@ -523,7 +520,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             error(f.getLineNumber(), "Function " + f.objectName.name + " has not been declared.");
             f.type = errorType;
         } else {
-            ASTNode def = symbolTable.retrieveSymbol(f.objectName.name);
+            ASTNode def = Main.currentSymbolTable.retrieveSymbol(f.objectName.name);
             FunctionDcl function = null;
 
             if (!(def instanceof FunctionDcl)) {
@@ -642,11 +639,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
-                if (!symbolTable.declaredLocally(a.arrayName.name)) {
+                if (!Main.currentSymbolTable.declaredLocally(a.arrayName.name)) {
                     errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
                     a.type = errorType;
                 } else {
-                    ASTNode def = symbolTable.retrieveSymbol(a.arrayName.name);
+                    ASTNode def = Main.currentSymbolTable.retrieveSymbol(a.arrayName.name);
                     if (def instanceof Array1D) {
                         a.type = ((Array1D) def).typeName.type;
                     } else {
@@ -673,11 +670,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
-                if (!symbolTable.declaredLocally(a.arrayName.name)) {
+                if (!Main.currentSymbolTable.declaredLocally(a.arrayName.name)) {
                     errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
                     a.type = errorType;
                 } else {
-                    ASTNode def = symbolTable.retrieveSymbol(a.arrayName.name);
+                    ASTNode def = Main.currentSymbolTable.retrieveSymbol(a.arrayName.name);
                     if (def instanceof Array2D) {
                         a.type = ((Array2D) def).typeName.type;
                     } else {
@@ -705,18 +702,31 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 error(o.getLineNumber(), o.objectName.name + " does not specify an object.");
                 o.type = errorType;
             } else {
+                ASTNode oDef = Main.currentSymbolTable.retrieveSymbol(o.objectName.name);
+                if (oDef instanceof CustomTypeIdentifier) {
+                    ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
 
-                ObjectTypeDescriptor obj = (ObjectTypeDescriptor)o.objectName.typeDescriptor;
-                SymbolTable st = obj.fields;;
-                // Skulle helst ikke smide en exception.. - jkj
-
-                ASTNode def = st.retrieveSymbol(o.fieldName.name);
-                if (def == null) {
-                    error(o.getLineNumber(), o.fieldName.name + " is not a field of " + o.objectName.name);
-                    o.type = errorType;
+                    if (tDef instanceof TypeDeclaration) {
+                        SymbolTable st = ((TypeDeclaration) tDef).typeDescriptor.fields;
+                        // Skulle helst ikke smide en exception.. - jkj
+                        st.printTable();
+                        ASTNode def = st.retrieveSymbol(o.fieldName.name);
+                        if (def == null) {
+                            error(o.getLineNumber(), o.fieldName.name + " is not a field of " + o.objectName.name);
+                            o.type = errorType;
+                        } else {
+                            o.type = def.type;
+                        }
+                    } else {
+                        error(o.getLineNumber(), "No type declaration for object: " + o.objectName.name);
+                        o.type = errorType;
+                    }
                 } else {
-                    o.type = def.type;
+                    error(o.getLineNumber(), "No type declaration for object: " + o.objectName.name);
+                    o.type = errorType;
                 }
+
+
             }
         }
     }
@@ -726,9 +736,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(Identifier id) {
         id.type = errorType;
         id.def = null;
-        ASTNode newDef = symbolTable.retrieveSymbol(id.name);
+        ASTNode newDef = Main.currentSymbolTable.retrieveSymbol(id.name);
         if (newDef == null) {
-
 
             errorNoDeclaration(id.getLineNumber(), id.name);
         } else {

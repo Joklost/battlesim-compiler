@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
+import com.company.AST.SymbolTable.SymbolTable;
 import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
@@ -17,6 +18,7 @@ public class Main {
 
     public static boolean errorFound = false;
     public static String currentFile;
+    public static SymbolTable currentSymbolTable = new SymbolTable();
 
     public static void main(String[] args) {
 
@@ -102,11 +104,6 @@ public class Main {
 
 
                 preprocessor.removeOutFile();
-
-
-
-
-                //SymbolTable.printTable();
             }
 
 

@@ -2,7 +2,7 @@ package com.company.ContextualAnalysis;
 
 import com.company.AST.Nodes.*;
 import com.company.AST.SymbolTable.SymbolTable;
-import com.company.AST.SymbolTable.SymbolTable.*;
+import com.company.Main;
 
 import static com.company.ContextualAnalysis.TypeConsts.*;
 
@@ -25,6 +25,7 @@ public class TypeVisitor extends TopDeclVisitor {
         t.typeDescriptor = new ObjectTypeDescriptor();
         t.typeDescriptor.fields = new SymbolTable();
 
+
         for (int i = 0; i < t.declarationList.size(); i++) {
             t.declarationList.elementAt(i).typeName.accept(this);
             for (int k = 0; k < t.declarationList.elementAt(i).dclIdList.size(); k++) {
@@ -43,6 +44,9 @@ public class TypeVisitor extends TopDeclVisitor {
                 }
             }
         }
+
+        SymbolTable oldCurrentSymbolTable = Main.currentSymbolTable;
+        Main.currentSymbolTable = t.typeDescriptor.fields;
 
         for (int i = 0; i < t.functionDclList.size(); i++) {
             t.functionDclList.elementAt(i).returnType.accept(this);
@@ -89,7 +93,10 @@ public class TypeVisitor extends TopDeclVisitor {
             }
         }
 
-        t.typeDescriptor.fields.printTable();
+
+        Main.currentSymbolTable = oldCurrentSymbolTable;
+
+        Main.currentSymbolTable.enterSymbol(t.name.name, t);
 
     }
 
