@@ -187,7 +187,7 @@ Stmt          ::= Dcl:d                                                         
               |   UnaryStmt:u                                                                   {: RESULT = u; :}
               ;
 UnaryStmt     ::= ObjectId:oi PLUSPLUS                                                          {: RESULT = new PlusPlusStmt(oi, oileft); :}
-              |   ObjectId:oi MINUSMINUS                                                       {: RESULT = new MinusMinusStmt(oi, oileft); :}
+              |   ObjectId:oi MINUSMINUS                                                        {: RESULT = new MinusMinusStmt(oi, oileft); :}
               ;
 Dcl           ::= DECLARE DclIds:ds AS TypeId:ti MultEOL                                        {: RESULT = new Dcl(ds, ti, dsleft); :}
               ;

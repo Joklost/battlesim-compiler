@@ -1,0 +1,82 @@
+Type Barrier
+  Declare vertices as List of Coord
+
+  Function Void AddVertex(vertex as Coord)
+    vertices.Add(vertex)
+  End Function
+End Type
+
+Type Coord
+  Declare x as Decimal
+  Declare y as Decimal
+End Type
+
+Type Vector
+  Declare x as Decimal
+  Declare y as Decimal
+
+  Function Decimal GetLength()
+    Declare res as Decimal
+    %`` res = Math.abs(Math.sqrt( Math.pow(x, x) + Math.pow(y, y))); //Fix pls
+    Return res
+  End Function
+End Type
+
+Type DSTFunctions
+  Function Vector FindUnitVector(startCoord as Coord, targetCoord as Coord)
+    Declare res as Vector
+    res.x = targetCoord.x - startCoord.x
+    res.y = targetCoord.y - startCoord.y
+    Declare length as Decimal
+    length = res.GetLength()
+    res.x /= length
+    res.y /= length
+    Return res
+  End Function
+
+  Function Coord CenterOfMass(coords as List of Coord)
+    Declare res as Coord
+    Foreach coord in coords
+      res.x += coord.x
+      res.y += coord.y
+    End Foreach
+    res.x /= coords.Count()
+    res.y /= coords.Count()
+    Return res
+  End Function
+End Type
+
+Type Terrain
+  Declare width as Integer
+  Declare width as Integer
+End Type
+
+Type Soldier
+  Declare defaultVelocity as Decimal
+  Declare size as Integer
+  Declare velocity as Decimal
+  Declare magazines as Integer
+  Declare pos as Coord
+  Declare direction as Vector
+
+  Function Void Soldier()
+    defaultVelocity = 3 //Change this because this is a random number
+    size = 4            //Change this because this is a random number
+    velocity = 0
+    magazines = 4
+  End Function
+
+  Function Void Move(target as Coord)
+    If velocity == 0
+      velocity = defaultVelocity
+    End If
+    Declare dstf as DSTFunctions
+    direction = dstf.FindUnitVector(pos, target)
+  End Function
+
+  Function Void Move(target as Coord, vel as Decimal)
+    velocity = vel
+    Declare dstf as DSTFunctions
+    direction = dstf.FindUnitVector(pos, target)
+  End Function
+End Type
