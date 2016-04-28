@@ -1,4 +1,6 @@
-
+// Test declerations
+// Declarations er påkrævet
+// TEST: Success
 Begin Declarations
     Declare da as Boolean
     Declare no as Boolean
@@ -8,11 +10,8 @@ Begin Declarations
     Declare a as Integer
     Declare list as List of String
     Declare i as Integer
+    i = 5
 End Declarations
-// ^
-// Test declerations
-// Declarations er påkrævet
-// TEST: Success
 
 // Test declerations
 // Declerations er påkrævet
@@ -64,4 +63,21 @@ Begin Program
     // Test if
     TestIf()
     PrintLine("If tested success")
+
+    TestSwitch()
+    PrintLine("Switch tested success")
+
+    TestFor()
+    PrintLine("For loops tested success")
+
+    // Ej muligt
+    //PrintLine("Test \"escape\"...")
+    // Test \n. \n virker kun med workaround #15
+    Print("New line \\n")
+
+    Print("Test print")
+    PrintLine("")
+
+    TestScope()
+
 End Program
