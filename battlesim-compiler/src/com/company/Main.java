@@ -94,7 +94,7 @@ public class Main {
                             }
                         }
 
-                        if (generatedCode) {
+                        if (!generatedCode) {
 
                             CompileJava cj = new CompileJava(outputName, map);
                             cj.compile();
