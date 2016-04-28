@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
+import com.company.AST.Nodes.TypeDeclaration;
 import com.company.AST.SymbolTable.SymbolTable;
 import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
@@ -80,6 +81,9 @@ public class Main {
 
                 if (!parser.errorFound) {
                     startNode.accept(semanticsVisitor);
+                    currentSymbolTable.printTable();
+                    TypeDeclaration soldier = (TypeDeclaration) currentSymbolTable.retrieveSymbol("Soldier");
+                    soldier.typeDescriptor.fields.printTable();
                     /*if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
                         Map<String, List<String>> map = generateJavaVisitor.getCode();

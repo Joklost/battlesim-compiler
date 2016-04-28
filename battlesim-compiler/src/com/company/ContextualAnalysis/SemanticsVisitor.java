@@ -520,7 +520,24 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             error(f.getLineNumber(), "Function " + f.objectName.name + " has not been declared.");
             f.type = errorType;
         } else {
-            ASTNode def = Main.currentSymbolTable.retrieveSymbol(f.objectName.name);
+            ASTNode def = null;
+            if (f.objectName instanceof ObjectReferencing) {
+                ASTNode oDef = Main.currentSymbolTable.retrieveSymbol(((ObjectReferencing) f.objectName).objectName.name);
+
+                if (oDef instanceof CustomTypeIdentifier) {
+                    ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
+
+                    if (tDef instanceof TypeDeclaration) {
+                        def = ((TypeDeclaration) tDef).typeDescriptor.fields.retrieveSymbol(((ObjectReferencing) f.objectName).fieldName.name);
+                    } else {
+                        // TODO: ERROR
+                    }
+                } else {
+                    // TODO: ERROR
+                }
+            } else {
+                def = Main.currentSymbolTable.retrieveSymbol(f.objectName.name);
+            }
             FunctionDcl function = null;
 
             if (!(def instanceof FunctionDcl)) {
@@ -694,6 +711,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ObjectReferencing o) {
+
         o.objectName.accept(this);
         if (o.objectName.type == errorType) {
             o.type = errorType;
@@ -709,12 +727,12 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                     if (tDef instanceof TypeDeclaration) {
                         SymbolTable st = ((TypeDeclaration) tDef).typeDescriptor.fields;
                         // Skulle helst ikke smide en exception.. - jkj
-                        st.printTable();
                         ASTNode def = st.retrieveSymbol(o.fieldName.name);
                         if (def == null) {
                             error(o.getLineNumber(), o.fieldName.name + " is not a field of " + o.objectName.name);
                             o.type = errorType;
                         } else {
+
                             o.type = def.type;
                         }
                     } else {
