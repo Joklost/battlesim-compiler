@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
+import com.company.AST.Visitor.PrettyPrintVisitor;
 import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
@@ -25,6 +26,7 @@ public class Main {
         boolean generatedCode = true;
         String outputName = "Main";
 
+        PrettyPrintVisitor prettyPrintVisitor = new PrettyPrintVisitor();
 
         int readArgs = 0;
         if (args.length > 0) {
@@ -51,7 +53,8 @@ public class Main {
         } else {
             // stier skal ind her, hvis det skal køres fra IntelliJ
             //paths.add("/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs");
-            paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
+            //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
+            paths.add("/home/r5hej/git/P4-Code/full-language-test/javatest.bs");
         }
 
         Preprocessor preprocessor = null;
@@ -75,6 +78,10 @@ public class Main {
                 startNode = (Start)parser.parse().value;
 
                 if (!parser.errorFound) {
+
+                    startNode.accept(prettyPrintVisitor);
+
+                    /*
                     startNode.accept(semanticsVisitor);
                     if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
@@ -92,7 +99,7 @@ public class Main {
                             CompileJava cj = new CompileJava(outputName, generateJavaVisitor.getCode());
                             cj.compile();
                         }
-                    }
+                    }*/
                 }
 
 

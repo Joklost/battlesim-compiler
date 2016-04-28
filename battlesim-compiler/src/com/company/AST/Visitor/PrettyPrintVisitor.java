@@ -356,73 +356,73 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(PlusExpr pe){
         pe.leftExpr.accept(this);
-        print("+");
+        print(" + ");
         pe.rightExpr.accept(this);
     }
 
     public void visit(MinusExpr me){
         me.leftExpr.accept(this);
-        print("-");
+        print(" - ");
         me.rightExpr.accept(this);
     }
 
     public void visit(MultExpr me){
         me.leftExpr.accept(this);
-        print("*");
+        print(" * ");
         me.rightExpr.accept(this);
     }
 
     public void visit(DivExpr de){
         de.leftExpr.accept(this);
-        print("/");
+        print(" / ");
         de.rightExpr.accept(this);
     }
 
     public void visit(ModExpr me){
         me.leftExpr.accept(this);
-        print("%");
+        print(" % ");
         me.rightExpr.accept(this);
     }
 
     public void visit(AndExpr ae){
         ae.leftExpr.accept(this);
-        print("AND");
+        print(" AND ");
         ae.rightExpr.accept(this);
     }
 
     public void visit(OrExpr oe){
         oe.leftExpr.accept(this);
-        print("OR");
+        print(" OR ");
         oe.rightExpr.accept(this);
     }
 
     public void visit(LogicEqualsExpr le){
         le.leftExpr.accept(this);
-        print("EQUALS");
+        print(" EQUALS ");
         le.rightExpr.accept(this);
     }
 
     public void visit(LessThanExpr le){
         le.leftExpr.accept(this);
-        print("<");
+        print(" < ");
         le.rightExpr.accept(this);
     }
 
     public void visit(GreaterThanExpr ge){
         ge.leftExpr.accept(this);
-        print(">");
+        print(" > ");
         ge.rightExpr.accept(this);
     }
 
     public void visit(LessThanEqualsExpr le){
         le.leftExpr.accept(this);
-        print("<=");
+        print(" <= ");
         le.rightExpr.accept(this);
     }
 
     public void visit(GreaterThanEqualsExpr ge){
         ge.leftExpr.accept(this);
-        print(">=");
+        print(" >= ");
         ge.rightExpr.accept(this);
     }
 
