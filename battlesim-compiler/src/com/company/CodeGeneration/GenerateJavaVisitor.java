@@ -25,6 +25,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     private final int main = 0;
     private final int decl = 1;
+    private final int customType = 11;
 
     private int emitTarget = 0;
 
