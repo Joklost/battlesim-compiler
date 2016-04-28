@@ -533,7 +533,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(StringLiteral sl){
-        print(sl.string);
+        print("\"" + sl.string + "\"");
     }
 
     public void visit(BooleanLiteral bl){ print(bl.value.toString()); }
@@ -603,6 +603,10 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(Barrier b){
         print("Barrier");
+    }
+
+    public void visit(VectorT v) {
+        print("Vector");
     }
 
     public void visit(IntegerT i){
