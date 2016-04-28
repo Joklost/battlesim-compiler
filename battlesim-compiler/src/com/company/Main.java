@@ -81,10 +81,7 @@ public class Main {
 
                 if (!parser.errorFound) {
                     startNode.accept(semanticsVisitor);
-                    currentSymbolTable.printTable();
-                    TypeDeclaration soldier = (TypeDeclaration) currentSymbolTable.retrieveSymbol("Soldier");
-                    soldier.typeDescriptor.fields.printTable();
-                    /*if (!errorFound) {
+                    if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
                         Map<String, List<String>> map = generateJavaVisitor.getCode();
                         map.putAll(DST.getDST());
@@ -102,7 +99,7 @@ public class Main {
                             CompileJava cj = new CompileJava(outputName, map);
                             cj.compile();
                         }
-                    }*/
+                    }
                 }
 
 
