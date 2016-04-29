@@ -724,6 +724,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 if (oDef instanceof CustomTypeIdentifier) {
                     ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
 
+                    if (tDef == null) {
+                        tDef = Main.symbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
+                    }
+
                     if (tDef instanceof TypeDeclaration) {
                         SymbolTable st = ((TypeDeclaration) tDef).typeDescriptor.fields;
                         // Skulle helst ikke smide en exception.. - jkj

@@ -20,6 +20,7 @@ public class Main {
     public static boolean errorFound = false;
     public static String currentFile;
     public static SymbolTable currentSymbolTable = new SymbolTable();
+    public static SymbolTable symbolTable = currentSymbolTable;
 
     public static void main(String[] args) {
 
@@ -54,7 +55,7 @@ public class Main {
             }
         } else {
             // stier skal ind her, hvis det skal køres fra IntelliJ
-            paths.add("/home/joklost/scopetest.bs");
+            //paths.add("/home/joklost/scopetest.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
             //paths.add("/home/pgug/Code/P4-Code/full-language-test/javatest.bs");
         }

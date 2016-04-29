@@ -70,15 +70,18 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
                     ASTNode fDef = Main.currentSymbolTable.retrieveSymbol(o.fieldName.name);
                     if (!isAssignable(fDef)) {
                         error(o.getLineNumber(), o.fieldName.name + " is not an assignable field.");
+                        o.type = errorType;
                     }
 
                     Main.currentSymbolTable = oldCurrentSymbolTable;
                 } else {
-                    // TODO: error
+                    error(o.getLineNumber(), o.fieldName.name + " is not a declared type.");
+                    o.type = errorType;
                 }
 
             } else {
-                // TODO: error
+                error(o.getLineNumber(), o.fieldName.name + " is not a declared type.");
+                o.type = errorType;
             }
 
         }
