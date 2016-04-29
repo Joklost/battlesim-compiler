@@ -85,7 +85,7 @@ public class Main {
                         startNode.accept(generateJavaVisitor);
                         Map<String, List<String>> map = generateJavaVisitor.getCode();
                         //map.putAll(DST.getDST());
-                        if (!printCode) {
+                        if (printCode) {
                             int ln = 1;
                             for (String s : map.keySet()) {
                                 List<String> ls = map.get(s);

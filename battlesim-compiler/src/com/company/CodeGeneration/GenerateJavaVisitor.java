@@ -172,6 +172,8 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         List<String> typeCode = new ArrayList<>();
         codeMap.put(t.name.name, typeCode);
 
+        indentLevel--;
+
         emitIndentation("package com.BattleSim;\n");
         emitIndentation("import java.io.*;\n");
         emitIndentation("import java.util.*;\n");
@@ -196,6 +198,8 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitIndentation("}\n");
 
         setEmitTarget(oldEmitTarget);
+
+        indentLevel++;
     }
 
     public void visit(FunctionDcl fd) {
@@ -799,7 +803,9 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
 
     public void visit(ObjectReferencing o) {
-
+        o.objectName.accept(this);
+        emit(".");
+        o.fieldName.accept(this);
     }
 
     public void visit(Array1DReferencing a) {
