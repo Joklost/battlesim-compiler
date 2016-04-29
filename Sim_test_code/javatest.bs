@@ -1,0 +1,126 @@
+// Test declerations
+// Declarations er påkrævet
+// TEST: Success
+Begin Declarations
+    Declare da as Boolean
+    Declare no as Boolean
+    Declare k as Decimal
+    Declare foo as Integer
+    Declare s as String
+    Declare a as Integer
+    Declare list as List of String
+    Declare i as Integer
+    i = 5
+    Declare Charlie as Soldier
+End Declarations
+
+// Test declerations
+// Declerations er påkrævet
+// TEST: Success
+Declare Simulations
+End Declare Simulations
+
+Type Coord
+  Declare X as Decimal
+  Declare Y as Decimal
+
+  Function String ToString()
+    Return "(" + X + "," + Y + ")"
+  End Function
+End Type
+
+Type Soldier
+  Declare Magazines as Integer
+  Declare X as Decimal
+  Declare Y as Decimal
+
+  Function Void SetMagazines(mags as Integer)
+    Magazines = mags
+  End Function
+
+  Function String PosToString()
+    Return "(" + X + "," + Y + ")"
+  End Function
+
+  Function Void Teleport(x as Decimal, y as Decimal)
+    X = x
+    Y = y
+  End Function
+
+End Type
+
+// Test Include
+// Include kan først komme efter simulations og declerations
+//  ellers gives fejl
+// TEST: Success
+#Include("stdlib.bsi")
+#Include("test_functions.bsi") // Include all
+                               // our test functions
+
+Begin Program
+    Declare target as Coord
+    target.X = 4
+    target.Y = 5
+    PrintLine(target.ToString())
+    Declare john as Soldier
+    PrintLine(john.PosToString())
+    john.Teleport(target.X, target.Y)
+    PrintLine(john.PosToString())
+    /*
+        Testing block comment
+    */
+    // Run test for reccursiv functions
+    PrintLine(Factorial(5) + "")
+    PrintLine("Factorial success")
+
+    // Run test for return Integer
+    PrintLine(ReturnInt() + "")
+    PrintLine("return Integer success")
+
+    // Run test for return Decimal
+    PrintLine(ReturnDecimal() + "")
+    PrintLine("return dedimal success")
+
+    // Run test for while
+    TestWhile()
+    PrintLine("while success")
+
+    // Test array and Foreach
+    TestArrayForeach()
+    PrintLine("array and foreach success")
+
+    // Test math
+    math(12)
+    PrintLine("math tested success")
+
+    // Test bool
+    TestBool()
+    PrintLine("bool tested success")
+
+    // Test if
+    TestIf()
+    PrintLine("If tested success")
+
+    TestSwitch()
+    PrintLine("Switch tested success")
+
+    TestFor()
+    PrintLine("For loops tested success")
+
+    // Ej muligt
+    //PrintLine("Test \"escape\"...")
+    // Test \n. \n virker kun med workaround #15
+    Print("New line \\n")
+
+    Print("Test print")
+    PrintLine("")
+
+    TestScope()
+
+    PrintLine("Test ting")
+    Charlie.Magazines = 1
+    PrintLine(Charlie.Magazines + "")
+    Charlie.SetMagazines(42)
+    PrintLine(Charlie.Magazines + "")
+
+End Program
