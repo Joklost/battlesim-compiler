@@ -21,33 +21,33 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     private Map<String, List<String>> codeMap;
     private List<String> mainCode;
     private List<String> declCode;
+    private List<String> customTypeCode;
     private int indentLevel;
 
-    private final int main = 0;
-    private final int decl = 1;
-    private final int customType = 11;
+    private final String main = "Main";
+    private final String decl = "Declarations";
 
-    private int emitTarget = 0;
+    private String emitTarget = "";
 
     public GenerateJavaVisitor() {
         codeMap = new HashMap<>();
         mainCode = new ArrayList<>();
         declCode = new ArrayList<>();
-        codeMap.put("Main", mainCode);
-        codeMap.put("Declarations", declCode);
+        codeMap.put(main, mainCode);
+        codeMap.put(decl, declCode);
     }
 
-    private void setEmitTarget(int i) {
-        emitTarget = i;
+    private void setEmitTarget(String s) {
+        emitTarget = s;
     }
 
     private void emit(String s) {
-        if (emitTarget == main) {
+        if (emitTarget.equals(main)) {
             mainCode.add(s);
-        } else if (emitTarget == decl) {
+        } else if (emitTarget.equals(decl)) {
             declCode.add(s);
         } else {
-            throw new Error("Unrecognized emit target..");
+            codeMap.get(emitTarget).add(s);
         }
     }
 
@@ -110,6 +110,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
         s.simBlock.accept(this);
 
+        for (int i = 0; i < s.typeDeclarationList.size(); i++) {
+            s.typeDeclarationList.elementAt(i).accept(this);
+        }
+
         for (int i = 0; i < s.functionDclList1.size(); i++) {
             s.functionDclList1.elementAt(i).accept(this);
         }
@@ -162,11 +166,43 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(TypeDeclaration t) {
-        // TOOD
+        String oldEmitTarget = emitTarget;
+        setEmitTarget(t.name.name);
+
+        List<String> typeCode = new ArrayList<>();
+        codeMap.put(t.name.name, typeCode);
+
+        emitIndentation("package com.BattleSim;\n");
+        emitIndentation("import java.io.*;\n");
+        emitIndentation("import java.util.*;\n");
+        emitIndentation("import java.util.Scanner;\n");
+        emitComment("BattleSim automatically generated code file.\n");
+        emitIndentation("public class ");
+        t.name.accept(this);
+        emit(" {\n");
+
+        indentLevel++;
+
+        for (int i = 0; i < t.declarationList.size(); i++) {
+            t.declarationList.elementAt(i).accept(this);
+        }
+
+        for (int i = 0; i <t.functionDclList.size(); i++) {
+            t.functionDclList.elementAt(i).accept(this);
+        }
+
+        indentLevel--;
+
+        emitIndentation("}\n");
+
+        setEmitTarget(oldEmitTarget);
     }
 
     public void visit(FunctionDcl fd) {
-        emitIndentation("public static ");
+        emitIndentation("public ");
+        if (emitTarget == main) {
+            emit("static ");
+        }
         fd.returnType.accept(this);
         emit(" ");
         fd.functionName.accept(this);
@@ -243,7 +279,11 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             emit(" = \"\"");
         } else if (ds.typeName instanceof Decimal) {
             emit(" = 0.0");
-        } else if (ds.typeName instanceof Barrier){
+        } else if (ds.typeName instanceof CustomTypeIdentifier) {
+            emit(" = new " + ((CustomTypeIdentifier) ds.typeName).name.name + "()");
+        }
+
+        /*else if (ds.typeName instanceof Barrier){
             emit(" = new Barrier()");
         } else if (ds.typeName instanceof Coord){
             emit(" = new Coord()");
@@ -257,7 +297,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             emit(" = new Platoon()");
         } else if (ds.typeName instanceof Soldier) {
             emit(" = new Soldier()");
-        }
+        }*/
         emit(";\n");
     }
 
@@ -704,7 +744,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     public void visit(BooleanT b) {
         emit("boolean");
     }
-
+/*
     public void visit(Group g) {
         emit("Group");
 
@@ -739,7 +779,11 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         // TODO
 
     }
+    public void visit(Terrain t) {
+        emit("Terrain");
+    }
 
+*/
     public void visit(IntegerT i) {
         emit("int");
     }
@@ -750,12 +794,9 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(CustomTypeIdentifier o) {
-
+        emit(o.name.name);
     }
 
-    public void visit(Terrain t) {
-        emit("Terrain");
-    }
 
     public void visit(ObjectReferencing o) {
 

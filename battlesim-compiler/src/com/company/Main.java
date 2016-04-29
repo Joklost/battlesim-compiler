@@ -84,8 +84,9 @@ public class Main {
                     if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
                         Map<String, List<String>> map = generateJavaVisitor.getCode();
-                        map.putAll(DST.getDST());
-                        if (printCode) {
+                        //map.putAll(DST.getDST());
+                        if (!printCode) {
+                            int ln = 1;
                             for (String s : map.keySet()) {
                                 List<String> ls = map.get(s);
                                 for (String ss : ls) {
@@ -94,7 +95,7 @@ public class Main {
                             }
                         }
 
-                        if (!generatedCode) {
+                        if (generatedCode) {
 
                             CompileJava cj = new CompileJava(outputName, map);
                             cj.compile();
