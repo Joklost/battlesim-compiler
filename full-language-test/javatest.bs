@@ -27,9 +27,6 @@ Type Soldier
     Magazines = mags 
   End Function
 
-  Function Void SayHello()
-    PrintLine("Hello Soldier")
-  End Function
 End Type
 
 // Test Include
@@ -98,6 +95,5 @@ Begin Program
     PrintLine(Charlie.Magazines + "")
     Charlie.SetMagazines(42)
     PrintLine(Charlie.Magazines + "")
-    Charlie.SayHello()
 
 End Program
