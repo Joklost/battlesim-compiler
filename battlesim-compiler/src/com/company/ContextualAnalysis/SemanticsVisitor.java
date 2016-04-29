@@ -510,11 +510,19 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         //f.type = returnType
         f.objectName.accept(this);
 
-        int[] argTypeList = new int[f.argumentList.size()];
+        int[] argTypeList;
+        argTypeList = new int[f.argumentList.size()];
         for (int i = 0; i < f.argumentList.size(); i++) {
             f.argumentList.elementAt(i).accept(this);
             argTypeList[i] = f.argumentList.elementAt(i).type;
         }
+/*      // er ikke en god løsning, da det er selve argumentList der skal vendes om..
+        for (int i = 0; i < argTypeList.length / 2; i++) {
+            int temp = argTypeList[i];
+            argTypeList[i] = argTypeList[argTypeList.length - i - 1];
+            argTypeList[argTypeList.length - i - 1] = temp;
+        }
+*/
 
         if (f.objectName.type == errorType) {
             error(f.getLineNumber(), "Function " + f.objectName.name + " has not been declared.");
@@ -530,10 +538,12 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                     if (tDef instanceof TypeDeclaration) {
                         def = ((TypeDeclaration) tDef).typeDescriptor.fields.retrieveSymbol(((ObjectReferencing) f.objectName).fieldName.name);
                     } else {
-                        // TODO: ERROR
+                        error(f.getLineNumber(), "Type declaration not found for " + f.objectName.name);
+                        f.type = errorType;
                     }
                 } else {
-                    // TODO: ERROR
+                    error(f.getLineNumber(), "Type declaration not found for " + f.objectName.name);
+                    f.type = errorType;
                 }
             } else {
                 def = Main.currentSymbolTable.retrieveSymbol(f.objectName.name);
@@ -552,8 +562,16 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 } else {
                     boolean misMatchedArgsFound = false;
                     for (int i = 0; i < function.paramList.size(); i++) {
-                        if (f.argumentList.elementAt(i).type != function.paramList.elementAt(i).type) {
-                            error(f.getLineNumber(), "Argument " + (i + 1) + " in function call of " + f.objectName.name + " does not match with parameter. Type: " + getTypeName(f.argumentList.elementAt(i).type));
+
+                        if (argTypeList[i] != function.paramList.elementAt(i).type) {
+                            String fName = "";
+                            if (f.objectName instanceof ObjectReferencing) {
+                                fName = ((ObjectReferencing) f.objectName).fieldName.name;
+                            } else {
+                                fName = f.objectName.name;
+                            }
+
+                            error(f.getLineNumber(), "Argument " + (i + 1) + " in function call of " + fName + " does not match with parameter. Type: " + getTypeName(f.argumentList.elementAt(i).type));
                             f.type = errorType;
                             misMatchedArgsFound = true;
                         }
@@ -656,7 +674,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
-                if (!Main.currentSymbolTable.declaredLocally(a.arrayName.name)) {
+                if (Main.currentSymbolTable.retrieveSymbol(a.arrayName.name) == null) {
                     errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
                     a.type = errorType;
                 } else {
