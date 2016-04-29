@@ -9,7 +9,6 @@ import com.company.Main;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.company.AST.SymbolTable.SymbolTable.*;
 import static com.company.ContextualAnalysis.TypeConsts.*;
 import static com.company.Main.currentFile;
 
@@ -29,7 +28,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     FunctionDcl currentFunction;
 
     public SemanticsVisitor() {
-        createStdLib();
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +41,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(Start s) {
         s.dclBlock.accept(this);
         s.simBlock.accept(this);
+
+        for (int i = 0; i < s.typeDeclarationList.size(); i++) {
+            s.typeDeclarationList.elementAt(i).accept(this);
+        }
 
         for (int i = 0; i < s.functionDclList1.size(); i++) {
             s.functionDclList1.elementAt(i).accept(this);
@@ -75,13 +77,18 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Interrupts is) {
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < is.stmtList.size(); i++) {
             is.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
+    }
+
+    public void visit(TypeDeclaration t) {
+        TypeVisitor typeVisitor = new TypeVisitor();
+        t.accept(typeVisitor);
     }
 
     public void visit(FunctionDcl fd) {
@@ -95,13 +102,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Program p) {
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < p.stmtList.size(); i++) {
             p.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(Dcl ds) {
@@ -114,7 +121,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         as.targetName.accept(lhsSemanticsVisitor);
         as.expression.accept(this);
 
-        if (assignable(as.targetName.type, as.expression.type)) {       // TODO
+        if (assignable(as.targetName.type, as.expression.type)) {
             as.type = as.targetName.type;
         } else {
             error(as.getLineNumber(), "Unable to assign " + getTypeName(as.expression.type) + " to " + getTypeName(as.targetName.type) + ".");
@@ -126,13 +133,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(WhileStmt ws) {
         ws.condition.accept(this);
 
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < ws.stmtList.size(); i++) {
             ws.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
 
         if (ws.condition != null) {
             checkBoolean(ws.condition);
@@ -141,12 +148,12 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(ForeachStmt fes) {
         //fes.typeName.type == fes.objectName.type
-        openScope();
+        Main.currentSymbolTable.openScope();
         fes.typeName.accept(this);
 
         fes.localName.type = fes.typeName.type;
 
-        enterSymbol(fes.localName.name, fes.typeName);
+        Main.currentSymbolTable.enterSymbol(fes.localName.name, fes.typeName);
         fes.localName.accept(this);
 
         fes.objectName.accept(this);
@@ -155,13 +162,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             fes.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
 
         if ((fes.objectName.type != listType) && (fes.objectName.type != array1DType)) {
             error(fes.getLineNumber(), "Object in foreach statement is not a list or 1d array.");
             fes.type = errorType;
         } else {
-            ASTNode def = retrieveSymbol(fes.objectName.name);
+            ASTNode def = Main.currentSymbolTable.retrieveSymbol(fes.objectName.name);
 
             if (def != null) {
                 int type = noType;
@@ -190,13 +197,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         fs.forIterator.accept(this);
         fs.toExpr.accept(this);
 
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < fs.stmtList.size(); i++) {
             fs.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
 
         if (fs.initialExpr.type != integerType) {
             error(fs.getLineNumber(), "Inital expression in for statement has to be an integer.");
@@ -211,13 +218,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(IfStmt i) {
         i.condition.accept(this);
 
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int k = 0; k < i.stmtList.size(); k++) {
             i.stmtList.elementAt(k).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
 
         i.elseStmt.accept(this);
 
@@ -227,13 +234,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(ElseIfStmt e) {
         e.condition.accept(this);
 
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < e.stmtList.size(); i++) {
             e.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
 
         e.elifStmt.accept(this);
 
@@ -241,13 +248,13 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ElseStmt e) {
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < e.stmtList.size(); i++) {
             e.stmtList.elementAt(i);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(EndIfStmt e) {
@@ -288,23 +295,23 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         sc.label.accept(this);
         sc.type = sc.label.type;
 
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < sc.stmtList.size(); i++) {
             sc.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(SwitchDef sd) {
-        openScope();
+        Main.currentSymbolTable.openScope();
 
         for (int i = 0; i < sd.stmtList.size(); i++) {
             sd.stmtList.elementAt(i).accept(this);
         }
 
-        closeScope();
+        Main.currentSymbolTable.closeScope();
     }
 
     public void visit(ReturnExpr r) {
@@ -513,7 +520,24 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             error(f.getLineNumber(), "Function " + f.objectName.name + " has not been declared.");
             f.type = errorType;
         } else {
-            ASTNode def = retrieveSymbol(f.objectName.name);
+            ASTNode def = null;
+            if (f.objectName instanceof ObjectReferencing) {
+                ASTNode oDef = Main.currentSymbolTable.retrieveSymbol(((ObjectReferencing) f.objectName).objectName.name);
+
+                if (oDef instanceof CustomTypeIdentifier) {
+                    ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
+
+                    if (tDef instanceof TypeDeclaration) {
+                        def = ((TypeDeclaration) tDef).typeDescriptor.fields.retrieveSymbol(((ObjectReferencing) f.objectName).fieldName.name);
+                    } else {
+                        // TODO: ERROR
+                    }
+                } else {
+                    // TODO: ERROR
+                }
+            } else {
+                def = Main.currentSymbolTable.retrieveSymbol(f.objectName.name);
+            }
             FunctionDcl function = null;
 
             if (!(def instanceof FunctionDcl)) {
@@ -608,34 +632,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         b.type = booleanType;
     }
 
-    public void visit(Group g) {
-        g.type = groupType;
-    }
-
-    public void visit(Platoon p) {
-        p.type = platoonType;
-    }
-
-    public void visit(Force f) {
-        f.type = forceType;
-    }
-
-    public void visit(Coord c) {
-        c.type = coordType;
-    }
-
-    public void visit(Soldier s) {
-        s.type = soldierType;
-    }
-
-    public void visit(Barrier b) {
-        b.type = barrierType;
-    }
-
-    public void visit(VectorT v) {
-        v.type = vectorType;
-    }
-
     public void visit(IntegerT i) {
         i.type = integerType;
     }
@@ -644,8 +640,9 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         v.type = voidType;
     }
 
-    public void visit(Terrain t) {
-        t.type = terrainType;
+    public void visit(CustomTypeIdentifier o) {
+        //o.name.accept(this);
+        o.type = objectType;
     }
 
     public void visit(Array1DReferencing a) {
@@ -659,11 +656,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
-                if (!declaredLocally(a.arrayName.name)) {
+                if (!Main.currentSymbolTable.declaredLocally(a.arrayName.name)) {
                     errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
                     a.type = errorType;
                 } else {
-                    ASTNode def = retrieveSymbol(a.arrayName.name);
+                    ASTNode def = Main.currentSymbolTable.retrieveSymbol(a.arrayName.name);
                     if (def instanceof Array1D) {
                         a.type = ((Array1D) def).typeName.type;
                     } else {
@@ -690,11 +687,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
-                if (!declaredLocally(a.arrayName.name)) {
+                if (!Main.currentSymbolTable.declaredLocally(a.arrayName.name)) {
                     errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
                     a.type = errorType;
                 } else {
-                    ASTNode def = retrieveSymbol(a.arrayName.name);
+                    ASTNode def = Main.currentSymbolTable.retrieveSymbol(a.arrayName.name);
                     if (def instanceof Array2D) {
                         a.type = ((Array2D) def).typeName.type;
                     } else {
@@ -714,26 +711,40 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ObjectReferencing o) {
+
         o.objectName.accept(this);
         if (o.objectName.type == errorType) {
             o.type = errorType;
         } else {
-            if (o.objectName.type != objectTypeDescriptor) {
+            if (o.objectName.type != objectType) {
                 error(o.getLineNumber(), o.objectName.name + " does not specify an object.");
                 o.type = errorType;
             } else {
+                ASTNode oDef = Main.currentSymbolTable.retrieveSymbol(o.objectName.name);
+                if (oDef instanceof CustomTypeIdentifier) {
+                    ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
 
-                ObjectTypeDescriptor obj = (ObjectTypeDescriptor)o.objectName.typeDescriptor;
-                SymbolTable st = obj.fields;;
-                // Skulle helst ikke smide en exception.. - jkj
+                    if (tDef instanceof TypeDeclaration) {
+                        SymbolTable st = ((TypeDeclaration) tDef).typeDescriptor.fields;
+                        // Skulle helst ikke smide en exception.. - jkj
+                        ASTNode def = st.retrieveSymbol(o.fieldName.name);
+                        if (def == null) {
+                            error(o.getLineNumber(), o.fieldName.name + " is not a field of " + o.objectName.name);
+                            o.type = errorType;
+                        } else {
 
-                ASTNode def = st.retrieveSymbol(o.fieldName.name);
-                if (def == null) {
-                    error(o.getLineNumber(), o.fieldName.name + " is not a field of " + o.objectName.name);
-                    o.type = errorType;
+                            o.type = def.type;
+                        }
+                    } else {
+                        error(o.getLineNumber(), "No type declaration for object: " + o.objectName.name);
+                        o.type = errorType;
+                    }
                 } else {
-                    o.type = def.type;
+                    error(o.getLineNumber(), "No type declaration for object: " + o.objectName.name);
+                    o.type = errorType;
                 }
+
+
             }
         }
     }
@@ -743,9 +754,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(Identifier id) {
         id.type = errorType;
         id.def = null;
-        ASTNode newDef = retrieveSymbol(id.name);
+        ASTNode newDef = Main.currentSymbolTable.retrieveSymbol(id.name);
         if (newDef == null) {
-
 
             errorNoDeclaration(id.getLineNumber(), id.name);
         } else {
@@ -767,7 +777,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (target == decimalType && expression == integerType) return true;
         if (target == stringType && expression == nullType) return true;
         if ((target == array1DType || target == array2DType || target == listType) && expression == nullType) return true;
-        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == vectorType || target == terrainType) && expression == nullType) return true;
+//        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == vectorType || target == terrainType) && expression == nullType) return true;
+        if ((target == objectType) && expression == nullType) return true;
 
         return false;    // skal laves
     }
@@ -883,53 +894,5 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             }
         }
     }
-
-
-    private void createStdLib() {
-        // Print
-/*
-        TypeIdentifier tPrint = new VoidT(-1);
-        tPrint.type = voidType;
-        Identifier iPrint = new Identifier("Print", -1);
-        ParamList pPrint = new ParamList(-1);
-        Param ppPrint = new Param(new Identifier("s", -1), new StringT(-1), -1);
-        ppPrint.type = stringType;
-        pPrint.addElement(ppPrint);
-        FunctionDcl fPrint = new FunctionDcl(tPrint, iPrint, pPrint, null, -1);
-        enterSymbol(iPrint.name, fPrint);
-
-        //PrintLine
-        TypeIdentifier tPrintLine = new VoidT(-1);
-        tPrintLine.type = voidType;
-        Identifier iPrintLine = new Identifier("PrintLine", -1);
-        ParamList pPrintLine = new ParamList(-1);
-        Param ppPrintLine = new Param(new Identifier("s", -1), new StringT(-1), -1);
-        ppPrintLine.type = stringType;
-        pPrintLine.addElement(ppPrintLine);
-        FunctionDcl fPrintLine = new FunctionDcl(tPrintLine, iPrintLine, pPrintLine, null, -1);
-        enterSymbol(iPrintLine.name, fPrintLine);
-
-        //Input
-        TypeIdentifier tInput = new StringT(-1);
-        tInput.type = stringType;
-        Identifier iInput = new Identifier("Input", -1);
-        ParamList pInput = new ParamList(-1);
-        FunctionDcl fInput = new FunctionDcl(tInput, iInput, pInput, null, -1);
-        enterSymbol(iInput.name, fInput);
-
-        //ConvertToInteger(string)
-        TypeIdentifier ci = new IntegerT(-1);
-        ci.type = integerType;
-        Identifier cii = new Identifier("ConvertToInteger", -1);
-        ParamList pci = new ParamList(-1);
-        Param ppci = new Param(new Identifier("s", -1), new StringT(-1), -1);
-        ppci.type = stringType;
-        pci.addElement(ppci);
-        FunctionDcl fci = new FunctionDcl(ci, cii, pci, null, -1);
-        fci.type = integerType;
-        enterSymbol(cii.name, fci);
-        */
-    }
-
 
 }

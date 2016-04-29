@@ -1,6 +1,8 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
+import com.company.AST.Nodes.TypeDeclaration;
+import com.company.AST.SymbolTable.SymbolTable;
 import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
@@ -17,6 +19,7 @@ public class Main {
 
     public static boolean errorFound = false;
     public static String currentFile;
+    public static SymbolTable currentSymbolTable = new SymbolTable();
 
     public static void main(String[] args) {
 
@@ -51,7 +54,7 @@ public class Main {
             }
         } else {
             // stier skal ind her, hvis det skal køres fra IntelliJ
-            //paths.add("/home/joklost/git/P4-Code/battlesim-compiler/battlesim/jonastest/javatest.bs");
+            paths.add("/home/joklost/scopetest.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
             //paths.add("/home/pgug/Code/P4-Code/full-language-test/javatest.bs");
         }
@@ -81,8 +84,9 @@ public class Main {
                     if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
                         Map<String, List<String>> map = generateJavaVisitor.getCode();
-                        map.putAll(DST.getDST());
+                        //map.putAll(DST.getDST());
                         if (printCode) {
+                            int ln = 1;
                             for (String s : map.keySet()) {
                                 List<String> ls = map.get(s);
                                 for (String ss : ls) {
@@ -102,11 +106,6 @@ public class Main {
 
 
                 preprocessor.removeOutFile();
-
-
-
-
-                //SymbolTable.printTable();
             }
 
 

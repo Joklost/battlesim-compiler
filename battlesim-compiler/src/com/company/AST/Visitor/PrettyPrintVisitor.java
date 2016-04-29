@@ -118,6 +118,11 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         indentLevel--;
     }
 
+    @Override
+    public void visit(TypeDeclaration t) {
+
+    }
+
     public void visit(FunctionDcl fd){
         printIndent();
         print("Function ");
@@ -615,6 +620,11 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(VoidT v){
         print("Void");
+    }
+
+    @Override
+    public void visit(CustomTypeIdentifier o) {
+
     }
 
     public void visit(Terrain t){

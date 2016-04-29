@@ -7,27 +7,27 @@ import com.company.AST.Nodes.ASTNode;
  */
 public class SymbolTable {
 
-    public static boolean debug = false;
+    public boolean debug = false;
 
-    private static void debugMsg(String s) {
+    private void debugMsg(String s) {
         if (debug) {
             System.err.println("    " + s);
         }
     }
 
-    private static final int HASH_TABLE_SIZE = 211;
-    private static Bucket[] symbolTable = new Bucket [HASH_TABLE_SIZE];
-    //private static List<Bucket> symbolTable = new ArrayList<>();
-    private static int level = 0;
-    private static Scope scopeList = new Scope();
+    private final int HASH_TABLE_SIZE = 211;
+    private Bucket[] symbolTable = new Bucket [HASH_TABLE_SIZE];
+    //private static List<Bucket> currentSymbolTable = new ArrayList<>();
+    private int level = 0;
+    private Scope scopeList = new Scope();
 
     public SymbolTable() {}
 
-    public static int getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public static void enterSymbol(String str, ASTNode def) {
+    public void enterSymbol(String str, ASTNode def) {
         Bucket buck;
         int i = hash(str);
 
@@ -47,7 +47,7 @@ public class SymbolTable {
 
     }
 
-    public static ASTNode retrieveSymbol(String str) {
+    public ASTNode retrieveSymbol(String str) {
         int i = hash(str);
         Bucket buck = symbolTable[i];
 
@@ -64,7 +64,7 @@ public class SymbolTable {
         return null;
     }
 
-    public static boolean declaredLocally(String str) {
+    public boolean declaredLocally(String str) {
         int i = hash(str);
         Bucket buck = symbolTable[i];
 
@@ -79,7 +79,7 @@ public class SymbolTable {
         return false;
     }
 
-    public static void openScope() {
+    public void openScope() {
         Scope sc = new Scope();
         sc.setSlink(null);
         sc.setNext(scopeList);
@@ -89,7 +89,7 @@ public class SymbolTable {
         debugMsg("OpenScope called: new level=" + level);
     }
 
-    public static void closeScope() throws Error {
+    public void closeScope() throws Error {
         Bucket buck, temp;
         Scope sc;
         if (level <= 0) {
@@ -113,7 +113,7 @@ public class SymbolTable {
         debugMsg("CloseScope called: new level=" + level);
     }
 
-    public static int hash(String p) {
+    public int hash(String p) {
         int i = p.hashCode();
         if (i == 0x80000000) {
             i = 123;
@@ -123,7 +123,7 @@ public class SymbolTable {
         return i % HASH_TABLE_SIZE;
     }
 
-    public static void printTable() {
+    public void printTable() {
         Bucket buck;
         System.out.println("==========  The Symbol Table  ==========");
         for (int lev = level; 0 <= lev; lev--) {
@@ -147,7 +147,7 @@ public class SymbolTable {
     }
 
     // Skal muligvis tilpasses så det kun er de typer der rent faktisk skal i symbol table..?
-    private static void printDef(ASTNode p) {
+    private void printDef(ASTNode p) {
         if (p != null) {
             System.out.println("            " + p.getClass().toString());
         }

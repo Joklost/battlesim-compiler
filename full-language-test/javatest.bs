@@ -11,6 +11,7 @@ Begin Declarations
     Declare list as List of String
     Declare i as Integer
     i = 5
+    Declare Charlie as Soldier
 End Declarations
 
 // Test declerations
@@ -18,6 +19,18 @@ End Declarations
 // TEST: Success
 Declare Simulations
 End Declare Simulations
+
+Type Soldier 
+  Declare Magazines as Integer 
+
+  Function Void SetMagazines(mags as Integer) 
+    Magazines = mags 
+  End Function
+
+  Function Void SayHello()
+    PrintLine("Hello Soldier")
+  End Function
+End Type
 
 // Test Include
 // Include kan først komme efter simulations og declerations
@@ -79,5 +92,12 @@ Begin Program
     PrintLine("")
 
     TestScope()
+
+    PrintLine("Test ting")
+    Charlie.Magazines = 1
+    PrintLine(Charlie.Magazines + "")
+    Charlie.SetMagazines(42)
+    PrintLine(Charlie.Magazines + "")
+    Charlie.SayHello()
 
 End Program

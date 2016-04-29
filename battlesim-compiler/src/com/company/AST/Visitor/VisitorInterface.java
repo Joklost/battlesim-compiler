@@ -13,6 +13,7 @@ public interface VisitorInterface {
     void visit(SimStep s);
     void visit(Simulation s);
     void visit(Interrupts is);
+    void visit(TypeDeclaration t);
     void visit(FunctionDcl fd);
     void visit(Param p);
     void visit(Program p);
@@ -75,6 +76,10 @@ public interface VisitorInterface {
     void visit(Decimal d);
     void visit(StringT s);
     void visit(BooleanT b);
+    void visit(IntegerT i);
+    void visit(VoidT v);
+    void visit(CustomTypeIdentifier o);
+    /*
     void visit(Group g);
     void visit(Platoon p);
     void visit(Force f);
@@ -82,9 +87,8 @@ public interface VisitorInterface {
     void visit(Soldier s);
     void visit(Barrier b);
     void visit(VectorT v);
-    void visit(IntegerT i);
-    void visit(VoidT v);
     void visit(Terrain t);
+    */
     void visit(ObjectReferencing o);
     void visit(Array1DReferencing a);
     void visit(Array2DReferencing a);

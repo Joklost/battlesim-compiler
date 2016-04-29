@@ -19,14 +19,17 @@ public class TypeConsts {
     public static final int functionType = 9;
     public static final int simulationType = 10;
     public static final int simulationStepType = 11;
+    /*
     public static final int groupType = 12;
     public static final int platoonType = 13;
     public static final int forceType = 14;
-    public static final int coordType = 15;
     public static final int soldierType = 16;
     public static final int barrierType = 17;
     public static final int vectorType = 18;
     public static final int terrainType = 19;
+    */
+    public static final int coordType = 15;
+    public static final int objectType = 19;
     public static final int listType = 20;
     public static final int array1DType = 21;
     public static final int array2DType = 22;
@@ -85,14 +88,17 @@ public class TypeConsts {
         typeNames.put(functionType, "Function");
         typeNames.put(simulationType, "Simulation");
         typeNames.put(simulationStepType, "Simulation Step");
+        /*
         typeNames.put(groupType, "Group");
         typeNames.put(platoonType, "Platoon");
         typeNames.put(forceType, "Force");
-        typeNames.put(coordType, "Coord");
         typeNames.put(soldierType, "Soldier");
         typeNames.put(barrierType, "Barrier");
         typeNames.put(vectorType, "Vector");
         typeNames.put(terrainType, "Terrain");
+        */
+        typeNames.put(coordType, "Coord");
+        typeNames.put(objectType, "Object");
         typeNames.put(listType, "List");
         typeNames.put(array1DType, "1D Array");
         typeNames.put(array2DType, "2D Array");
