@@ -253,7 +253,7 @@ Arguments     ::= LPAREN:l RPAREN                                               
               |   LPAREN ArgumentList:al RPAREN                                                 {: RESULT = al; :}
               ;
 ArgumentList  ::= Expression:e                                                                  {: RESULT = new ArgumentList(eleft); RESULT.addElement(e); :}
-              |   Expression:e COMMA ArgumentList:al                                            {: RESULT = al; al.addElement(e); :}
+              |   ArgumentList:al COMMA Expression:e                                            {: RESULT = al; al.addElement(e); :}
               ;
 ForIterator   ::= TO:t                                                                          {: RESULT = new ToIterator(tleft); :}
               |   DOWNTO:t                                                                      {: RESULT = new DownToIterator(tleft); :}
