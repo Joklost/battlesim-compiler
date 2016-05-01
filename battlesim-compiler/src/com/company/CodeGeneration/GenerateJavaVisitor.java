@@ -108,8 +108,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
         indentLevel++;
 
-        s.simBlock.accept(this);
-
         for (int i = 0; i < s.typeDeclarationList.size(); i++) {
             s.typeDeclarationList.elementAt(i).accept(this);
         }
@@ -117,6 +115,8 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         for (int i = 0; i < s.functionDclList1.size(); i++) {
             s.functionDclList1.elementAt(i).accept(this);
         }
+
+        s.simBlock.accept(this);
 
         s.program.accept(this);
 
