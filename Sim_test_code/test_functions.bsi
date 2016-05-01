@@ -1,0 +1,356 @@
+// Test reccursiv fuktion
+// TEST: Success
+Function Integer Factorial(n as Integer)
+    If n <= 1 Then
+        Return 1
+    End If
+
+    Return Factorial(n - 1) * n
+End Function
+
+// Test funktion retunerer Integer
+// TEST: Success
+Function Integer ReturnInt()
+    Return 42
+End Function
+
+// Test funktion return Decimal
+// TEST: Success
+Function Decimal ReturnDecimal()
+    Return 3.50
+End Function
+
+// Test while, test plus plus
+// TEST: Success
+Function Void TestWhile()
+    i = 0
+    While i < 10 Do
+        PrintLine((i + 1) + "")
+        i = i + 1
+    End While
+
+    i = 10
+    While i > 0 Do
+        PrintLine((i) + "")
+        i = i - 1
+    End While
+End Function
+
+// Test array
+// Test Foreach
+// TEST: Success
+Function Void TestArrayForeach()
+    Declare array as String[3]
+    array[0] = "Hej"
+    array[1] = "Hej igen"
+    array[2] = "Hej tredje gang"
+    Foreach String say in array Do
+        PrintLine(say)
+    End Foreach
+End Function
+
+// Test Input
+// Test ConvertToInteger
+// Test FAILED: Vent slut!
+Function Void TestInput()
+    While true Do
+        Print("Enter string: ")
+        s = Input()
+        PrintLine("Your string was: " + s)
+        a = ConvertToInteger(s)
+    End While
+End Function
+
+// Test matematik funktioner
+// TEST: Success
+Function Void math(n as Integer)
+    k = 19.8
+    foo = 42
+
+    PrintLine("TEST MATH")
+
+    // Test for int
+    PrintLine(42 + n + "")
+    PrintLine(42 - n + "")
+    PrintLine(42 / n + "")
+    PrintLine(42 * n + "")
+    PrintLine(42 % n + "")
+    // Test for int++ og int--
+    PrintLine(42 + n++ + "")
+    PrintLine(42 + n-- + "")
+    PrintLine(42 - n++ + "")
+    PrintLine(42 - n-- + "")
+    PrintLine(42 / n++ + "")
+    PrintLine(42 / n-- + "")
+    PrintLine(42 * n++ + "")
+    PrintLine(42 * n-- + "")
+    PrintLine(42 % n++ + "")
+    PrintLine(42 % n-- + "")
+
+    // Test for decimal
+    PrintLine(42.0 + k + "")
+    PrintLine(42.0 - k + "")
+    PrintLine(42.0 / k + "")
+    PrintLine(42.0 * k + "")
+    PrintLine(42.0 % k + "")
+    // Test for decimal++ og decimal--
+    PrintLine(42.0 + k++ + "")
+    PrintLine(42.0 + k-- + "")
+    PrintLine(42.0 - k++ + "")
+    PrintLine(42.0 - k-- + "")
+    PrintLine(42.0 / k++ + "")
+    PrintLine(42.0 / k-- + "")
+    PrintLine(42.0 * k++ + "")
+    PrintLine(42.0 * k-- + "")
+    PrintLine(42.0 % k++ + "")
+    PrintLine(42.0 % k-- + "")
+
+    // Test for decimal and Integer
+    PrintLine(n + k + "")
+    PrintLine(n - k + "")
+    PrintLine(n / k + "")
+    PrintLine(n * k + "")
+    PrintLine(n % k + "")
+    // Test for decimal++ og decimal--
+    PrintLine(n + k++ + "")
+    PrintLine(n + k-- + "")
+    PrintLine(n - k++ + "")
+    PrintLine(n - k-- + "")
+    PrintLine(n / k++ + "")
+    PrintLine(n / k-- + "")
+    PrintLine(n * k++ + "")
+    PrintLine(n * k-- + "")
+    PrintLine(n % k++ + "")
+    PrintLine(n % k-- + "")
+    // Test for int++ og int--
+    PrintLine(n++ + k + "")
+    PrintLine(n-- + k + "")
+    PrintLine(n++ - k + "")
+    PrintLine(n-- - k + "")
+    PrintLine(n++ / k + "")
+    PrintLine(n-- / k + "")
+    PrintLine(n++ * k + "")
+    PrintLine(n-- * k + "")
+    PrintLine(n++ % k + "")
+    PrintLine(n-- % k + "")
+
+    // Test matematical assignment
+    // for int
+    PrintLine(foo + "")
+    foo += 8
+    PrintLine(foo + "")
+    foo -= 8
+    PrintLine(foo + "")
+    foo /= 8
+    PrintLine(foo + "")
+    foo %= 8
+    PrintLine(foo + "")
+    foo *= 8
+    PrintLine(foo + "")
+    // for deciaml
+    PrintLine(foo + "")
+    k += 8
+    PrintLine(k + "")
+    k -= 8
+    PrintLine(k + "")
+    k /= 8
+    PrintLine(k + "")
+    k %= 8
+    PrintLine(k + "")
+    k *= 8
+    PrintLine(k + "")
+
+End Function
+
+// Test bool
+Function Void TestBool()
+    no = false
+    da = true
+
+    PrintLine(no + "")
+    PrintLine(da + "")
+
+    PrintLine((da AND da) + "")
+    PrintLine((no AND no) + "")
+    PrintLine((da AND no) + "")
+
+    PrintLine((da OR da) + "")
+    PrintLine((no OR no) + "")
+    PrintLine((da OR no) + "")
+
+    PrintLine((NOT da AND da) + "")
+    PrintLine((NOT no AND da) + "")
+    PrintLine((NOT no AND NOT no) + "")
+    PrintLine((NOT da AND NOT da) + "")
+
+    PrintLine((NOT NOT NOT NOT NOT no) + "")
+    PrintLine((NOT NOT da OR no) + "")
+    PrintLine(((NOT NOT da) OR (da AND (NOT no))) + "")
+End Function
+
+Function Void TestIf()
+    da = true
+    no = false
+
+    If da Then
+        PrintLine("da")
+    End If
+
+    If no Then
+        PrintLine("no")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else
+        PrintLine("else")
+    End If
+
+    If da AND NOT no Then
+        PrintLine("da AND NOT no")
+    End If
+
+    If NOT da OR no Then
+        PrintLine("NOT da OR no")
+    Else If ((NOT no) OR da) OR (1 == 2) Then
+        PrintLine("Else If ((NOT no) OR da) OR (1 == 2)")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else If da Then
+        PrintLine("Else If da")
+    End If
+
+    If 1 == 1 Then
+        PrintLine("1 == 1")
+    End If
+
+    If (true OR da) OR no Then
+        PrintLine("(true OR da) OR no")
+    End If
+
+    If true OR 1 == 2 Then
+        PrintLine("true OR 1 == 2")
+    End If
+
+    If NOT no Then
+        PrintLine("NOT no")
+    End If
+
+    If no OR da Then
+        PrintLine("no OR da")
+    End If
+
+    If da AND da Then
+        PrintLine("da AND da")
+    End If
+
+    If 1 == 1 AND true == da Then
+        PrintLine("1 == 1 AND true == da")
+    End If
+
+    If true == NOT false Then
+        PrintLine("true == NOT false")
+    End If
+
+    If NOT (true == false) Then
+        PrintLine("NOT (true == false)")
+    End If
+
+    If NOT (no == da) Then
+        PrintLine("NOT (no == da)")
+    End If
+
+    If NOT (no == no) Then
+        PrintLine("(no == no)")
+    Else
+        PrintLine("else")
+    End If
+
+    If (1 > 42) Then
+        PrintLine("Suprice 1 er større end 42")
+    Else
+        PrintLine("1 er sjovt nok ikke større end 42")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else If no Then
+        PrintLine("Still no")
+    Else If no Then
+        PrintLine("Not at all")
+    Else
+        PrintLine("True")
+        PrintLine("Multiline statments in if testes")
+    End If
+End Function
+
+Function Void TestSwitch()
+    Declare swinr as Integer
+    swinr = ReturnInt()
+
+    Switch swinr
+        Case 1
+            PrintLine("The number was oddly enough one")
+        Case 42
+            PrintLine("Yeah, the number was " + swinr + "")
+        Default
+            PrintLine("This is the default")
+      End Switch
+End Function
+
+Function Void TestFor()
+    Declare i as Integer
+    i = 0
+    For i To 10 Do
+        PrintLine("Num: " + i + "")
+    End For
+
+    i = 10
+    For i DownTo 10 Do
+        PrintLine("Num: " + i + "")
+    End For
+End Function
+
+Function Void TestScope()
+
+Declare hejsa as String
+hejsa = "hejsa"
+Declare scope1 as Boolean
+Declare scope2 as Boolean
+Declare scope3 as Boolean
+Declare scope4 as Boolean
+Declare scope5 as Boolean
+scope1 = true
+scope2 = true
+scope3 = true
+scope4 = true
+scope5 = true
+
+While scope1 Do
+    PrintLine(hejsa)
+    scope1 = false
+
+    While scope2 Do
+        PrintLine(hejsa)
+        scope2 = false
+
+        While scope3 Do
+            PrintLine(hejsa)
+            scope3 = false
+
+            While scope4 Do
+                PrintLine(hejsa)
+                scope4 = false
+
+                While scope5 Do
+                    PrintLine(hejsa)
+                    scope5 = false
+                End While
+            End While
+        End While
+    End While
+End While
+
+End Function
