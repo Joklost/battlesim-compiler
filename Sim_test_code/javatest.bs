@@ -19,6 +19,14 @@ End Declarations
 // TEST: Success
 Declare Simulations
 End Declare Simulations
+Type Barrier
+  Declare vertices as List of Coord
+
+  Function Void AddVertex(vertex as Coord)
+    //.Add virker ikke endnu
+    //vertices.Add(vertex)
+  End Function
+End Type
 
 Type Coord
   Declare X as Decimal
@@ -29,26 +37,124 @@ Type Coord
   End Function
 End Type
 
-Type Soldier
-  Declare Magazines as Integer
+Type Vector
   Declare X as Decimal
   Declare Y as Decimal
+
+  Function Decimal GetLength()
+    Declare res as Decimal
+    %`` res = Math.abs(Math.sqrt( Math.pow(X, X) + Math.pow(Y, Y))); //Fix pls
+    Return res
+  End Function
+End Type
+
+Type DSTFunctions
+  Declare Hej as Integer
+  Function Vector FindUnitVector(startCoord as Coord, targetCoord as Coord)
+    Declare res as Vector
+    //res.X = targetCoord.X - startCoord.X
+    //res.Y = targetCoord.Y - startCoord.Y
+    Declare length as Decimal
+    length = res.GetLength()
+    res.X /= length
+    res.Y /= length
+    Return res
+  End Function
+
+  Function Coord CenterOfMass(coords as List of Coord)
+    Declare res as Coord
+    /* Foreach virker ikke endnu
+    Foreach coord in coords
+      res.x += coord.x
+      res.y += coord.y
+    End Foreach */
+    res.X /= coords.Count()
+    res.Y /= coords.Count()
+    Return res
+  End Function
+End Type
+
+Type Terrain
+  Declare Width as Integer
+  Declare Height as Integer
+
+  Function Void Hej()
+  End Function
+End Type
+
+Type Soldier
+  Declare DefaultVelocity as Decimal
+  Declare Size as Integer
+  Declare Velocity as Decimal
+  Declare Magazines as Integer
+  Declare Pos as Coord
+  Declare Direction as Vector
+
+  Function Void Soldier()
+    DefaultVelocity = 3 //Change this because this is a random number
+    Size = 4            //Change this because this is a random number
+    Velocity = 0
+    Magazines = 4
+  End Function
+
+  Function Void Move(target as Coord)
+    If Velocity == 0 Then
+      Velocity = DefaultVelocity
+    End If
+    Declare dstf as DSTFunctions
+    Direction = dstf.FindUnitVector(pos, target)
+  End Function
+
+  Function Void Move(target as Coord, vel as Decimal)
+    Velocity = vel
+    Declare dstf as DSTFunctions
+    direction = dstf.FindUnitVector(pos, target)
+  End Function
+End Type
+
+/*
+Type Coord
+  Declare X as Decimal
+  Declare Y as Decimal
+
+  Function String ToString()
+    Return "(" + X + "," + Y + ")"
+  End Function
+End Type
+
+Type Vector
+  Declare x as Decimal
+  Declare y as Decimal
+
+  Function Decimal GetLength()
+    Declare res as Decimal
+    %`` res = Math.abs(Math.sqrt( Math.pow(x, x) + Math.pow(y, y))); //Fix pls
+    Return res
+  End Function
+End Type
+
+Type Soldier
+Declare DefaultVelocity as Decimal
+Declare Size as Integer
+Declare Velocity as Decimal
+Declare Magazines as Integer
+Declare Pos as Coord
+Declare Direction as Vector
 
   Function Void SetMagazines(mags as Integer)
     Magazines = mags
   End Function
 
   Function String PosToString()
-    Return "(" + X + "," + Y + ")"
+    Return "(" + Pos.X + "," + Pos.Y + ")"
   End Function
 
-  Function Void Teleport(x as Decimal, y as Decimal)
-    X = x
-    Y = y
+  Function Void Teleport(target as Coord)
+    Pos = target
   End Function
 
 End Type
-
+*/
 // Test Include
 // Include kan først komme efter simulations og declerations
 //  ellers gives fejl
@@ -64,7 +170,7 @@ Begin Program
     PrintLine(target.ToString())
     Declare john as Soldier
     PrintLine(john.PosToString())
-    john.Teleport(target.X, target.Y)
+    john.Teleport(target)
     PrintLine(john.PosToString())
     /*
         Testing block comment
