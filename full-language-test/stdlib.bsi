@@ -1,3 +1,12 @@
+Type Soldier 
+  Declare Magazines as Integer 
+
+  Function Void SetMagazines(mags as Integer) 
+    Magazines = mags 
+  End Function
+
+End Type
+
 // IO
 Function Void PrintLine(s as String)
     %``System.out.println(s);
