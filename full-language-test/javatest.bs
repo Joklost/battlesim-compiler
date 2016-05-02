@@ -12,6 +12,7 @@ Begin Declarations
     Declare i as Integer
     i = 5
     Declare Charlie as Soldier
+    Declare array as String[3]
 End Declarations
 
 // Test declerations
