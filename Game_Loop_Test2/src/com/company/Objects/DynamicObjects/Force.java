@@ -42,7 +42,7 @@ public class Force extends DynObj {
         Move(target, Soldier.DefaultVelocity);
     }
 
-    public void Move(Coord target, double velocity){
+    public void Move(Coord target, float velocity){
         for(Platoon p : Platoons)
             p.SetVelocity(velocity);
         SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(GetCoordList()), target));

@@ -13,7 +13,7 @@ public class DSTFunctions {
         Vector res = new Vector();
         res.X = targetCoord.X - startCoord.X;
         res.Y = targetCoord.Y - startCoord.Y;
-        double length = res.GetLength();
+        float length = res.GetLength();
         res.X /= length;
         res.Y /= length;
         return res;

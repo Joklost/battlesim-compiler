@@ -33,14 +33,14 @@ public class Platoon extends DynObj {
         Move(target, Soldier.DefaultVelocity);
     }
 
-    public void Move(Coord target, double velocity){
+    public void Move(Coord target, float velocity){
         for(Group g : Groups){
             g.SetVelocity(velocity);
         }
         SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
     }
 
-    public void SetVelocity(double velocity){
+    public void SetVelocity(float velocity){
         for(Group g : Groups)
             g.SetVelocity(velocity);
     }

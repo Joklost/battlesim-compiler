@@ -8,10 +8,10 @@ import com.company.Objects.StaticObjects.Vector;
  * Created by Magnus on 25-04-2016.
  */
 public class Soldier extends DynObj {
-    public final static double DefaultVelocity = 3; //Change this because this is a random number
-    private int Size = 4;            //Change this because this is a random number
+    public final static float DefaultVelocity = 3; //Change this because this is a random number
+    public int Size = 4;            //Change this because this is a random number
 
-    public double Velocity = 0;
+    public float Velocity = 0;
     public Vector Direction = new Vector();
     public int Magazines = 4;
     public Coord Pos = new Coord(0,0);
@@ -27,7 +27,7 @@ public class Soldier extends DynObj {
         Direction = DSTFunctions.FindUnitVector(Pos, target);
     }
 
-    public void Move(Coord target, double velocity){
+    public void Move(Coord target, float velocity){
         Velocity = velocity;
         Direction = DSTFunctions.FindUnitVector(Pos, target);
     }

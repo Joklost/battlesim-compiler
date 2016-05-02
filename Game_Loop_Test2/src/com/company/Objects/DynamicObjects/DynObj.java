@@ -9,8 +9,9 @@ import com.company.Steps.Step;
  */
 public abstract class DynObj {
     private boolean Semaphor;
-
     private Step Controller; //Maybe not necessary with EmptyStep
+
+    public int Size = 3;
 
     public boolean IsControlled(){
         return Semaphor;

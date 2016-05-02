@@ -22,7 +22,7 @@ public class Group extends DynObj {
             Soldiers.add(s);
     }
 
-    public void Move(Coord target, double velocity){
+    public void Move(Coord target, float velocity){
         SetVelocity(velocity);
         SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
     }
@@ -36,7 +36,7 @@ public class Group extends DynObj {
         SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
     }
 
-    public void SetVelocity(double velocity){
+    public void SetVelocity(float velocity){
         for(Soldier s : Soldiers)
             s.Velocity = velocity;
     }
