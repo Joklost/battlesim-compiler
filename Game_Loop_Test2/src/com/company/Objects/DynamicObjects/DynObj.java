@@ -8,8 +8,8 @@ import com.company.Steps.Step;
  * Created by Magnus on 01-05-2016.
  */
 public abstract class DynObj {
-    private boolean Semaphor;
-    private Step Controller; //Maybe not necessary with EmptyStep
+    protected boolean Semaphor;
+    protected Step Controller; //Maybe not necessary with EmptyStep
 
     public int Size = 3;
 

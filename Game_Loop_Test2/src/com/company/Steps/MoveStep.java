@@ -18,8 +18,7 @@ public class MoveStep extends Step{
     public void Run(){
         object.Take(this);
         object.Move(coord);
-        Vector v = new Vector();
-        v = Vector.GetVectorByPoints(object.GetPos(), coord);
+        Vector v = Vector.GetVectorByPoints(object.GetPos(), coord);
         if(v.GetLength() < object.Size){
             object.StopMovement();
             object.Release();

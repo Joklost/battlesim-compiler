@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.Objects.DynamicObjects.Force;
+import com.company.Objects.DynamicObjects.Group;
 import com.company.Objects.DynamicObjects.Soldier;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Terrain;
@@ -18,8 +19,6 @@ import java.util.TimerTask;
 
 public class Main {
 
-    public static int MAX_X = 300;
-    public static int MAX_Y = 200;
 
     public static void main(String[] args) {
 
@@ -34,30 +33,47 @@ public class Main {
     public static void runSimulation() {
 
         Terrain terrain = new Terrain();
-        terrain.Width = 300;
-        terrain.Height = 200;
+        terrain.Width = 1920;
+        terrain.Height = 1080;
 
-        Soldier aSol = new Soldier();
-        aSol.Pos = new Coord(100,100);
+        Soldier aSol1 = new Soldier();
+        aSol1.Pos = new Coord(30,30);
+        Soldier aSol2 = new Soldier();
+        aSol2.Pos = new Coord(38, 30);
+        Soldier aSol3 = new Soldier();
+        aSol3.Pos = new Coord(34, 38);
+        Group aGroup1 = new Group();
+        aGroup1.AddSoldiers(aSol1, aSol2, aSol3);
+        Soldier aSol4 = new Soldier();
+        aSol4.Pos = new Coord(40,30);
+        Soldier aSol5 = new Soldier();
+        aSol5.Pos = new Coord(48, 30);
+        Soldier aSol6 = new Soldier();
+        aSol6.Pos = new Coord(44, 38);
+        Group aGroup2 = new Group();
+        aGroup2.AddSoldiers(aSol4, aSol5, aSol6);
         Force allies = new Force();
+        allies.AddGroups(aGroup1, aGroup2);
 
-        Soldier eSol = new Soldier();
-        eSol.Pos = new Coord(50,50);
+        Soldier eSol1 = new Soldier();
+        eSol1.Pos = new Coord(960,30);
+        Soldier eSol2 = new Soldier();
+        eSol2.Pos = new Coord(968,30);
+        Soldier eSol3 = new Soldier();
+        eSol3.Pos = new Coord(964,38);
+        Group eGroup1 = new Group();
+        eGroup1.AddSoldiers(eSol1, eSol2, eSol3);
         Force enemies = new Force();
-
-        allies.AddSoldier(aSol);
-        enemies.AddSoldier(eSol);
+        enemies.AddGroups(eGroup1);
 
         ArrayList<Step> steps = new ArrayList<Step>();
 
+        steps.add(new MoveStep(allies, new Coord(300,250)));
+        steps.add(new MoveStep(aGroup1, new Coord(600, 300)));
+        steps.add(new MoveStep(aGroup2, new Coord(600, 200)));
 
-        steps.add(new MoveStep(allies, new Coord(50,50)));
-        steps.add(new MoveStep(allies, new Coord(190,60)));
-
-        steps.add(new MoveStep(enemies, new Coord(100,100)));
-        steps.add(new MoveStep(enemies, new Coord(150,150)));
-
-
+        steps.add(new MoveStep(enemies, new Coord(950,250)));
+        steps.add(new MoveStep(enemies, new Coord(600,250)));
 
         BasicFrame ex = new BasicFrame(allies, enemies, steps, terrain);
         ex.setVisible(true);

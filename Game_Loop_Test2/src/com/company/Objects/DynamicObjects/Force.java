@@ -3,6 +3,7 @@ package com.company.Objects.DynamicObjects;
 import com.company.*;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Vector;
+import com.company.Steps.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,21 @@ import java.util.List;
 public class Force extends DynObj {
     public List<Platoon> Platoons = new ArrayList<Platoon>();
 
-    public Force(){
+    public void Take(Step controller){
+        if(!IsControlled()){
+            for(Platoon p: Platoons){
+                p.Take(controller);
+            }
+            Semaphor = true;
+            Controller = controller;
+        }
+    }
 
+    public void Release(){
+        for(Platoon p: Platoons){
+            p.Release();
+        }
+        super.Release();
     }
 
     public void AddPlatoons(Platoon ... platoons){
@@ -42,7 +56,7 @@ public class Force extends DynObj {
         Move(target, Soldier.DefaultVelocity);
     }
 
-    public void Move(Coord target, float velocity){
+    public void Move(Coord target, double velocity){
         for(Platoon p : Platoons)
             p.SetVelocity(velocity);
         SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(GetCoordList()), target));

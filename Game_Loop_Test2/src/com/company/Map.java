@@ -21,8 +21,9 @@ public class Map extends JPanel implements ActionListener {
     private Timer timer;
     private boolean isStarted;
 
+    public double FRAMERATE = 100;
+    public double TIMESCALE = 25;
     public ArrayList<Step> Steps = new ArrayList<Step>();
-
     public Force Force1 = new Force();
     public Force Force2 = new Force();
 
@@ -38,7 +39,7 @@ public class Map extends JPanel implements ActionListener {
 
     private void initMap() {
         setFocusable(true);
-        timer = new Timer(100, this);
+        timer = new Timer((int)FRAMERATE, this);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class Map extends JPanel implements ActionListener {
         for(Platoon p: Force1.Platoons){
             for(Group ga: p.Groups){
                 for(Soldier s: ga.Soldiers){
-                    s.Pos.NewPos(s.Direction, s.Velocity);
+                    s.Pos.NewPos(s.Direction, s.Velocity, (FRAMERATE / 1000) * TIMESCALE);
                 }
             }
         }
@@ -65,7 +66,7 @@ public class Map extends JPanel implements ActionListener {
         for(Platoon p: Force2.Platoons){
             for(Group ge: p.Groups){
                 for(Soldier s: ge.Soldiers){
-                    s.Pos.NewPos(s.Direction, s.Velocity);
+                    s.Pos.NewPos(s.Direction, s.Velocity, (FRAMERATE / 1000) * TIMESCALE);
                 }
             }
         }
