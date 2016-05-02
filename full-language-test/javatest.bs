@@ -20,14 +20,7 @@ End Declarations
 Declare Simulations
 End Declare Simulations
 
-Type Soldier 
-  Declare Magazines as Integer 
 
-  Function Void SetMagazines(mags as Integer) 
-    Magazines = mags 
-  End Function
-
-End Type
 
 // Test Include
 // Include kan først komme efter simulations og declerations
