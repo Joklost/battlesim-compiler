@@ -12,16 +12,7 @@ Begin Declarations
     Declare i as Integer
     i = 5
     Declare Charlie as Soldier
-    Declare array as String[3]
 End Declarations
-
-// Test declerations
-// Declerations er påkrævet
-// TEST: Success
-Declare Simulations
-End Declare Simulations
-
-
 
 // Test Include
 // Include kan først komme efter simulations og declerations
@@ -84,10 +75,5 @@ Begin Program
 
     TestScope()
 
-    PrintLine("Test ting")
-    Charlie.Magazines = 1
-    PrintLine(Charlie.Magazines + "")
-    Charlie.SetMagazines(42)
-    PrintLine(Charlie.Magazines + "")
 
 End Program
