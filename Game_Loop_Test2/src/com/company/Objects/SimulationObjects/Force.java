@@ -1,4 +1,4 @@
-package com.company.Objects.DynamicObjects;
+package com.company.Objects.SimulationObjects;
 
 import com.company.*;
 import com.company.Objects.StaticObjects.Coord;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Magnus on 25-04-2016.
  */
-public class Force extends DynObj {
+public class Force extends SimObj {
     public List<Platoon> Platoons = new ArrayList<Platoon>();
 
     public void Take(Step controller){

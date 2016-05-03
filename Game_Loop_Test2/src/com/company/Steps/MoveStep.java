@@ -1,6 +1,6 @@
 package com.company.Steps;
 
-import com.company.Objects.DynamicObjects.DynObj;
+import com.company.Objects.SimulationObjects.SimObj;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Vector;
 
@@ -10,7 +10,7 @@ import com.company.Objects.StaticObjects.Vector;
 public class MoveStep extends Step{
     public Coord coord = new Coord(0,0);
 
-    public MoveStep(DynObj object, Coord coord){
+    public MoveStep(SimObj object, Coord coord){
         super(object);
         this.coord = coord;
     }
