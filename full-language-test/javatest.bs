@@ -89,10 +89,10 @@ Begin Program
     PrintLine(Charlie.Magazines + "")
     Charlie.SetMagazines(42)
     PrintLine(Charlie.Magazines + "")
-    Charlie.posX = 4
-    Charlie.posY = 2
-    PrintLine(Charlie.GetPosition())
-    Charlie.SetPos(2,4)
-    PrintLine(Charlie.GetPosition())
+    Declare newCharliePos as Coord
+    newCharliePos.X = 3.0
+    newCharliePos.Y = 4.0
+    Charlie.Teleport(newCharliePos)
+    //PrintLine(Charlie.pos.GetCoord())
 
 End Program

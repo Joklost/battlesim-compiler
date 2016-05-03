@@ -3,6 +3,33 @@ import java.io.*;
 import java.util.*;
 import java.util.Scanner;
 // BattleSim automatically generated code file.
+public class Coord {
+    double X = 0.0;
+    double Y = 0.0;
+    public String ToString () {
+        return (((("("+X)+",")+Y)+")");
+    }
+}
+package com.BattleSim;
+import java.io.*;
+import java.util.*;
+import java.util.Scanner;
+// BattleSim automatically generated code file.
+public class Soldier {
+    int Magazines = 0;
+    Coord Pos = new Coord();
+    public void SetMagazines (int mags) {
+        Magazines=mags;
+    }
+    public void Teleport (Coord target) {
+        Pos=target;
+    }
+}
+package com.BattleSim;
+import java.io.*;
+import java.util.*;
+import java.util.Scanner;
+// BattleSim automatically generated code file.
 public class Declarations {
     public static     boolean da = false;
     public static     boolean no = false;
@@ -12,7 +39,10 @@ public class Declarations {
     public static     int a = 0;
     public static     ArrayList<String> list = new ArrayList<>();
     public static     int i = 0;
+    public static     Soldier Charlie = new Soldier();
+    public static     String[] array = new String[3];
     public Declarations() {
+        i=5;
     }
 }
 package com.BattleSim;
@@ -93,7 +123,6 @@ public class Main {
         }
     }
     public static void TestArrayForeach () {
-        String[] array = new String[3];
         array[0]="Hej";
         array[1]="Hej igen";
         array[2]="Hej tredje gang";
@@ -272,6 +301,11 @@ public class Main {
         } else {
             PrintLine("else");
         }
+        if ((1>42)) {
+            PrintLine("Suprice 1 er større end 42");
+        } else {
+            PrintLine("1 er sjovt nok ikke større end 42");
+        }
         if (no) {
             PrintLine("no");
         } else if (no) {
@@ -281,6 +315,66 @@ public class Main {
         } else {
             PrintLine("True");
             PrintLine("Multiline statments in if testes");
+        }
+    }
+    public static void TestSwitch () {
+        int swinr = 0;
+        swinr=ReturnInt();
+        switch (swinr) {
+            case 1:
+                PrintLine("The number was oddly enough one");
+                break;
+            case 42:
+                PrintLine((("Yeah, the number was "+swinr)+""));
+                break;
+            default:
+                PrintLine("This is the default");
+                break;
+        }
+    }
+    public static void TestFor () {
+        int i = 0;
+        i=0;
+        for (int i795030_forloop=i; i795030_forloop<10; i795030_forloop++) {
+            PrintLine((("Num: "+i)+""));
+        }
+        i=10;
+        for (int i795030_forloop=i; i795030_forloop>10; i795030_forloop--) {
+            PrintLine((("Num: "+i)+""));
+        }
+    }
+    public static void TestScope () {
+        String hejsa = "";
+        hejsa="hejsa";
+        boolean scope1 = false;
+        boolean scope2 = false;
+        boolean scope3 = false;
+        boolean scope4 = false;
+        boolean scope5 = false;
+        scope1=true;
+        scope2=true;
+        scope3=true;
+        scope4=true;
+        scope5=true;
+        while (scope1) {
+            PrintLine(hejsa);
+            scope1=false;
+            while (scope2) {
+                PrintLine(hejsa);
+                scope2=false;
+                while (scope3) {
+                    PrintLine(hejsa);
+                    scope3=false;
+                    while (scope4) {
+                        PrintLine(hejsa);
+                        scope4=false;
+                        while (scope5) {
+                            PrintLine(hejsa);
+                            scope5=false;
+                        }
+                    }
+                }
+            }
         }
     }
     public static void main(String[] args) {
@@ -301,5 +395,22 @@ public class Main {
         PrintLine("bool tested success");
         TestIf();
         PrintLine("If tested success");
+        TestSwitch();
+        PrintLine("Switch tested success");
+        TestFor();
+        PrintLine("For loops tested success");
+        Print("New line \n");
+        Print("Test print");
+        PrintLine("");
+        TestScope();
+        PrintLine("Test ting");
+        Charlie.Magazines=1;
+        PrintLine((Charlie.Magazines+""));
+        Charlie.SetMagazines(42);
+        PrintLine((Charlie.Magazines+""));
+        Coord newCharliePos = new Coord();
+        newCharliePos.X=3.0;
+        newCharliePos.Y=4.0;
+        Charlie.Teleport(newCharliePos);
     }
 }

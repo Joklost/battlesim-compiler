@@ -1,19 +1,53 @@
+/*Type Coord
+  Declare x as Integer
+  Declare y as Integer
+
+  Function Void SetCoord(xi as Integer, yi as Integer)
+    x = xi
+    y = yi
+  End Function
+
+  Function String GetCoord()
+    Return "(" + x + "," + y + ")"
+  End Function
+End Type
+
 Type Soldier
   Declare Magazines as Integer
-  Declare posX as Integer
-  Declare posY as Integer
+  Declare pos as Coord
 
   Function Void SetMagazines(mags as Integer)
     Magazines = mags
   End Function
 
-  Function Void SetPos(x as Integer, y as Integer)
-    posX = x
-    posY = y
+  Function Void SetPos(xi as Integer, yi as Integer)
+    //pos.SetCoord(x, y)
+    pos.x = xi
+    pos.y = yi
   End Function
 
-  Function String GetPosition()
-    Return "(" + posX + "," + posY + ")"
+End Type*/
+
+Type Coord
+  Declare X as Decimal
+  Declare Y as Decimal
+
+  Function String ToString()
+    Return "(" + X + "," + Y + ")"
+  End Function
+
+End Type
+
+Type Soldier
+  Declare Magazines as Integer
+  Declare Pos as Coord
+
+  Function Void SetMagazines(mags as Integer)
+    Magazines = mags
+  End Function
+
+  Function Void Teleport(target as Coord)
+    Pos = target
   End Function
 
 End Type
