@@ -3,7 +3,6 @@ package com.company;
 import com.company.Objects.Bullet;
 import com.company.Objects.StaticObjects.*;
 import com.company.Objects.SimulationObjects.*;
-import com.company.Objects.StaticObjects.Vector;
 import com.company.Steps.*;
 
 import javax.swing.*;
@@ -23,7 +22,7 @@ public class Map extends JPanel implements ActionListener {
     private Timer timer;
     private boolean isStarted;
     private long Elapsedtime = 0;
-    private long HRT = 0;
+    private long HRT = 0; //High Resolution Timer
 
     public static double FRAMERATE = 16; //Update interval in milliseconds
     public double TIMESCALE = 25;
@@ -54,17 +53,18 @@ public class Map extends JPanel implements ActionListener {
         Elapsedtime = actionEvent.getWhen() - HRT;
         HRT = actionEvent.getWhen();
         updatePositions();
-        repaint();
+        detectCollisions();
         performInstructions();
+        repaint();
     }
 
     private void performInstructions() {
+
         for(Step step : Steps)
             step.RunIfCanStart();
     }
 
     private void updatePositions() {
-        checkInterrupts();
         updateForcePositions(Force1);
         updateForcePositions(Force2);
     }
@@ -79,12 +79,8 @@ public class Map extends JPanel implements ActionListener {
         }
     }
 
-
-
-    private void checkInterrupts() {
-        //
-        StandardInterrupts.Check(Force1, Force2);
-
+    private void detectCollisions() {
+        CollisionDetector.VisualDetect(Force1, Force2);
         ////Fire bullets
         Bullets.clear();
         fireBullets(Force1);
@@ -105,12 +101,10 @@ public class Map extends JPanel implements ActionListener {
     }
 
     public void start(){
-
         timer.start();
     }
 
     private void doDrawing(Graphics g){
-
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.drawString(Long.toString(Elapsedtime), MapWidth - 50, 15); //Render ElapsedTime between frames

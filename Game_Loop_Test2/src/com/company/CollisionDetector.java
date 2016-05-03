@@ -6,9 +6,9 @@ import com.company.Objects.StaticObjects.Vector;
 /**
  * Created by Magnus on 03-05-2016.
  */
-public class StandardInterrupts {
+public class CollisionDetector {
 
-    public static void Check(Force allies, Force enemies){
+    public static void VisualDetect(Force allies, Force enemies){
         for(Platoon p: allies.Platoons){
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
