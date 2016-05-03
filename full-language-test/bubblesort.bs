@@ -9,7 +9,7 @@ End Declare Simulations
 //#Include("stdlib.bsi")
 
 Function Void BubbleSort()
-      Declare a as Decimal[7]
+      Declare a as Integer[7]
       a[0] = 12
       a[1] = 24
       a[2] = 13
