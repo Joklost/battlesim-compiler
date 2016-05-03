@@ -3,6 +3,7 @@ package com.company;
 import com.company.Objects.StaticObjects.*;
 import com.company.Objects.DynamicObjects.*;
 import com.company.Steps.*;
+import sun.security.provider.certpath.Vertex;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -26,13 +27,15 @@ public class Map extends JPanel implements ActionListener {
     public ArrayList<Step> Steps = new ArrayList<Step>();
     public Force Force1 = new Force();
     public Force Force2 = new Force();
+    public ArrayList<Barrier> Barriers;
 
-    public Map(Force force1, Force force2, ArrayList<Step> steps, Terrain terrain){
+    public Map(Force force1, Force force2, ArrayList<Step> steps, Terrain terrain, ArrayList<Barrier> barriers){
         Force1 = force1;
         Force2 = force2;
         Steps = steps;
         MapWidth = terrain.Width;
         MapHeight = terrain.Height;
+        Barriers = barriers;
         initMap();
     }
 
@@ -97,6 +100,21 @@ public class Map extends JPanel implements ActionListener {
                     g2d.drawString("E", ((int) s.Pos.X), ((int) s.Pos.Y));
                 }
             }
+        }
+
+
+        for(Barrier b: Barriers){
+            int i = 0;
+            for(Coord c: b.Vertices){
+                if(i == b.Vertices.size() - 1){
+                    g2d.drawLine((int)b.Vertices.get(i).X, (int)b.Vertices.get(i).Y, (int)b.Vertices.get(0).X, (int)b.Vertices.get(0).Y);
+                }
+                else{
+                    g2d.drawLine((int)b.Vertices.get(i).X, (int)b.Vertices.get(i).Y, (int)b.Vertices.get(i+1).X, (int)b.Vertices.get(i+1).Y);
+                }
+                i++;
+            }
+
         }
     }
 

@@ -3,6 +3,7 @@ package com.company;
 import com.company.Objects.DynamicObjects.Force;
 import com.company.Objects.DynamicObjects.Group;
 import com.company.Objects.DynamicObjects.Soldier;
+import com.company.Objects.StaticObjects.Barrier;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Terrain;
 import com.company.Steps.MoveStep;
@@ -36,6 +37,20 @@ public class Main {
         Terrain terrain = new Terrain();
         terrain.Width = 1920;
         terrain.Height = 1080;
+
+        Barrier bar = new Barrier();
+        bar.AddVertex(new Coord(30, 50));
+        bar.AddVertex(new Coord(50, 30));
+        bar.AddVertex(new Coord(100, 100));
+        bar.AddVertex(new Coord(300, 600));
+        Barrier bar2 = new Barrier();
+        bar2.AddVertex(new Coord(960, 800));
+        bar2.AddVertex(new Coord(900, 840));
+        bar2.AddVertex(new Coord(800, 950));
+        bar2.AddVertex(new Coord(950, 800));
+        ArrayList<Barrier> barriers = new ArrayList<Barrier>();
+        barriers.add(bar);
+        barriers.add(bar2);
 
         Soldier aSol1 = new Soldier();
         aSol1.Pos = new Coord(30,30);
@@ -78,7 +93,7 @@ public class Main {
         steps.add(new WaitStep(enemies, 50));
         steps.add(new MoveStep(enemies, new Coord(300, 600)));
 
-        BasicFrame ex = new BasicFrame(allies, enemies, steps, terrain);
+        BasicFrame ex = new BasicFrame(allies, enemies, steps, terrain, barriers);
         ex.setVisible(true);
     }
 }
