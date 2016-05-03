@@ -1,0 +1,57 @@
+
+Type Coord
+  Declare X as Decimal
+  Declare Y as Decimal
+
+  Function String ToString()
+    Return "(" + X + "," + Y + ")"
+  End Function
+End Type
+
+Type Soldier
+  Declare Magazines as Integer
+  Declare X as Decimal
+  Declare Y as Decimal
+  Declare Z as Decimal
+  Function Void SetMagazines(mags as Integer)
+    Magazines = mags
+  End Function
+
+  Function String PosToString()
+    Return "(" + X + "," + Y + ")"
+  End Function
+
+  Function Void Teleport(x as Decimal, y as Decimal, z as Decimal)
+    X = x
+    Y = y
+    Z = z
+  End Function
+End Type
+
+Function Void Hej()
+End Function
+
+#Include("stdlib.bsi")
+
+Begin Declarations
+  Declare soldat2 as Soldier
+  Declare arr as Integer[30]
+  arr[0] = 1
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+Begin Program
+  Declare target as Coord
+  target.X = 4
+  target.Y = 5
+  PrintLine(target.ToString())
+  Declare john as Soldier
+  PrintLine(john.PosToString())
+  john.Teleport(target.X, target.Y, 30.0)
+  PrintLine(john.PosToString())
+
+  PrintLine(arr[0] + "")
+
+End Program
