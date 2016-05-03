@@ -7,6 +7,7 @@ import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Terrain;
 import com.company.Steps.MoveStep;
 import com.company.Steps.Step;
+import com.company.Steps.WaitStep;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -74,6 +75,8 @@ public class Main {
 
         steps.add(new MoveStep(enemies, new Coord(950,250)));
         steps.add(new MoveStep(enemies, new Coord(600,250)));
+        steps.add(new WaitStep(enemies, 50));
+        steps.add(new MoveStep(enemies, new Coord(300, 600)));
 
         BasicFrame ex = new BasicFrame(allies, enemies, steps, terrain);
         ex.setVisible(true);
