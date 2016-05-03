@@ -8,7 +8,7 @@ public class Vector {
     public double Y = 0;
 
     public double GetLength(){
-        return (double) Math.abs(Math.sqrt( Math.pow(X, 2) + Math.pow(Y, 2)));
+        return Math.abs(Math.sqrt( Math.pow(X, 2) + Math.pow(Y, 2)));
     }
 
     public static Vector GetVectorByPoints(Coord p1, Coord p2){

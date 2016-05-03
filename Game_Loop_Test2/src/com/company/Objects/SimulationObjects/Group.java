@@ -1,4 +1,4 @@
-package com.company.Objects.DynamicObjects;
+package com.company.Objects.SimulationObjects;
 
 import com.company.DSTFunctions;
 import com.company.Objects.StaticObjects.Coord;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Magnus on 25-04-2016.
  */
-public class Group extends DynObj {
+public class Group extends SimObj {
     public List<Soldier> Soldiers = new ArrayList<Soldier>();
 
 

@@ -1,8 +1,8 @@
 package com.company;
 
-import com.company.Objects.DynamicObjects.Force;
-import com.company.Objects.DynamicObjects.Group;
-import com.company.Objects.DynamicObjects.Soldier;
+import com.company.Objects.SimulationObjects.Force;
+import com.company.Objects.SimulationObjects.Group;
+import com.company.Objects.SimulationObjects.Soldier;
 import com.company.Objects.StaticObjects.Barrier;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Terrain;
@@ -11,12 +11,7 @@ import com.company.Steps.Step;
 import com.company.Steps.WaitStep;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class Main {
@@ -90,7 +85,7 @@ public class Main {
 
         steps.add(new MoveStep(enemies, new Coord(950,250)));
         steps.add(new MoveStep(enemies, new Coord(600,250)));
-        steps.add(new WaitStep(enemies, 50));
+        steps.add(new WaitStep(enemies, 2));
         steps.add(new MoveStep(enemies, new Coord(300, 600)));
 
         BasicFrame ex = new BasicFrame(allies, enemies, steps, terrain, barriers);

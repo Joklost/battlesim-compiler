@@ -1,15 +1,15 @@
 package com.company.Steps;
 
-import com.company.Objects.DynamicObjects.DynObj;
+import com.company.Objects.SimulationObjects.SimObj;
 
 /**
  * Created by Magnus on 01-05-2016.
  */
 public abstract class Step{
     public boolean isDone = false;
-    public DynObj object; //Soldier, Group, Platoon og Force nedarver fra DynObj (Dynamisk objekt)
+    public SimObj object; //Soldier, Group, Platoon og Force nedarver fra SimObj (Dynamisk objekt)
 
-    protected Step(DynObj object){
+    protected Step(SimObj object){
         this.object = object;
     }
 
