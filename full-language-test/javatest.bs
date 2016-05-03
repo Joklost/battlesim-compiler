@@ -21,8 +21,6 @@ End Declarations
 Declare Simulations
 End Declare Simulations
 
-
-
 // Test Include
 // Include kan først komme efter simulations og declerations
 //  ellers gives fejl
