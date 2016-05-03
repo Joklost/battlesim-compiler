@@ -125,11 +125,12 @@ precedence left ELSE;
 /* The grammar */
 start with Start;
 
-Start         ::= TypeDcls:tl FunctionDcls:fds1 DclBlock:db SimBlock:s Program:p                {: RESULT = new Start(db, s, tl, fds1, p, dbleft); :}
+Start         ::= DclBlock:db SimBlock:s TypeDcls:tl FunctionDcls:fds1 Program:p                {: RESULT = new Start(db, s, tl, fds1, p, dbleft); :}
               ;
-DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
+DclBlock      ::= MultEOL BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                  {: RESULT = new DclBlock(ss, ssleft); :}
+              |   BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               ;
-SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS MultEOL             {: RESULT = new SimBlock(s, sleft); :}
+SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS                     {: RESULT = new SimBlock(s, sleft); :}
               ;
 Simulations   ::= Simulations:ss Simulation:s                                                   {: RESULT = ss; ss.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimulationList(0); :}

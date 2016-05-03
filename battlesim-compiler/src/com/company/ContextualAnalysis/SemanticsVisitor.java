@@ -39,6 +39,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Start s) {
+        s.dclBlock.accept(this);
+        s.simBlock.accept(this);
 
         for (int i = 0; i < s.typeDeclarationList.size(); i++) {
             s.typeDeclarationList.elementAt(i).accept(this);
@@ -47,9 +49,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         for (int i = 0; i < s.functionDclList1.size(); i++) {
             s.functionDclList1.elementAt(i).accept(this);
         }
-
-        s.dclBlock.accept(this);
-        s.simBlock.accept(this);
 
         s.program.accept(this);
     }
