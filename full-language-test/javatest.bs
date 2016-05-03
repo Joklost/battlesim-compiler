@@ -89,5 +89,10 @@ Begin Program
     PrintLine(Charlie.Magazines + "")
     Charlie.SetMagazines(42)
     PrintLine(Charlie.Magazines + "")
+    Charlie.posX = 4
+    Charlie.posY = 2
+    PrintLine(Charlie.GetPosition())
+    Charlie.SetPos(2,4)
+    PrintLine(Charlie.GetPosition())
 
 End Program
