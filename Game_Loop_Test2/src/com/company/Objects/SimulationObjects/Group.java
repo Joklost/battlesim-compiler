@@ -65,7 +65,7 @@ public class Group extends SimObj {
     public List<Coord> GetCoordList(){
         List<Coord> res = new ArrayList<>();
         for(Soldier s : Soldiers){
-            res.add(s.Pos);
+            res.add(s.GetPos());
         }
         return res;
     }

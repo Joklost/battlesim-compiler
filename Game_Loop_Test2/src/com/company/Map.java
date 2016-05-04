@@ -4,6 +4,7 @@ import com.company.Objects.Bullet;
 import com.company.Objects.StaticObjects.*;
 import com.company.Objects.SimulationObjects.*;
 import com.company.Steps.*;
+import com.sun.xml.internal.ws.api.message.Message;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -11,11 +12,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Magnus on 17-03-2016.
  */
-public class Map extends JPanel implements ActionListener {
+public class Map extends JPanel implements ActionListener, FireBulletListener {
 
     private int MapWidth = 300;
     private int MapHeight = 200;
@@ -26,6 +28,7 @@ public class Map extends JPanel implements ActionListener {
 
     public static double FRAMERATE = 16; //Update interval in milliseconds
     public double TIMESCALE = 25;
+    public double deltaT = (FRAMERATE / 1000) * TIMESCALE;
     public ArrayList<Step> Steps = new ArrayList<Step>();
     public Force Force1 = new Force();
     public Force Force2 = new Force();
@@ -39,9 +42,20 @@ public class Map extends JPanel implements ActionListener {
         MapWidth = terrain.Width;
         MapHeight = terrain.Height;
         Barriers = barriers;
+        InitListener(Force1);
+        InitListener(Force2);
         initMap();
     }
 
+    private void InitListener(Force force) {
+        for(Platoon p: force.Platoons){
+            for(Group g: p.Groups){
+                for(Soldier s: g.Soldiers){
+                    s.addFireBulletListener(this);
+                }
+            }
+        }
+    }
 
     private void initMap() {
         setFocusable(true);
@@ -50,30 +64,35 @@ public class Map extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        if(actionEvent.getSource() == Soldier.class){
+            int i = 1;
+        }
+
         Elapsedtime = actionEvent.getWhen() - HRT;
         HRT = actionEvent.getWhen();
-        updatePositions();
+        updateStates();
         detectCollisions();
         performInstructions();
         repaint();
     }
 
     private void performInstructions() {
-
+        //Her skal der blot kaldes MySimulation.Run() for hver af sidernes simulation
         for(Step step : Steps)
             step.RunIfCanStart();
     }
 
-    private void updatePositions() {
-        updateForcePositions(Force1);
-        updateForcePositions(Force2);
+    private void updateStates() {
+        updateForceStates(Force1);
+        updateForceStates(Force2);
     }
 
-    private void updateForcePositions(Force force){
+    private void updateForceStates(Force force){
         for(Platoon p: force.Platoons){
             for(Group ga: p.Groups){
                 for(Soldier s: ga.Soldiers){
-                    s.Pos.NewPos(s.Direction, s.Velocity, (FRAMERATE / 1000) * TIMESCALE);
+                    s.Pos.NewPos(s.Direction, s.Velocity, deltaT);
+                    s.serviceTimers(deltaT);
                 }
             }
         }
@@ -92,8 +111,7 @@ public class Map extends JPanel implements ActionListener {
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
                     if(s.IsEnemyDetected){
-                        if(s.Ammo > 0)
-                            Bullets.add(s.Shoot(s.Enemy.Pos));
+                        s.TryShoot(s.Enemy.GetPos());
                     }
                 }
             }
@@ -152,5 +170,10 @@ public class Map extends JPanel implements ActionListener {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         doDrawing(g);
+    }
+
+    @Override
+    public void BulletFired(FireBulletEvent event) {
+        Bullets.add(event.GetBullet());
     }
 }
