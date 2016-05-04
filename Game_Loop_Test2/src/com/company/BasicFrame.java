@@ -11,7 +11,10 @@ import java.util.ArrayList;
 /**
  * Created by Magnus on 17-03-2016.
  */
-public class BasicFrame extends JFrame {
+
+
+public class BasicFrame extends JFrame{
+
     public BasicFrame(Force force1, Force force2, ArrayList<Step> steps, Terrain terrain, ArrayList<Barrier> barriers){
         InitUI(force1, force2, steps, terrain, barriers);
     }

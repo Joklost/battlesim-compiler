@@ -8,6 +8,8 @@ import com.sun.xml.internal.ws.api.message.Message;
 
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +19,10 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by Magnus on 17-03-2016.
  */
-public class Map extends JPanel implements ActionListener, FireBulletListener {
-
+public class Map extends JPanel implements ActionListener, FireBulletListener, ChangeListener {
+    private static final int TS_MIN = 1;
+    private static final int TS_MAX = 25;
+    private static final int TS_INIT = 10; //Initial timescale
     private int MapWidth = 300;
     private int MapHeight = 200;
     private Timer timer;
@@ -42,12 +46,27 @@ public class Map extends JPanel implements ActionListener, FireBulletListener {
         MapWidth = terrain.Width;
         MapHeight = terrain.Height;
         Barriers = barriers;
-        InitListener(Force1);
-        InitListener(Force2);
+        initListener(Force1);
+        initListener(Force2);
+        initSlider();
         initMap();
     }
 
-    private void InitListener(Force force) {
+    // https://docs.oracle.com/javase/tutorial/uiswing/examples/components/SliderDemoProject/src/components/SliderDemo.java
+    private void initSlider() {
+        JSlider timeScale = new JSlider(JSlider.HORIZONTAL, TS_MIN, TS_MAX, TS_INIT );
+        timeScale.setMajorTickSpacing(5);
+        timeScale.setMinorTickSpacing(1);
+        timeScale.setPaintTicks(true);
+        timeScale.setPaintLabels(true);
+        timeScale.addChangeListener(this);
+        timeScale.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+        Font font = new Font("Serif", Font.ITALIC, 15);
+        timeScale.setFont(font);
+        add(timeScale);
+    }
+
+    private void initListener(Force force) {
         for(Platoon p: force.Platoons){
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
@@ -58,6 +77,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener {
     }
 
     private void initMap() {
+
         setFocusable(true);
         timer = new Timer((int)FRAMERATE, this);
     }
@@ -175,5 +195,14 @@ public class Map extends JPanel implements ActionListener, FireBulletListener {
     @Override
     public void BulletFired(FireBulletEvent event) {
         Bullets.add(event.GetBullet());
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        JSlider source = (JSlider)e.getSource();
+        if (!source.getValueIsAdjusting()) {
+            int ts = (int)source.getValue();
+            deltaT = (FRAMERATE / 1000) * ts;
+        }
     }
 }

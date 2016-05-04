@@ -30,8 +30,8 @@ public class Main {
     public static void runSimulation() {
 
         Terrain terrain = new Terrain();
-        terrain.Width = 1920;
-        terrain.Height = 1080;
+        terrain.Width = 1800;
+        terrain.Height = 900;
 
         Barrier bar = new Barrier();
         bar.AddVertex(new Coord(30, 50));
@@ -41,7 +41,7 @@ public class Main {
         Barrier bar2 = new Barrier();
         bar2.AddVertex(new Coord(960, 800));
         bar2.AddVertex(new Coord(900, 840));
-        bar2.AddVertex(new Coord(800, 950));
+        bar2.AddVertex(new Coord(800, 890));
         bar2.AddVertex(new Coord(950, 800));
         ArrayList<Barrier> barriers = new ArrayList<Barrier>();
         barriers.add(bar);
