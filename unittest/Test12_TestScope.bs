@@ -1,0 +1,54 @@
+Begin Declarations
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Void TestScope()
+
+  Declare hejsa as String
+  hejsa = "hejsa"
+  Declare scope1 as Boolean
+  Declare scope2 as Boolean
+  Declare scope3 as Boolean
+  Declare scope4 as Boolean
+  Declare scope5 as Boolean
+  scope1 = true
+  scope2 = true
+  scope3 = true
+  scope4 = true
+  scope5 = true
+
+  While scope1 Do
+      PrintLine(hejsa)
+      scope1 = false
+
+      While scope2 Do
+          PrintLine(hejsa)
+          scope2 = false
+
+          While scope3 Do
+              PrintLine(hejsa)
+              scope3 = false
+
+              While scope4 Do
+                  PrintLine(hejsa)
+                  scope4 = false
+
+                  While scope5 Do
+                      PrintLine(hejsa)
+                      scope5 = false
+                  End While
+              End While
+          End While
+      End While
+  End While
+End Function
+
+Begin Program
+
+  TestScope()
+
+End Program

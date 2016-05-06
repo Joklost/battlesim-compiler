@@ -1,0 +1,114 @@
+Begin Declarations
+    Declare k as Decimal
+    Declare foo as Integer
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Void math(n as Integer)
+    k = 19.8
+    foo = 42
+
+    PrintLine("TEST MATH")
+
+    // Test for int
+    PrintLine(42 + n + "")
+    PrintLine(42 - n + "")
+    PrintLine(42 / n + "")
+    PrintLine(42 * n + "")
+    PrintLine(42 % n + "")
+    // Test for int++ og int--
+    PrintLine(42 + n++ + "")
+    PrintLine(42 + n-- + "")
+    PrintLine(42 - n++ + "")
+    PrintLine(42 - n-- + "")
+    PrintLine(42 / n++ + "")
+    PrintLine(42 / n-- + "")
+    PrintLine(42 * n++ + "")
+    PrintLine(42 * n-- + "")
+    PrintLine(42 % n++ + "")
+    PrintLine(42 % n-- + "")
+
+    // Test for decimal
+    PrintLine(42.0 + k + "")
+    PrintLine(42.0 - k + "")
+    PrintLine(42.0 / k + "")
+    PrintLine(42.0 * k + "")
+    PrintLine(42.0 % k + "")
+    // Test for decimal++ og decimal--
+    PrintLine(42.0 + k++ + "")
+    PrintLine(42.0 + k-- + "")
+    PrintLine(42.0 - k++ + "")
+    PrintLine(42.0 - k-- + "")
+    PrintLine(42.0 / k++ + "")
+    PrintLine(42.0 / k-- + "")
+    PrintLine(42.0 * k++ + "")
+    PrintLine(42.0 * k-- + "")
+    PrintLine(42.0 % k++ + "")
+    PrintLine(42.0 % k-- + "")
+
+    // Test for decimal and Integer
+    PrintLine(n + k + "")
+    PrintLine(n - k + "")
+    PrintLine(n / k + "")
+    PrintLine(n * k + "")
+    PrintLine(n % k + "")
+    // Test for decimal++ og decimal--
+    PrintLine(n + k++ + "")
+    PrintLine(n + k-- + "")
+    PrintLine(n - k++ + "")
+    PrintLine(n - k-- + "")
+    PrintLine(n / k++ + "")
+    PrintLine(n / k-- + "")
+    PrintLine(n * k++ + "")
+    PrintLine(n * k-- + "")
+    PrintLine(n % k++ + "")
+    PrintLine(n % k-- + "")
+    // Test for int++ og int--
+    PrintLine(n++ + k + "")
+    PrintLine(n-- + k + "")
+    PrintLine(n++ - k + "")
+    PrintLine(n-- - k + "")
+    PrintLine(n++ / k + "")
+    PrintLine(n-- / k + "")
+    PrintLine(n++ * k + "")
+    PrintLine(n-- * k + "")
+    PrintLine(n++ % k + "")
+    PrintLine(n-- % k + "")
+
+    // Test matematical assignment
+    // for int
+    PrintLine(foo + "")
+    foo += 8
+    PrintLine(foo + "")
+    foo -= 8
+    PrintLine(foo + "")
+    foo /= 8
+    PrintLine(foo + "")
+    foo %= 8
+    PrintLine(foo + "")
+    foo *= 8
+    PrintLine(foo + "")
+    // for deciaml
+    PrintLine(foo + "")
+    k += 8
+    PrintLine(k + "")
+    k -= 8
+    PrintLine(k + "")
+    k /= 8
+    PrintLine(k + "")
+    k %= 8
+    PrintLine(k + "")
+    k *= 8
+    PrintLine(k + "")
+
+End Function
+
+Begin Program
+
+  math(5)
+
+End Program

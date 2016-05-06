@@ -1,0 +1,18 @@
+Begin Declarations
+    Declare n as Integer
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Decimal ReturnDecimal()
+    Return 3.50
+End Function
+
+Begin Program
+
+  PrintLine(ReturnDecimal() + "")
+
+End Program

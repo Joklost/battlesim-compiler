@@ -1,0 +1,7 @@
+Test13_CustomTypeParam.bs: line 127: error: PosToString is not a field of john
+Test13_CustomTypeParam.bs: line 127: error: Function null has not been declared.
+Test13_CustomTypeParam.bs: line 127: error: Argument 1 in function call of PrintLine does not match with parameter. Type: ERROR
+Test13_CustomTypeParam.bs: line 128: error: Found 3 function arguments. Needs 1.
+Test13_CustomTypeParam.bs: line 129: error: PosToString is not a field of john
+Test13_CustomTypeParam.bs: line 129: error: Function null has not been declared.
+Test13_CustomTypeParam.bs: line 129: error: Argument 1 in function call of PrintLine does not match with parameter. Type: ERROR

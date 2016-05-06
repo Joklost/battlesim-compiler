@@ -1,0 +1,54 @@
+Begin Declarations
+    Declare a as Integer[7]
+    Declare n as Integer
+    Declare i, c, t as Integer
+    Declare flag as Boolean
+
+    a[0] = 12
+    a[1] = 24
+    a[2] = 13
+    a[3] = 9
+    a[4] = 16
+    a[5] = -4
+    a[6] = 17
+
+    n = 7
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Void BubbleSort()
+    flag = true
+    While flag Do
+    flag = false
+    c = 0
+      For c To (n - i - 1) Do
+          If (a[c] > a[c + 1]) Then
+            t        = a[c]
+            a[c]     = a[c + 1]
+            a[c + 1] = t
+            flag = true
+          End If
+        c = c + 1
+        End For
+    End While
+End Function
+
+Begin Program
+
+  Foreach Integer num in a Do
+    PrintLine(num + "")
+  End Foreach
+
+  BubbleSort()
+
+  PrintLine("")
+
+  Foreach Integer num in a Do
+    PrintLine(num + "")
+  End Foreach
+
+End Program
