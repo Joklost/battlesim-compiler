@@ -15,12 +15,12 @@ public class WaitStep extends Step{
         this.time = time * 1000;
     }
 
-    public void Run(){
+    public void Run(double deltaT){
         object.Take(this);
         if(ticker >= time){
             object.Release();
             isDone = true;
         }
-        ticker += Map.FRAMERATE ;
+        ticker += deltaT;
     }
 }

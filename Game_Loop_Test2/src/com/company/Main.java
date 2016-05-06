@@ -85,7 +85,7 @@ public class Main {
 
         steps.add(new MoveStep(enemies, new Coord(950,250)));
         steps.add(new MoveStep(enemies, new Coord(600,250)));
-        steps.add(new WaitStep(enemies, 2));
+        steps.add(new WaitStep(enemies, 60));
         steps.add(new MoveStep(enemies, new Coord(300, 600)));
 
         BasicFrame ex = new BasicFrame(allies, enemies, steps, terrain, barriers);

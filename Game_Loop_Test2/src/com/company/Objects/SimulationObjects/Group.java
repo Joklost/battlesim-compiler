@@ -78,4 +78,13 @@ public class Group extends SimObj {
     public Coord GetPos(){
         return DSTFunctions.CenterOfMass(GetCoordList());
     }
+
+    public boolean IsDead(){
+        for(Soldier s: Soldiers){
+            if(!s.IsDead()){
+                return false;
+            }
+        }
+        return true;
+    }
 }

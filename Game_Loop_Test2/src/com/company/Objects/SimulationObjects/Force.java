@@ -82,4 +82,13 @@ public class Force extends SimObj {
     public Coord GetPos(){
         return DSTFunctions.CenterOfMass(GetCoordList());
     }
+
+    public boolean IsDead(){
+        for(Platoon p: Platoons){
+            if(!p.IsDead()){
+                return false;
+            }
+        }
+        return true;
+    }
 }

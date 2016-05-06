@@ -80,4 +80,13 @@ public class Platoon extends SimObj {
     public Coord GetPos(){
         return DSTFunctions.CenterOfMass(GetCoordList());
     }
+
+    public boolean IsDead(){
+        for(Group g: Groups){
+            if(!g.IsDead()){
+                return false;
+            }
+        }
+        return true;
+    }
 }
