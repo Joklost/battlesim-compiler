@@ -38,6 +38,6 @@ public abstract class SimObj {
 
     public abstract Coord GetPos();
 
-    //public abstract Vector Shoot(Coord target);
+    public abstract boolean IsDead();
 
 }

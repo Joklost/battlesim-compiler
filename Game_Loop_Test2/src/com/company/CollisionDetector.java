@@ -15,14 +15,22 @@ public class CollisionDetector {
                     for(Platoon p2: enemies.Platoons){
                         for(Group g2: p2.Groups){
                             for(Soldier s2: g2.Soldiers){
-                                Vector v = Vector.GetVectorByPoints(s.GetPos(), s2.GetPos());
-                                if(v.GetLength() < s.Fov){
-                                    s.EnemyDetected(s2);
-                                    s2.EnemyDetected(s);
-                                }
+                                DetectEnemy(s, s2);
+                                DetectEnemy(s2, s);
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private static void DetectEnemy(Soldier s, Soldier enemy){
+        if(!s.CanStillSeeEnemy()){
+            if(!s.IsDead() && !enemy.IsDead()){
+                Vector v = Vector.GetVectorByPoints(s.GetPos(), enemy.GetPos());
+                if(v.GetLength() < s.Fov){
+                    s.EnemyDetected(enemy);
                 }
             }
         }

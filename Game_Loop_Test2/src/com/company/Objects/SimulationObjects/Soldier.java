@@ -7,20 +7,21 @@ import com.company.Objects.Bullet;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Vector;
 
-import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Magnus on 25-04-2016.
  */
 public class Soldier extends SimObj {
     private List _listeners = new ArrayList();
+    private boolean isDead = false;
+    //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
+    private double accuracy = 0.2;
 
+    public int Side = 0;
     public Coord Pos = new Coord(0,0);
     public final static double DefaultVelocity = 2.2; //meter per second
-    public int Size = 4;            //Change this because this is a random number
+    public double Size = 0.25;            //Change this because this is a random number
     public boolean IsEnemyDetected = false;
     public int Fov = 50;
     public int Ammo = 30;
@@ -30,6 +31,7 @@ public class Soldier extends SimObj {
     public double Velocity = 0;
     public Vector Direction = new Vector();
     public int Magazines = 4;
+    public String Model = "Error";
 
     public Coord GetPos(){
         return Pos;
@@ -56,6 +58,20 @@ public class Soldier extends SimObj {
         IsEnemyDetected = true;
     }
 
+    public boolean CanStillSeeEnemy(){
+        if(Enemy == null){
+            IsEnemyDetected = false;
+            return false;
+        }
+        if(Enemy.IsDead() && Vector.GetVectorByPoints(Pos, Enemy.GetPos()).GetLength() < Fov){
+            return true;
+        }
+        else{
+            IsEnemyDetected = false;
+            return false;
+        }
+    }
+
     public synchronized void addFireBulletListener( FireBulletListener l ) {
         _listeners.add( l );
     }
@@ -74,7 +90,14 @@ public class Soldier extends SimObj {
 
     public void TryShoot(Coord target){
         if(Ammo > 0 && CL_FireRate >= FireRate){
-            Bullet bullet = new Bullet(Pos, Vector.GetVectorByPoints(Pos, target));
+            Random rand = new Random();
+            Vector bulletUnit = Vector.GetVectorByPoints(Pos, target).Normalize();
+            Vector normal = new Vector();
+            normal.X = (-1) * bulletUnit.Y;
+            normal.Y = bulletUnit.X;
+            normal.Scale(accuracy);
+            normal.Scale(rand.nextDouble() * 2 - 1);
+            Bullet bullet = new Bullet(GetPos(),Vector.GetVectorByPoints(GetPos(), new Coord(GetPos().X + bulletUnit.X + normal.X, GetPos().Y + bulletUnit.Y + normal.Y)), Side);
             _fireFireBulletEvent(bullet);
             Ammo--;
             CL_FireRate = 0;
@@ -87,4 +110,15 @@ public class Soldier extends SimObj {
         }
     }
 
+    public boolean IsDead(){
+        return isDead;
+    }
+
+    public void Kill(){
+        StopMovement();
+        IsEnemyDetected = false;
+        Enemy = null;
+        Model = "X";
+        isDead = true;
+    }
 }

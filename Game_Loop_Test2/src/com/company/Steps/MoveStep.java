@@ -15,7 +15,7 @@ public class MoveStep extends Step{
         this.coord = coord;
     }
 
-    public void Run(){
+    public void Run(double deltaT){
         object.Take(this);
         object.Move(coord);
         Vector v = Vector.GetVectorByPoints(object.GetPos(), coord);
