@@ -1,0 +1,113 @@
+Begin Declarations
+    Declare da as Boolean
+    Declare no as Boolean
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Void TestIf()
+    da = true
+    no = false
+
+    If da Then
+        PrintLine("da")
+    End If
+
+    If no Then
+        PrintLine("no")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else
+        PrintLine("else")
+    End If
+
+    If da AND NOT no Then
+        PrintLine("da AND NOT no")
+    End If
+
+    If NOT da OR no Then
+        PrintLine("NOT da OR no")
+    Else If ((NOT no) OR da) OR (1 == 2) Then
+        PrintLine("Else If ((NOT no) OR da) OR (1 == 2)")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else If da Then
+        PrintLine("Else If da")
+    End If
+
+    If 1 == 1 Then
+        PrintLine("1 == 1")
+    End If
+
+    If (true OR da) OR no Then
+        PrintLine("(true OR da) OR no")
+    End If
+
+    If true OR 1 == 2 Then
+        PrintLine("true OR 1 == 2")
+    End If
+
+    If NOT no Then
+        PrintLine("NOT no")
+    End If
+
+    If no OR da Then
+        PrintLine("no OR da")
+    End If
+
+    If da AND da Then
+        PrintLine("da AND da")
+    End If
+
+    If 1 == 1 AND true == da Then
+        PrintLine("1 == 1 AND true == da")
+    End If
+
+    If true == NOT false Then
+        PrintLine("true == NOT false")
+    End If
+
+    If NOT (true == false) Then
+        PrintLine("NOT (true == false)")
+    End If
+
+    If NOT (no == da) Then
+        PrintLine("NOT (no == da)")
+    End If
+
+    If NOT (no == no) Then
+        PrintLine("(no == no)")
+    Else
+        PrintLine("else")
+    End If
+
+    If (1 > 42) Then
+        PrintLine("Suprice 1 er større end 42")
+    Else
+        PrintLine("1 er sjovt nok ikke større end 42")
+    End If
+
+    If no Then
+        PrintLine("no")
+    Else If no Then
+        PrintLine("Still no")
+    Else If no Then
+        PrintLine("Not at all")
+    Else
+        PrintLine("True")
+        PrintLine("Multiline statments in if testes")
+    End If
+End Function
+
+Begin Program
+
+  TestIf()
+
+End Program

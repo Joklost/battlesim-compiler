@@ -1,0 +1,18 @@
+Begin Declarations
+    Declare n as Integer
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Integer ReturnInt()
+    Return 42
+End Function
+
+Begin Program
+
+  PrintLine(ReturnInt() + "")
+
+End Program

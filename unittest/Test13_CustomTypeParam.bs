@@ -1,0 +1,26 @@
+
+
+Begin Declarations
+  Declare soldat2 as Soldier
+  Declare arr as Integer[30]
+  arr[0] = 1
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Begin Program
+  Declare target as Coord
+  target.X = 4
+  target.Y = 5
+  PrintLine(target.ToString())
+  Declare john as Soldier
+  PrintLine(john.PosToString())
+  john.Teleport(target.X, target.Y, 30.0)
+  PrintLine(john.PosToString())
+
+  PrintLine(arr[0] + "")
+
+End Program

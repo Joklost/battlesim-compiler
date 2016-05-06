@@ -1,0 +1,22 @@
+Begin Declarations
+    Declare n as Integer
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Integer Factorial(n as Integer)
+    If n <= 1 Then
+        Return 1
+    End If
+
+    Return Factorial(n - 1) * n
+End Function
+
+Begin Program
+
+  PrintLine(Factorial(3) + "")
+
+End Program

@@ -1,0 +1,23 @@
+Begin Declarations
+    Declare array as String[3]
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Void TestArrayForeach()
+    array[0] = "Hej"
+    array[1] = "Hej igen"
+    array[2] = "Hej tredje gang"
+    Foreach String say in array Do
+        PrintLine(say)
+    End Foreach
+End Function
+
+Begin Program
+
+  TestArrayForeach()
+
+End Program

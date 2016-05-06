@@ -1,0 +1,28 @@
+Begin Declarations
+    Declare n as Integer
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+#Include("stdlib.bsi")
+
+Function Void TestSwitch()
+    Declare swinr as Integer
+    swinr = 42
+
+    Switch swinr
+        Case 1
+            PrintLine("The number was oddly enough one")
+        Case 42
+            PrintLine("Yeah, the number was " + swinr + "")
+        Default
+            PrintLine("This is the default")
+      End Switch
+End Function
+
+Begin Program
+
+  TestSwitch()
+
+End Program
