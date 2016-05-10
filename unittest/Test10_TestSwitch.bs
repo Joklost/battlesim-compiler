@@ -1,9 +1,3 @@
-Begin Declarations
-    Declare n as Integer
-End Declarations
-
-Declare Simulations
-End Declare Simulations
 
 #Include("stdlib.bsi")
 
@@ -20,6 +14,13 @@ Function Void TestSwitch()
             PrintLine("This is the default")
       End Switch
 End Function
+
+Begin Declarations
+    Declare n as Integer
+End Declarations
+
+Declare Simulations
+End Declare Simulations
 
 Begin Program
 

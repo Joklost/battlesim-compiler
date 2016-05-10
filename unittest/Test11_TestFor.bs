@@ -1,8 +1,3 @@
-Begin Declarations
-End Declarations
-
-Declare Simulations
-End Declare Simulations
 
 #Include("stdlib.bsi")
 
@@ -18,6 +13,12 @@ Function Void TestFor()
         PrintLine("Num: " + i + "")
     End For
 End Function
+
+Begin Declarations
+End Declarations
+
+Declare Simulations
+End Declare Simulations
 
 Begin Program
 

@@ -1,5 +1,5 @@
-
 #Include("stdlib.bsi")
+
 Begin Declarations
   Declare terrain as Terrain
   terrain.X = 1900

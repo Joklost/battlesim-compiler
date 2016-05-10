@@ -38,7 +38,7 @@ function assertCompileError {
 	rm results_real
 }
 
-assert Test1_BubbleSort.bs Test1_results_expt 1
+#assert Test1_BubbleSort.bs Test1_results_expt 1 #!! Not possible after d9f9320
 assert Test2_Recursion.bs Test2_results_expt 2
 assert Test3_ReturnInteger.bs Test3_results_expt 3
 assert Test4_ReturnDecimal.bs Test4_results_expt 4
@@ -50,5 +50,4 @@ assert Test9_TestIf.bs Test9_results_expt 9
 assert Test10_TestSwitch.bs Test10_results_expt 10
 assert Test11_TestFor.bs Test11_results_expt 11
 assert Test12_TestScope.bs Test12_results_expt 12
-assertCompileError Test13_CustomTypeParam.bs Test13_results_expt 13 # should give compile error
-																    # since custom type don't excist.. yet
+assert Test13_CustomTypeParam.bs Test13_results_expt 13

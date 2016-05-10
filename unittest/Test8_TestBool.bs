@@ -1,14 +1,8 @@
-Begin Declarations
-    Declare da as Boolean
-    Declare no as Boolean
-End Declarations
-
-Declare Simulations
-End Declare Simulations
-
 #Include("stdlib.bsi")
 
 Function Void TestBool()
+    Declare da as Boolean
+    Declare no as Boolean
     no = false
     da = true
 
@@ -32,6 +26,12 @@ Function Void TestBool()
     PrintLine((NOT NOT da OR no) + "")
     PrintLine(((NOT NOT da) OR (da AND (NOT no))) + "")
 End Function
+
+Begin Declarations
+End Declarations
+
+Declare Simulations
+End Declare Simulations
 
 Begin Program
 

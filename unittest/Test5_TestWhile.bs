@@ -1,13 +1,7 @@
-Begin Declarations
-    Declare i as Integer
-End Declarations
-
-Declare Simulations
-End Declare Simulations
-
 #Include("stdlib.bsi")
 
 Function Void TestWhile()
+    Declare i as Integer
     i = 0
     While i < 10 Do
         PrintLine((i + 1) + "")
@@ -20,6 +14,12 @@ Function Void TestWhile()
         i = i - 1
     End While
 End Function
+
+Begin Declarations
+End Declarations
+
+Declare Simulations
+End Declare Simulations
 
 Begin Program
 

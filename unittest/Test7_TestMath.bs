@@ -1,14 +1,8 @@
-Begin Declarations
-    Declare k as Decimal
-    Declare foo as Integer
-End Declarations
-
-Declare Simulations
-End Declare Simulations
-
 #Include("stdlib.bsi")
 
 Function Void math(n as Integer)
+    Declare k as Decimal
+    Declare foo as Integer
     k = 19.8
     foo = 42
 
@@ -106,6 +100,12 @@ Function Void math(n as Integer)
     PrintLine(k + "")
 
 End Function
+
+Begin Declarations
+End Declarations
+
+Declare Simulations
+End Declare Simulations
 
 Begin Program
 
