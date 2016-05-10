@@ -145,12 +145,12 @@ TypeDcl       ::= TYPE Identifier:i MultEOL Dcls:dl FunctionDcls:fdl JavaStringL
 Dcls          ::= Dcls:dl Dcl:d                                                                 {: RESULT = dl; dl.addElement(d); :}
               |   Dcl:d                                                                         {: RESULT = new DeclarationList(0); RESULT.addElement(d); :}
               ;
-JavaStringList ::= JavaStringList:jl JavaString:j MultEOL                                       {: RESULT = jl; jl.addElement(j); :}
+JavaStringList ::= JavaStringList:jl JavaString:j                                               {: RESULT = jl; jl.addElement(j); :}
               |    MultEOL                                                                      {: RESULT = new JavaStringList(0); :}
               ;
-JavaString    ::= JAVASTRING:j                                                                  {: RESULT = new JavaString(j, jleft); :}
+JavaString    ::= JAVASTRING:j MultEOL                                                          {: RESULT = new JavaString(j, jleft); :}
               ;
-/**/
+/* MultEOL JAVASTRING:j MultEOL JAVASTRING:j MultEOL   */
 FunctionDcls  ::= FunctionDcl:fd                                                                {: RESULT = new FunctionDclList(0); RESULT.addElement(fd); :}
               |   FunctionDcls:fds MultEOL FunctionDcl:fd                                               {: RESULT = fds; fds.addElement(fd); :}
               ;
