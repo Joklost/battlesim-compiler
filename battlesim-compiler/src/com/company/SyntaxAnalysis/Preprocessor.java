@@ -66,14 +66,14 @@ public class Preprocessor {
             String line;
             int lineNum = 1;
             while ((line = br.readLine()) != null) {
-                if(line.startsWith("#include")){
-                    System.out.println("Illegal include inside " + inputPath + " on line " + lineNum + ". Include the file inside your main file. Continuing with including the file.");
+                if(line.startsWith("#Include")){
+                    //System.out.println("Illegal include inside " + inputPath + " on line " + lineNum + ". Include the file inside your main file. Continuing with including the file.");
                     //Uncomment if you want include files to be able to include other files
-                    /*String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"') - 1);
+                    String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
-                    for(int i = 0; i <= includeLines.size(); i++)
-                        lines.add(includeLines.get(i)); */
+                    for(int i = 0; i < includeLines.size(); i++)
+                        lines.add(includeLines.get(i));
                     lineNum++;
                 }
                 else{
