@@ -47,10 +47,15 @@ public class Preprocessor {
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
                     if(line.contains(".inj")){ //Is an injection file
+                        String fileName = line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
+                        writer.println("%``//START INJECTION OF FILE " + fileName);
+                        writer.println("");
                         for(int i = 0; i < includeLines.size(); i++){
                             writer.println("%``" + includeLines.get(i));
                             writer.println(""); // empty line between injectionlines
                         }
+                        writer.println("%``//END INJECTION OF FILE " + fileName);
+                        writer.println("");
                     }else{
                         for(int i = 0; i < includeLines.size(); i++)
                             writer.println(includeLines.get(i));
@@ -79,10 +84,15 @@ public class Preprocessor {
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
                     if(line.contains(".inj")){ //Is an injection file
+                        String fileName = line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
+                        lines.add("%``//START INJECTION OF FILE " + fileName);
+                        lines.add("");
                         for(int i = 0; i < includeLines.size(); i++){
                             lines.add("%``" + includeLines.get(i));
                             lines.add(""); // empty line between injectionlines
                         }
+                        lines.add("%``//END INJECTION OF FILE " + fileName);
+                        lines.add("");
                     } else{
                         for(int i = 0; i < includeLines.size(); i++)
                             lines.add(includeLines.get(i));
