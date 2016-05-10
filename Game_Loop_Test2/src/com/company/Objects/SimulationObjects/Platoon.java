@@ -12,7 +12,20 @@ import java.util.List;
  * Created by Magnus on 25-04-2016.
  */
 public class Platoon extends SimObj {
+    ///////////Felter og funtioner med bruger adgang til
     public List<Group> Groups = new ArrayList<Group>();
+    public void AddGroups(Group ... groups){
+        for(Group g : groups)
+            this.Groups.add(g);
+    }
+    public void AddSoldiers(Soldier... soldiers){
+        Group nGroup = new Group();
+        for(Soldier s: soldiers)
+            nGroup.AddSoldiers(s);
+        AddGroups(nGroup);
+    }
+    //////////
+
 
     public void Take(Step controller){
         if(!IsControlled()){
@@ -29,18 +42,6 @@ public class Platoon extends SimObj {
             g.Release();
         }
         super.Release();
-    }
-
-    public void AddGroups(Group ... groups){
-        for(Group g : groups)
-            this.Groups.add(g);
-    }
-
-    public void AddSoldiers(Soldier... soldiers){
-        Group nGroup = new Group();
-        for(Soldier s: soldiers)
-            nGroup.AddSoldiers(s);
-        AddGroups(nGroup);
     }
 
     public void Move(Coord target){

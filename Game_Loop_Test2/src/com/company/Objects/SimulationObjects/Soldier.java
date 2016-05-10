@@ -13,7 +13,7 @@ import java.util.*;
  * Created by Magnus on 25-04-2016.
  */
 public class Soldier extends SimObj {
-    //Typer med bruger adgang til
+    //Felter med bruger adgang til
     public Coord Pos = new Coord(0,0);
     public double Velocity = 0;
     private boolean isDead = false;
