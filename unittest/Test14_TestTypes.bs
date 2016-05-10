@@ -1,35 +1,9 @@
 
-Type Terrain
-  Declare X as Integer
-  Declare Y as Integer
-
-  Function Void Terrain()
-  End Function
-End Type
-
-Type Coord
-  Declare X as Decimal
-  Declare Y as Decimal
-
-  Function String ToString()
-    Return "(" + X + "," + Y + ")"
-  End Function
-
-End Type
-
-Type Soldier
-  Declare Pos as Coord
-  Declare Velocity as Decimal
-  Declare IsDead as Boolean
-
-  Function Void Soldier()
-  End Function
-
-End Type
-
+#Include("stdlib.bsi")
 Begin Declarations
   Declare terrain as Terrain
-
+  terrain.X = 1900
+  terrain.Y = 1000
   Declare aSol1 as Soldier
 
 End Declarations
@@ -37,9 +11,6 @@ End Declarations
 Declare Simulations
 End Declare Simulations
 
-#Include("stdlib.bsi")
-
 Begin Program
-  terrain.X = 1900
-  terrain.Y = 1000
+
 End Program
