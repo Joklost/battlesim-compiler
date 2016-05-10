@@ -7,6 +7,9 @@ public class Coord {
     public double X = 0;
     public double Y = 0;
 
+    public Coord(){
+    }
+
     public Coord(double x, double y){
         X = x;
         Y = y;

@@ -14,9 +14,11 @@ import java.util.*;
  */
 public class Soldier extends SimObj {
     //Felter med bruger adgang til
-    public Coord Pos = new Coord(0,0);
+    public Coord Pos = new Coord();
     public double Velocity = 0;
     private boolean isDead = false;
+    //////////////////////
+
 
     private List _listeners = new ArrayList();
     //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
