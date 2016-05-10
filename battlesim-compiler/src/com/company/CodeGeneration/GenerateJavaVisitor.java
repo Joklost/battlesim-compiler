@@ -181,7 +181,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitComment("BattleSim automatically generated code file.\n");
         emitIndentation("public class ");
         t.name.accept(this);
-        emit(" {\n");
+        emit(" {\n");    //Sørg for at tilføje SimObj
 
         indentLevel++;
 
@@ -733,6 +733,8 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             emit("Boolean");
         } else if (l.typeName.type == decimalType) {
             emit("Double");
+        } else if (l.typeName instanceof CustomTypeIdentifier) {
+            emit(((CustomTypeIdentifier) l.typeName).name.name);
         }
         emit(">");
     }
