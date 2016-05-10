@@ -85,7 +85,7 @@ public class Main {
                     if (!errorFound) {
                         startNode.accept(generateJavaVisitor);
                         Map<String, List<String>> map = generateJavaVisitor.getCode();
-                        //map.putAll(DST.getDST());
+                        map.putAll(SimulationFileReader.getDST());
                         if (printCode) {
                             int ln = 1;
                             for (String s : map.keySet()) {
