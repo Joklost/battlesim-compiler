@@ -13,13 +13,16 @@ import java.util.*;
  * Created by Magnus on 25-04-2016.
  */
 public class Soldier extends SimObj {
-    private List _listeners = new ArrayList();
+    //Typer med bruger adgang til
+    public Coord Pos = new Coord(0,0);
+    public double Velocity = 0;
     private boolean isDead = false;
+
+    private List _listeners = new ArrayList();
     //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
     private double accuracy = 0.2;
 
     public int Side = 0;
-    public Coord Pos = new Coord(0,0);
     public final static double DefaultVelocity = 2.2; //meter per second
     public double Size = 0.25;            //Change this because this is a random number
     public boolean IsEnemyDetected = false;
@@ -28,7 +31,6 @@ public class Soldier extends SimObj {
     public int FireRate = 1000; //firerate in milliseconds
     public double CL_FireRate = FireRate;
     public Soldier Enemy;
-    public double Velocity = 0;
     public Vector Direction = new Vector();
     public int Magazines = 4;
     public String Model = "Error";
