@@ -44,11 +44,14 @@ public class Preprocessor {
                     if(includeFile == inputPath){
                         throw new Error("Unable to include file " + includeFile + " in " + inputPath);
                     }
-
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
+                    String preString = "";
+                    if(line.contains(".inj")){ //Is an injection file
+                        preString = "%``";
+                    }
                     for(int i = 0; i < includeLines.size(); i++)
-                        writer.println(includeLines.get(i));
+                        writer.println(preString + includeLines.get(i));
                 }
                 else
                     writer.println(line);
@@ -72,8 +75,12 @@ public class Preprocessor {
                     String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
+                    String preString = "";
+                    if(line.contains(".inj")){ //Is an injection file
+                        preString = "%``";
+                    }
                     for(int i = 0; i < includeLines.size(); i++)
-                        lines.add(includeLines.get(i));
+                        lines.add(preString + includeLines.get(i));
                     lineNum++;
                 }
                 else{
