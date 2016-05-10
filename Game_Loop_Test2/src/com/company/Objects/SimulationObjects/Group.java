@@ -12,8 +12,13 @@ import java.util.List;
  * Created by Magnus on 25-04-2016.
  */
 public class Group extends SimObj {
+    ///////////Felter og funtioner med bruger adgang til
     public List<Soldier> Soldiers = new ArrayList<Soldier>();
-
+    public void AddSoldiers(Soldier ... soldiers){
+        for(Soldier s : soldiers)
+            Soldiers.add(s);
+    }
+    //////////
 
     public void Take(Step controller){
         if(!IsControlled()){
@@ -32,10 +37,6 @@ public class Group extends SimObj {
         super.Release();
     }
 
-    public void AddSoldiers(Soldier ... soldiers){
-        for(Soldier s : soldiers)
-            Soldiers.add(s);
-    }
 
     public void Move(Coord target, double velocity){
         SetVelocity(velocity);

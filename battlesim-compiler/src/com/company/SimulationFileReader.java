@@ -12,10 +12,10 @@ import java.util.Map;
 /**
  * Created by Magnus on 25-04-2016.
  */
-public class DST {
+public class SimulationFileReader {
     public static Map<String, List<String>> getDST(){
         Map res = new HashMap<String, List<String>>();
-        File dir = new File(System.getProperty("user.dir") + File.separator + "DST");
+        File dir = new File(System.getProperty("user.dir") + File.separator + "SimulationFiles");
         File[] directoryListing = dir.listFiles();
         if(directoryListing != null){
             for(File file : directoryListing){
