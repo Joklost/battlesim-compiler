@@ -14,6 +14,7 @@ public interface VisitorInterface {
     void visit(Simulation s);
     void visit(Interrupts is);
     void visit(TypeDeclaration t);
+    void visit(JavaString j);
     void visit(FunctionDcl fd);
     void visit(Param p);
     void visit(Program p);
@@ -79,19 +80,9 @@ public interface VisitorInterface {
     void visit(IntegerT i);
     void visit(VoidT v);
     void visit(CustomTypeIdentifier o);
-    /*
-    void visit(Group g);
-    void visit(Platoon p);
-    void visit(Force f);
-    void visit(Coord c);
-    void visit(Soldier s);
-    void visit(Barrier b);
-    void visit(VectorT v);
-    void visit(Terrain t);
-    */
     void visit(ObjectReferencing o);
     void visit(Array1DReferencing a);
     void visit(Array2DReferencing a);
     void visit(Identifier id);
-    void visit(JavaString j);
+    void visit(JavaStringStmt j);
 }

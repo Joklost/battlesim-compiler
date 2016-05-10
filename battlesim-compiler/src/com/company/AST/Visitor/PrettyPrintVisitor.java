@@ -43,8 +43,8 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         s.simBlock.accept(this);
         println("");
 
-        for (int i = 0; i < s.functionDclList1.size(); i++) {
-            s.functionDclList1.elementAt(i).accept(this);
+        for (int i = 0; i < s.functionDclList.size(); i++) {
+            s.functionDclList.elementAt(i).accept(this);
             println("");
         }
 
@@ -121,6 +121,10 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     @Override
     public void visit(TypeDeclaration t) {
 
+    }
+
+    public void visit(JavaString j) {
+        println(j.javaCode);
     }
 
     public void visit(FunctionDcl fd){
@@ -657,7 +661,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         print(id.name);
     }
 
-    public void visit(JavaString j){
+    public void visit(JavaStringStmt j){
         print(j.javaCode);
     }
 }

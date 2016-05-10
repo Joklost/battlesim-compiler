@@ -44,8 +44,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             s.typeDeclarationList.elementAt(i).accept(this);
         }
 
-        for (int i = 0; i < s.functionDclList1.size(); i++) {
-            s.functionDclList1.elementAt(i).accept(this);
+        for (int i = 0; i < s.functionDclList.size(); i++) {
+            s.functionDclList.elementAt(i).accept(this);
         }
 
         s.dclBlock.accept(this);
@@ -90,6 +90,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(TypeDeclaration t) {
         TypeVisitor typeVisitor = new TypeVisitor();
         t.accept(typeVisitor);
+    }
+
+    public void visit(JavaString j) {
+
     }
 
     public void visit(FunctionDcl fd) {
@@ -789,7 +793,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         }
     }
 
-    public void visit(JavaString j) {}
+    public void visit(JavaStringStmt j) {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Settings
-path_to_compiler=/home/pgug/Code/P4-Code/battlesim-compiler/battlesim-compiler.jar
+path_to_compiler=/home/Joklost/git/P4-Code/battlesim-compiler/battlesim-compiler.jar
+
 
 function assert {
 	# $1 compile filename

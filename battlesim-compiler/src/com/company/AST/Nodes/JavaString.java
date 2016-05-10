@@ -1,12 +1,13 @@
 package com.company.AST.Nodes;
 
 /**
- * Created by joklost on 4/21/16.
+ * Created by joklost on 5/10/16.
  */
-public class JavaString extends Stmt {
+public class JavaString extends ASTNode {
     public String javaCode;
-    public JavaString(String javaCode, int ln) {
+
+    public JavaString(String java, int ln) {
         super(ln);
-        this.javaCode = javaCode;
+        this.javaCode = java;
     }
 }

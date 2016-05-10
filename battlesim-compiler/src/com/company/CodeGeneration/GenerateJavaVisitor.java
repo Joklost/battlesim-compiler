@@ -112,8 +112,8 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             s.typeDeclarationList.elementAt(i).accept(this);
         }
 
-        for (int i = 0; i < s.functionDclList1.size(); i++) {
-            s.functionDclList1.elementAt(i).accept(this);
+        for (int i = 0; i < s.functionDclList.size(); i++) {
+            s.functionDclList.elementAt(i).accept(this);
         }
 
         s.simBlock.accept(this);
@@ -200,6 +200,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         setEmitTarget(oldEmitTarget);
 
         indentLevel++;
+    }
+
+    public void visit(JavaString j) {
+        emitIndentation(j.javaCode.substring(3));
     }
 
     public void visit(FunctionDcl fd) {
@@ -830,7 +834,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emit(id.name);
     }
 
-    public void visit(JavaString j) {
+    public void visit(JavaStringStmt j) {
         emitIndentation(j.javaCode.substring(3));
     }
 

@@ -99,6 +99,8 @@ nonterminal Identifier        Identifier;
 nonterminal TypeDeclarationList TypeDcls;
 nonterminal TypeDeclaration   TypeDcl;
 nonterminal DeclarationList   Dcls;
+nonterminal JavaStringList    JavaStringList;
+nonterminal JavaString        JavaString;
 
 nonterminal MultEOL;
 
@@ -138,16 +140,21 @@ Interrupts    ::= INTERRUPTS Stmts:ss                                           
 TypeDcls      ::= TypeDcls:tl TypeDcl:t                                                         {: RESULT = tl; tl.addElement(t); :}
               |   MultEOL                                                                       {: RESULT = new TypeDeclarationList(0); :}
               ;
-TypeDcl       ::= TYPE Identifier:i MultEOL Dcls:dl FunctionDcls:fdl END TYPE MultEOL           {: RESULT = new TypeDeclaration(i, dl, fdl, ileft); :}
+TypeDcl       ::= TYPE Identifier:i MultEOL Dcls:dl FunctionDcls:fdl JavaStringList:j END TYPE MultEOL           {: RESULT = new TypeDeclaration(i, dl, fdl, j, ileft); :}
               ;
 Dcls          ::= Dcls:dl Dcl:d                                                                 {: RESULT = dl; dl.addElement(d); :}
               |   Dcl:d                                                                         {: RESULT = new DeclarationList(0); RESULT.addElement(d); :}
+              ;
+JavaStringList ::= JavaStringList:jl JavaString:j MultEOL                                       {: RESULT = jl; jl.addElement(j); :}
+              |    MultEOL                                                                      {: RESULT = new JavaStringList(0); :}
+              ;
+JavaString    ::= JAVASTRING:j                                                                  {: RESULT = new JavaString(j, jleft); :}
               ;
 /**/
 FunctionDcls  ::= FunctionDcl:fd                                                                {: RESULT = new FunctionDclList(0); RESULT.addElement(fd); :}
               |   FunctionDcls:fds FunctionDcl:fd                                               {: RESULT = fds; fds.addElement(fd); :}
               ;
-FunctionDcl   ::= FUNCTION TypeId:ti Identifier:id Params:p Stmts:ss END FUNCTION MultEOL       {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
+FunctionDcl   ::= FUNCTION TypeId:ti Identifier:id Params:p Stmts:ss END FUNCTION        {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
               ;
 Param         ::= Identifier:id AS TypeId:ti                                                    {: RESULT = new Param(id, ti, idleft); :}
               ;
@@ -173,7 +180,7 @@ Stmt          ::= Dcl:d                                                         
               |   RETURN:r MultEOL                                                              {: RESULT = new Return(rleft); :}
               |   FunctionCall:fc MultEOL                                                       {: RESULT = new FunctionCallStmt(fc, fcleft); :}
               |   error EOL
-              |   JAVASTRING:j                                                                  {: RESULT = new JavaString(j, jleft); :}
+              |   JAVASTRING:j                                                                  {: RESULT = new JavaStringStmt(j, jleft); :}
               |   UnaryStmt:u                                                                   {: RESULT = u; :}
               ;
 UnaryStmt     ::= ObjectId:oi PLUSPLUS                                                          {: RESULT = new PlusPlusStmt(oi, oileft); :}
