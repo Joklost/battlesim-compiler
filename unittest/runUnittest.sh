@@ -38,7 +38,7 @@ function assertCompileError {
 	rm results_real
 }
 
-#assert Test1_BubbleSort.bs Test1_results_expt 1 #!! Not possible after d9f9320
+assert Test1_BubbleSort.bs Test1_results_expt 1 #!! Sorta broken/useless after d9f9320
 assert Test2_Recursion.bs Test2_results_expt 2
 assert Test3_ReturnInteger.bs Test3_results_expt 3
 assert Test4_ReturnDecimal.bs Test4_results_expt 4

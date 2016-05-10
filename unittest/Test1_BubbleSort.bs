@@ -1,26 +1,9 @@
 #Include("stdlib.bsi")
 
 Function Void BubbleSort()
-    flag = true
-    While flag Do
-    flag = false
-    c = 0
-      For c To (n - i - 1) Do
-          If (a[c] > a[c + 1]) Then
-            t        = a[c]
-            a[c]     = a[c + 1]
-            a[c + 1] = t
-            flag = true
-          End If
-        c = c + 1
-        End For
-    End While
-End Function
-
-Begin Declarations
     Declare a as Integer[7]
     Declare n as Integer
-    Declare i, c, t as Integer
+    Declare c, t as Integer
     Declare flag as Boolean
 
     a[0] = 12
@@ -32,6 +15,34 @@ Begin Declarations
     a[6] = 17
 
     n = 7
+
+    Foreach Integer num in a Do
+      PrintLine(num + "")
+    End Foreach
+
+    flag = true
+    While flag Do
+    flag = false
+    c = 0
+      For c To (n - 1) Do
+          If (a[c] > a[c + 1]) Then
+            t        = a[c]
+            a[c]     = a[c + 1]
+            a[c + 1] = t
+            flag = true
+          End If
+        c = c + 1
+        End For
+    End While
+
+    PrintLine("")
+
+    Foreach Integer num in a Do
+      PrintLine(num + "")
+    End Foreach
+End Function
+
+Begin Declarations
 End Declarations
 
 Declare Simulations
@@ -39,16 +50,6 @@ End Declare Simulations
 
 Begin Program
 
-  Foreach Integer num in a Do
-    PrintLine(num + "")
-  End Foreach
-
   BubbleSort()
-
-  PrintLine("")
-
-  Foreach Integer num in a Do
-    PrintLine(num + "")
-  End Foreach
 
 End Program
