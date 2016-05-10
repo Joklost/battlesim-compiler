@@ -120,7 +120,7 @@ start with Start;
 
 Start         ::= TypeDcls:tl FunctionDcls:fds1 DclBlock:db SimBlock:s Program:p                {: RESULT = new Start(db, s, tl, fds1, p, dbleft); :}
               ;
-DclBlock      ::= BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
+DclBlock      ::= MultEOL BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               ;
 SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS MultEOL             {: RESULT = new SimBlock(s, sleft); :}
               ;
@@ -152,7 +152,7 @@ JavaString    ::= JAVASTRING:j                                                  
               ;
 /**/
 FunctionDcls  ::= FunctionDcl:fd                                                                {: RESULT = new FunctionDclList(0); RESULT.addElement(fd); :}
-              |   FunctionDcls:fds FunctionDcl:fd                                               {: RESULT = fds; fds.addElement(fd); :}
+              |   FunctionDcls:fds MultEOL FunctionDcl:fd                                               {: RESULT = fds; fds.addElement(fd); :}
               ;
 FunctionDcl   ::= FUNCTION TypeId:ti Identifier:id Params:p Stmts:ss END FUNCTION        {: RESULT = new FunctionDcl(ti, id, p, ss, tileft); :}
               ;
