@@ -25,14 +25,13 @@ Type Barrier
 End Type
 
 Type Soldier
-//#Include("Soldier.bsi")
   Declare Pos as Coord
   Declare Velocity as Decimal
   Declare IsDead as Boolean
 
   Function Void Soldier()
   End Function
-
+#Include("Soldier.bsi")
 End Type
 
 Type Group
