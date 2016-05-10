@@ -14,7 +14,14 @@ Type Coord
   Function String ToString()
     Return "(" + X + "," + Y + ")"
   End Function
+End Type
 
+Type Barrier
+  Declare Vertices as List of Coord
+
+  Function Void AddVertex(vertex as Coord)
+    %``Vertices.add(vertex);
+  End Function
 End Type
 
 Type Soldier
@@ -24,9 +31,46 @@ Type Soldier
 
   Function Void Soldier()
   End Function
-
 End Type
 
+Type Group
+  Declare Soldiers as List of Soldier
+  Function Void AddSoldier(s as Soldier)
+    %``Soldiers.add(s);
+  End Function
+End Type
+
+Type Platoon
+  Declare Groups as List of Group
+  Function Void AddGroup(g as Group)
+    %``Groups.add(g);
+  End Function
+
+  Function Void AddSoldier(s as Soldier)
+    %``Group nGroup = new Group();
+    %``nGroup.AddSoldier(s);
+    %``AddGroup(nGroup);
+  End Function
+End Type
+
+Type Force
+  Declare Platoons as List of Platoon
+  Function Void AddPlatoon(p as Platoon)
+    %``Platoons.add(p);
+  End Function
+
+  Function Void AddGroup(g as Group)
+    %``Platoon nPlatoon = new Platoon();
+    %``nPlatoon.AddGroup(g);
+    %``AddPlatoon(nPlatoon);
+  End Function
+
+  Function Void AddSoldier(s as Soldier)
+    %``Group nGroup = new Group();
+    %``nGroup.AddSoldier(s);
+    %``AddGroup(nGroup);
+  End Function
+End Type
 // IO
 Function Void PrintLine(s as String)
     %``System.out.println(s);
