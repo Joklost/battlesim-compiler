@@ -46,12 +46,15 @@ public class Preprocessor {
                     }
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
-                    String preString = "";
                     if(line.contains(".inj")){ //Is an injection file
-                        preString = "%``";
+                        for(int i = 0; i < includeLines.size(); i++){
+                            writer.println("%``" + includeLines.get(i));
+                            writer.println(""); // empty line between injectionlines
+                        }
+                    }else{
+                        for(int i = 0; i < includeLines.size(); i++)
+                            writer.println(includeLines.get(i));
                     }
-                    for(int i = 0; i < includeLines.size(); i++)
-                        writer.println(preString + includeLines.get(i));
                 }
                 else
                     writer.println(line);
@@ -67,7 +70,7 @@ public class Preprocessor {
         List<String> lines = new ArrayList<String>();
         try(BufferedReader br = new BufferedReader(new FileReader(inputPath))) {
             String line;
-            int lineNum = 1;
+            int lineNum = 1; // brug den her til noget pls
             while ((line = br.readLine()) != null) {
                 if(line.startsWith("#Include")){
                     //System.out.println("Illegal include inside " + inputPath + " on line " + lineNum + ". Include the file inside your main file. Continuing with including the file.");
@@ -75,17 +78,18 @@ public class Preprocessor {
                     String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
                     Preprocessor includePP = new Preprocessor(includeFile);
                     List<String> includeLines = new ArrayList<>(includePP.readIncludeFile());
-                    String preString = "";
                     if(line.contains(".inj")){ //Is an injection file
-                        preString = "%``";
+                        for(int i = 0; i < includeLines.size(); i++){
+                            lines.add("%``" + includeLines.get(i));
+                            lines.add(""); // empty line between injectionlines
+                        }
+                    } else{
+                        for(int i = 0; i < includeLines.size(); i++)
+                            lines.add(includeLines.get(i));
                     }
-                    for(int i = 0; i < includeLines.size(); i++)
-                        lines.add(preString + includeLines.get(i));
-                    lineNum++;
                 }
                 else{
                     lines.add(line);
-                    lineNum++;
                 }
             }
         } catch (IOException e){
