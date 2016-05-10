@@ -16,11 +16,11 @@ public class Soldier extends SimObj {
     //Felter med bruger adgang til
     public Coord Pos = new Coord();
     public double Velocity = 0;
-    private boolean isDead = false;
+    private boolean IsDead = false;
     //////////////////////
 
 
-    private List _listeners = new ArrayList();
+    private List<FireBulletListener> _listeners = new ArrayList<FireBulletListener>();
     //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
     private double accuracy = 0.2;
 
@@ -115,7 +115,7 @@ public class Soldier extends SimObj {
     }
 
     public boolean IsDead(){
-        return isDead;
+        return IsDead;
     }
 
     public void Kill(){
@@ -123,6 +123,6 @@ public class Soldier extends SimObj {
         IsEnemyDetected = false;
         Enemy = null;
         Model = "X";
-        isDead = true;
+        IsDead = true;
     }
 }
