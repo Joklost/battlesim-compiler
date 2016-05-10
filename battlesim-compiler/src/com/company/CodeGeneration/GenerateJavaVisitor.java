@@ -193,6 +193,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             t.functionDclList.elementAt(i).accept(this);
         }
 
+        for (int i = 0; i < t.javaStringList.size(); i++) {
+            t.javaStringList.elementAt(i).accept(this);
+        }
+
         indentLevel--;
 
         emitIndentation("}\n");
