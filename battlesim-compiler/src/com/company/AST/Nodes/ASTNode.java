@@ -12,14 +12,11 @@ import static com.company.ContextualAnalysis.TypeConsts.noType;
  */
 public abstract class ASTNode implements Visitable {
 
-    //public List<ASTNode> children;
-
-    protected int lineNumber;
+    private int lineNumber;
     public int type = noType;
 
-    public ASTNode(int ln) {
+    protected ASTNode(int ln) {
         this.lineNumber = ln + 1;
-        //this.children = new ArrayList<>();
     }
 
     public int getLineNumber() {
@@ -28,5 +25,4 @@ public abstract class ASTNode implements Visitable {
 
     public void accept(Visitor v) { v.dispatch(this); }
 
-    public static HashMap<String, Integer> symTable = new HashMap<>();
 }

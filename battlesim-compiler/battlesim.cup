@@ -6,12 +6,10 @@ import com.company.AST.Nodes.*;
 parser code {:
     public boolean errorFound = false;
     private Scanner s;
-    public Parser(com.company.SyntaxAnalysis.Scanner s, boolean useMe   ) {
+    public Parser(com.company.SyntaxAnalysis.Scanner s, boolean useMe) {
         super(s);
         this.s = s;
     }
-
-
     public void report_error(String message, Object info) {
         errorFound = true;
         System.err.print(message);
@@ -46,9 +44,7 @@ terminal MODEQ, AND, OR, NOT, EQUALS, GREATERTHAN;
 terminal GREATERTHANEQUALS, LESSTHAN, LESSTHANEQUALS;
 
 terminal EOL, DOWNTO, TO, THEN, VOID, OF;
-//terminal TERRAIN, GROUP, PLATOON, FORCE, COORD, SOLDIER;
 terminal SIMULATIONS, SIMULATION, STEP, INTERRUPTS;
-//terminal VECTOR, BARRIER, TYPE;
 terminal TYPE;
 
 terminal Boolean BOOLEAN_LITERAL;
@@ -57,7 +53,6 @@ terminal Double DECIMAL_LITERAL;
 terminal String STRING_LITERAL, IDENTIFIER, JAVASTRING;
 
 /* Non-terminals */
-
 nonterminal Start             Start;
 nonterminal DclBlock          DclBlock;
 nonterminal FunctionDclList   FunctionDcls;
@@ -68,14 +63,12 @@ nonterminal ParamList         ParamList;
 nonterminal Program           Program;
 nonterminal StmtList          Stmts;
 nonterminal Stmt              Stmt;
-
 nonterminal SimBlock          SimBlock;
 nonterminal SimulationList    Simulations;
 nonterminal Simulation        Simulation;
 nonterminal SimStepList       SimSteps;
 nonterminal SimStep           SimStep;
 nonterminal Interrupts        Interrupts;
-/**/
 nonterminal WhileStmt         WhileStmt;
 nonterminal ForeachStmt       ForeachStmt;
 nonterminal ForStmt           ForStmt;
@@ -103,7 +96,6 @@ nonterminal TypeName          TypeName;
 nonterminal IdentifierReferencing ObjectId;
 nonterminal IdentifierReferencing ArrayRef;
 nonterminal Identifier        Identifier;
-
 nonterminal TypeDeclarationList TypeDcls;
 nonterminal TypeDeclaration   TypeDcl;
 nonterminal DeclarationList   Dcls;
@@ -119,7 +111,6 @@ precedence left PLUS, MINUS;
 precedence left MULT, DIV, MOD;
 precedence right NOT, UMINUS;
 precedence left PLUSPLUS, MINUSMINUS;
-
 precedence left ELSE;
 
 /* The grammar */
@@ -278,31 +269,20 @@ TypeId        ::= TypeName:tn LBRACE Expression:e RBRACE                        
 TypeName      ::= DECIMAL:d                                                                     {: RESULT = new Decimal(dleft); :}
               |   STRING:s                                                                      {: RESULT = new StringT(sleft); :}
               |   BOOLEAN:b                                                                     {: RESULT = new BooleanT(bleft); :}
-/*  DISSE KOMMER FRA STDLIB
-              |   TERRAIN:t                                                                     {: RESULT = new Terrain(tleft); :}
-              |   GROUP:g                                                                       {: RESULT = new Group(gleft); :}
-              |   PLATOON:p                                                                     {: RESULT = new Platoon(pleft); :}
-              |   FORCE:f                                                                       {: RESULT = new Force(fleft); :}
-              |   COORD:c                                                                       {: RESULT = new Coord(cleft); :}
-              |   SOLDIER:s                                                                     {: RESULT = new Soldier(sleft); :}
-              |   BARRIER:b                                                                     {: RESULT = new Barrier(bleft); :}
-              |   VECTOR:v                                                                      {: RESULT = new VectorT(vleft); :}
-*/
               |   INTEGER:i                                                                     {: RESULT = new IntegerT(ileft); :}
               |   VOID:vo                                                                       {: RESULT = new VoidT(voleft); :}
               |   Identifier:id                                                                 {: RESULT = new CustomTypeIdentifier(id, idleft); :}
               ;
-ObjectId      ::= ObjectId:o DOT Identifier:i           /* 1 */                                 {: RESULT = new ObjectReferencing(o, i, oleft); :}
-              |   ObjectId:o DOT ArrayRef:a             /* 2 */                                 {: RESULT = new ObjectReferencing(o, a, oleft); :}
-              |   ArrayRef:a                            /* 3 */                                 {: RESULT = a; :}
-              |   Identifier:i                          /* 4 */                                 {: RESULT = i; :}
+ObjectId      ::= ObjectId:o DOT Identifier:i                                                   {: RESULT = new ObjectReferencing(o, i, oleft); :}
+              |   ObjectId:o DOT ArrayRef:a                                                     {: RESULT = new ObjectReferencing(o, a, oleft); :}
+              |   ArrayRef:a                                                                    {: RESULT = a; :}
+              |   Identifier:i                                                                  {: RESULT = i; :}
               ;
-ArrayRef      ::= Identifier:id LBRACE Expression:e RBRACE      /* 6 */                          {: RESULT = new Array1DReferencing(id, e, idleft); :}
-              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE /* 7 */  {: RESULT = new Array2DReferencing(id, e1, e2, idleft); :}
-              ;
-
-MultEOL       ::= MultEOL EOL
-              |   EOL
+ArrayRef      ::= Identifier:id LBRACE Expression:e RBRACE                                      {: RESULT = new Array1DReferencing(id, e, idleft); :}
+              |   Identifier:id LBRACE Expression:e1 RBRACE LBRACE Expression:e2 RBRACE         {: RESULT = new Array2DReferencing(id, e1, e2, idleft); :}
               ;
 Identifier    ::= IDENTIFIER:id                                                                 {: RESULT = new Identifier(id, idleft); :}
+              ;
+MultEOL       ::= MultEOL EOL
+              |   EOL
               ;
