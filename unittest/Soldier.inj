@@ -1,4 +1,4 @@
-private List _listeners = new ArrayList();
+private List<FireBulletListener> _listeners = new ArrayList<FireBulletListener>();
 //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
 private double accuracy = 0.2;
 
@@ -93,7 +93,7 @@ public void serviceTimers(double deltaT){
 }
 
 public boolean IsDead(){
-    return isDead;
+    return IsDead;
 }
 
 public void Kill(){
@@ -101,5 +101,5 @@ public void Kill(){
     IsEnemyDetected = false;
     Enemy = null;
     Model = "X";
-    isDead = true;
+    IsDead = true;
 }
