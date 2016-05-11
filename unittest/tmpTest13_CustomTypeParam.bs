@@ -1,0 +1,879 @@
+
+Type Terrain
+  Declare Width as Integer
+  Declare Height as Integer
+
+  Function Void Terrain()
+  End Function
+%``//START INJECTION OF FILE extSimObjEmpty.inj
+
+%``public void StopMovement(){
+
+%``
+
+%``}
+
+%``
+
+%``public void Move(Coord coord){
+
+%``
+
+%``}
+
+%``
+
+%``public Coord GetPos(){
+
+%``  return new Coord();
+
+%``}
+
+%``
+
+%``public boolean IsDead(){
+
+%``  return false;
+
+%``}
+
+%``//END INJECTION OF FILE extSimObjEmpty.inj
+
+End Type
+
+Type Coord
+  Declare X as Decimal
+  Declare Y as Decimal
+
+  Function String ToString()
+    Return "(" + X + "," + Y + ")"
+  End Function
+%``//START INJECTION OF FILE Coord.inj
+
+%``    public Coord(){
+
+%``    }
+
+%``    
+
+%``    public Coord(double x, double y){
+
+%``        X = x;
+
+%``        Y = y;
+
+%``    }
+
+%``
+
+%``    public void NewPos(Vector vec, double velocity, double deltaT){
+
+%``        this.X = this.X + deltaT * (vec.X * velocity);
+
+%``        this.Y = this.Y + deltaT * (vec.Y * velocity);
+
+%``    }
+
+%``//END INJECTION OF FILE Coord.inj
+
+%``//START INJECTION OF FILE extSimObjEmpty.inj
+
+%``public void StopMovement(){
+
+%``
+
+%``}
+
+%``
+
+%``public void Move(Coord coord){
+
+%``
+
+%``}
+
+%``
+
+%``public Coord GetPos(){
+
+%``  return new Coord();
+
+%``}
+
+%``
+
+%``public boolean IsDead(){
+
+%``  return false;
+
+%``}
+
+%``//END INJECTION OF FILE extSimObjEmpty.inj
+
+End Type
+
+Type Barrier
+  Declare Vertices as List of Coord
+
+  Function Void AddVertex(vertex as Coord)
+    %``Vertices.add(vertex);
+  End Function
+%``//START INJECTION OF FILE extSimObjEmpty.inj
+
+%``public void StopMovement(){
+
+%``
+
+%``}
+
+%``
+
+%``public void Move(Coord coord){
+
+%``
+
+%``}
+
+%``
+
+%``public Coord GetPos(){
+
+%``  return new Coord();
+
+%``}
+
+%``
+
+%``public boolean IsDead(){
+
+%``  return false;
+
+%``}
+
+%``//END INJECTION OF FILE extSimObjEmpty.inj
+
+End Type
+
+Type Soldier
+  Declare Pos as Coord
+  Declare Velocity as Decimal
+  Declare IsDead as Boolean
+
+  Function Void Soldier()
+  End Function
+%``//START INJECTION OF FILE Soldier.inj
+
+%``
+
+%``private List<FireBulletListener> _listeners = new ArrayList<FireBulletListener>();
+
+%``//private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
+
+%``private double accuracy = 0.2;
+
+%``
+
+%``public int Side = 0;
+
+%``public final static double DefaultVelocity = 2.2; //meter per second
+
+%``public double Size = 0.25;            //Change this because this is a random number
+
+%``public boolean IsEnemyDetected = false;
+
+%``public int Fov = 50;
+
+%``public int Ammo = 30;
+
+%``public int FireRate = 1000; //firerate in milliseconds
+
+%``public double CL_FireRate = FireRate;
+
+%``public Soldier Enemy;
+
+%``public Vector Direction = new Vector();
+
+%``public int Magazines = 4;
+
+%``public String Model = "Error";
+
+%``
+
+%``public Coord GetPos(){
+
+%``    return Pos;
+
+%``}
+
+%``
+
+%``public void Move(Coord target){
+
+%``    if(Velocity == 0){
+
+%``        Velocity = DefaultVelocity;
+
+%``    }
+
+%``    Direction = DSTFunctions.FindUnitVector(Pos, target);
+
+%``}
+
+%``
+
+%``public void Move(Coord target, double velocity){
+
+%``    Velocity = velocity;
+
+%``    Direction = DSTFunctions.FindUnitVector(Pos, target);
+
+%``}
+
+%``
+
+%``public void StopMovement(){
+
+%``    Velocity = 0;
+
+%``}
+
+%``
+
+%``public void EnemyDetected(Soldier enemy){
+
+%``    Enemy = enemy;
+
+%``    IsEnemyDetected = true;
+
+%``}
+
+%``
+
+%``public boolean CanStillSeeEnemy(){
+
+%``    if(Enemy == null){
+
+%``        IsEnemyDetected = false;
+
+%``        return false;
+
+%``    }
+
+%``    if(Enemy.IsDead() && Vector.GetVectorByPoints(Pos, Enemy.GetPos()).GetLength() < Fov){
+
+%``        return true;
+
+%``    }
+
+%``    else{
+
+%``        IsEnemyDetected = false;
+
+%``        return false;
+
+%``    }
+
+%``}
+
+%``
+
+%``public synchronized void addFireBulletListener( FireBulletListener l ) {
+
+%``    _listeners.add( l );
+
+%``}
+
+%``
+
+%``public synchronized void removeFireBulletListener( FireBulletListener l ) {
+
+%``    _listeners.remove( l );
+
+%``}
+
+%``
+
+%``private synchronized void _fireFireBulletEvent(Bullet bullet) {
+
+%``    FireBulletEvent be = new FireBulletEvent( this, bullet );
+
+%``    Iterator listeners = _listeners.iterator();
+
+%``    while( listeners.hasNext() ) {
+
+%``        ( (FireBulletListener) listeners.next() ).BulletFired(be);
+
+%``    }
+
+%``}
+
+%``
+
+%``public void TryShoot(Coord target){
+
+%``    if(Ammo > 0 && CL_FireRate >= FireRate){
+
+%``        Random rand = new Random();
+
+%``        Vector bulletUnit = Vector.GetVectorByPoints(Pos, target).Normalize();
+
+%``        Vector normal = new Vector();
+
+%``        normal.X = (-1) * bulletUnit.Y;
+
+%``        normal.Y = bulletUnit.X;
+
+%``        normal.Scale(accuracy);
+
+%``        normal.Scale(rand.nextDouble() * 2 - 1);
+
+%``        Bullet bullet = new Bullet(GetPos(),Vector.GetVectorByPoints(GetPos(), new Coord(GetPos().X + bulletUnit.X + normal.X, GetPos().Y + bulletUnit.Y + normal.Y)), Side);
+
+%``        _fireFireBulletEvent(bullet);
+
+%``        Ammo--;
+
+%``        CL_FireRate = 0;
+
+%``    }
+
+%``}
+
+%``
+
+%``public void serviceTimers(double deltaT){
+
+%``    if(CL_FireRate < FireRate){
+
+%``        CL_FireRate += deltaT;
+
+%``    }
+
+%``}
+
+%``
+
+%``public boolean IsDead(){
+
+%``    return IsDead;
+
+%``}
+
+%``
+
+%``public void Kill(){
+
+%``    StopMovement();
+
+%``    IsEnemyDetected = false;
+
+%``    Enemy = null;
+
+%``    Model = "X";
+
+%``    IsDead = true;
+
+%``}
+
+%``//END INJECTION OF FILE Soldier.inj
+
+End Type
+
+Type Group
+  Declare Soldiers as List of Soldier
+  Function Void AddSoldier(s as Soldier)
+    %``Soldiers.add(s);
+  End Function
+%``//START INJECTION OF FILE Group.inj
+
+%``public void Take(Step controller){
+
+%``        if(!IsControlled()){
+
+%``            for(Soldier s: Soldiers){
+
+%``                s.Take(controller);
+
+%``            }
+
+%``            Semaphor = true;
+
+%``            Controller = controller;
+
+%``        }
+
+%``    }
+
+%``
+
+%``    public void Release(){
+
+%``        for(Soldier s: Soldiers){
+
+%``            s.Release();
+
+%``        }
+
+%``        super.Release();
+
+%``    }
+
+%``
+
+%``
+
+%``    public void Move(Coord target, double velocity){
+
+%``        SetVelocity(velocity);
+
+%``        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
+
+%``    }
+
+%``
+
+%``    public void Move(Coord target){
+
+%``        for(Soldier s : Soldiers){
+
+%``            if(s.Velocity == 0){
+
+%``                s.Velocity = s.DefaultVelocity;
+
+%``            }
+
+%``        }
+
+%``        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
+
+%``    }
+
+%``
+
+%``    public void SetVelocity(double velocity){
+
+%``        for(Soldier s : Soldiers)
+
+%``            s.Velocity = velocity;
+
+%``    }
+
+%``
+
+%``    public void SetDirection(Vector direction){
+
+%``        for(Soldier s : Soldiers){
+
+%``            s.Direction = direction;
+
+%``        }
+
+%``    }
+
+%``
+
+%``    public List<Coord> GetCoordList(){
+
+%``        List<Coord> res = new ArrayList<>();
+
+%``        for(Soldier s : Soldiers){
+
+%``            res.add(s.GetPos());
+
+%``        }
+
+%``        return res;
+
+%``    }
+
+%``
+
+%``    public void StopMovement(){
+
+%``        for(Soldier s : Soldiers)
+
+%``            s.StopMovement();
+
+%``    }
+
+%``
+
+%``    public Coord GetPos(){
+
+%``        return DSTFunctions.CenterOfMass(GetCoordList());
+
+%``    }
+
+%``
+
+%``    public boolean IsDead(){
+
+%``        for(Soldier s: Soldiers){
+
+%``            if(!s.IsDead()){
+
+%``                return false;
+
+%``            }
+
+%``        }
+
+%``        return true;
+
+%``    }
+
+%``//END INJECTION OF FILE Group.inj
+
+End Type
+
+Type Platoon
+  Declare Groups as List of Group
+  Function Void AddGroup(g as Group)
+    %``Groups.add(g);
+  End Function
+
+  Function Void AddSoldier(s as Soldier)
+    %``Group nGroup = new Group();
+    %``nGroup.AddSoldier(s);
+    %``AddGroup(nGroup);
+  End Function
+%``//START INJECTION OF FILE Platoon.inj
+
+%``public void Take(Step controller){
+
+%``        if(!IsControlled()){
+
+%``            for(Group g: Groups){
+
+%``                g.Take(controller);
+
+%``            }
+
+%``            Semaphor = true;
+
+%``            Controller = controller;
+
+%``        }
+
+%``    }
+
+%``
+
+%``    public void Release(){
+
+%``        for(Group g: Groups){
+
+%``            g.Release();
+
+%``        }
+
+%``        super.Release();
+
+%``    }
+
+%``
+
+%``    public void Move(Coord target){
+
+%``        Move(target, Soldier.DefaultVelocity);
+
+%``    }
+
+%``
+
+%``    public void Move(Coord target, double velocity){
+
+%``        for(Group g : Groups){
+
+%``            g.SetVelocity(velocity);
+
+%``        }
+
+%``        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
+
+%``    }
+
+%``
+
+%``    public void SetVelocity(double velocity){
+
+%``        for(Group g : Groups)
+
+%``            g.SetVelocity(velocity);
+
+%``    }
+
+%``
+
+%``    public void SetDirection(Vector direction){
+
+%``        for(Group g : Groups){
+
+%``            g.SetDirection(direction);
+
+%``        }
+
+%``    }
+
+%``
+
+%``    public List<Coord> GetCoordList(){
+
+%``        List<Coord> res = new ArrayList<>();
+
+%``        for(Group g : Groups)
+
+%``            res.addAll(g.GetCoordList());
+
+%``        return res;
+
+%``    }
+
+%``
+
+%``    public void StopMovement(){
+
+%``        for(Group g : Groups)
+
+%``            g.StopMovement();
+
+%``    }
+
+%``
+
+%``    public Coord GetPos(){
+
+%``        return DSTFunctions.CenterOfMass(GetCoordList());
+
+%``    }
+
+%``
+
+%``    public boolean IsDead(){
+
+%``        for(Group g: Groups){
+
+%``            if(!g.IsDead()){
+
+%``                return false;
+
+%``            }
+
+%``        }
+
+%``        return true;
+
+%``    }
+
+%``//END INJECTION OF FILE Platoon.inj
+
+End Type
+
+Type Force
+  Declare Platoons as List of Platoon
+  Function Void AddPlatoon(p as Platoon)
+    %``Platoons.add(p);
+  End Function
+
+  Function Void AddGroup(g as Group)
+    %``Platoon nPlatoon = new Platoon();
+    %``nPlatoon.AddGroup(g);
+    %``AddPlatoon(nPlatoon);
+  End Function
+
+  Function Void AddSoldier(s as Soldier)
+    %``Group nGroup = new Group();
+    %``nGroup.AddSoldier(s);
+    %``AddGroup(nGroup);
+  End Function
+%``//START INJECTION OF FILE Force.inj
+
+%``public void Take(Step controller){
+
+%``        if(!IsControlled()){
+
+%``            for(Platoon p: Platoons){
+
+%``                p.Take(controller);
+
+%``            }
+
+%``            Semaphor = true;
+
+%``            Controller = controller;
+
+%``        }
+
+%``    }
+
+%``
+
+%``    public void Release(){
+
+%``        for(Platoon p: Platoons){
+
+%``            p.Release();
+
+%``        }
+
+%``        super.Release();
+
+%``    }
+
+%``
+
+%``    public void Move(Coord target){
+
+%``        Move(target, Soldier.DefaultVelocity);
+
+%``    }
+
+%``
+
+%``    public void Move(Coord target, double velocity){
+
+%``        for(Platoon p : Platoons)
+
+%``            p.SetVelocity(velocity);
+
+%``        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(GetCoordList()), target));
+
+%``    }
+
+%``
+
+%``    public void SetDirection(Vector direction){
+
+%``        for(Platoon p : Platoons)
+
+%``            p.SetDirection(direction);
+
+%``    }
+
+%``
+
+%``    public List<Coord> GetCoordList(){
+
+%``        List<Coord> res = new ArrayList<>();
+
+%``        for(Platoon p : Platoons)
+
+%``            res.addAll(p.GetCoordList());
+
+%``        return res;
+
+%``    }
+
+%``
+
+%``    public void StopMovement(){
+
+%``        for(Platoon p: Platoons)
+
+%``            p.StopMovement();
+
+%``    }
+
+%``
+
+%``    public Coord GetPos(){
+
+%``        return DSTFunctions.CenterOfMass(GetCoordList());
+
+%``    }
+
+%``
+
+%``    public boolean IsDead(){
+
+%``        for(Platoon p: Platoons){
+
+%``            if(!p.IsDead()){
+
+%``                return false;
+
+%``            }
+
+%``        }
+
+%``        return true;
+
+%``    }
+
+%``//END INJECTION OF FILE Force.inj
+
+End Type
+// IO
+Function Void PrintLine(s as String)
+    %``System.out.println(s);
+End Function
+
+Function Void Print(s as String)
+    %``System.out.print(s);
+End Function
+
+Function String Input()
+    Declare s as String
+    %``Scanner sc = new Scanner(System.in);
+    %``s = sc.nextLine();
+    Return s
+End Function
+
+// Conversion
+Function Boolean IsIntegerParseable(s as String)
+    %``try {
+    %``    Integer.parseInt(s);
+    %``    return true;
+    %``} catch (NumberFormatException nfe) {}
+    Return false
+End Function
+
+Function Boolean IsDecimalParseable(s as String)
+    %``try {
+    %``    Double.parseDouble(s);
+    %``    return true;
+    %``} catch (NumberFormatException nfe) {}
+    Return false
+End Function
+
+Function Integer ConvertToInteger(s as String)
+    Declare i as Integer
+    %``if (!IsIntegerParseable(s)) {
+    %``    System.err.println("String '" + s + "' is not an Integer.");
+    %``    return 0;
+    %``} else {
+    %``    i = Integer.parseInt(s);
+    %``}
+    Return i
+End Function
+
+Function Decimal ConvertToDecimal(s as String)
+    Declare d as Decimal
+     %``if (!IsDecimalParseable(s)) {
+    %``    System.err.println("String '" + s + "' is not a Decimal.");
+    %``    return 0;
+    %``} else {
+    %``    d = Double.parseDouble(s);
+    %``}
+    Return d
+End Function
+
+Begin Declarations
+  Declare soldat2 as Soldier
+  Declare arr as Integer[30]
+  arr[0] = 1
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+Begin Program
+  Declare target as Coord
+  target.X = 4
+  target.Y = 5
+  Declare john as Soldier
+  john.Pos = target
+
+  PrintLine(arr[0] + "")
+
+End Program
