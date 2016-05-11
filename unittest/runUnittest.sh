@@ -43,9 +43,9 @@ function assertCompileError {
 	REALRES=$(cat results_real)
 
 	if [ "$EXPTRES" = "$REALRES" ]; then
-		echo "Test $3: Success"	
-	else	
-		echo "Test $3: Fail"
+		echo "Test $1: Success"	
+	else
+		echo "Test $1: Fail"
 	fi
 
 	if [ -f results_real ]; then
