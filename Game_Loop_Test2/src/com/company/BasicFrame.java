@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 public class BasicFrame extends JFrame{
 
-    public BasicFrame(Force force1, Force force2, ArrayList<Step> steps, Terrain terrain, ArrayList<Barrier> barriers){
-        InitUI(force1, force2, steps, terrain, barriers);
+    public BasicFrame(Force force1, Force force2, Simulation force1Sim, Simulation force2Sim, Terrain terrain, ArrayList<Barrier> barriers){
+        InitUI(force1, force2, force1Sim, force2Sim, terrain, barriers);
     }
 
-    private void InitUI(Force force1, Force force2, ArrayList<Step> steps, Terrain terrain, ArrayList<Barrier> barriers){
-        Map map = new Map(force1, force2, steps, terrain, barriers);
+    private void InitUI(Force force1, Force force2, Simulation force1Sim, Simulation force2Sim, Terrain terrain, ArrayList<Barrier> barriers){
+        Map map = new Map(force1, force2, force1Sim, force2Sim, terrain, barriers);
         add(map);
         map.start();
         setTitle("Simple example");

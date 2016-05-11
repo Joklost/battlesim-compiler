@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.Objects.SimulationObjects.Force;
 import com.company.Objects.SimulationObjects.Group;
+import com.company.Objects.SimulationObjects.SimObj;
 import com.company.Objects.SimulationObjects.Soldier;
 import com.company.Objects.StaticObjects.Barrier;
 import com.company.Objects.StaticObjects.Coord;
@@ -12,6 +13,7 @@ import com.company.Steps.WaitStep;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Main {
@@ -77,6 +79,23 @@ public class Main {
         Force enemies = new Force();
         enemies.AddGroups(eGroup1);
 
+        HashMap<String, SimObj> SimObjMap = new HashMap<String, SimObj>();
+        SimObjMap.put("aSol1", aSol1);
+        SimObjMap.put("aSol2", aSol2);
+        SimObjMap.put("aSol3", aSol3);
+        SimObjMap.put("aSol4", aSol4);
+        SimObjMap.put("aSol5", aSol5);
+        SimObjMap.put("aSol6", aSol6);
+        SimObjMap.put("aGroup1", aGroup1);
+        SimObjMap.put("aGroup2", aGroup2);
+        SimObjMap.put("allies", allies);
+        SimObjMap.put("eSol1", eSol1);
+        SimObjMap.put("eSol2", eSol2);
+        SimObjMap.put("eSol3", eSol3);
+        SimObjMap.put("eGroup1", eGroup1);
+        SimObjMap.put("enemies", enemies);
+
+        /*
         ArrayList<Step> steps = new ArrayList<Step>();
 
         steps.add(new MoveStep(allies, new Coord(300,250)));
@@ -87,8 +106,10 @@ public class Main {
         steps.add(new MoveStep(enemies, new Coord(600,250)));
         steps.add(new WaitStep(enemies, 60));
         steps.add(new MoveStep(enemies, new Coord(300, 600)));
-
-        BasicFrame ex = new BasicFrame(allies, enemies, steps, terrain, barriers);
+        */
+        Simulation alliesSim = new ProtectTheGeneral(SimObjMap);
+        Simulation enemiesSim = new Defend(SimObjMap);
+        BasicFrame ex = new BasicFrame(allies, enemies, alliesSim, enemiesSim, terrain, barriers);
         ex.setVisible(true);
     }
 }
