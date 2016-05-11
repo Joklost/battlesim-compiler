@@ -1,15 +1,20 @@
 #!/bin/bash
 
 # Settings
-path_to_compiler=/home/joklost/git/P4-Code/battlesim-compiler/battlesim-compiler.jar
-
+path_to_compiler=/home/pgug/Code/P4-Code/battlesim-compiler/battlesim-compiler.jar
+PRINTERROR=false
 
 function assert {
 	# $1 compile filename
 	# $2 expected result filename
 	# $3
-	java -jar $path_to_compiler	$1
-	java -jar Main.jar > results_real
+	if [ $PRINTERROR = true ]; then
+		java -jar $path_to_compiler	$1
+		java -jar Main.jar > results_real
+	else
+		java -jar $path_to_compiler	$1 > /dev/null 2> /dev/null
+		java -jar Main.jar > results_real 2> /dev/null
+	fi
 	EXPTRES=$(cat $2)
 	REALRES=$(cat results_real)
 
@@ -19,14 +24,23 @@ function assert {
 		echo "$1: Fail"
 	fi
 
-	rm results_real Main.jar
+	if [ -f results_real ]; then
+		rm results_real
+	fi
+	if [ -f Main.jar ]; then
+		rm Main.jar
+	fi
 }
 
 function assertCompileError {
 	# $1 compile filename
 	# $2 expected result filename
 	# $3 test number
-	java -jar $path_to_compiler	$1 2> results_real
+	if [ $PRINTERROR = true ]; then
+		java -jar $path_to_compiler	$1 2> results_real
+	else
+		java -jar $path_to_compiler	$1 2> results_real > /dev/null
+	fi
 	EXPTRES=$(cat $2)
 	REALRES=$(cat results_real)
 
@@ -36,7 +50,9 @@ function assertCompileError {
 		echo "Test $3: Fail"
 	fi
 
-	rm results_real
+	if [ -f results_real ]; then
+		rm results_real
+	fi
 }
 
 assert Test1_BubbleSort.bs Test1_results_expt 1 #!! Sorta broken/useless after d9f9320
