@@ -1,22 +1,22 @@
 #!/bin/bash
 
 # Settings
-path_to_compiler=/home/pgug/Code/P4-Code/battlesim-compiler/battlesim-compiler.jar
+path_to_compiler=/home/joklost/git/P4-Code/battlesim-compiler/battlesim-compiler.jar
 
 
 function assert {
 	# $1 compile filename
 	# $2 expected result filename
-	# $3 test number
+	# $3
 	java -jar $path_to_compiler	$1
 	java -jar Main.jar > results_real
 	EXPTRES=$(cat $2)
 	REALRES=$(cat results_real)
 
 	if [ "$EXPTRES" = "$REALRES" ]; then
-		echo "Test $3: Success"	
+		echo "$1: Success"	
 	else	
-		echo "Test $3: Fail"
+		echo "$1: Fail"
 	fi
 
 	rm results_real Main.jar
