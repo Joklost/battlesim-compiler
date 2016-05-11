@@ -57,7 +57,7 @@ public class Main {
             // stier skal ind her, hvis det skal køres fra IntelliJ
             //paths.add("/home/joklost/scopetest.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
-            //paths.add("/home/pgug/Code/P4-Code/full-language-test/javatest.bs");
+            //paths.add("/home/pgug/Code/P4-Code/unittest/Test10_TestSwitch.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test14_TestTypes.bs");
         }
 
