@@ -181,7 +181,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitComment("BattleSim automatically generated code file.\n");
         emitIndentation("public class ");
         t.name.accept(this);
-        emit(" {\n");    //Sørg for at tilføje SimObj
+        emit(" extends SimObj{\n");    //Sørg for at tilføje SimObj
 
         indentLevel++;
 

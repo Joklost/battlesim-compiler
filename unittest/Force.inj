@@ -1,0 +1,56 @@
+public void Take(Step controller){
+        if(!IsControlled()){
+            for(Platoon p: Platoons){
+                p.Take(controller);
+            }
+            Semaphor = true;
+            Controller = controller;
+        }
+    }
+
+    public void Release(){
+        for(Platoon p: Platoons){
+            p.Release();
+        }
+        super.Release();
+    }
+
+    public void Move(Coord target){
+        Move(target, Soldier.DefaultVelocity);
+    }
+
+    public void Move(Coord target, double velocity){
+        for(Platoon p : Platoons)
+            p.SetVelocity(velocity);
+        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(GetCoordList()), target));
+    }
+
+    public void SetDirection(Vector direction){
+        for(Platoon p : Platoons)
+            p.SetDirection(direction);
+    }
+
+    public List<Coord> GetCoordList(){
+        List<Coord> res = new ArrayList<>();
+        for(Platoon p : Platoons)
+            res.addAll(p.GetCoordList());
+        return res;
+    }
+
+    public void StopMovement(){
+        for(Platoon p: Platoons)
+            p.StopMovement();
+    }
+
+    public Coord GetPos(){
+        return DSTFunctions.CenterOfMass(GetCoordList());
+    }
+
+    public boolean IsDead(){
+        for(Platoon p: Platoons){
+            if(!p.IsDead()){
+                return false;
+            }
+        }
+        return true;
+    }

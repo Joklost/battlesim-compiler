@@ -1,0 +1,15 @@
+public void StopMovement(){
+
+}
+
+public void Move(Coord coord){
+
+}
+
+public Coord GetPos(){
+  return new Coord();
+}
+
+public boolean IsDead(){
+  return false;
+}

@@ -5,6 +5,7 @@ Type Terrain
 
   Function Void Terrain()
   End Function
+#Include("extSimObjEmpty.inj")
 End Type
 
 Type Coord
@@ -15,6 +16,7 @@ Type Coord
     Return "(" + X + "," + Y + ")"
   End Function
 #Include("Coord.inj")
+#Include("extSimObjEmpty.inj")
 End Type
 
 Type Barrier
@@ -23,6 +25,7 @@ Type Barrier
   Function Void AddVertex(vertex as Coord)
     %``Vertices.add(vertex);
   End Function
+#Include("extSimObjEmpty.inj")
 End Type
 
 Type Soldier
@@ -40,6 +43,7 @@ Type Group
   Function Void AddSoldier(s as Soldier)
     %``Soldiers.add(s);
   End Function
+#Include("Group.inj")
 End Type
 
 Type Platoon
@@ -53,6 +57,7 @@ Type Platoon
     %``nGroup.AddSoldier(s);
     %``AddGroup(nGroup);
   End Function
+#Include("Platoon.inj")
 End Type
 
 Type Force
@@ -72,6 +77,7 @@ Type Force
     %``nGroup.AddSoldier(s);
     %``AddGroup(nGroup);
   End Function
+#Include("Force.inj")
 End Type
 // IO
 Function Void PrintLine(s as String)

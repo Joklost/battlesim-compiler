@@ -1,0 +1,68 @@
+public void Take(Step controller){
+        if(!IsControlled()){
+            for(Soldier s: Soldiers){
+                s.Take(controller);
+            }
+            Semaphor = true;
+            Controller = controller;
+        }
+    }
+
+    public void Release(){
+        for(Soldier s: Soldiers){
+            s.Release();
+        }
+        super.Release();
+    }
+
+
+    public void Move(Coord target, double velocity){
+        SetVelocity(velocity);
+        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
+    }
+
+    public void Move(Coord target){
+        for(Soldier s : Soldiers){
+            if(s.Velocity == 0){
+                s.Velocity = s.DefaultVelocity;
+            }
+        }
+        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
+    }
+
+    public void SetVelocity(double velocity){
+        for(Soldier s : Soldiers)
+            s.Velocity = velocity;
+    }
+
+    public void SetDirection(Vector direction){
+        for(Soldier s : Soldiers){
+            s.Direction = direction;
+        }
+    }
+
+    public List<Coord> GetCoordList(){
+        List<Coord> res = new ArrayList<>();
+        for(Soldier s : Soldiers){
+            res.add(s.GetPos());
+        }
+        return res;
+    }
+
+    public void StopMovement(){
+        for(Soldier s : Soldiers)
+            s.StopMovement();
+    }
+
+    public Coord GetPos(){
+        return DSTFunctions.CenterOfMass(GetCoordList());
+    }
+
+    public boolean IsDead(){
+        for(Soldier s: Soldiers){
+            if(!s.IsDead()){
+                return false;
+            }
+        }
+        return true;
+    }
