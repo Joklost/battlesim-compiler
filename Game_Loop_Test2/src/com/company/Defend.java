@@ -21,4 +21,9 @@ public class Defend extends Simulation {
         Steps.add(new WaitStep(SimObjMap.get("enemies"), 60));
         Steps.add(new MoveStep(SimObjMap.get("enemies"), new Coord(300, 600)));
     }
+
+    @Override
+    public void Run(double deltaT) {
+        //kør steps
+    }
 }

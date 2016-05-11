@@ -18,4 +18,11 @@ public class ProtectTheGeneral extends Simulation{
         Steps.add(new MoveStep(SimObjMap.get("aGroup2"), new Coord(600, 200)));
     }
 
+    public void Run(double deltaT){
+        Steps.get(0).RunIfCanStart(deltaT);
+        //potentielt neste steps i ifs
+        Steps.get(1).RunIfCanStart(deltaT);
+        Steps.get(2).RunIfCanStart(deltaT);
+    }
+
 }
