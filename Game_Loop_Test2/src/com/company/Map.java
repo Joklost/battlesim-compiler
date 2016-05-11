@@ -34,16 +34,18 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     public static double FRAMERATE = 33; //Update interval in milliseconds
     public double TIMESCALE = TS_INIT;
     public double deltaT = FRAMERATE * TIMESCALE; //deltaT is in milliseconds
-    public ArrayList<Step> Steps = new ArrayList<Step>();
+    public Simulation Force1Sim;
+    public Simulation Force2Sim;
     public Force Force1 = new Force();
     public Force Force2 = new Force();
     public ArrayList<Barrier> Barriers;
     public ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
 
-    public Map(Force force1, Force force2, ArrayList<Step> steps, Terrain terrain, ArrayList<Barrier> barriers){
+    public Map(Force force1, Force force2, Simulation force1Sim, Simulation force2Sim, Terrain terrain, ArrayList<Barrier> barriers){
         Force1 = force1;
         Force2 = force2;
-        Steps = steps;
+        Force1Sim = force1Sim;
+        Force2Sim = force2Sim;
         MapWidth = terrain.Width;
         MapHeight = terrain.Height;
         Barriers = barriers;
@@ -117,9 +119,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void performInstructions() {
-        //Her skal der blot kaldes MySimulation.Run() for hver af sidernes simulation
-        for(Step step : Steps)
-            step.RunIfCanStart(deltaT);
+        Force1Sim.Run(deltaT);
+        Force2Sim.Run(deltaT);
     }
 
     private void updateStates() {
