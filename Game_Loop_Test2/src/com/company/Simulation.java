@@ -18,10 +18,6 @@ public abstract class Simulation {
         SimObjMap = simObjMap;
     }
 
-    public void Run(double deltaT){
-        for(Step step: Steps){
-            step.RunIfCanStart(deltaT);
-        }
-    }
+    public abstract void Run(double deltaT);
 
 }
