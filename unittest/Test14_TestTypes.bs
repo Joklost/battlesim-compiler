@@ -2,8 +2,8 @@
 
 Begin Declarations
   Declare terrain as Terrain
-  terrain.X = 1900
-  terrain.Y = 1000
+  terrain.Width = 1900
+  terrain.Height = 1000
   Declare aSol1 as Soldier
 
 End Declarations

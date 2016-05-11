@@ -1,7 +1,7 @@
 
 Type Terrain
-  Declare X as Integer
-  Declare Y as Integer
+  Declare Width as Integer
+  Declare Height as Integer
 
   Function Void Terrain()
   End Function
