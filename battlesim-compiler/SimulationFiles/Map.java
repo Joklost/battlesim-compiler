@@ -31,16 +31,17 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     public ArrayList<Step> Steps = new ArrayList<Step>();
     public Force Force1 = new Force();
     public Force Force2 = new Force();
+    public Simulation force1Sim;
+    public Simulation force2Sim;
     public ArrayList<Barrier> Barriers;
     public ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
 
-    public Map(Force force1, Force force2, ArrayList<Step> steps, Terrain terrain, ArrayList<Barrier> barriers){
-        Force1 = force1;
-        Force2 = force2;
-        Steps = steps;
+    public Map(Force f1, Force f2, Simulation f1Sim, Simulation f2Sim, Terrain terrain, ArrayList<Barrier> bars){
+        Force1 = f1;
+        Force2 = f2;
         MapWidth = terrain.Width;
         MapHeight = terrain.Height;
-        Barriers = barriers;
+        Barriers = bars;
         initEventListeners(Force1);
         initEventListeners(Force2);
         initSide(Force1, ALLY);
@@ -112,8 +113,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
 
     private void performInstructions() {
         //Her skal der blot kaldes MySimulation.Run() for hver af sidernes simulation
-        for(Step step : Steps)
-            step.RunIfCanStart(deltaT);
+        force1Sim.Run(deltaT);
+        force2Sim.Run(deltaT);
     }
 
     private void updateStates() {

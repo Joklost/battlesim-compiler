@@ -320,6 +320,14 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             p.stmtList.elementAt(i).accept(this);
         }
 
+        emitIndentation("\n" +
+                "        ArrayList<Barrier> barriers = new ArrayList<Barrier>();");
+        emitIndentation("Simulation alliesSim = new ProtectTheGeneral(SimObjMap);\n" +
+                "        Simulation enemiesSim = new Defend(SimObjMap);\n" +
+                "        BasicFrame ex = new BasicFrame(allies, enemies, alliesSim, enemiesSim, terrain, barriers);\n" +
+                "        ex.setVisible(true);");
+
+
         indentLevel--;
         emitIndentation("}\n");
     }
