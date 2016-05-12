@@ -86,13 +86,19 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitIndentation("import java.io.*;\n");
         emitIndentation("import java.util.*;\n");
         emitIndentation("import java.util.Scanner;\n");
+        emitIndentation("import java.util.HashMap;\n");
         emitComment("BattleSim automatically generated code file.\n");
         emitIndentation("public class Declarations {\n");
         indentLevel++;
+        emitIndentation("public static HashMap<String, SimObj> SimObjMap = new HashMap<String, SimObj>();\n");
         s.dclBlock.accept(this);
         indentLevel--;
         emitIndentation("}\n");
 
+        ///////////////////
+        //// SimBlock//////
+        ///////////////////
+        s.simBlock.accept(this);
 
         ///////////////////
         //// Main /////////
@@ -116,8 +122,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             s.functionDclList.elementAt(i).accept(this);
         }
 
-        s.simBlock.accept(this);
-
         s.program.accept(this);
 
         indentLevel--;
@@ -125,6 +129,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(DclBlock db) {
+
         for (int i = 0; i < db.stmtLists.size(); i++) {
             if (db.stmtLists.elementAt(i) instanceof Dcl) {
                 emitIndentation("public static ");
@@ -141,12 +146,23 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             }
         }
 
+        for(int i = 0; i < db.stmtLists.size(); i++){
+            if(db.stmtLists.elementAt(i) instanceof Dcl) {
+                for (int k = 0; k < ((Dcl) db.stmtLists.elementAt(i)).dclIdList.size(); k++) {
+                    String name = ((Dcl) db.stmtLists.elementAt(i)).dclIdList.elementAt(k).name;
+                    emitIndentation("SimObjMap.put(\"" + name + "\", " + name + ");\n");
+                }
+            }
+        }
+
         indentLevel--;
         emitIndentation("}\n");
     }
 
     public void visit(SimBlock s) {
-        // TODO
+        for(int i = 0; i < s.simulationList.size(); i++){
+            s.simulationList.elementAt(i).accept(this);
+        }
 
     }
 
@@ -156,8 +172,60 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Simulation s) {
-        // TODO
+        codeMap.put(s.identifier.name, new ArrayList<String>());
+        setEmitTarget(s.identifier.name);
+        emitIndentation("package com.BattleSim;\n");
+        emitIndentation("import java.util.HashMap;\n");
+        emitIndentation("public class ");
+        emit(s.identifier.name);
+        emit(" extends Simulation {\n");
 
+        indentLevel++;
+        emitIndentation("public ");
+        emit(s.identifier.name);
+        emit("(HashMap<String, SimObj> simObjMap){\n");
+        indentLevel++;
+        emitIndentation("super(simObjMap);\n");
+        for(int i = 0; i < s.simStepList.size(); i++){
+            StmtList stmtList = s.simStepList.elementAt(i).stmtList;
+            for(int k = 0; k < s.simStepList.elementAt(i).stmtList.size(); k++){
+                if(stmtList.elementAt(k) instanceof FunctionCallStmt){
+                    FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
+                    if(funcCall.objectName.name.equals("MoveSXY")){
+                        emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
+                        funcCall.argumentList.elementAt(0).accept(this); //First arg type = SimObj
+                        emit("\"), new Coord(");
+                        funcCall.argumentList.elementAt(1).accept(this);
+                        emit(",");
+                        funcCall.argumentList.elementAt(2).accept(this);
+                        emit(")));\n");
+                    }
+                }
+            }
+        }
+        indentLevel--;
+        emitIndentation("}\n");
+
+        emitIndentation("public void Run(double deltaT){\n");
+        indentLevel++;
+        for(int i = 0; i < s.simStepList.size(); i++){
+            StmtList stmtList = s.simStepList.elementAt(i).stmtList;
+            for(int k = 0; k < s.simStepList.elementAt(i).stmtList.size(); k++){
+                int j = 0;
+                if(stmtList.elementAt(k) instanceof FunctionCallStmt){
+                    FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
+                    if(funcCall.objectName.name.equals("MoveSXY")){
+                        emitIndentation("Steps.get(" + j + ").RunIfCanStart(deltaT);\n");
+                    }
+                }
+            }
+        }
+
+        indentLevel--;
+        emitIndentation("}\n");
+
+        indentLevel--;
+        emitIndentation("}\n");
     }
 
     public void visit(Interrupts is) {
