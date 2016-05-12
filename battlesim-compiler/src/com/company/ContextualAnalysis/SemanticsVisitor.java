@@ -63,7 +63,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(SimBlock s) {
         for (int i = 0; i < s.simulationList.size(); i++) {
-            s.simulationList.accept(this);
+            s.simulationList.elementAt(i).accept(this);
         }
     }
 
