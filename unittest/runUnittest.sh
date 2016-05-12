@@ -66,3 +66,4 @@ assert Test10_TestSwitch.bs Test10_results_expt
 assert Test11_TestFor.bs Test11_results_expt
 assert Test12_TestScope.bs Test12_results_expt
 assert Test13_CustomTypeParam.bs Test13_results_expt
+assert Test14_TestTypes.bs Test14_results_expt
