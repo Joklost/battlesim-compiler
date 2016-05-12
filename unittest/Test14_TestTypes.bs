@@ -4,13 +4,31 @@ Begin Declarations
   Declare terrain as Terrain
   terrain.Width = 1900
   terrain.Height = 1000
-  Declare aSol1 as Soldier
 
+  Declare aSol1 as Soldier
+  Declare allies as Force
+  allies.AddSoldier(aSol1)
+
+  Declare eSol1 as Soldier
+  Declare enemies as Force
+  enemies.AddSoldier(eSol1)
 End Declarations
 
 Declare Simulations
+  Simulation ProtectTheGeneral aSol1
+    Step 1
+      MoveSXY(aSol1, 300, 250)
+    Interrupts
+
+  End Simulation
+
+  Simulation Defend eSol1
+    Step 1
+      MoveSXY(eSol1, 600, 400)
+    Interrupts
+  End Simulation
 End Declare Simulations
 
 Begin Program
-
+  %``
 End Program
