@@ -9,7 +9,6 @@ Function Integer Factorial(n as Integer)
 End Function
 
 Begin Declarations
-    Declare n as Integer
 End Declarations
 
 Declare Simulations
