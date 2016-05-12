@@ -24,8 +24,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private static final int TS_INIT = 10; //Initial timescale
     private static final int ALLY = 0;
     private static final int ENEMY = 1;
-    private int mapwidth = 300;
-    private int mapheight = 200;
+    private int mapWidth = 300;
+    private int mapHeight = 200;
     private Timer timer;
     private boolean isStarted;
     private long elapsedTime = 0;
@@ -46,8 +46,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         this.force2 = f2;
         this.force1Sim = f1Sim;
         this.force2Sim = f2Sim;
-        mapwidth = terrain.width;
-        mapheight = terrain.height;
+        mapWidth = terrain.width;
+        mapHeight = terrain.height;
         this.barriers = bars;
         initEventListeners(force1);
         initEventListeners(force2);
@@ -178,7 +178,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private void doDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawString(Long.toString(elapsedTime), mapwidth - 50, 15); //Render ElapsedTime between frames
+        g2d.drawString(Long.toString(elapsedTime), mapWidth - 50, 15); //Render ElapsedTime between frames
 
         renderForce(g2d, force1);
         renderForce(g2d, force2);
@@ -189,7 +189,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
 
     private void renderbullets(Graphics2D g2d) {
         for(Bullet b: bullets){
-            g2d.drawLine((int)b.firePos.x, (int)b.firePos.y, (int)(b.firePos.x + b.vector.x) , (int)(b.firePos.y + b.vector.y));
+            g2d.drawLine((int)b.firePos.x, mapHeight - (int)b.firePos.y, (int)(b.firePos.x + b.vector.x) ,  mapHeight - (int)(b.firePos.y + b.vector.y));
         }
     }
 
@@ -198,9 +198,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
             int i = 0;
             for(Coord c: b.vertices) {
                 if (i == b.vertices.size() - 1) {
-                    g2d.drawLine((int) b.vertices.get(i).x, (int) b.vertices.get(i).y, (int) b.vertices.get(0).x, (int) b.vertices.get(0).y);
+                    g2d.drawLine((int) b.vertices.get(i).x,  mapHeight - (int) b.vertices.get(i).y, (int) b.vertices.get(0).x,  mapHeight - (int) b.vertices.get(0).y);
                 } else {
-                    g2d.drawLine((int) b.vertices.get(i).x, (int) b.vertices.get(i).y, (int) b.vertices.get(i + 1).x, (int) b.vertices.get(i + 1).y);
+                    g2d.drawLine((int) b.vertices.get(i).x, mapHeight - (int) b.vertices.get(i).y, (int) b.vertices.get(i + 1).x, mapHeight - (int) b.vertices.get(i + 1).y);
                 }
                 i++;
             }
@@ -211,9 +211,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         for(Platoon p: force.Platoons){
             for(Group gr: p.Groups){
                 for(Soldier s: gr.Soldiers){
-                    g2d.drawString(s.model, (int)s.Pos.x, (int)s.Pos.y);
+                    g2d.drawString(s.model, (int)s.Pos.x, mapHeight - (int)s.Pos.y);
                     if(s.isEnemyDetected)
-                        g2d.drawString("!", (int)s.Pos.x, (int)s.Pos.y - 10);
+                        g2d.drawString("!", (int)s.Pos.x, mapHeight - (int)s.Pos.y - 10);
                 }
             }
         }
