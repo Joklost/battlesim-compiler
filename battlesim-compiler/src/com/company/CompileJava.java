@@ -37,8 +37,12 @@ public class CompileJava {
         }
 
         for (String key : code.keySet()) {
-            Path file = Paths.get(battleSim.getAbsolutePath() + File.separator + key + ".java");
-            Files.write(file, code.get(key), Charset.forName("UTF-8"));
+            String file = battleSim.getAbsolutePath() + File.separator + key + ".java";
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                for(String s: code.get(key)){
+                    bw.write(s);
+                }
+            }
         }
     }
 
