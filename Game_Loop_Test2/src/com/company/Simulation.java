@@ -11,13 +11,13 @@ import java.util.List;
  * Created by Magnus on 11-05-2016.
  */
 public abstract class Simulation {
-    public ArrayList<Step> Steps = new ArrayList<Step>();
-    public HashMap<String, SimObj> SimObjMap = new HashMap<String, SimObj>();
+    public ArrayList<Step> steps = new ArrayList<Step>();
+    public HashMap<String, SimObj> simObjMap = new HashMap<String, SimObj>();
 
     public Simulation(HashMap<String, SimObj> simObjMap){
-        SimObjMap = simObjMap;
+        simObjMap = simObjMap;
     }
 
-    public abstract void Run(double deltaT);
+    public abstract void run(double deltaT);
 
 }

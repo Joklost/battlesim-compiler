@@ -18,67 +18,6 @@ public class Group extends SimObj {
         for(Soldier s : soldiers)
             Soldiers.add(s);
     }
-    //////////
-
-    public void Take(Step controller){
-        if(!IsControlled()){
-            for(Soldier s: Soldiers){
-                s.Take(controller);
-            }
-            Semaphor = true;
-            Controller = controller;
-        }
-    }
-
-    public void Release(){
-        for(Soldier s: Soldiers){
-            s.Release();
-        }
-        super.Release();
-    }
-
-
-    public void Move(Coord target, double velocity){
-        SetVelocity(velocity);
-        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
-    }
-
-    public void Move(Coord target){
-        for(Soldier s : Soldiers){
-            if(s.Velocity == 0){
-                s.Velocity = s.DefaultVelocity;
-            }
-        }
-        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.GetCoordList()), target));
-    }
-
-    public void SetVelocity(double velocity){
-        for(Soldier s : Soldiers)
-            s.Velocity = velocity;
-    }
-
-    public void SetDirection(Vector direction){
-        for(Soldier s : Soldiers){
-            s.Direction = direction;
-        }
-    }
-
-    public List<Coord> GetCoordList(){
-        List<Coord> res = new ArrayList<>();
-        for(Soldier s : Soldiers){
-            res.add(s.GetPos());
-        }
-        return res;
-    }
-
-    public void StopMovement(){
-        for(Soldier s : Soldiers)
-            s.StopMovement();
-    }
-
-    public Coord GetPos(){
-        return DSTFunctions.CenterOfMass(GetCoordList());
-    }
 
     public boolean IsDead(){
         for(Soldier s: Soldiers){
@@ -87,5 +26,66 @@ public class Group extends SimObj {
             }
         }
         return true;
+    }
+    //////////
+
+    public void take(Step controller){
+        if(!isControlled()){
+            for(Soldier s: Soldiers){
+                s.take(controller);
+            }
+            semaphor = true;
+            this.controller = controller;
+        }
+    }
+
+    public void release(){
+        for(Soldier s: Soldiers){
+            s.release();
+        }
+        super.release();
+    }
+
+
+    public void move(Coord target, double velocity){
+        setVelocity(velocity);
+        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getCoordList()), target));
+    }
+
+    public void move(Coord target){
+        for(Soldier s : Soldiers){
+            if(s.Velocity == 0){
+                s.Velocity = s.DEFAULTVELOCITY;
+            }
+        }
+        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getCoordList()), target));
+    }
+
+    public void setVelocity(double velocity){
+        for(Soldier s : Soldiers)
+            s.Velocity = velocity;
+    }
+
+    public void setDirection(Vector direction){
+        for(Soldier s : Soldiers){
+            s.direction = direction;
+        }
+    }
+
+    public List<Coord> getCoordList(){
+        List<Coord> res = new ArrayList<>();
+        for(Soldier s : Soldiers){
+            res.add(s.getPos());
+        }
+        return res;
+    }
+
+    public void stopMovement(){
+        for(Soldier s : Soldiers)
+            s.stopMovement();
+    }
+
+    public Coord getPos(){
+        return DSTFunctions.centerOfMass(getCoordList());
     }
 }

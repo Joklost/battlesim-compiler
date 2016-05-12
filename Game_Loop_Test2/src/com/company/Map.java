@@ -24,38 +24,38 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private static final int TS_INIT = 10; //Initial timescale
     private static final int ALLY = 0;
     private static final int ENEMY = 1;
-    private int MapWidth = 300;
-    private int MapHeight = 200;
+    private int mapwidth = 300;
+    private int mapheight = 200;
     private Timer timer;
     private boolean isStarted;
-    private long Elapsedtime = 0;
-    private long HRT = 0; //High Resolution Timer
+    private long elapsedTime = 0;
+    private long hrt = 0; //High Resolution Timer
 
     public static double FRAMERATE = 33; //Update interval in milliseconds
-    public double TIMESCALE = TS_INIT;
-    public double deltaT = FRAMERATE * TIMESCALE; //deltaT is in milliseconds
-    public Simulation Force1Sim;
-    public Simulation Force2Sim;
-    public Force Force1 = new Force();
-    public Force Force2 = new Force();
-    public ArrayList<Barrier> Barriers;
-    public ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
+    public double timeScale = TS_INIT;
+    public double deltaT = FRAMERATE * timeScale; //deltaT is in milliseconds
+    public Simulation force1Sim;
+    public Simulation force2Sim;
+    public Force force1 = new Force();
+    public Force force2 = new Force();
+    public ArrayList<Barrier> barriers;
+    public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-    public Map(Force force1, Force force2, Simulation force1Sim, Simulation force2Sim, Terrain terrain, ArrayList<Barrier> barriers){
-        Force1 = force1;
-        Force2 = force2;
-        Force1Sim = force1Sim;
-        Force2Sim = force2Sim;
-        MapWidth = terrain.Width;
-        MapHeight = terrain.Height;
-        Barriers = barriers;
-        initEventListeners(Force1);
-        initEventListeners(Force2);
-        initSide(Force1, ALLY);
-        initSide(Force2, ENEMY);
+    public Map(Force f1, Force f2, Simulation f1Sim, Simulation f2Sim, Terrain terrain, ArrayList<Barrier> bars){
+        this.force1 = f1;
+        this.force2 = f2;
+        this.force1Sim = f1Sim;
+        this.force2Sim = f2Sim;
+        mapwidth = terrain.width;
+        mapheight = terrain.height;
+        this.barriers = bars;
+        initEventListeners(force1);
+        initEventListeners(force2);
+        initSide(force1, ALLY);
+        initSide(force2, ENEMY);
         initSlider();
-        initModels(Force1, "A");
-        initModels(Force2, "E");
+        initModels(force1, "A");
+        initModels(force2, "E");
         initMap();
     }
 
@@ -63,7 +63,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         for(Platoon p: force.Platoons){
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
-                    s.Side = side;
+                    s.side = side;
                 }
             }
         }
@@ -73,7 +73,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         for(Platoon p: force.Platoons){
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
-                    s.Model = model;
+                    s.model = model;
                 }
             }
         }
@@ -110,8 +110,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        Elapsedtime = actionEvent.getWhen() - HRT;
-        HRT = actionEvent.getWhen();
+        elapsedTime = actionEvent.getWhen() - hrt;
+        hrt = actionEvent.getWhen();
         updateStates();
         detectCollisions();
         performInstructions();
@@ -119,32 +119,32 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void performInstructions() {
-        Force1Sim.Run(deltaT);
-        Force2Sim.Run(deltaT);
+        force1Sim.run(deltaT);
+        force2Sim.run(deltaT);
     }
 
     private void updateStates() {
-        updateForceStates(Force1);
-        updateForceStates(Force2);
+        updateForceStates(force1);
+        updateForceStates(force2);
     }
 
     private void updateForceStates(Force force){
         for(Platoon p: force.Platoons){
             for(Group ga: p.Groups){
                 for(Soldier s: ga.Soldiers){
-                    for(Bullet b: Bullets){
-                        if(b.Owner != s.Side){
-                            Vector bulToSol = Vector.GetVectorByPoints(b.FirePos, s.GetPos());
-                            Vector projection = bulToSol.Dot(b.Vec.Normalize());
-                            Vector dist = Vector.GetVectorByPoints(new Coord(b.FirePos.X + projection.X, b.FirePos.Y + projection.Y), s.GetPos());
-                            if(dist.GetLength() < s.Size){
-                                s.Kill();
+                    for(Bullet b: bullets){
+                        if(b.owner != s.side){
+                            Vector bulToSol = Vector.getVectorByPoints(b.firePos, s.getPos());
+                            Vector projection = bulToSol.dot(b.vector.normalize());
+                            Vector dist = Vector.getVectorByPoints(new Coord(b.firePos.x + projection.x, b.firePos.y + projection.y), s.getPos());
+                            if(dist.getLength() < s.size){
+                                s.kill();
                             }
                         }
 
                     }
 
-                    s.Pos.NewPos(s.Direction, s.Velocity, deltaT / 1000);
+                    s.Pos.newPos(s.direction, s.Velocity, deltaT / 1000);
                     s.serviceTimers(deltaT);
                 }
             }
@@ -152,19 +152,19 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void detectCollisions() {
-        CollisionDetector.VisualDetect(Force1, Force2);
+        CollisionDetector.visualDetect(force1, force2);
         ////Fire bullets
-        Bullets.clear();
-        fireBullets(Force1);
-        fireBullets(Force2);
+        bullets.clear();
+        firebullets(force1);
+        firebullets(force2);
     }
 
-    private void fireBullets(Force force){
+    private void firebullets(Force force){
         for(Platoon p: force.Platoons){
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
-                    if(s.IsEnemyDetected && !s.Enemy.IsDead()){
-                        s.TryShoot(s.Enemy.GetPos());
+                    if(s.isEnemyDetected && !s.enemy.IsDead()){
+                        s.TryShoot(s.enemy.getPos());
                     }
                 }
             }
@@ -178,29 +178,29 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private void doDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawString(Long.toString(Elapsedtime), MapWidth - 50, 15); //Render ElapsedTime between frames
+        g2d.drawString(Long.toString(elapsedTime), mapwidth - 50, 15); //Render ElapsedTime between frames
 
-        renderForce(g2d, Force1);
-        renderForce(g2d, Force2);
+        renderForce(g2d, force1);
+        renderForce(g2d, force2);
         renderBarriers(g2d);
-        renderBullets(g2d);
+        renderbullets(g2d);
 
     }
 
-    private void renderBullets(Graphics2D g2d) {
-        for(Bullet b: Bullets){
-            g2d.drawLine((int)b.FirePos.X, (int)b.FirePos.Y, (int)(b.FirePos.X + b.Vec.X) , (int)(b.FirePos.Y + b.Vec.Y));
+    private void renderbullets(Graphics2D g2d) {
+        for(Bullet b: bullets){
+            g2d.drawLine((int)b.firePos.x, (int)b.firePos.y, (int)(b.firePos.x + b.vector.x) , (int)(b.firePos.y + b.vector.y));
         }
     }
 
     private void renderBarriers(Graphics2D g2d) {
-        for(Barrier b: Barriers){
+        for(Barrier b: barriers){
             int i = 0;
-            for(Coord c: b.Vertices) {
-                if (i == b.Vertices.size() - 1) {
-                    g2d.drawLine((int) b.Vertices.get(i).X, (int) b.Vertices.get(i).Y, (int) b.Vertices.get(0).X, (int) b.Vertices.get(0).Y);
+            for(Coord c: b.vertices) {
+                if (i == b.vertices.size() - 1) {
+                    g2d.drawLine((int) b.vertices.get(i).x, (int) b.vertices.get(i).y, (int) b.vertices.get(0).x, (int) b.vertices.get(0).y);
                 } else {
-                    g2d.drawLine((int) b.Vertices.get(i).X, (int) b.Vertices.get(i).Y, (int) b.Vertices.get(i + 1).X, (int) b.Vertices.get(i + 1).Y);
+                    g2d.drawLine((int) b.vertices.get(i).x, (int) b.vertices.get(i).y, (int) b.vertices.get(i + 1).x, (int) b.vertices.get(i + 1).y);
                 }
                 i++;
             }
@@ -211,9 +211,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         for(Platoon p: force.Platoons){
             for(Group gr: p.Groups){
                 for(Soldier s: gr.Soldiers){
-                    g2d.drawString(s.Model, (int)s.Pos.X, (int)s.Pos.Y);
-                    if(s.IsEnemyDetected)
-                        g2d.drawString("!", (int)s.Pos.X, (int)s.Pos.Y - 10);
+                    g2d.drawString(s.model, (int)s.Pos.x, (int)s.Pos.y);
+                    if(s.isEnemyDetected)
+                        g2d.drawString("!", (int)s.Pos.x, (int)s.Pos.y - 10);
                 }
             }
         }
@@ -225,10 +225,6 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         doDrawing(g);
     }
 
-    @Override
-    public void BulletFired(FireBulletEvent event) {
-        Bullets.add(event.GetBullet());
-    }
 
     @Override
     public void stateChanged(ChangeEvent e) {
@@ -237,5 +233,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
             int ts = (int)source.getValue();
             deltaT = FRAMERATE  * ts;
         }
+    }
+
+    @Override
+    public void bulletFired(FireBulletEvent event) {
+        bullets.add(event.getBullet());
     }
 }

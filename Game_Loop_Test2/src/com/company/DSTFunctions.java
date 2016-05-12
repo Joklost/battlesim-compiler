@@ -9,24 +9,24 @@ import java.util.List;
  * Created by Magnus on 25-04-2016.
  */
 public class DSTFunctions {
-    public static Vector FindUnitVector(Coord startCoord, Coord targetCoord){
+    public static Vector findUnitVector(Coord startCoord, Coord targetCoord){
         Vector res = new Vector();
-        res.X = targetCoord.X - startCoord.X;
-        res.Y = targetCoord.Y - startCoord.Y;
-        double length = res.GetLength();
-        res.X /= length;
-        res.Y /= length;
+        res.x = targetCoord.x - startCoord.x;
+        res.y = targetCoord.y - startCoord.y;
+        double length = res.getLength();
+        res.x /= length;
+        res.y /= length;
         return res;
     }
 
-    public static Coord CenterOfMass(List<Coord> coords){
+    public static Coord centerOfMass(List<Coord> coords){
         Coord res = new Coord(0,0);
         for(Coord coord : coords){
-            res.X += coord.X;
-            res.Y += coord.Y;
+            res.x += coord.x;
+            res.y += coord.y;
         }
-        res.X /= coords.size();
-        res.Y /= coords.size();
+        res.x /= coords.size();
+        res.y /= coords.size();
 
         return res;
     }

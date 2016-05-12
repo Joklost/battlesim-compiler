@@ -16,15 +16,15 @@ import java.util.ArrayList;
 public class BasicFrame extends JFrame{
 
     public BasicFrame(Force force1, Force force2, Simulation force1Sim, Simulation force2Sim, Terrain terrain, ArrayList<Barrier> barriers){
-        InitUI(force1, force2, force1Sim, force2Sim, terrain, barriers);
+        initUI(force1, force2, force1Sim, force2Sim, terrain, barriers);
     }
 
-    private void InitUI(Force force1, Force force2, Simulation force1Sim, Simulation force2Sim, Terrain terrain, ArrayList<Barrier> barriers){
+    private void initUI(Force force1, Force force2, Simulation force1Sim, Simulation force2Sim, Terrain terrain, ArrayList<Barrier> barriers){
         Map map = new Map(force1, force2, force1Sim, force2Sim, terrain, barriers);
         add(map);
         map.start();
         setTitle("Simple example");
-        setSize(terrain.Width, terrain.Height);
+        setSize(terrain.width, terrain.height);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }

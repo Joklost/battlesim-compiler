@@ -32,55 +32,6 @@ public class Force extends SimObj {
             nGroup.AddSoldiers(s);
         AddGroups(nGroup);
     }
-    ///////////////
-
-    public void Take(Step controller){
-        if(!IsControlled()){
-            for(Platoon p: Platoons){
-                p.Take(controller);
-            }
-            Semaphor = true;
-            Controller = controller;
-        }
-    }
-
-    public void Release(){
-        for(Platoon p: Platoons){
-            p.Release();
-        }
-        super.Release();
-    }
-
-    public void Move(Coord target){
-        Move(target, Soldier.DefaultVelocity);
-    }
-
-    public void Move(Coord target, double velocity){
-        for(Platoon p : Platoons)
-            p.SetVelocity(velocity);
-        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(GetCoordList()), target));
-    }
-
-    public void SetDirection(Vector direction){
-        for(Platoon p : Platoons)
-            p.SetDirection(direction);
-    }
-
-    public List<Coord> GetCoordList(){
-        List<Coord> res = new ArrayList<>();
-        for(Platoon p : Platoons)
-            res.addAll(p.GetCoordList());
-        return res;
-    }
-
-    public void StopMovement(){
-        for(Platoon p: Platoons)
-            p.StopMovement();
-    }
-
-    public Coord GetPos(){
-        return DSTFunctions.CenterOfMass(GetCoordList());
-    }
 
     public boolean IsDead(){
         for(Platoon p: Platoons){
@@ -90,4 +41,54 @@ public class Force extends SimObj {
         }
         return true;
     }
+    ///////////////
+
+    public void take(Step controller){
+        if(!isControlled()){
+            for(Platoon p: Platoons){
+                p.take(controller);
+            }
+            semaphor = true;
+            this.controller = controller;
+        }
+    }
+
+    public void release(){
+        for(Platoon p: Platoons){
+            p.release();
+        }
+        super.release();
+    }
+
+    public void move(Coord target){
+        move(target, Soldier.DEFAULTVELOCITY);
+    }
+
+    public void move(Coord target, double velocity){
+        for(Platoon p : Platoons)
+            p.setVelocity(velocity);
+        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(getCoordList()), target));
+    }
+
+    public void setDirection(Vector direction){
+        for(Platoon p : Platoons)
+            p.setDirection(direction);
+    }
+
+    public List<Coord> getCoordList(){
+        List<Coord> res = new ArrayList<>();
+        for(Platoon p : Platoons)
+            res.addAll(p.getCoordList());
+        return res;
+    }
+
+    public void stopMovement(){
+        for(Platoon p: Platoons)
+            p.stopMovement();
+    }
+
+    public Coord getPos(){
+        return DSTFunctions.centerOfMass(getCoordList());
+    }
+
 }

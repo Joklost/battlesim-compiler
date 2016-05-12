@@ -7,15 +7,15 @@ import com.company.Objects.StaticObjects.Vector;
  * Created by Magnus on 03-05-2016.
  */
 public class Bullet {
-    public Coord FirePos;
-    public Vector Vec;
-    public int Owner;
+    public Coord firePos;
+    public Vector vector;
+    public int owner;
 
     public Bullet(Coord firePos, Vector vec, int owner){
-        FirePos = firePos;
-        vec.Y *= 10000;
-        vec.X *= 10000;
-        Vec = vec;
-        Owner = owner;
+        this.firePos = firePos;
+        vec.x *= 10000;
+        vec.y *= 10000;
+        this.vector = vec;
+        this.owner = owner;
     }
 }

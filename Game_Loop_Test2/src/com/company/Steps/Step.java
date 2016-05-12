@@ -14,15 +14,15 @@ public abstract class Step{
     }
 
     //Hvis dette step ikke er færdig og objektet ikke bliver kontrolleret af andre end dette step selv så retuner true
-    public boolean CanStart(){
-        return !isDone && !object.IsDead() && (!object.IsControlled() || object.GetController().equals(this));
+    public boolean canStart(){
+        return !isDone && !object.IsDead() && (!object.isControlled() || object.getController().equals(this));
     }
 
-    protected abstract void Run(double deltaT);
+    protected abstract void run(double deltaT);
 
 
-    public void RunIfCanStart(double deltaT){
-        if(CanStart())
-            Run(deltaT);
+    public void runIfCanStart(double deltaT){
+        if(canStart())
+            run(deltaT);
     }
 }

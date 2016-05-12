@@ -15,13 +15,13 @@ public class MoveStep extends Step{
         this.coord = coord;
     }
 
-    public void Run(double deltaT){
-        object.Take(this);
-        object.Move(coord);
-        Vector v = Vector.GetVectorByPoints(object.GetPos(), coord);
-        if(v.GetLength() < object.Size){
-            object.StopMovement();
-            object.Release();
+    public void run(double deltaT){
+        object.take(this);
+        object.move(coord);
+        Vector v = Vector.getVectorByPoints(object.getPos(), coord);
+        if(v.getLength() < object.size){
+            object.stopMovement();
+            object.release();
             isDone = true;
         }
     }

@@ -16,113 +16,111 @@ public class Soldier extends SimObj {
     //Felter med bruger adgang til
     public Coord Pos = new Coord();
     public double Velocity = 0;
-    private boolean IsDead = false;
+    public boolean IsDead(){
+        return isDead;
+    }
     //////////////////////
-
-
-    private List<FireBulletListener> _listeners = new ArrayList<FireBulletListener>();
+    
+    private boolean isDead = false;
+    private List<FireBulletListener> listeners = new ArrayList<FireBulletListener>();
     //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
     private double accuracy = 0.2;
 
-    public int Side = 0;
-    public final static double DefaultVelocity = 2.2; //meter per second
-    public double Size = 0.25;            //Change this because this is a random number
-    public boolean IsEnemyDetected = false;
-    public int Fov = 50;
-    public int Ammo = 30;
-    public int FireRate = 1000; //firerate in milliseconds
-    public double CL_FireRate = FireRate;
-    public Soldier Enemy;
-    public Vector Direction = new Vector();
-    public int Magazines = 4;
-    public String Model = "Error";
+    public int side = 0;
+    public final static double DEFAULTVELOCITY = 2.2; //meter per second
+    public double size = 0.25;            //Change this because this is a random number
+    public boolean isEnemyDetected = false;
+    public int fov = 50;
+    public int ammo = 30;
+    public int fireRate = 1000; //firerate in milliseconds
+    public double cl_fireRate = fireRate;
+    public Soldier enemy;
+    public Vector direction = new Vector();
+    public int magazines = 4;
+    public String model = "Error";
 
-    public Coord GetPos(){
+    public Coord getPos(){
         return Pos;
     }
 
-    public void Move(Coord target){
+    public void move(Coord target){
         if(Velocity == 0){
-            Velocity = DefaultVelocity;
+            Velocity = DEFAULTVELOCITY;
         }
-        Direction = DSTFunctions.FindUnitVector(Pos, target);
+        direction = DSTFunctions.findUnitVector(Pos, target);
     }
 
-    public void Move(Coord target, double velocity){
-        Velocity = velocity;
-        Direction = DSTFunctions.FindUnitVector(Pos, target);
+    public void move(Coord target, double Velocity){
+        this.Velocity = Velocity;
+        direction = DSTFunctions.findUnitVector(Pos, target);
     }
 
-    public void StopMovement(){
+    public void stopMovement(){
         Velocity = 0;
     }
 
-    public void EnemyDetected(Soldier enemy){
-        Enemy = enemy;
-        IsEnemyDetected = true;
+    public void enemyDetected(Soldier enemy){
+        this.enemy = enemy;
+        isEnemyDetected = true;
     }
 
-    public boolean CanStillSeeEnemy(){
-        if(Enemy == null){
-            IsEnemyDetected = false;
+    public boolean canStillSeeEnemy(){
+        if(enemy == null){
+            isEnemyDetected = false;
             return false;
         }
-        if(Enemy.IsDead() && Vector.GetVectorByPoints(Pos, Enemy.GetPos()).GetLength() < Fov){
+        if(enemy.IsDead() && Vector.getVectorByPoints(Pos, enemy.getPos()).getLength() < fov){
             return true;
         }
         else{
-            IsEnemyDetected = false;
+            isEnemyDetected = false;
             return false;
         }
     }
 
     public synchronized void addFireBulletListener( FireBulletListener l ) {
-        _listeners.add( l );
+        listeners.add( l );
     }
 
     public synchronized void removeFireBulletListener( FireBulletListener l ) {
-        _listeners.remove( l );
+        listeners.remove( l );
     }
 
     private synchronized void _fireFireBulletEvent(Bullet bullet) {
         FireBulletEvent be = new FireBulletEvent( this, bullet );
-        Iterator listeners = _listeners.iterator();
+        Iterator listeners = this.listeners.iterator();
         while( listeners.hasNext() ) {
-            ( (FireBulletListener) listeners.next() ).BulletFired(be);
+            ( (FireBulletListener) listeners.next() ).bulletFired(be);
         }
     }
 
     public void TryShoot(Coord target){
-        if(Ammo > 0 && CL_FireRate >= FireRate){
+        if(ammo > 0 && cl_fireRate >= fireRate){
             Random rand = new Random();
-            Vector bulletUnit = Vector.GetVectorByPoints(Pos, target).Normalize();
+            Vector bulletUnit = Vector.getVectorByPoints(Pos, target).normalize();
             Vector normal = new Vector();
-            normal.X = (-1) * bulletUnit.Y;
-            normal.Y = bulletUnit.X;
-            normal.Scale(accuracy);
-            normal.Scale(rand.nextDouble() * 2 - 1);
-            Bullet bullet = new Bullet(GetPos(),Vector.GetVectorByPoints(GetPos(), new Coord(GetPos().X + bulletUnit.X + normal.X, GetPos().Y + bulletUnit.Y + normal.Y)), Side);
+            normal.x = (-1) * bulletUnit.y;
+            normal.y = bulletUnit.x;
+            normal.scale(accuracy);
+            normal.scale(rand.nextDouble() * 2 - 1);
+            Bullet bullet = new Bullet(getPos(),Vector.getVectorByPoints(getPos(), new Coord(getPos().x + bulletUnit.x + normal.x, getPos().y + bulletUnit.y + normal.y)), side);
             _fireFireBulletEvent(bullet);
-            Ammo--;
-            CL_FireRate = 0;
+            ammo--;
+            cl_fireRate = 0;
         }
     }
 
     public void serviceTimers(double deltaT){
-        if(CL_FireRate < FireRate){
-            CL_FireRate += deltaT;
+        if(cl_fireRate < fireRate){
+            cl_fireRate += deltaT;
         }
     }
 
-    public boolean IsDead(){
-        return IsDead;
-    }
-
-    public void Kill(){
-        StopMovement();
-        IsEnemyDetected = false;
-        Enemy = null;
-        Model = "X";
-        IsDead = true;
+    public void kill(){
+        stopMovement();
+        isEnemyDetected = false;
+        enemy = null;
+        model = "x";
+        isDead = true;
     }
 }

@@ -8,35 +8,35 @@ import com.company.Steps.Step;
  * Created by Magnus on 01-05-2016.
  */
 public abstract class SimObj {
-    protected boolean Semaphor;
-    protected Step Controller; //Maybe not necessary with EmptyStep
+    protected boolean semaphor;
+    protected Step controller; //Maybe not necessary with EmptyStep
 
-    public int Size = 3;
-    public int ReloadSpeed = 3000; //ms
+    public int size = 3;
+    public int reloadSpeed = 3000; //ms
 
-    public boolean IsControlled(){
-        return Semaphor;
+    public boolean isControlled(){
+        return semaphor;
     }
 
-    public Step GetController(){
-        return Controller;
+    public Step getController(){
+        return controller;
     }
-    public void Take(Step controller){
-        if(!IsControlled()){
-            Semaphor = true;
-            Controller = controller;
+    public void take(Step controller){
+        if(!isControlled()){
+            semaphor = true;
+            this.controller = controller;
         }
     }
 
-    public void Release(){
-        Semaphor = false;
+    public void release(){
+        semaphor = false;
     }
 
-    public abstract void StopMovement();
+    public abstract void stopMovement();
 
-    public abstract void Move(Coord coord);
+    public abstract void move(Coord coord);
 
-    public abstract Coord GetPos();
+    public abstract Coord getPos();
 
     public abstract boolean IsDead();
 

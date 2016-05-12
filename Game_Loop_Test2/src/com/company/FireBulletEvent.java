@@ -8,13 +8,13 @@ import java.util.EventObject;
  * Created by Magnus on 04-05-2016.
  */
 public class FireBulletEvent extends EventObject {
-    private Bullet _bullet;
+    private Bullet bullet;
     public FireBulletEvent(Object o, Bullet bullet) {
         super(o);
-        _bullet = bullet;
+        this.bullet = bullet;
     }
 
-    public Bullet GetBullet(){
-        return _bullet;
+    public Bullet getBullet(){
+        return bullet;
     }
 }
