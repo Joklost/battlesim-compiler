@@ -31,7 +31,6 @@ End Type
 Type Soldier
   Declare Pos as Coord
   Declare Velocity as Decimal
-  Declare IsDead as Boolean
 
   Function Void Soldier()
   End Function
@@ -132,4 +131,10 @@ Function Decimal ConvertToDecimal(s as String)
     %``    d = Double.parseDouble(s);
     %``}
     Return d
+End Function
+
+//Steps
+
+Function Void MoveSXY(s as Soldier, x as Integer, y as Integer)
+  //MoveStep
 End Function
