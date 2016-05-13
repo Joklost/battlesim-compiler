@@ -39,6 +39,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     public Map(Force f1, Force f2, Simulation f1Sim, Simulation f2Sim, Terrain terrain, ArrayList<Barrier> bars){
         Force1 = f1;
         Force2 = f2;
+        force1Sim = f1Sim;
+        force2Sim = f2Sim;
         MapWidth = terrain.Width;
         MapHeight = terrain.Height;
         Barriers = bars;
