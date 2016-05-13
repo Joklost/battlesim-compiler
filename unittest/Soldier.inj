@@ -21,14 +21,14 @@ public Coord GetPos(){
     return Pos;
 }
 
-public void Move(Coord target){
+public void move(Coord target){
     if(Velocity == 0){
         Velocity = DefaultVelocity;
     }
     Direction = DSTFunctions.FindUnitVector(Pos, target);
 }
 
-public void Move(Coord target, double velocity){
+public void move(Coord target, double velocity){
     Velocity = velocity;
     Direction = DSTFunctions.FindUnitVector(Pos, target);
 }

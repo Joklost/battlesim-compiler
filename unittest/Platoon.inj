@@ -15,11 +15,11 @@ public void Take(Step controller){
         super.Release();
     }
 
-    public void Move(Coord target){
-        Move(target, Soldier.DefaultVelocity);
+    public void move(Coord target){
+        move(target, Soldier.DefaultVelocity);
     }
 
-    public void Move(Coord target, double velocity){
+    public void move(Coord target, double velocity){
         for(Group g : Groups){
             g.SetVelocity(velocity);
         }

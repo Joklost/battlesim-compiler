@@ -2,7 +2,7 @@ public void StopMovement(){
 
 }
 
-public void Move(Coord coord){
+public void move(Coord coord){
 
 }
 

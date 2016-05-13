@@ -13,7 +13,7 @@ public class MoveStep extends Step{
 
     public void Run(double deltaT){
         object.Take(this);
-        object.Move(coord);
+        object.move(coord);
         Vector v = Vector.GetVectorByPoints(object.GetPos(), coord);
         if(v.GetLength() < object.Size){
             object.StopMovement();
