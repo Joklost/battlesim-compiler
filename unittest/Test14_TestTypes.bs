@@ -45,5 +45,5 @@ Declare Simulations
 End Declare Simulations
 
 Begin Program
-  RunSimulation(allies, enemies, terrain)
+  RunSimulation(allies, enemies, terrain, "ProtectTheGeneral", "Defend")
 End Program

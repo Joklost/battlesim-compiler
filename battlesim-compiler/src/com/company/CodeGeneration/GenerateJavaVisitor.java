@@ -123,6 +123,15 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             s.functionDclList.elementAt(i).accept(this);
         }
 
+        emitIndentation("public static void main(String[] args) {\n");
+        indentLevel++;
+        emitIndentation("Declarations decl795030_declarationblock = new Declarations();\n");
+
+        for(int i = 0; i < s.simBlock.simulationList.size(); i++){
+            String simName = s.simBlock.simulationList.elementAt(i).identifier.name;
+            emitIndentation("Simulation " + simName.toLowerCase() + " = new " + simName + "(SimObjMap);\n");
+        }
+
         s.program.accept(this);
 
         indentLevel--;
@@ -320,13 +329,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Program p) {
-        emitIndentation("public static void main(String[] args) {\n");
-        indentLevel++;
-        emitIndentation("Declarations decl795030_declarationblock = new Declarations();\n");
-
-        emitIndentation("Simulation alliesSim = new ProtectTheGeneral(SimObjMap);\n" + //TODO
-                "        Simulation enemiesSim = new Defend(SimObjMap);\n");
-
 
         for (int i = 0; i < p.stmtList.size(); i++) {
             if(p.stmtList.elementAt(i) instanceof FunctionCallStmt){
@@ -336,11 +338,16 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                 if(funcCall.objectName.name.equals("RunSimulation")){
                     emitIndentation("BasicFrame ex = new BasicFrame(");
                     for (int k = 0; k < funcCall.argumentList.size(); k++) {
-                        funcCall.argumentList.elementAt(k).accept(this);
+                        if(k == 3 || k == 4){
+                            funcCall.argumentList.elementAt(k).accept(this);
+                            String str = codeMap.get(main).get(codeMap.get(main).size() - 1);
+                            codeMap.get(main).set(codeMap.get(main).size() - 1, str.replace('"', ' ').toLowerCase());
+                        }else{
+                            funcCall.argumentList.elementAt(k).accept(this);
+                        }
                         if (k < funcCall.argumentList.size() - 1) emit(", ");
                     }
-                    emit(", barriers, alliesSim, enemiesSim"); //TODO
-                    emit(");\n");
+                    emit(", barriers);\n");
                     emitIndentation("ex.setVisible(true);");
                 }
                 //Handle rest in Program

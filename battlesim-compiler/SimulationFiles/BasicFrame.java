@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class BasicFrame extends JFrame{
 
-  public BasicFrame(Force force1, Force force2, Terrain terrain, ArrayList<Barrier> barriers, Simulation force1Sim, Simulation force2Sim){
+  public BasicFrame(Force force1, Force force2, Terrain terrain, Simulation force1Sim, Simulation force2Sim, ArrayList<Barrier> barriers){
       initUI(force1, force2, terrain, barriers, force1Sim, force2Sim);
   }
 
