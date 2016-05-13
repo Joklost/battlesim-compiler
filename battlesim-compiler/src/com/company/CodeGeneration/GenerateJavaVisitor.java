@@ -149,8 +149,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         for(int i = 0; i < db.stmtLists.size(); i++){
             if(db.stmtLists.elementAt(i) instanceof Dcl) {
                 for (int k = 0; k < ((Dcl) db.stmtLists.elementAt(i)).dclIdList.size(); k++) {
-                    String name = ((Dcl) db.stmtLists.elementAt(i)).dclIdList.elementAt(k).name;
-                    emitIndentation("SimObjMap.put(\"" + name + "\", " + name + ");\n");
+                    if(((Dcl) db.stmtLists.elementAt(i)).typeName instanceof CustomTypeIdentifier){
+                        String name = ((Dcl) db.stmtLists.elementAt(i)).dclIdList.elementAt(k).name;
+                        emitIndentation("SimObjMap.put(\"" + name + "\", " + name + ");\n");
+                    }
                 }
             }
         }
