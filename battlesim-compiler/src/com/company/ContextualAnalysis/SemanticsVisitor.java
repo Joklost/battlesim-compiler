@@ -124,7 +124,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(Assignment as) {
         LHSSemanticsVisitor lhsSemanticsVisitor = new LHSSemanticsVisitor();
         as.targetName.accept(lhsSemanticsVisitor);
-        as.expression.accept(this);
+        as.expression.accept(this); // (10, 30)
 
         if (assignable(as.targetName.type, as.expression.type)) {
             as.type = as.targetName.type;
@@ -734,7 +734,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ObjectReferencing o) {
-
         o.objectName.accept(this);
         if (o.objectName.type == errorType) {
             o.type = errorType;
@@ -747,19 +746,18 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 if (oDef instanceof CustomTypeIdentifier) {
                     ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
 
+                    // dette sker, hvis vi er i en type deklaration
                     if (tDef == null) {
                         tDef = Main.symbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
                     }
-
+                    // Soldier.pos type = def.type
                     if (tDef instanceof TypeDeclaration) {
                         SymbolTable st = ((TypeDeclaration) tDef).typeDescriptor.fields;
-                        // Skulle helst ikke smide en exception.. - jkj
                         ASTNode def = st.retrieveSymbol(o.fieldName.name);
                         if (def == null) {
                             error(o.getLineNumber(), o.fieldName.name + " is not a field of " + o.objectName.name);
                             o.type = errorType;
                         } else {
-
                             o.type = def.type;
                         }
                     } else {
@@ -804,10 +802,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         if (target == decimalType && expression == integerType) return true;
         if (target == stringType && expression == nullType) return true;
         if ((target == array1DType || target == array2DType || target == listType) && expression == nullType) return true;
-//        if ((target == groupType || target == platoonType || target == forceType || target == coordType || target == soldierType || target == barrierType || target == vectorType || target == terrainType) && expression == nullType) return true;
         if ((target == objectType) && expression == nullType) return true;
 
-        return false;    // skal laves
+        // er et hack, men vi vil forsøge at leve med det...
+        if (target == objectType && expression == coordType) return true;
+        return false;
     }
 
     private int binaryResultType(int operator, int leftType, int rightType) {

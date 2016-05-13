@@ -760,7 +760,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(CoordExpr ce) {
-        emit("(");
+        emit(" new Coord(");
         ce.expression1.accept(this);
         emit(", ");
         ce.expression2.accept(this);
