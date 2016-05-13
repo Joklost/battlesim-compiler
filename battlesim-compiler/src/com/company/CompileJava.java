@@ -57,8 +57,8 @@ public class CompileJava {
 
     private void runProcess(String command) throws IOException, InterruptedException {
         Process pro = Runtime.getRuntime().exec(command);
-        printLines(command + ": stdout:", pro.getInputStream());
-        printLines(command + ": stderr:", pro.getErrorStream());
+        printLines("stdout:", pro.getInputStream());
+        printLines("stderr:", pro.getErrorStream());
         pro.waitFor();
         //System.out.println(command + " exitValue() " + pro.exitValue());
     }
