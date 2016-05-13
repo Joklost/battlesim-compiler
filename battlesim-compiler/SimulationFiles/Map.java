@@ -36,7 +36,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     public ArrayList<Barrier> Barriers;
     public ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
 
-    public Map(Force f1, Force f2, Simulation f1Sim, Simulation f2Sim, Terrain terrain, ArrayList<Barrier> bars){
+    public Map(Force f1, Force f2, Terrain terrain, ArrayList<Barrier> bars, Simulation f1Sim, Simulation f2Sim){
         Force1 = f1;
         Force2 = f2;
         force1Sim = f1Sim;

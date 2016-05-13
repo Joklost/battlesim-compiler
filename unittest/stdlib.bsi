@@ -138,3 +138,8 @@ End Function
 Function Void MoveSXY(s as Soldier, x as Integer, y as Integer)
   //MoveStep
 End Function
+
+//RunSimulation
+Function Void RunSimulation(force1 as Force, force2 as Force, terrain as Terrain)
+
+End Function

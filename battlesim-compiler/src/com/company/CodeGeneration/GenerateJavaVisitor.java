@@ -91,6 +91,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitIndentation("public class Declarations {\n");
         indentLevel++;
         emitIndentation("public static HashMap<String, SimObj> SimObjMap = new HashMap<String, SimObj>();\n");
+        emitIndentation("public static ArrayList<Barrier> barriers = new ArrayList<Barrier>();\n");
         s.dclBlock.accept(this);
         indentLevel--;
         emitIndentation("}\n");
@@ -150,13 +151,18 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             if(db.stmtLists.elementAt(i) instanceof Dcl) {
                 for (int k = 0; k < ((Dcl) db.stmtLists.elementAt(i)).dclIdList.size(); k++) {
                     if(((Dcl) db.stmtLists.elementAt(i)).typeName instanceof CustomTypeIdentifier){
+                        String typeName = ((CustomTypeIdentifier) ((Dcl) db.stmtLists.elementAt(i)).typeName).name.name;
                         String name = ((Dcl) db.stmtLists.elementAt(i)).dclIdList.elementAt(k).name;
-                        emitIndentation("SimObjMap.put(\"" + name + "\", " + name + ");\n");
+                        if(typeName.equals("Barrier")){
+                            emitIndentation("barriers.add(" + name + ");\n");
+                        }else{
+                            emitIndentation("SimObjMap.put(\"" + name + "\", " + name + ");\n");
+                        }
                     }
+
                 }
             }
         }
-
         indentLevel--;
         emitIndentation("}\n");
     }
@@ -193,7 +199,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             for(int k = 0; k < s.simStepList.elementAt(i).stmtList.size(); k++){
                 if(stmtList.elementAt(k) instanceof FunctionCallStmt){
                     FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
-                    if(funcCall.objectName.name.equals("MoveSXY")){
+                    if(funcCall.objectName.name.equals("MoveSXY")){ //TODO
                         emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
                         funcCall.argumentList.elementAt(0).accept(this); //First arg type = SimObj
                         emit("\"), new Coord(");
@@ -318,17 +324,31 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         indentLevel++;
         emitIndentation("Declarations decl795030_declarationblock = new Declarations();\n");
 
+        emitIndentation("Simulation alliesSim = new ProtectTheGeneral(SimObjMap);\n" + //TODO
+                "        Simulation enemiesSim = new Defend(SimObjMap);\n");
+
+
         for (int i = 0; i < p.stmtList.size(); i++) {
-            p.stmtList.elementAt(i).accept(this);
+            if(p.stmtList.elementAt(i) instanceof FunctionCallStmt){
+                FunctionCall funcCall = ((FunctionCallStmt) p.stmtList.elementAt(i)).functionCall;
+
+                //Handle functioncall RunSimulation
+                if(funcCall.objectName.name.equals("RunSimulation")){
+                    emitIndentation("BasicFrame ex = new BasicFrame(");
+                    for (int k = 0; k < funcCall.argumentList.size(); k++) {
+                        funcCall.argumentList.elementAt(k).accept(this);
+                        if (k < funcCall.argumentList.size() - 1) emit(", ");
+                    }
+                    emit(", barriers, alliesSim, enemiesSim"); //TODO
+                    emit(");\n");
+                    emitIndentation("ex.setVisible(true);");
+                }
+                //Handle rest in Program
+                else{
+                    p.stmtList.elementAt(i).accept(this);
+                }
+            }
         }
-
-        emitIndentation("\n" +
-                "        ArrayList<Barrier> barriers = new ArrayList<Barrier>();");
-        emitIndentation("Simulation alliesSim = new ProtectTheGeneral(SimObjMap);\n" +
-                "        Simulation enemiesSim = new Defend(SimObjMap);\n" +
-                "        BasicFrame ex = new BasicFrame(allies, enemies, alliesSim, enemiesSim, terrain, barriers);\n" +
-                "        ex.setVisible(true);");
-
 
         indentLevel--;
         emitIndentation("}\n");

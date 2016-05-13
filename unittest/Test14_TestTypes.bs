@@ -5,13 +5,28 @@ Begin Declarations
   terrain.Width = 1900
   terrain.Height = 1000
 
+  Declare bar1vertex1 as Coord
+  bar1vertex1.X = 500
+  bar1vertex1.Y = 300
+  Declare bar1vertex2 as Coord
+  bar1vertex2.X = 600
+  bar1vertex2.Y = 500
+  Declare bar1 as Barrier
+  bar1.AddVertex(bar1vertex1)
+  bar1.AddVertex(bar1vertex2)
+
   Declare aSol1 as Soldier
+  Declare aSol1Pos as Coord
+  aSol1Pos.X = 400
+  aSol1Pos.Y = 600
+  aSol1.Pos = aSol1Pos
   Declare allies as Force
   allies.AddSoldier(aSol1)
 
   Declare eSol1 as Soldier
   Declare enemies as Force
   enemies.AddSoldier(eSol1)
+
 End Declarations
 
 Declare Simulations
@@ -30,5 +45,5 @@ Declare Simulations
 End Declare Simulations
 
 Begin Program
-  %``
+  RunSimulation(allies, enemies, terrain)
 End Program
