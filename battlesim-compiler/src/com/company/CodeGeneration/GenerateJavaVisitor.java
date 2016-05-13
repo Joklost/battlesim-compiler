@@ -208,15 +208,18 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             for(int k = 0; k < s.simStepList.elementAt(i).stmtList.size(); k++){
                 if(stmtList.elementAt(k) instanceof FunctionCallStmt){
                     FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
-                    if(funcCall.objectName.name.equals("MoveSXY")){ //TODO
-                        emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
-                        funcCall.argumentList.elementAt(0).accept(this); //First arg type = SimObj
-                        emit("\"), new Coord(");
-                        funcCall.argumentList.elementAt(1).accept(this);
-                        emit(",");
-                        funcCall.argumentList.elementAt(2).accept(this);
-                        emit(")));\n");
+                    if(funcCall.objectName instanceof ObjectReferencing){
+                        if(((ObjectReferencing) funcCall.objectName).fieldName.name.equals("MoveToXY")){ //TODO
+                            emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
+                            emit(((ObjectReferencing) funcCall.objectName).objectName.name);
+                            emit("\"), new Coord(");
+                            funcCall.argumentList.elementAt(0).accept(this);
+                            emit(",");
+                            funcCall.argumentList.elementAt(1).accept(this);
+                            emit(")));\n");
+                        }
                     }
+
                 }
             }
         }
@@ -231,10 +234,13 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                 int j = 0;
                 if(stmtList.elementAt(k) instanceof FunctionCallStmt){
                     FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
-                    if(funcCall.objectName.name.equals("MoveSXY")){
-                        emitIndentation("Steps.get(" + j + ").RunIfCanStart(deltaT);\n");
+                    if(funcCall.objectName instanceof ObjectReferencing){
+                        if(((ObjectReferencing) funcCall.objectName).fieldName.name.equals("MoveToXY")){
+                            emitIndentation("Steps.get(" + j + ").RunIfCanStart(deltaT);\n");
+                        }
                     }
                 }
+                j++;
             }
         }
 

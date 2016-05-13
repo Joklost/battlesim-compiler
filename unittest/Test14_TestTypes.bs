@@ -32,14 +32,15 @@ End Declarations
 Declare Simulations
   Simulation ProtectTheGeneral aSol1
     Step 1
-      MoveSXY(aSol1, 300, 250)
+      //MoveSXY(aSol1, 300, 250)
+      aSol1.MoveToXY(300, 250)
     Interrupts
 
   End Simulation
 
   Simulation Defend eSol1
     Step 1
-      MoveSXY(eSol1, 600, 400)
+      eSol1.MoveToXY(400, 600)
     Interrupts
   End Simulation
 End Declare Simulations
