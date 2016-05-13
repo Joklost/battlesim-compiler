@@ -209,7 +209,9 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                 if(stmtList.elementAt(k) instanceof FunctionCallStmt){
                     FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
                     if(funcCall.objectName instanceof ObjectReferencing){
-                        if(((ObjectReferencing) funcCall.objectName).fieldName.name.equals("MoveToXY")){ //TODO
+                        String funcName = ((ObjectReferencing) funcCall.objectName).fieldName.name;
+                        
+                        if(funcName.equals("MoveToXY")){ //TODO
                             emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
                             emit(((ObjectReferencing) funcCall.objectName).objectName.name);
                             emit("\"), new Coord(");
