@@ -227,7 +227,9 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                             emit("));\n");
                         }
                     }
-
+                }
+                else{
+                    //s.simStepList.elementAt(i).stmtList.elementAt(k).accept(this); // Det her virker nogenlunde, men er ikke brugbart
                 }
             }
         }
@@ -246,10 +248,11 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                         String funcName = ((ObjectReferencing) funcCall.objectName).fieldName.name;
                         if(funcName.equals("MoveToXY") || funcName.equals("Wait")){
                             emitIndentation("Steps.get(" + j + ").RunIfCanStart(deltaT);\n");
+                            j++;
                         }
                     }
                 }
-                j++;
+
             }
         }
 
