@@ -113,8 +113,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         elapsedTime = actionEvent.getWhen() - hrt;
         hrt = actionEvent.getWhen();
         updateStates();
-        detectCollisions();
         performInstructions();
+        detectCollisions();
         repaint();
     }
 
@@ -143,7 +143,6 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                         }
 
                     }
-
                     s.Pos.newPos(s.direction, s.Velocity, deltaT / 1000);
                     s.serviceTimers(deltaT);
                 }
@@ -164,6 +163,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
                     if(s.isEnemyDetected && !s.enemy.IsDead()){
+                        s.stopMovement();
                         s.TryShoot(s.enemy.getPos());
                     }
                 }
