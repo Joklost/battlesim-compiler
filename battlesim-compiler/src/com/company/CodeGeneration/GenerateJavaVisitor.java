@@ -215,10 +215,16 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                             emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
                             emit(((ObjectReferencing) funcCall.objectName).objectName.name);
                             emit("\"), new Coord(");
-                            funcCall.argumentList.elementAt(0).accept(this);
+                            funcCall.argumentList.elementAt(0).accept(this); //x
                             emit(",");
-                            funcCall.argumentList.elementAt(1).accept(this);
+                            funcCall.argumentList.elementAt(1).accept(this); //y
                             emit(")));\n");
+                        } else if(funcName.equals("Wait")){
+                            emitIndentation("Steps.add(new WaitStep(SimObjMap.get(\"");
+                            emit(((ObjectReferencing) funcCall.objectName).objectName.name);
+                            emit("\"), ");
+                            funcCall.argumentList.elementAt(0).accept(this); //Seconds
+                            emit("));\n");
                         }
                     }
 
@@ -237,7 +243,8 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                 if(stmtList.elementAt(k) instanceof FunctionCallStmt){
                     FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
                     if(funcCall.objectName instanceof ObjectReferencing){
-                        if(((ObjectReferencing) funcCall.objectName).fieldName.name.equals("MoveToXY")){
+                        String funcName = ((ObjectReferencing) funcCall.objectName).fieldName.name;
+                        if(funcName.equals("MoveToXY") || funcName.equals("Wait")){
                             emitIndentation("Steps.get(" + j + ").RunIfCanStart(deltaT);\n");
                         }
                     }

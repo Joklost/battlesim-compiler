@@ -92,6 +92,7 @@ Declare Simulations
     Step 1
       enemies.MoveToXY(950, 250)
       enemies.MoveToXY(600, 250)
+      enemies.Wait(60)
       enemies.MoveToXY(300, 600)
     Interrupts
   End Simulation
