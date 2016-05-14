@@ -137,7 +137,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                     for(Bullet b: bullets){
                         if(b.owner != s.side){
                             Vector bulToSol = Vector.getVectorByPoints(b.firePos, s.getPos());
-                            Vector projection = bulToSol.dot(b.vector.normalize());
+                            Vector projection = b.vector.normalize();
+                            double projLength = bulToSol.dot(b.vector.normalize());
+                            projection.scale(projLength);
                             Vector dist = Vector.getVectorByPoints(new Coord(b.firePos.x + projection.x, b.firePos.y + projection.y), s.getPos());
                             if(dist.getLength() < s.size){
                                 s.kill();
@@ -145,8 +147,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                         }
 
                     }
-                    s.Pos.newPos(s.direction, s.Velocity, deltaT / 1000);
-                    s.serviceTimers(deltaT);
+                    if(!s.IsDead()){
+                        s.Pos.newPos(s.direction, s.Velocity, deltaT / 1000);
+                        s.serviceTimers(deltaT);
+                    }
                 }
             }
         }

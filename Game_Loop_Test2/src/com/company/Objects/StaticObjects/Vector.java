@@ -22,11 +22,8 @@ public class Vector {
         return res;
     }
 
-    public Vector dot(Vector d) {
-        Vector res = new Vector();
-        res.x = x * d.y;
-        res.y = y * d.y;
-        return res;
+    public double dot(Vector d) {
+        return x * d.x + y * d.y;
     }
 
     public Vector normalize(){
