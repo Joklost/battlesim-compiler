@@ -1,47 +1,98 @@
 #Include("stdlib.bsi")
 
 Begin Declarations
+  //Declare Terrain
   Declare terrain as Terrain
   terrain.Width = 1800
   terrain.Height = 900
 
+  //Declare Barriers
   Declare bar1vertex1 as Coord
-  //bar1vertex1.X = 30
-  //bar1vertex1.Y = 50
   bar1vertex1 = (30, 50)
   Declare bar1vertex2 as Coord
-  bar1vertex2.X = 50
-  bar1vertex2.Y = 30
+  bar1vertex2 = (50, 30)
+  Declare bar1vertex3 as Coord
+  bar1vertex3 = (100, 100)
+  Declare bar1vertex4 as Coord
+  bar1vertex4 = (300, 600)
   Declare bar1 as Barrier
   bar1.AddVertex(bar1vertex1)
   bar1.AddVertex(bar1vertex2)
+  bar1.AddVertex(bar1vertex3)
+  bar1.AddVertex(bar1vertex4)
 
+  Declare bar2vertex1 as Coord
+  bar2vertex1 = (960, 800)
+  Declare bar2vertex2 as Coord
+  bar2vertex2 = (900, 840)
+  Declare bar2vertex3 as Coord
+  bar2vertex3 = (800, 890)
+  Declare bar2vertex4 as Coord
+  bar2vertex4 = (950, 800)
+  Declare bar2 as Barrier
+  bar2.AddVertex(bar2vertex1)
+  bar2.AddVertex(bar2vertex2)
+  bar2.AddVertex(bar2vertex3)
+  bar2.AddVertex(bar2vertex4)
+
+  //Declare Allies
   Declare aSol1 as Soldier
-  Declare aSol1Pos as Coord
-  aSol1Pos.X = 400
-  aSol1Pos.Y = 600
-  aSol1.Pos = aSol1Pos
-  Declare allies as Force
-  allies.AddSoldier(aSol1)
+  aSol1.Pos = (30, 30)
+  Declare aSol2 as Soldier
+  aSol2.Pos = (38, 30)
+  Declare aSol3 as Soldier
+  aSol3.Pos = (34, 38)
+  Declare aGroup1 as Group
+  aGroup1.AddSoldier(aSol1)
+  aGroup1.AddSoldier(aSol2)
+  aGroup1.AddSoldier(aSol3)
 
+  Declare aSol4 as Soldier
+  aSol1.Pos = (40, 30)
+  Declare aSol5 as Soldier
+  aSol1.Pos = (48, 30)
+  Declare aSol6 as Soldier
+  aSol1.Pos = (44, 38)
+  Declare aGroup2 as Group
+  aGroup2.AddSoldier(aSol1)
+  aGroup2.AddSoldier(aSol2)
+  aGroup2.AddSoldier(aSol3)
+  Declare allies as Force
+  allies.AddGroup(aGroup1)
+  allies.AddGroup(aGroup2)
+
+  //Declare Enemies
   Declare eSol1 as Soldier
+  eSol1.Pos = (960, 30)
+  Declare eSol2 as Soldier
+  eSol2.Pos = (968, 30)
+  Declare eSol3 as Soldier
+  eSol3.Pos = (964, 38)
+  Declare eGroup1 as Group
+  eGroup1.AddSoldier(eSol1)
+  eGroup1.AddSoldier(eSol2)
+  eGroup1.AddSoldier(eSol3)
   Declare enemies as Force
-  enemies.AddSoldier(eSol1)
+  enemies.AddGroup(eGroup1)
 
 End Declarations
 
 Declare Simulations
-  Simulation ProtectTheGeneral aSol1
+  Simulation ProtectTheGeneral allies
     Step 1
       //MoveSXY(aSol1, 300, 250)
-      aSol1.MoveToXY(300, 250)
+      allies.MoveToXY(300, 250)
+      aGroup1.MoveToXY(600, 300)
+      aGroup2.MoveToXY(600, 200)
     Interrupts
 
   End Simulation
 
-  Simulation Defend eSol1
+  Simulation Defend enemies
     Step 1
-      eSol1.MoveToXY(400, 600)
+      enemies.MoveToXY(950, 250)
+      enemies.MoveToXY(600, 250)
+      enemies.MoveToXY(300, 600)
     Interrupts
   End Simulation
 End Declare Simulations
