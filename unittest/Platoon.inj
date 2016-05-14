@@ -52,12 +52,3 @@ public void Take(Step controller){
     public Coord GetPos(){
         return DSTFunctions.CenterOfMass(GetCoordList());
     }
-
-    public boolean IsDead(){
-        for(Group g: Groups){
-            if(!g.IsDead()){
-                return false;
-            }
-        }
-        return true;
-    }

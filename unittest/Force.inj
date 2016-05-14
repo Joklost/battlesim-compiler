@@ -45,12 +45,3 @@ public void Take(Step controller){
     public Coord GetPos(){
         return DSTFunctions.CenterOfMass(GetCoordList());
     }
-
-    public boolean IsDead(){
-        for(Platoon p: Platoons){
-            if(!p.IsDead()){
-                return false;
-            }
-        }
-        return true;
-    }

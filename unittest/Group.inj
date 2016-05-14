@@ -57,12 +57,3 @@ public void Take(Step controller){
     public Coord GetPos(){
         return DSTFunctions.CenterOfMass(GetCoordList());
     }
-
-    public boolean IsDead(){
-        for(Soldier s: Soldiers){
-            if(!s.IsDead()){
-                return false;
-            }
-        }
-        return true;
-    }
