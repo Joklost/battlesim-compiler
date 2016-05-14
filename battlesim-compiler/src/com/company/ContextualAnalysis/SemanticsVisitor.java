@@ -9,7 +9,7 @@ import com.company.Main;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.company.ContextualAnalysis.TypeConsts.*;
+import static com.company.ContextualAnalysis.HelperClasses.TypeConsts.*;
 import static com.company.Main.currentFile;
 
 /**

@@ -3,9 +3,7 @@ package com.company.AST.Nodes;
 import com.company.AST.Visitor.Visitable;
 import com.company.AST.Visitor.Visitor;
 
-import java.util.HashMap;
-
-import static com.company.ContextualAnalysis.TypeConsts.noType;
+import static com.company.ContextualAnalysis.HelperClasses.TypeConsts.noType;
 
 /**
  * Created by joklost on 01-04-16.

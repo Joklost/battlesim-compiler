@@ -3,7 +3,7 @@ package com.company.ContextualAnalysis;
 import com.company.AST.Nodes.*;
 import com.company.Main;
 
-import static com.company.ContextualAnalysis.TypeConsts.*;
+import static com.company.ContextualAnalysis.HelperClasses.TypeConsts.*;
 
 /**
  * Created by joklost on 12-04-16.

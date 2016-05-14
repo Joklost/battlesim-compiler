@@ -4,8 +4,8 @@ import com.company.AST.Nodes.*;
 import com.company.AST.SymbolTable.SymbolTable;
 import com.company.Main;
 
-import static com.company.ContextualAnalysis.TypeConsts.errorType;
-import static com.company.ContextualAnalysis.TypeConsts.getTypeName;
+import static com.company.ContextualAnalysis.HelperClasses.TypeConsts.errorType;
+import static com.company.ContextualAnalysis.HelperClasses.TypeConsts.getTypeName;
 
 /**
  * Created by joklost on 12-04-16.
