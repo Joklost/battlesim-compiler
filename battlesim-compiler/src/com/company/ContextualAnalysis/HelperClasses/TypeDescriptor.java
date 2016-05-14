@@ -1,4 +1,4 @@
-package com.company.ContextualAnalysis;
+package com.company.ContextualAnalysis.HelperClasses;
 
 /**
  * Created by joklost on 14-04-16.

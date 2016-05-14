@@ -1,7 +1,6 @@
 package com.company.AST.Nodes;
 
-import com.company.ContextualAnalysis.ObjectTypeDescriptor;
-import com.company.ContextualAnalysis.TypeDescriptor;
+import com.company.ContextualAnalysis.HelperClasses.TypeDescriptor;
 
 /**
  * Created by joklost on 13-04-16.

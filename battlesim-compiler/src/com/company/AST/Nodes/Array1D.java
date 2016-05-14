@@ -1,6 +1,6 @@
 package com.company.AST.Nodes;
 
-import com.company.ContextualAnalysis.Array1DTypeDescriptor;
+import com.company.ContextualAnalysis.HelperClasses.Array1DTypeDescriptor;
 
 /**
  * Created by joklost on 12-04-16.

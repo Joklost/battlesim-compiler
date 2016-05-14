@@ -1,4 +1,4 @@
-package com.company.ContextualAnalysis;
+package com.company.ContextualAnalysis.HelperClasses;
 
 import com.company.AST.SymbolTable.SymbolTable;
 
