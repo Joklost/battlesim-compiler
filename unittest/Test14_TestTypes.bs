@@ -57,9 +57,13 @@ Begin Declarations
   aGroup2.AddSoldier(aSol4)
   aGroup2.AddSoldier(aSol5)
   aGroup2.AddSoldier(aSol6)
+
+  Declare aGeneral as Soldier
+  aGeneral.Pos = (450, 100)
   Declare allies as Force
   allies.AddGroup(aGroup1)
   allies.AddGroup(aGroup2)
+  allies.AddSoldier(aGeneral)
 
   //Declare Enemies
   Declare eSol1 as Soldier
@@ -80,10 +84,15 @@ End Declarations
 Declare Simulations
   Simulation ProtectTheGeneral allies
     Step 1
-      //MoveSXY(aSol1, 300, 250)
       allies.MoveToXY(300, 250)
+      aGeneral.Wait(60)
+    Step 2
       aGroup1.MoveToXY(600, 300)
       aGroup2.MoveToXY(600, 200)
+    Step 3
+      aGroup1.MoveToXY(600, 250)
+      aGroup2.MoveToXY(600, 250)
+      aGeneral.MoveToXY(600, 250)
     Interrupts
 
   End Simulation
@@ -91,8 +100,11 @@ Declare Simulations
   Simulation Defend enemies
     Step 1
       enemies.MoveToXY(950, 250)
+    Step 2
       enemies.MoveToXY(600, 250)
+    Step 3
       enemies.Wait(60)
+    Step 4
       enemies.MoveToXY(300, 600)
     Interrupts
   End Simulation
