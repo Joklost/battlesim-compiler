@@ -24,6 +24,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private boolean isStarted;
     private long Elapsedtime = 0;
     private long HRT = 0; //High Resolution Timer
+    private long frameNum = 0;
 
     public static double FRAMERATE = 33; //Update interval in milliseconds
     public double TIMESCALE = TS_INIT;
@@ -108,9 +109,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         Elapsedtime = actionEvent.getWhen() - HRT;
         HRT = actionEvent.getWhen();
         updateStates();
-        detectCollisions();
         performInstructions();
+        detectCollisions();
         repaint();
+        frameNum++;
     }
 
     private void performInstructions() {
@@ -131,7 +133,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                     for(Bullet b: Bullets){
                         if(b.Owner != s.Side){
                             Vector bulToSol = Vector.GetVectorByPoints(b.FirePos, s.GetPos());
-                            Vector projection = bulToSol.Dot(b.Vec.Normalize());
+                            Vector projection = b.Vec.Normalize();
+                            double projLength = bulToSol.dot(b.Vec.Normalize());
+                            projection.Scale(projLength);
                             Vector dist = Vector.GetVectorByPoints(new Coord(b.FirePos.X + projection.X, b.FirePos.Y + projection.Y), s.GetPos());
                             if(dist.GetLength() < s.Size){
                                 s.Kill();
@@ -139,9 +143,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                         }
 
                     }
-
-                    s.Pos.NewPos(s.Direction, s.Velocity, deltaT / 1000);
-                    s.serviceTimers(deltaT);
+                    if(!s.IsDead()){
+                        s.Pos.NewPos(s.Direction, s.Velocity, deltaT / 1000);
+                        s.serviceTimers(deltaT);
+                    }
                 }
             }
         }
@@ -160,6 +165,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
                     if(s.IsEnemyDetected && !s.Enemy.IsDead()){
+                        s.StopMovement();
                         s.TryShoot(s.Enemy.GetPos());
                     }
                 }

@@ -29,6 +29,9 @@ public class CollisionDetector {
                 if(v.GetLength() < s.Fov){
                     s.EnemyDetected(enemy);
                 }
+                else{
+                    s.IsEnemyDetected = false;
+                }
             }
         }
     }
