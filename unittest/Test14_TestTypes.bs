@@ -48,15 +48,15 @@ Begin Declarations
   aGroup1.AddSoldier(aSol3)
 
   Declare aSol4 as Soldier
-  aSol1.Pos = (40, 30)
+  aSol4.Pos = (40, 30)
   Declare aSol5 as Soldier
-  aSol1.Pos = (48, 30)
+  aSol5.Pos = (48, 30)
   Declare aSol6 as Soldier
-  aSol1.Pos = (44, 38)
+  aSol6.Pos = (44, 38)
   Declare aGroup2 as Group
-  aGroup2.AddSoldier(aSol1)
-  aGroup2.AddSoldier(aSol2)
-  aGroup2.AddSoldier(aSol3)
+  aGroup2.AddSoldier(aSol4)
+  aGroup2.AddSoldier(aSol5)
+  aGroup2.AddSoldier(aSol6)
   Declare allies as Force
   allies.AddGroup(aGroup1)
   allies.AddGroup(aGroup2)

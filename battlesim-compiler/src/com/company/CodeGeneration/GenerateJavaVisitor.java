@@ -230,10 +230,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
         emitIndentation("public void Run(double deltaT){\n");
         indentLevel++;
+        int j = 0;
         for(int i = 0; i < s.simStepList.size(); i++){
             StmtList stmtList = s.simStepList.elementAt(i).stmtList;
             for(int k = 0; k < s.simStepList.elementAt(i).stmtList.size(); k++){
-                int j = 0;
                 if(stmtList.elementAt(k) instanceof FunctionCallStmt){
                     FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
                     if(funcCall.objectName instanceof ObjectReferencing){
