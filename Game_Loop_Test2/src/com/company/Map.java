@@ -30,6 +30,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private boolean isStarted;
     private long elapsedTime = 0;
     private long hrt = 0; //High Resolution Timer
+    private long frameNum = 0;
 
     public static double FRAMERATE = 33; //Update interval in milliseconds
     public double timeScale = TS_INIT;
@@ -116,6 +117,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         performInstructions();
         detectCollisions();
         repaint();
+        frameNum++;
     }
 
     private void performInstructions() {

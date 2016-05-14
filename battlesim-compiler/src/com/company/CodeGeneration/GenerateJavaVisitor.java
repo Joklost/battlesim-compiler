@@ -252,7 +252,6 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                         }
                     }
                 }
-
             }
         }
 

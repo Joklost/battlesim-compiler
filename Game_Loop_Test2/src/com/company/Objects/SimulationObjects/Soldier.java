@@ -69,7 +69,7 @@ public class Soldier extends SimObj {
             isEnemyDetected = false;
             return false;
         }
-        if(enemy.IsDead() && Vector.getVectorByPoints(Pos, enemy.getPos()).getLength() < fov){
+        if(!enemy.IsDead() && Vector.getVectorByPoints(Pos, enemy.getPos()).getLength() < fov){
             return true;
         }
         else{

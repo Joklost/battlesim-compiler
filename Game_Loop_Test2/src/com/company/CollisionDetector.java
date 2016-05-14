@@ -32,6 +32,9 @@ public class CollisionDetector {
                 if(v.getLength() < s.fov){
                     s.enemyDetected(enemy);
                 }
+                else{
+                    s.isEnemyDetected = false;
+                }
             }
         }
     }
