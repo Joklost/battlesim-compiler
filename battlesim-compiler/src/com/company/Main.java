@@ -3,6 +3,7 @@ package com.company;
 import com.company.AST.Nodes.Start;
 import com.company.AST.Nodes.TypeDeclaration;
 import com.company.AST.SymbolTable.SymbolTable;
+import com.company.AST.Visitor.PrettyPrintVisitor;
 import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
