@@ -61,7 +61,7 @@ public class Platoon extends SimObj {
         for(Group g : Groups){
             g.setVelocity(velocity);
         }
-        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getCoordList()), target));
+        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getAliveSoldiersCoords()), target));
     }
 
     public void setVelocity(double velocity){
@@ -79,6 +79,13 @@ public class Platoon extends SimObj {
         List<Coord> res = new ArrayList<>();
         for(Group g : Groups)
             res.addAll(g.getCoordList());
+        return res;
+    }
+
+    public List<Coord> getAliveSoldiersCoords(){
+        List<Coord> res = new ArrayList<>();
+        for(Group g : Groups)
+            res.addAll(g.getAliveSoldiersCoords());
         return res;
     }
 
