@@ -27,7 +27,7 @@ public class Main {
 
         List<String> paths = new ArrayList<>();
 
-        boolean printCode = true;
+        boolean printCode = false;
         boolean generatedCode = true;
         boolean deleteTmpFiles = true;
         String outputName = "Main";
