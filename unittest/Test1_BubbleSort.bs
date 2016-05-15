@@ -45,7 +45,7 @@ End Function
 Begin Declarations
 End Declarations
 
-Declare Simulations
+Begin Declare Simulations
 End Declare Simulations
 
 Begin Program

@@ -68,7 +68,7 @@ Begin Declarations
 
 End Declarations
 
-Declare Simulations
+Begin Declare Simulations
   Simulation AlliesSim allies
     Step 1
       aGroup.MoveToXY(600, 250)

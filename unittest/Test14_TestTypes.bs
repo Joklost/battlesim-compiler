@@ -84,7 +84,7 @@ Begin Declarations
 
 End Declarations
 
-Declare Simulations
+Begin Declare Simulations
   Simulation ProtectTheGeneral allies
     Step 1
       allies.MoveToXY(300, 250)
