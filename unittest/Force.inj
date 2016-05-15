@@ -22,7 +22,7 @@ public void Take(Step controller){
     public void move(Coord target, double velocity){
         for(Platoon p : Platoons)
             p.SetVelocity(velocity);
-        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(GetCoordList()), target));
+        SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(getAliveSoldiersCoords()), target));
     }
 
     public void SetDirection(Vector direction){
@@ -37,11 +37,18 @@ public void Take(Step controller){
         return res;
     }
 
+    public List<Coord> getAliveSoldiersCoords(){
+        List<Coord> res = new ArrayList<>();
+        for(Platoon p : Platoons)
+            res.addAll(p.getAliveSoldiersCoords());
+        return res;
+     }
+
     public void StopMovement(){
         for(Platoon p: Platoons)
             p.StopMovement();
     }
 
     public Coord GetPos(){
-        return DSTFunctions.CenterOfMass(GetCoordList());
+        return DSTFunctions.CenterOfMass(getAliveSoldiersCoords());
     }

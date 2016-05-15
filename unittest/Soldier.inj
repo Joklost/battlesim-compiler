@@ -5,7 +5,7 @@ private double accuracy = 0.02;
 
 public int Side = 0;
 public final static double DefaultVelocity = 2.2; //meter per second
-public double Size = 0.25;            //Change this because this is a random number
+public double Size = 0.25;            //radius of a soldier
 public boolean IsEnemyDetected = false;
 public int Fov = 50;
 public int Ammo = 30;
