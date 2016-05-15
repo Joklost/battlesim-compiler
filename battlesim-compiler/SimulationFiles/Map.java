@@ -18,7 +18,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private static final int TS_INIT = 10; //Initial timescale
     private static final int ALLY = 0;
     private static final int ENEMY = 1;
-    private int MapWidth = 300;
+    private int mapWidth = 300;
     private int mapHeight = 200;
     private Timer timer;
     private boolean isStarted;
@@ -42,7 +42,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         Force2 = f2;
         force1Sim = f1Sim;
         force2Sim = f2Sim;
-        MapWidth = terrain.Width;
+        mapWidth = terrain.Width;
         mapHeight = terrain.Height;
         Barriers = bars;
         initEventListeners(Force1);
@@ -180,8 +180,15 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private void doDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawString(Long.toString(Elapsedtime), MapWidth - 50, 15); //Render ElapsedTime between frames
+        g2d.drawString(Long.toString(Elapsedtime), mapWidth - 50, 15); //Render ElapsedTime between frames
 
+        double scale = 1;
+        g2d.translate(mapWidth/2, mapHeight/2);
+        g2d.scale(scale, scale);
+        g2d.translate(-mapWidth/2, -mapHeight/2);
+        g2d.setPaint(Color.LIGHT_GRAY);
+        g2d.fillRect(0,0,mapWidth,mapHeight);
+        g2d.setPaint(Color.BLACK);
         renderForce(g2d, Force1);
         renderForce(g2d, Force2);
         renderBarriers(g2d);
