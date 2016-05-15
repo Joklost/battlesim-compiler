@@ -95,6 +95,6 @@ public class Platoon extends SimObj {
     }
 
     public Coord getPos(){
-        return DSTFunctions.centerOfMass(getCoordList());
+        return DSTFunctions.centerOfMass(getAliveSoldiersCoords());
     }
 }

@@ -96,6 +96,6 @@ public class Group extends SimObj {
     }
 
     public Coord getPos(){
-        return DSTFunctions.centerOfMass(getCoordList());
+        return DSTFunctions.centerOfMass(getAliveSoldiersCoords());
     }
 }
