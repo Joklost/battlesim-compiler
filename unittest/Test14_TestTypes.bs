@@ -65,6 +65,9 @@ Begin Declarations
   allies.AddGroup(aGroup2)
   allies.AddSoldier(aGeneral)
 
+  Declare base as Coord
+  base = (100, 250)
+
   //Declare Enemies
   Declare eSol1 as Soldier
   eSol1.Pos = (960, 30)
@@ -92,7 +95,7 @@ Declare Simulations
     Step 3
       aGroup1.MoveToXY(600, 250)
       aGroup2.MoveToXY(600, 250)
-      aGeneral.MoveToXY(600, 250)
+      aGeneral.MoveToCoord(base)
     Interrupts
 
   End Simulation
