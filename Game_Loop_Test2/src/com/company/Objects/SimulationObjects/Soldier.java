@@ -28,7 +28,7 @@ public class Soldier extends SimObj {
 
     public int side = 0;
     public final static double DEFAULTVELOCITY = 2.2; //meter per second
-    public double size = 0.25;            //Change this because this is a random number
+    public double size = 0.25;            //radius of a soldier
     public boolean isEnemyDetected = false;
     public int fov = 50;
     public int ammo = 30;

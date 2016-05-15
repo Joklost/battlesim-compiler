@@ -49,7 +49,7 @@ public class Group extends SimObj {
 
     public void move(Coord target, double velocity){
         setVelocity(velocity);
-        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getCoordList()), target));
+        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getAliveSoldiersCoords()), target));
     }
 
     public void move(Coord target){
@@ -58,7 +58,7 @@ public class Group extends SimObj {
                 s.Velocity = s.DEFAULTVELOCITY;
             }
         }
-        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getCoordList()), target));
+        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getAliveSoldiersCoords()), target));
     }
 
     public void setVelocity(double velocity){
@@ -80,12 +80,22 @@ public class Group extends SimObj {
         return res;
     }
 
+    public List<Coord> getAliveSoldiersCoords(){
+        List<Coord> res = new ArrayList<>();
+        for(Soldier s : Soldiers){
+            if(!s.IsDead()){
+                res.add(s.getPos());
+            }
+        }
+        return res;
+    }
+
     public void stopMovement(){
         for(Soldier s : Soldiers)
             s.stopMovement();
     }
 
     public Coord getPos(){
-        return DSTFunctions.centerOfMass(getCoordList());
+        return DSTFunctions.centerOfMass(getAliveSoldiersCoords());
     }
 }
