@@ -185,12 +185,17 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.drawString(Long.toString(elapsedTime), mapWidth - 50, 15); //Render ElapsedTime between frames
-
+        double scale = 1;
+        g2d.translate(mapWidth/2, mapHeight/2);
+        g2d.scale(scale, scale);
+        g2d.translate(-mapWidth/2, -mapHeight/2);
+        g2d.setPaint(Color.LIGHT_GRAY);
+        g2d.fillRect(0,0,mapWidth,mapHeight);
+        g2d.setPaint(Color.BLACK);
         renderForce(g2d, force1);
         renderForce(g2d, force2);
         renderBarriers(g2d);
         renderbullets(g2d);
-
     }
 
     private void renderbullets(Graphics2D g2d) {
