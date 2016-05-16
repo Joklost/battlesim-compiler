@@ -67,7 +67,7 @@ public class Force extends SimObj {
     public void move(Coord target, double velocity){
         for(Platoon p : Platoons)
             p.setVelocity(velocity);
-        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(getCoordList()), target));
+        setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(getAliveSoldiersCoords()), target));
     }
 
     public void setDirection(Vector direction){
@@ -82,13 +82,20 @@ public class Force extends SimObj {
         return res;
     }
 
+    public List<Coord> getAliveSoldiersCoords(){
+        List<Coord> res = new ArrayList<>();
+        for(Platoon p : Platoons)
+            res.addAll(p.getAliveSoldiersCoords());
+        return res;
+    }
+
     public void stopMovement(){
         for(Platoon p: Platoons)
             p.stopMovement();
     }
 
     public Coord getPos(){
-        return DSTFunctions.centerOfMass(getCoordList());
+        return DSTFunctions.centerOfMass(getAliveSoldiersCoords());
     }
 
 }

@@ -18,12 +18,13 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private static final int TS_INIT = 10; //Initial timescale
     private static final int ALLY = 0;
     private static final int ENEMY = 1;
-    private int MapWidth = 300;
+    private int mapWidth = 300;
     private int mapHeight = 200;
     private Timer timer;
     private boolean isStarted;
     private long Elapsedtime = 0;
     private long HRT = 0; //High Resolution Timer
+    private long frameNum = 0;
 
     public static double FRAMERATE = 33; //Update interval in milliseconds
     public double TIMESCALE = TS_INIT;
@@ -41,7 +42,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         Force2 = f2;
         force1Sim = f1Sim;
         force2Sim = f2Sim;
-        MapWidth = terrain.Width;
+        mapWidth = terrain.Width;
         mapHeight = terrain.Height;
         Barriers = bars;
         initEventListeners(Force1);
@@ -108,9 +109,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         Elapsedtime = actionEvent.getWhen() - HRT;
         HRT = actionEvent.getWhen();
         updateStates();
-        detectCollisions();
         performInstructions();
+        detectCollisions();
         repaint();
+        frameNum++;
     }
 
     private void performInstructions() {
@@ -131,7 +133,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                     for(Bullet b: Bullets){
                         if(b.Owner != s.Side){
                             Vector bulToSol = Vector.GetVectorByPoints(b.FirePos, s.GetPos());
-                            Vector projection = bulToSol.Dot(b.Vec.Normalize());
+                            Vector projection = b.Vec.Normalize();
+                            double projLength = bulToSol.dot(b.Vec.Normalize());
+                            projection.Scale(projLength);
                             Vector dist = Vector.GetVectorByPoints(new Coord(b.FirePos.X + projection.X, b.FirePos.Y + projection.Y), s.GetPos());
                             if(dist.GetLength() < s.Size){
                                 s.Kill();
@@ -139,9 +143,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                         }
 
                     }
-
-                    s.Pos.NewPos(s.Direction, s.Velocity, deltaT / 1000);
-                    s.serviceTimers(deltaT);
+                    if(!s.IsDead()){
+                        s.Pos.NewPos(s.Direction, s.Velocity, deltaT / 1000);
+                        s.serviceTimers(deltaT);
+                    }
                 }
             }
         }
@@ -160,6 +165,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
                     if(s.IsEnemyDetected && !s.Enemy.IsDead()){
+                        s.StopMovement();
                         s.TryShoot(s.Enemy.GetPos());
                     }
                 }
@@ -174,8 +180,15 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private void doDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawString(Long.toString(Elapsedtime), MapWidth - 50, 15); //Render ElapsedTime between frames
+        g2d.drawString(Long.toString(Elapsedtime), mapWidth - 50, 15); //Render ElapsedTime between frames
 
+        double scale = 1;
+        g2d.translate(mapWidth/2, mapHeight/2);
+        g2d.scale(scale, scale);
+        g2d.translate(-mapWidth/2, -mapHeight/2);
+        g2d.setPaint(Color.LIGHT_GRAY);
+        g2d.fillRect(0,0,mapWidth,mapHeight);
+        g2d.setPaint(Color.BLACK);
         renderForce(g2d, Force1);
         renderForce(g2d, Force2);
         renderBarriers(g2d);

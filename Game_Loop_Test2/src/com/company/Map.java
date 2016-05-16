@@ -30,6 +30,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private boolean isStarted;
     private long elapsedTime = 0;
     private long hrt = 0; //High Resolution Timer
+    private long frameNum = 0;
 
     public static double FRAMERATE = 33; //Update interval in milliseconds
     public double timeScale = TS_INIT;
@@ -113,9 +114,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         elapsedTime = actionEvent.getWhen() - hrt;
         hrt = actionEvent.getWhen();
         updateStates();
-        detectCollisions();
         performInstructions();
+        detectCollisions();
         repaint();
+        frameNum++;
     }
 
     private void performInstructions() {
@@ -135,7 +137,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                     for(Bullet b: bullets){
                         if(b.owner != s.side){
                             Vector bulToSol = Vector.getVectorByPoints(b.firePos, s.getPos());
-                            Vector projection = bulToSol.dot(b.vector.normalize());
+                            Vector projection = b.vector.normalize();
+                            double projLength = bulToSol.dot(b.vector.normalize());
+                            projection.scale(projLength);
                             Vector dist = Vector.getVectorByPoints(new Coord(b.firePos.x + projection.x, b.firePos.y + projection.y), s.getPos());
                             if(dist.getLength() < s.size){
                                 s.kill();
@@ -143,9 +147,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
                         }
 
                     }
-
-                    s.Pos.newPos(s.direction, s.Velocity, deltaT / 1000);
-                    s.serviceTimers(deltaT);
+                    if(!s.IsDead()){
+                        s.Pos.newPos(s.direction, s.Velocity, deltaT / 1000);
+                        s.serviceTimers(deltaT);
+                    }
                 }
             }
         }
@@ -164,6 +169,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
                     if(s.isEnemyDetected && !s.enemy.IsDead()){
+                        s.stopMovement();
                         s.TryShoot(s.enemy.getPos());
                     }
                 }
@@ -179,12 +185,17 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.drawString(Long.toString(elapsedTime), mapWidth - 50, 15); //Render ElapsedTime between frames
-
+        double scale = 1;
+        g2d.translate(mapWidth/2, mapHeight/2);
+        g2d.scale(scale, scale);
+        g2d.translate(-mapWidth/2, -mapHeight/2);
+        g2d.setPaint(Color.LIGHT_GRAY);
+        g2d.fillRect(0,0,mapWidth,mapHeight);
+        g2d.setPaint(Color.BLACK);
         renderForce(g2d, force1);
         renderForce(g2d, force2);
         renderBarriers(g2d);
         renderbullets(g2d);
-
     }
 
     private void renderbullets(Graphics2D g2d) {

@@ -122,7 +122,7 @@ Start         ::= TypeDcls:tl FunctionDcls:fds1 DclBlock:db SimBlock:s Program:p
               ;
 DclBlock      ::= MultEOL BEGIN DECLARATIONS Stmts:ss END DECLARATIONS MultEOL                          {: RESULT = new DclBlock(ss, ssleft); :}
               ;
-SimBlock      ::= DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS MultEOL             {: RESULT = new SimBlock(s, sleft); :}
+SimBlock      ::= BEGIN DECLARE SIMULATIONS Simulations:s END DECLARE SIMULATIONS MultEOL             {: RESULT = new SimBlock(s, sleft); :}
               ;
 Simulations   ::= Simulations:ss Simulation:s                                                   {: RESULT = ss; ss.addElement(s); :}
               |   MultEOL                                                                       {: RESULT = new SimulationList(0); :}

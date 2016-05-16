@@ -65,7 +65,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(SimBlock s){
-        println("Begin Simulations");
+        println("Declare Simulations");
         indentLevel++;
 
         for (int i = 0; i < s.simulationList.size(); i++){
@@ -73,7 +73,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         }
 
         indentLevel--;
-        println("End Simulations");
+        println("End Declare Simulations");
     }
 
     public void visit(SimStep s){
@@ -231,10 +231,9 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(ForStmt fs){
         printIndent();
-        fs.initialExpr.accept(this);
         print("For ");
+        fs.initialExpr.accept(this);
         fs.forIterator.accept(this);
-        print(" To ");
         fs.toExpr.accept(this);
         print(" Do\n");
 
@@ -336,7 +335,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
     public void visit(ReturnExpr r){
         printIndent();
-        print("Return");
+        print("Return ");
         r.returnVal.accept(this);
         print("\n");
     }
@@ -364,82 +363,106 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
 
 
     public void visit(PlusExpr pe){
+        print("(") ;
         pe.leftExpr.accept(this);
-        print("+");
+        print(" + ");
         pe.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(MinusExpr me){
+        print("(");
         me.leftExpr.accept(this);
-        print("-");
+        print(" - ");
         me.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(MultExpr me){
+        print("(");
         me.leftExpr.accept(this);
-        print("*");
+        print(" * ");
         me.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(DivExpr de){
+        print("(");
         de.leftExpr.accept(this);
-        print("/");
+        print(" / ");
         de.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(ModExpr me){
+        print("(");
         me.leftExpr.accept(this);
-        print("%");
+        print(" % ");
         me.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(AndExpr ae){
+        print("(");
         ae.leftExpr.accept(this);
-        print("AND");
+        print(" AND ");
         ae.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(OrExpr oe){
+        print("(");
         oe.leftExpr.accept(this);
-        print("OR");
+        print(" OR ");
         oe.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(LogicEqualsExpr le){
+        print("(");
         le.leftExpr.accept(this);
-        print("EQUALS");
+        print(" EQUALS ");
         le.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(LessThanExpr le){
+        print("(");
         le.leftExpr.accept(this);
-        print("<");
+        print(" < ");
         le.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(GreaterThanExpr ge){
+        print("(");
         ge.leftExpr.accept(this);
-        print(">");
+        print(" > ");
         ge.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(LessThanEqualsExpr le){
+        print("(");
         le.leftExpr.accept(this);
-        print("<=");
+        print(" <= ");
         le.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(GreaterThanEqualsExpr ge){
+        print("(");
         ge.leftExpr.accept(this);
-        print(">=");
+        print(" >= ");
         ge.rightExpr.accept(this);
+        print(")");
     }
 
     public void visit(NotExpr ne){
-        printIndent();
+        print("(");
         print("NOT ");
         ne.expression.accept(this);
-        print(" ");
+        print(")");
     }
 
     public void visit(UnMinusExpr ue){
@@ -458,21 +481,17 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(FunctionCallExpr fe){
-        printIndent();
+        //printIndent();
         fe.functionCall.accept(this);
-        print("");
     }
 
     public void visit(ObjectIdExpr ne){
-        printIndent();
+        //printIndent();
         ne.objectName.accept(this);
-        print(" ");
     }
 
     public void visit(StdLiteralExpr se){
-        printIndent();
         se.stdLiteral.accept(this);
-        print(" ");
     }
 
     public void visit(CoordExpr ce){

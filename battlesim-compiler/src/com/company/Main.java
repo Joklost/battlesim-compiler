@@ -3,6 +3,7 @@ package com.company;
 import com.company.AST.Nodes.Start;
 import com.company.AST.Nodes.TypeDeclaration;
 import com.company.AST.SymbolTable.SymbolTable;
+import com.company.AST.Visitor.PrettyPrintVisitor;
 import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
@@ -28,6 +29,7 @@ public class Main {
 
         boolean printCode = false;
         boolean generatedCode = true;
+        boolean deleteTmpFiles = true;
         String outputName = "Main";
 
 
@@ -59,6 +61,7 @@ public class Main {
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
             //paths.add("/home/pgug/Code/P4-Code/unittest/Test10_TestSwitch.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test14_TestTypes.bs");
+            //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test15_EngineStressTest.bs");
         }
 
         Preprocessor preprocessor = null;
@@ -112,7 +115,7 @@ public class Main {
 
 
         } catch (Exception e) {
-            if (preprocessor != null) {
+            if (preprocessor != null && deleteTmpFiles) {
                 preprocessor.removeOutFile();
             }
             e.printStackTrace();

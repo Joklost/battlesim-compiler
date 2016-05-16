@@ -24,11 +24,11 @@ public class Soldier extends SimObj {
     private boolean isDead = false;
     private List<FireBulletListener> listeners = new ArrayList<FireBulletListener>();
     //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
-    private double accuracy = 0.2;
+    private double accuracy = 0.02;
 
     public int side = 0;
     public final static double DEFAULTVELOCITY = 2.2; //meter per second
-    public double size = 0.25;            //Change this because this is a random number
+    public double size = 0.25;            //radius of a soldier
     public boolean isEnemyDetected = false;
     public int fov = 50;
     public int ammo = 30;
@@ -69,7 +69,7 @@ public class Soldier extends SimObj {
             isEnemyDetected = false;
             return false;
         }
-        if(enemy.IsDead() && Vector.getVectorByPoints(Pos, enemy.getPos()).getLength() < fov){
+        if(!enemy.IsDead() && Vector.getVectorByPoints(Pos, enemy.getPos()).getLength() < fov){
             return true;
         }
         else{
@@ -121,6 +121,7 @@ public class Soldier extends SimObj {
         isEnemyDetected = false;
         enemy = null;
         model = "x";
+        direction.scale(0);
         isDead = true;
     }
 }

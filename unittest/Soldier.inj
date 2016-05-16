@@ -1,12 +1,11 @@
 
-private boolean IsDead = false;
 private List<FireBulletListener> _listeners = new ArrayList<FireBulletListener>();
 //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
-private double accuracy = 0.2;
+private double accuracy = 0.02;
 
 public int Side = 0;
 public final static double DefaultVelocity = 2.2; //meter per second
-public double Size = 0.25;            //Change this because this is a random number
+public double Size = 0.25;            //radius of a soldier
 public boolean IsEnemyDetected = false;
 public int Fov = 50;
 public int Ammo = 30;
@@ -47,7 +46,7 @@ public boolean CanStillSeeEnemy(){
         IsEnemyDetected = false;
         return false;
     }
-    if(Enemy.IsDead() && Vector.GetVectorByPoints(Pos, Enemy.GetPos()).GetLength() < Fov){
+    if(!Enemy.IsDead() && Vector.GetVectorByPoints(Pos, Enemy.GetPos()).GetLength() < Fov){
         return true;
     }
     else{
@@ -94,14 +93,11 @@ public void serviceTimers(double deltaT){
     }
 }
 
-public boolean IsDead(){
-    return IsDead;
-}
-
 public void Kill(){
     StopMovement();
     IsEnemyDetected = false;
     Enemy = null;
     Model = "X";
-    IsDead = true;
+    Direction.Scale(0);
+    _IsDead = true;
 }

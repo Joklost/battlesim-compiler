@@ -193,6 +193,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         setEmitTarget(s.identifier.name);
         emitIndentation("package com.BattleSim;\n");
         emitIndentation("import java.util.HashMap;\n");
+        emitIndentation("import static com.BattleSim.Declarations.*;\n");
         emitIndentation("public class ");
         emit(s.identifier.name);
         emit(" extends Simulation {\n");
@@ -225,9 +226,17 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                             emit("\"), ");
                             funcCall.argumentList.elementAt(0).accept(this); //Seconds
                             emit("));\n");
+                        } else if(funcName.equals("MoveToCoord") && funcCall.argumentList.elementAt(0) instanceof ObjectIdExpr){
+                            emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
+                            emit(((ObjectReferencing) funcCall.objectName).objectName.name);
+                            emit("\"), ");
+                            funcCall.argumentList.elementAt(0).accept(this);
+                            emit("));\n");
                         }
                     }
-
+                }
+                else{
+                    //s.simStepList.elementAt(i).stmtList.elementAt(k).accept(this); // Det her virker nogenlunde, men er ikke brugbart
                 }
             }
         }
@@ -244,12 +253,12 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                     FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
                     if(funcCall.objectName instanceof ObjectReferencing){
                         String funcName = ((ObjectReferencing) funcCall.objectName).fieldName.name;
-                        if(funcName.equals("MoveToXY") || funcName.equals("Wait")){
+                        if(funcName.equals("MoveToXY") || funcName.equals("Wait") || funcName.equals("MoveToCoord")){
                             emitIndentation("Steps.get(" + j + ").RunIfCanStart(deltaT);\n");
+                            j++;
                         }
                     }
                 }
-                j++;
             }
         }
 

@@ -1,0 +1,87 @@
+#Include("stdlib.bsi")
+
+Begin Declarations
+  //Declare Terrain
+  Declare terrain as Terrain
+  terrain.Width = 1800
+  terrain.Height = 900
+
+  //Declare Barriers
+  Declare bar1vertex1 as Coord
+  bar1vertex1 = (30, 50)
+  Declare bar1vertex2 as Coord
+  bar1vertex2 = (50, 30)
+  Declare bar1vertex3 as Coord
+  bar1vertex3 = (100, 100)
+  Declare bar1vertex4 as Coord
+  bar1vertex4 = (300, 600)
+  Declare bar1 as Barrier
+  bar1.AddVertex(bar1vertex1)
+  bar1.AddVertex(bar1vertex2)
+  bar1.AddVertex(bar1vertex3)
+  bar1.AddVertex(bar1vertex4)
+
+  Declare bar2vertex1 as Coord
+  bar2vertex1 = (960, 800)
+  Declare bar2vertex2 as Coord
+  bar2vertex2 = (900, 840)
+  Declare bar2vertex3 as Coord
+  bar2vertex3 = (800, 890)
+  Declare bar2vertex4 as Coord
+  bar2vertex4 = (950, 800)
+  Declare bar2 as Barrier
+  bar2.AddVertex(bar2vertex1)
+  bar2.AddVertex(bar2vertex2)
+  bar2.AddVertex(bar2vertex3)
+  bar2.AddVertex(bar2vertex4)
+
+  //Declare Allies
+  Declare aGroup as Group
+  Declare i as Integer
+  Declare j as Integer
+  i = 0
+  j = 100
+  For i To 100 Do
+    Declare aSol as Soldier
+    aSol.Pos = (j, 100)
+    aGroup.AddSoldier(aSol)
+    j += 5
+  End For
+
+  Declare allies as Force
+  allies.AddGroup(aGroup)
+
+  //Declare Enemies
+  Declare eGroup as Group
+  i = 0
+  j = 100
+  For i To 100 Do
+    Declare eSol as Soldier
+    eSol.Pos = (j, 800)
+    eGroup.AddSoldier(eSol)
+    j += 5
+  End For
+
+
+  Declare enemies as Force
+  enemies.AddGroup(eGroup)
+
+End Declarations
+
+Begin Declare Simulations
+  Simulation AlliesSim allies
+    Step 1
+      aGroup.MoveToXY(600, 250)
+    Interrupts
+  End Simulation
+
+  Simulation EnemiesSim enemies
+    Step 1
+      eGroup.MoveToXY(600, 250)
+    Interrupts
+  End Simulation
+End Declare Simulations
+
+Begin Program
+  RunSimulation(allies, enemies, terrain, "AlliesSim", "EnemiesSim")
+End Program

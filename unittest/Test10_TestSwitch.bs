@@ -19,7 +19,7 @@ Begin Declarations
     Declare n as Integer
 End Declarations
 
-Declare Simulations
+Begin Declare Simulations
 End Declare Simulations
 
 Begin Program
