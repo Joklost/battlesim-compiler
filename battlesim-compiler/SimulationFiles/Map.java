@@ -18,40 +18,45 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private static final int TS_INIT = 10; //Initial timescale
     private static final int ALLY = 0;
     private static final int ENEMY = 1;
+    private static String ALLYSTRING = "A";
+    private static String ENEMYSTRING = "E";
+
+
     private int mapWidth = 300;
     private int mapHeight = 200;
     private Timer timer;
     private boolean isStarted;
-    private long Elapsedtime = 0;
+    private long elapsedTime = 0;
     private long HRT = 0; //High Resolution Timer
     private long frameNum = 0;
 
-    public static double FRAMERATE = 33; //Update interval in milliseconds
-    public double TIMESCALE = TS_INIT;
-    public double deltaT = FRAMERATE * TIMESCALE; //deltaT is in milliseconds
+    public static int FRAMEINTERVAL = 33; //Update interval in milliseconds
+
+    public double timeScale = TS_INIT;
+    public double deltaT = FRAMEINTERVAL * timeScale; //deltaT is in milliseconds
     public ArrayList<Step> Steps = new ArrayList<Step>();
-    public Force Force1 = new Force();
-    public Force Force2 = new Force();
+    public Force force1 = new Force();
+    public Force force2 = new Force();
     public Simulation force1Sim;
     public Simulation force2Sim;
     public ArrayList<Barrier> Barriers;
     public ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
 
     public Map(Force f1, Force f2, Terrain terrain, ArrayList<Barrier> bars, Simulation f1Sim, Simulation f2Sim){
-        Force1 = f1;
-        Force2 = f2;
+        force1 = f1;
+        force2 = f2;
         force1Sim = f1Sim;
         force2Sim = f2Sim;
         mapWidth = terrain.Width;
         mapHeight = terrain.Height;
         Barriers = bars;
-        initEventListeners(Force1);
-        initEventListeners(Force2);
-        initSide(Force1, ALLY);
-        initSide(Force2, ENEMY);
+        initEventListeners(force1);
+        initEventListeners(force2);
+        initSide(force1, ALLY);
+        initSide(force2, ENEMY);
         initSlider();
-        initModels(Force1, "A");
-        initModels(Force2, "E");
+        initModels(force1, ALLYSTRING);
+        initModels(force2, ENEMYSTRING);
         initMap();
     }
 
@@ -101,12 +106,12 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
 
     private void initMap() {
         setFocusable(true);
-        timer = new Timer((int)FRAMERATE, this);
+        timer = new Timer(FRAMEINTERVAL, this);
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        Elapsedtime = actionEvent.getWhen() - HRT;
+        elapsedTime = actionEvent.getWhen() - HRT;
         HRT = actionEvent.getWhen();
         updateStates();
         performInstructions();
@@ -122,8 +127,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void updateStates() {
-        updateForceStates(Force1);
-        updateForceStates(Force2);
+        updateForceStates(force1);
+        updateForceStates(force2);
     }
 
     private void updateForceStates(Force force){
@@ -153,11 +158,11 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void detectCollisions() {
-        CollisionDetector.VisualDetect(Force1, Force2);
+        CollisionDetector.VisualDetect(force1, force2);
         ////Fire bullets
         Bullets.clear();
-        fireBullets(Force1);
-        fireBullets(Force2);
+        fireBullets(force1);
+        fireBullets(force2);
     }
 
     private void fireBullets(Force force){
@@ -180,8 +185,6 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private void doDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawString(Long.toString(Elapsedtime), mapWidth - 50, 15); //Render ElapsedTime between frames
-
         double scale = 1;
         g2d.translate(mapWidth/2, mapHeight/2);
         g2d.scale(scale, scale);
@@ -189,8 +192,12 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         g2d.setPaint(Color.LIGHT_GRAY);
         g2d.fillRect(0,0,mapWidth,mapHeight);
         g2d.setPaint(Color.BLACK);
-        renderForce(g2d, Force1);
-        renderForce(g2d, Force2);
+        g2d.drawString("Frame interval: " + Long.toString(elapsedTime) + "ms", mapWidth - 250, 15);//Render elapsedTime between frames
+        g2d.drawString("Simulation time frame interval: " + deltaT + "ms", mapWidth - 250, 25);
+        g2d.drawString("FPS: " + (int)(1/ (((float) elapsedTime) / 1000)), mapWidth - 250, 35);
+
+        renderForce(g2d, force1);
+        renderForce(g2d, force2);
         renderBarriers(g2d);
         renderBullets(g2d);
 
@@ -244,7 +251,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         JSlider source = (JSlider)e.getSource();
         if (!source.getValueIsAdjusting()) {
             int ts = (int)source.getValue();
-            deltaT = FRAMERATE  * ts;
+            deltaT = FRAMEINTERVAL  * ts;
         }
     }
 }
