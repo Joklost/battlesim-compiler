@@ -33,9 +33,9 @@ public class TypeVisitor extends TopDeclVisitor {
                         id.type = errorType;
                         id.def = null;
                     } else {
-                        t.typeDescriptor.fields.enterSymbol(id.name, def);
                         id.type = def.type;
                         id.def = def;
+                        t.typeDescriptor.fields.enterSymbol(id.name, def);
                     }
                 }
             }
