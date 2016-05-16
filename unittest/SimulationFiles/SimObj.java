@@ -31,7 +31,7 @@ public abstract class SimObj {
 
     public abstract void StopMovement();
 
-    public abstract void Move(Coord coord);
+    public abstract void move(Coord coord);
 
     public abstract Coord GetPos();
 
