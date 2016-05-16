@@ -193,7 +193,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         g2d.setPaint(Color.LIGHT_GRAY);
         g2d.fillRect(0,0,mapWidth,mapHeight);
         g2d.setPaint(Color.BLACK);
-        g2d.drawString(Long.toString(elapsedTime), mapWidth - 50, 15); //Render ElapsedTime between frames
+        g2d.drawString("Frame interval: " + Long.toString(elapsedTime) + "ms", mapWidth - 250, 15);//Render ElapsedTime between frames
+        g2d.drawString("Simulation time frame interval: " + deltaT + "ms", mapWidth - 250, 25);
+        g2d.drawString("FPS: " + (int)(1/ (((float) elapsedTime) / 1000)), mapWidth - 250, 35);
         renderForce(g2d, force1);
         renderForce(g2d, force2);
         renderBarriers(g2d);
