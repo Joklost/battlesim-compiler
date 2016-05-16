@@ -24,6 +24,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private static final int TS_INIT = 10; //Initial timescale
     private static final int ALLY = 0;
     private static final int ENEMY = 1;
+    private static String ALLYSTRING = "A";
+    private static String ENEMYSTRING = "E";
     private int mapWidth = 300;
     private int mapHeight = 200;
     private Timer timer;
@@ -32,9 +34,9 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private long hrt = 0; //High Resolution Timer
     private long frameNum = 0;
 
-    public static double FRAMERATE = 33; //Update interval in milliseconds
+    public static int FRAMEINTERVAL = 33; //Update interval in milliseconds
     public double timeScale = TS_INIT;
-    public double deltaT = FRAMERATE * timeScale; //deltaT is in milliseconds
+    public double deltaT = FRAMEINTERVAL * timeScale; //deltaT is in milliseconds
     public Simulation force1Sim;
     public Simulation force2Sim;
     public Force force1 = new Force();
@@ -55,8 +57,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         initSide(force1, ALLY);
         initSide(force2, ENEMY);
         initSlider();
-        initModels(force1, "A");
-        initModels(force2, "E");
+        initModels(force1, ALLYSTRING);
+        initModels(force2, ENEMYSTRING);
         initMap();
     }
 
@@ -106,7 +108,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
 
     private void initMap() {
         setFocusable(true);
-        timer = new Timer((int)FRAMERATE, this);
+        timer = new Timer(FRAMEINTERVAL, this);
     }
 
     @Override
@@ -184,7 +186,6 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private void doDrawing(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawString(Long.toString(elapsedTime), mapWidth - 50, 15); //Render ElapsedTime between frames
         double scale = 1;
         g2d.translate(mapWidth/2, mapHeight/2);
         g2d.scale(scale, scale);
@@ -192,6 +193,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         g2d.setPaint(Color.LIGHT_GRAY);
         g2d.fillRect(0,0,mapWidth,mapHeight);
         g2d.setPaint(Color.BLACK);
+        g2d.drawString(Long.toString(elapsedTime), mapWidth - 50, 15); //Render ElapsedTime between frames
         renderForce(g2d, force1);
         renderForce(g2d, force2);
         renderBarriers(g2d);
@@ -242,7 +244,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         JSlider source = (JSlider)e.getSource();
         if (!source.getValueIsAdjusting()) {
             int ts = (int)source.getValue();
-            deltaT = FRAMERATE  * ts;
+            deltaT = FRAMEINTERVAL  * ts;
         }
     }
 
