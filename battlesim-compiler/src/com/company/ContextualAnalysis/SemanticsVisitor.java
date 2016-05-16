@@ -124,7 +124,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     public void visit(Assignment as) {
         LHSSemanticsVisitor lhsSemanticsVisitor = new LHSSemanticsVisitor();
         as.targetName.accept(lhsSemanticsVisitor);
-        as.expression.accept(this); // (10, 30)
+        as.expression.accept(this);
 
         if (assignable(as.targetName.type, as.expression.type)) {
             as.type = as.targetName.type;
@@ -521,13 +521,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             f.argumentList.elementAt(i).accept(this);
             argTypeList[i] = f.argumentList.elementAt(i).type;
         }
-/*      // er ikke en god løsning, da det er selve argumentList der skal vendes om..
-        for (int i = 0; i < argTypeList.length / 2; i++) {
-            int temp = argTypeList[i];
-            argTypeList[i] = argTypeList[argTypeList.length - i - 1];
-            argTypeList[argTypeList.length - i - 1] = temp;
-        }
-*/
 
         if (f.objectName.type == errorType) {
             error(f.getLineNumber(), "Function " + f.objectName.name + " has not been declared.");
@@ -664,7 +657,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(CustomTypeIdentifier o) {
-        //o.name.accept(this);
         o.type = objectType;
     }
 
@@ -750,7 +742,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                     if (tDef == null) {
                         tDef = Main.symbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
                     }
-                    // Soldier.pos type = def.type
+
                     if (tDef instanceof TypeDeclaration) {
                         SymbolTable st = ((TypeDeclaration) tDef).typeDescriptor.fields;
                         ASTNode def = st.retrieveSymbol(o.fieldName.name);

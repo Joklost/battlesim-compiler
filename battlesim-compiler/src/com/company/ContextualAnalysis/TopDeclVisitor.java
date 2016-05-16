@@ -17,8 +17,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
     public void visit(Dcl d) {
         TypeVisitor typeVisitor = new TypeVisitor();
-        d.typeName.accept(typeVisitor);     // sætter d.typename.type
-        // s. 311 i bogen: ArrayDefining foregår i typeVisitor
+        d.typeName.accept(typeVisitor);
 
         for (int i = 0; i < d.dclIdList.size(); i++) {
             String id = d.dclIdList.elementAt(i).name;
@@ -28,14 +27,10 @@ public class TopDeclVisitor extends SemanticsVisitor {
                 d.dclIdList.elementAt(i).def = null;
             } else {
                 d.dclIdList.elementAt(i).type = d.typeName.type;
-                TypeIdentifier def = d.typeName;
-                def.type = d.typeName.type;
-                d.dclIdList.elementAt(i).def = def;
-                //System.out.println(id);
-                Main.currentSymbolTable.enterSymbol(id, def);
+                d.dclIdList.elementAt(i).def = d.typeName;
+                Main.currentSymbolTable.enterSymbol(id, d.typeName);
             }
         }
-
     }
 
 

@@ -14,20 +14,9 @@ public class TypeConsts {
     public static final int voidType = 4;
     public static final int nullType = 5;
     public static final int decimalType = 6;
-    public static final int objectTypeDescriptor = 7;
-    public static final int arrayTypeDescriptor = 8;
     public static final int functionType = 9;
     public static final int simulationType = 10;
     public static final int simulationStepType = 11;
-    /*
-    public static final int groupType = 12;
-    public static final int platoonType = 13;
-    public static final int forceType = 14;
-    public static final int soldierType = 16;
-    public static final int barrierType = 17;
-    public static final int vectorType = 18;
-    public static final int terrainType = 19;
-    */
     public static final int coordType = 15;
     public static final int objectType = 19;
     public static final int listType = 20;
@@ -83,26 +72,14 @@ public class TypeConsts {
         typeNames.put(voidType, "Void");
         typeNames.put(nullType, "NULL");
         typeNames.put(decimalType, "Decimal");
-        typeNames.put(objectTypeDescriptor, "Object");
-        typeNames.put(arrayTypeDescriptor, "Array");
         typeNames.put(functionType, "Function");
         typeNames.put(simulationType, "Simulation");
         typeNames.put(simulationStepType, "Simulation Step");
-        /*
-        typeNames.put(groupType, "Group");
-        typeNames.put(platoonType, "Platoon");
-        typeNames.put(forceType, "Force");
-        typeNames.put(soldierType, "Soldier");
-        typeNames.put(barrierType, "Barrier");
-        typeNames.put(vectorType, "Vector");
-        typeNames.put(terrainType, "Terrain");
-        */
         typeNames.put(coordType, "Coord");
         typeNames.put(objectType, "Object");
         typeNames.put(listType, "List");
         typeNames.put(array1DType, "1D Array");
         typeNames.put(array2DType, "2D Array");
-
 
         typeNames.put(coordOperator, "( , )");
         typeNames.put(plusOperator, "+");
