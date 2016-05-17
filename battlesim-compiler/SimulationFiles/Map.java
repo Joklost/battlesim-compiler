@@ -129,25 +129,16 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private void updateStates() {
         updateForceStates(force1);
         updateForceStates(force2);
+        ////Fire bullets
+        Bullets.clear();
+        fireBullets(force1);
+        fireBullets(force2);
     }
 
     private void updateForceStates(Force force){
         for(Platoon p: force.Platoons){
             for(Group ga: p.Groups){
                 for(Soldier s: ga.Soldiers){
-                    for(Bullet b: Bullets){
-                        if(b.Owner != s.Side){
-                            Vector bulToSol = Vector.GetVectorByPoints(b.FirePos, s.GetPos());
-                            Vector projection = b.Vec.Normalize();
-                            double projLength = bulToSol.dot(b.Vec.Normalize());
-                            projection.Scale(projLength);
-                            Vector dist = Vector.GetVectorByPoints(new Coord(b.FirePos.X + projection.X, b.FirePos.Y + projection.Y), s.GetPos());
-                            if(dist.GetLength() < s.Size){
-                                s.Kill();
-                            }
-                        }
-
-                    }
                     if(!s.IsDead()){
                         s.Pos.NewPos(s.Direction, s.Velocity, deltaT / 1000);
                         s.serviceTimers(deltaT);
@@ -158,11 +149,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void detectCollisions() {
-        CollisionDetector.VisualDetect(force1, force2);
-        ////Fire bullets
-        Bullets.clear();
-        fireBullets(force1);
-        fireBullets(force2);
+        CollisionDetector.VisualDetect(force1, force2, Bullets);
     }
 
     private void fireBullets(Force force){
@@ -192,9 +179,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         g2d.setPaint(Color.LIGHT_GRAY);
         g2d.fillRect(0,0,mapWidth,mapHeight);
         g2d.setPaint(Color.BLACK);
-        g2d.drawString("Frame interval: " + Long.toString(elapsedTime) + "ms", mapWidth - 250, 15);//Render elapsedTime between frames
+        g2d.drawString("Frame interval: " + elapsedTime + "ms", mapWidth - 250, 15);//Render ElapsedTime between frames
         g2d.drawString("Simulation time frame interval: " + deltaT + "ms", mapWidth - 250, 25);
         g2d.drawString("FPS: " + (int)(1/ (((float) elapsedTime) / 1000)), mapWidth - 250, 35);
+        g2d.drawString("Frame number: " + frameNum, mapWidth - 250, 45);
 
         renderForce(g2d, force1);
         renderForce(g2d, force2);
