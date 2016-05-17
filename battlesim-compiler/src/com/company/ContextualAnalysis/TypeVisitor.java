@@ -73,8 +73,8 @@ public class TypeVisitor extends TopDeclVisitor {
 
                 t.typeDescriptor.fields.closeScope();
 
-                boolean containsReturnStmt = false;
                 if (curFuncDcl.returnType.type != voidType && curFuncDcl.type != errorType) {
+                    boolean containsReturnStmt = false;
                     // checks if function has at least a "reachable" return statement
                     for (int k = 0; k < curFuncDcl.stmtList.size(); k++) {
                         if (curFuncDcl.stmtList.elementAt(k) instanceof ReturnExpr) {
