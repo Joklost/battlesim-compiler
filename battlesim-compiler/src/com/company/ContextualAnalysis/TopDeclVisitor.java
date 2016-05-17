@@ -16,8 +16,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
     }
 
     public void visit(Dcl d) {
-        TypeVisitor typeVisitor = new TypeVisitor();
-        d.typeName.accept(typeVisitor);
+        d.typeName.accept(new TypeVisitor());
 
         for (int i = 0; i < d.dclIdList.size(); i++) {
             String id = d.dclIdList.elementAt(i).name;
@@ -36,8 +35,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
     // Tror den er crisp - jkj
     public void visit(FunctionDcl f) {
-        TypeVisitor typeVisitor = new TypeVisitor();
-        f.returnType.accept(typeVisitor);
+        f.returnType.accept(new TypeVisitor());
 
         if (Main.currentSymbolTable.declaredLocally(f.functionName.name)) {
             errorDeclaredLocally(f.getLineNumber(), f.functionName.name);
@@ -64,17 +62,18 @@ public class TopDeclVisitor extends SemanticsVisitor {
 
         Main.currentSymbolTable.closeScope();
 
-        boolean containsReturnExpr = false;
         if (f.returnType.type != voidType && f.returnType.type != errorType) {
+            boolean containsReturnExpr = false;
+            // checks if function has at least a "reachable" return statement
             for (int i = 0; i < f.stmtList.size(); i++) {
                 if (f.stmtList.elementAt(i) instanceof ReturnExpr) {
                     containsReturnExpr = true;
                 }
-
             }
 
             if (!containsReturnExpr) {
-                error(f.getLineNumber(), "Function " + f.functionName.name + " must return a value.");
+                error(f.getLineNumber(),
+                        "Function " + f.functionName.name + " must return a value.");
                 f.type = errorType;
             }
         }
