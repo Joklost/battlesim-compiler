@@ -130,25 +130,16 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     private void updateStates() {
         updateForceStates(force1);
         updateForceStates(force2);
+        ////Fire bullets
+        bullets.clear();
+        firebullets(force1);
+        firebullets(force2);
     }
 
     private void updateForceStates(Force force){
         for(Platoon p: force.Platoons){
             for(Group ga: p.Groups){
                 for(Soldier s: ga.Soldiers){
-                    for(Bullet b: bullets){
-                        if(b.owner != s.side){
-                            Vector bulToSol = Vector.getVectorByPoints(b.firePos, s.getPos());
-                            Vector projection = b.vector.normalize();
-                            double projLength = bulToSol.dot(b.vector.normalize());
-                            projection.scale(projLength);
-                            Vector dist = Vector.getVectorByPoints(new Coord(b.firePos.x + projection.x, b.firePos.y + projection.y), s.getPos());
-                            if(dist.getLength() < s.size){
-                                s.kill();
-                            }
-                        }
-
-                    }
                     if(!s.IsDead()){
                         s.Pos.newPos(s.direction, s.Velocity, deltaT / 1000);
                         s.serviceTimers(deltaT);
@@ -159,11 +150,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void detectCollisions() {
-        CollisionDetector.visualDetect(force1, force2);
-        ////Fire bullets
-        bullets.clear();
-        firebullets(force1);
-        firebullets(force2);
+        CollisionDetector.detectAllCollisions(force1, force2, bullets);
     }
 
     private void firebullets(Force force){
@@ -193,9 +180,10 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
         g2d.setPaint(Color.LIGHT_GRAY);
         g2d.fillRect(0,0,mapWidth,mapHeight);
         g2d.setPaint(Color.BLACK);
-        g2d.drawString("Frame interval: " + Long.toString(elapsedTime) + "ms", mapWidth - 250, 15);//Render ElapsedTime between frames
+        g2d.drawString("Frame interval: " + elapsedTime + "ms", mapWidth - 250, 15);//Render ElapsedTime between frames
         g2d.drawString("Simulation time frame interval: " + deltaT + "ms", mapWidth - 250, 25);
         g2d.drawString("FPS: " + (int)(1/ (((float) elapsedTime) / 1000)), mapWidth - 250, 35);
+        g2d.drawString("Frame number: " + frameNum, mapWidth - 250, 45);
         renderForce(g2d, force1);
         renderForce(g2d, force2);
         renderBarriers(g2d);
