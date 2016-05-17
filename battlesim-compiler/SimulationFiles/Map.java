@@ -149,7 +149,7 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void detectCollisions() {
-        CollisionDetector.VisualDetect(force1, force2, Bullets);
+        CollisionDetector.detectAllCollisions(force1, force2, Bullets);
     }
 
     private void fireBullets(Force force){

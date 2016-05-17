@@ -6,7 +6,7 @@ import java.util.List;
  */
 public class CollisionDetector {
 
-    public static void VisualDetect(Force allies, Force enemies, List<Bullet> bullets){
+    public static void detectAllCollisions(Force allies, Force enemies, List<Bullet> bullets){
         for(Platoon p: allies.Platoons){
             for(Group g: p.Groups){
                 for(Soldier s: g.Soldiers){
