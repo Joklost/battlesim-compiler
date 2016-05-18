@@ -1,0 +1,54 @@
+Simulation protectTheGeneral allies
+  Step 1
+    Move(300, 250)
+  Step 2
+    //Group 1 and 2 starts moving to flanking positions
+    aGroup1.Move(600,300)
+    aGroup2.Move(600,200)
+  Step 3
+    aGroup1.MoveAndDetect(600,250)
+    aGroup2.MoveAndDetect(600,250)
+    general.WaitFor(aGroup1.Step3 AND aGroup2.Step3)
+  Step 4
+    If NOT aGroup1.IsDead AND NOT aGroup2.IsDead Then
+      general.Move(600,250)
+    Else
+      general.Move(Base)
+    End If
+
+  Interrupts
+    If NOT IsInCombat() AND IsGettingShot() Then
+      StopMovement()
+      DetectEnemies(120)
+    End If
+
+    If IsEnemyDetected() Then
+      StopMovement()
+      Engage()
+    End If
+End Simulation
+
+Simulation defend enemies
+  Step 1
+    Move(950,250)
+  Step 2
+    Move(600,250)
+  Step 3
+    DetectEnemies(30 * 60)
+
+  Interrupts
+    If NOT IsInCombat() AND IsGettingShot() Then
+      StopMovement()
+      DetectEnemies(120)
+    End If
+
+    If IsEnemyDetected() Then
+      StopMovement()
+      Engage()
+    End If
+End Simulation
+
+Begin Program
+  RunSimulation(protectTheGeneral, defend);
+  Render(protectTheGeneral, defend);
+End Program

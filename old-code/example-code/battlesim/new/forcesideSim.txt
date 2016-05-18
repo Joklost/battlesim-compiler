@@ -1,0 +1,73 @@
+Simulation protectTheGeneral allies
+  Step 1
+    allies.Move(30,250)
+  Step 2
+    allies.Move(250,250)
+  Step 3
+    //Group 1 and 3 starts moving to flanking positions
+    general.Move(300,250)
+    aGroup1.Move(550,400)
+    aGroup3.Move(550,100)
+  Step 4
+    aGroup1.Move(600,400)
+    aGroup3.Move(600,100)
+  Step 5
+    aGroup1.Move(600,300)
+    aGroup3.Move(600,200)
+  Step 6
+    aGroup1.MoveAndDetect(600,250)
+    //Move to location while detection range is increased (velocity should be decreased)
+    aGroup3.MoveAndDetect(600,250)
+    general.Wait(aGroup1.Step6 AND aGroup3.Step6)
+  Step 7
+    If NOT aGroup1.IsDead AND NOT aGroup3.IsDead Then
+      general.Move(600,250)
+    Else
+      general.Move(Base)
+    End If
+
+  Interrupts
+    If NOT allies.IsInCombat() AND allies.IsGettingShot() Then
+      allies.StopMovement()
+      allies.DetectEnemies(120)
+    End If
+
+    If allies.IsEnemyDetected() Then
+      allies.StopMovement()
+      allies.Engage(allies.enemy)
+    End If
+End protectTheGeneral allies
+
+
+Simulation protectTheGeneral2 allies
+
+End protectTheGeneral2 allies
+
+
+Simulation defend enemies
+  Step 1
+    enemies.Move(950,250)
+  Step 2
+    enemies.Move(600,250)
+  Step 3
+    enemies.DetectEnemies(30 * 60)
+
+  Interrupts
+    If NOT enemies.IsInCombat() AND enemies.IsGettingShot() Then
+      enemies.StopMovement()
+      enemies.DetectEnemies(120)
+    End If
+
+    If enemies.IsEnemyDetected() Then
+      enemies.StopMovement()
+      enemies.Engage(enemies.enemy)
+    End If
+Simulation protectTheGeneral enemies
+
+Begin Program
+  RunSimulation(protectTheGeneral, defend);
+  RunSimulation(protectTheGeneral2, defend);
+
+  Render(protectTheGeneral, defend);
+
+End Program
