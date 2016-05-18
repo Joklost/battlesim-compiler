@@ -32,11 +32,11 @@ public class LHSSemanticsVisitor extends SemanticsVisitor {
     }
 
     public void visit(Identifier id) {
-        SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
-        id.accept(semanticsVisitor);
+        id.accept(new SemanticsVisitor());
 
         if (!isAssignable(id.def)) {
-            error(id.getLineNumber(), id.name + " is not assignable. Type: " + getTypeName(id.type));
+            error(id.getLineNumber(),
+                    id.name + " is not assignable. Type: " + getTypeName(id.type));
             id.type = errorType;
             id.def = null;
         }

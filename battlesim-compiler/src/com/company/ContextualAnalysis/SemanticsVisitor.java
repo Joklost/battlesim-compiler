@@ -122,17 +122,17 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Assignment as) {
-        LHSSemanticsVisitor lhsSemanticsVisitor = new LHSSemanticsVisitor();
-        as.targetName.accept(lhsSemanticsVisitor);
+        as.targetName.accept(new LHSSemanticsVisitor());
         as.expression.accept(this);
 
         if (assignable(as.targetName.type, as.expression.type)) {
             as.type = as.targetName.type;
         } else {
-            error(as.getLineNumber(), "Unable to assign " + getTypeName(as.expression.type) + " to " + getTypeName(as.targetName.type) + ".");
+            error(as.getLineNumber(),
+                    "Unable to assign " + getTypeName(as.expression.type) +
+                            " to " + getTypeName(as.targetName.type) + ".");
             as.type = errorType;
         }
-
     }
 
     public void visit(WhileStmt ws) {
@@ -717,11 +717,11 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             }
         }
         if (a.firstIndexExpr.type != errorType && a.firstIndexExpr.type != integerType) {
-            error(a.getLineNumber(), "First index expression is not an integer. ArrayName: " + a.arrayName.name);
+            error(a.getLineNumber(), "First size expression is not an integer. ArrayName: " + a.arrayName.name);
         }
 
         if (a.secondIndexExpr.type != errorType && a.secondIndexExpr.type != integerType) {
-            error(a.getLineNumber(), "Second index expression is not an integer. ArrayName: " + a.arrayName.name);
+            error(a.getLineNumber(), "Second size expression is not an integer. ArrayName: " + a.arrayName.name);
         }
     }
 
@@ -773,13 +773,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         id.def = null;
         ASTNode newDef = Main.currentSymbolTable.retrieveSymbol(id.name);
         if (newDef == null) {
-
             errorNoDeclaration(id.getLineNumber(), id.name);
         } else {
-
             id.def = newDef;
             id.type = newDef.type;
-
         }
     }
 
