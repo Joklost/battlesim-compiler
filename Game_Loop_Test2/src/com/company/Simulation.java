@@ -15,7 +15,7 @@ public abstract class Simulation {
     public HashMap<String, SimObj> simObjMap = new HashMap<String, SimObj>();
 
     public Simulation(HashMap<String, SimObj> simObjMap){
-        simObjMap = simObjMap;
+        this.simObjMap = simObjMap;
     }
 
     public abstract void run(double deltaT);

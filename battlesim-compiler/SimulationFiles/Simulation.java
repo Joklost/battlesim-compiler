@@ -12,7 +12,7 @@ public abstract class Simulation {
     public HashMap<String, SimObj> SimObjMap = new HashMap<String, SimObj>();
 
     public Simulation(HashMap<String, SimObj> simObjMap){
-        SimObjMap = simObjMap;
+        this.SimObjMap = simObjMap;
     }
 
     public abstract void Run(double deltaT);
