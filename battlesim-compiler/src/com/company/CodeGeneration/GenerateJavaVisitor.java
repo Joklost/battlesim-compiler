@@ -402,15 +402,15 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             emit(" = new ");
             ((Array1D) ds.typeName).typeName.accept(this);
             emit("[");
-            ((Array1D) ds.typeName).index.accept(this);
+            ((Array1D) ds.typeName).size.accept(this);
             emit("]");
         } else if (ds.typeName instanceof Array2D) {
             emit(" = new ");
             ((Array2D) ds.typeName).typeName.accept(this);
             emit("[");
-            ((Array2D) ds.typeName).index1.accept(this);
+            ((Array2D) ds.typeName).size1.accept(this);
             emit("][");
-            ((Array2D) ds.typeName).index2.accept(this);
+            ((Array2D) ds.typeName).size2.accept(this);
             emit("]");
         } else if (ds.typeName instanceof BooleanT) {
             emit(" = false");

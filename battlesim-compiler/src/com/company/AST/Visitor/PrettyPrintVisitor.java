@@ -577,7 +577,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(Array1D a){
         a.typeName.accept(this);
         print("[");
-        a.index.accept(this);
+        a.size.accept(this);
         print("]");
     }
 
@@ -585,9 +585,9 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
         printIndent();
         a.typeName.accept(this);
         print("[");
-        a.index1.accept(this);
+        a.size1.accept(this);
         print("][");
-        a.index2.accept(this);
+        a.size2.accept(this);
         print("]");
     }
 
