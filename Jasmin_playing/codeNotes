@@ -1,5 +1,0 @@
-; int y = x + 5;
-  iload 1      ; push integer value held in local variable 1 onto stack
-  bipush 5     ; push constant integer 5 onto stack
-  iadd         ; add the two integers (the two fist on stack??)
-  istore 2     ; store the result in local variable 2
