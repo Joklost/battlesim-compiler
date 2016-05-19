@@ -34,7 +34,7 @@ public abstract class SimObj {
 
     public abstract void stopMovement();
 
-    public abstract void move(Coord coord);
+    public abstract void setVector(Coord coord);
 
     public abstract Coord getPos();
 

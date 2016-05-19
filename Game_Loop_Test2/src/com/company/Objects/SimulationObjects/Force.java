@@ -60,11 +60,11 @@ public class Force extends SimObj {
         super.release();
     }
 
-    public void move(Coord target){
-        move(target, Soldier.DEFAULTVELOCITY);
+    public void setVector(Coord target){
+        setVector(target, Soldier.DEFAULTVELOCITY);
     }
 
-    public void move(Coord target, double velocity){
+    public void setVector(Coord target, double velocity){
         for(Platoon p : Platoons)
             p.setVelocity(velocity);
         setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(getAliveSoldiersCoords()), target));

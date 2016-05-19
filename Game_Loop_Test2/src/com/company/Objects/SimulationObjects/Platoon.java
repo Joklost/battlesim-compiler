@@ -53,11 +53,11 @@ public class Platoon extends SimObj {
         super.release();
     }
 
-    public void move(Coord target){
-        move(target, Soldier.DEFAULTVELOCITY);
+    public void setVector(Coord target){
+        setVector(target, Soldier.DEFAULTVELOCITY);
     }
 
-    public void move(Coord target, double velocity){
+    public void setVector(Coord target, double velocity){
         for(Group g : Groups){
             g.setVelocity(velocity);
         }

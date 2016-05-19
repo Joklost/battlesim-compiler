@@ -13,7 +13,7 @@ public abstract class Step{
         this.object = object;
     }
 
-    //Hvis dette step ikke er færdig og objektet ikke bliver kontrolleret af andre end dette step selv så retuner true
+    //Hvis dette step ikke er færdig og objektet ikke bliver kontrolleret af andre end dette step selv så returner true
     public boolean canStart(){
         return !isDone && !object.IsDead() && (!object.isControlled() || object.getController().equals(this));
     }
