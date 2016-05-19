@@ -11,14 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.company.ContextualAnalysis.TypeConsts.*;
+import static com.company.ContextualAnalysis.HelperClasses.TypeConsts.*;
 
 /**
  * Created by joklost on 18-04-16.
  * assembly copy by pgug on 13-05-16
  */
 
-public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
+public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
     private Map<String, List<String>> codeMap;
     private List<String> mainCode;
     private List<String> declCode;
@@ -34,7 +34,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     private String emitTarget = "";
 
-    public GenerateJavaVisitor() {
+    public GenerateJasminVisitor() {
         codeMap = new HashMap<>();
         mainCode = new ArrayList<>();
         declCode = new ArrayList<>();

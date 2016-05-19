@@ -4,6 +4,7 @@ import com.company.AST.Nodes.Start;
 import com.company.AST.Nodes.TypeDeclaration;
 import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.PrettyPrintVisitor;
+import com.company.CodeGeneration.GenerateJasminVisitor;
 import com.company.CodeGeneration.GenerateJavaVisitor;
 import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
@@ -30,6 +31,7 @@ public class Main {
         boolean printCode = false;
         boolean generatedCode = true;
         boolean deleteTmpFiles = true;
+        boolean generateJasmin = false;
         String outputName = "Main";
 
 
@@ -42,8 +44,11 @@ public class Main {
                         break;
                     case "-o":
                         outputName = args[1 + readArgs];
-
                         break;
+                    case "-asm":
+                        printCode = true;
+                        generatedCode = false;
+                        generateJasmin = true;
                     default:
                         if (args[readArgs].contains(".bs")) {
                             File f = new File(System.getProperty("user.dir") + File.separator + args[readArgs]);
@@ -71,6 +76,7 @@ public class Main {
 
         SemanticsVisitor semanticsVisitor = new SemanticsVisitor();
         GenerateJavaVisitor generateJavaVisitor = new GenerateJavaVisitor();
+        GenerateJasminVisitor generateJasminVisitor = new GenerateJasminVisitor();
 
         try {
             for (String path : paths) {
@@ -84,26 +90,52 @@ public class Main {
 
                 startNode = (Start)parser.parse().value;
 
-                if (!parser.errorFound) {
-                    startNode.accept(semanticsVisitor);
-                    if (!errorFound) {
-                        startNode.accept(generateJavaVisitor);
-                        Map<String, List<String>> map = generateJavaVisitor.getCode();
-                        map.putAll(SimulationFileReader.getDST());
-                        if (printCode) {
-                            int ln = 1;
-                            for (String s : map.keySet()) {
-                                List<String> ls = map.get(s);
-                                for (String ss : ls) {
-                                    System.out.print(ss);
+                if(generateJasmin) {
+                    if (!parser.errorFound) {
+                        startNode.accept(semanticsVisitor);
+                        if (!errorFound) {
+                            startNode.accept(generateJasminVisitor);
+                            Map<String, List<String>> map = generateJasminVisitor.getCode();
+                            map.putAll(SimulationFileReader.getDST());
+                            if (printCode) {
+                                int ln = 1;
+                                for (String s : map.keySet()) {
+                                    List<String> ls = map.get(s);
+                                    for (String ss : ls) {
+                                        System.out.print(ss);
+                                    }
                                 }
                             }
+
+                            if (generatedCode) {
+
+                                CompileJava cj = new CompileJava(outputName, map);
+                                cj.compile();
+                            }
                         }
+                    }
+                } else {
+                    if (!parser.errorFound) {
+                        startNode.accept(semanticsVisitor);
+                        if (!errorFound) {
+                            startNode.accept(generateJavaVisitor);
+                            Map<String, List<String>> map = generateJavaVisitor.getCode();
+                            map.putAll(SimulationFileReader.getDST());
+                            if (printCode) {
+                                int ln = 1;
+                                for (String s : map.keySet()) {
+                                    List<String> ls = map.get(s);
+                                    for (String ss : ls) {
+                                        System.out.print(ss);
+                                    }
+                                }
+                            }
 
-                        if (generatedCode) {
+                            if (generatedCode) {
 
-                            CompileJava cj = new CompileJava(outputName, map);
-                            cj.compile();
+                                CompileJava cj = new CompileJava(outputName, map);
+                                cj.compile();
+                            }
                         }
                     }
                 }
