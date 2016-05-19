@@ -97,13 +97,12 @@ public class Main {
                             startNode.accept(generateJasminVisitor);
                             Map<String, List<String>> map = generateJasminVisitor.getCode();
                             map.putAll(SimulationFileReader.getDST());
-                            if (printCode) {
-                                int ln = 1;
-                                for (String s : map.keySet()) {
-                                    List<String> ls = map.get(s);
-                                    for (String ss : ls) {
-                                        System.out.print(ss);
-                                    }
+
+                            int ln = 1;
+                            for (String s : map.keySet()) {
+                                List<String> ls = map.get(s);
+                                for (String ss : ls) {
+                                    System.out.print(ss);
                                 }
                             }
                         }
