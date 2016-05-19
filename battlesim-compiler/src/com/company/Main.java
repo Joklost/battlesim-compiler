@@ -96,7 +96,6 @@ public class Main {
                         if (!errorFound) {
                             startNode.accept(generateJasminVisitor);
                             Map<String, List<String>> map = generateJasminVisitor.getCode();
-                            map.putAll(SimulationFileReader.getDST());
 
                             int ln = 1;
                             for (String s : map.keySet()) {
