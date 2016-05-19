@@ -4,6 +4,7 @@ import com.company.AST.Nodes.*;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
 import com.company.CodeGeneration.RegisterEntry;
+import com.company.ContextualAnalysis.HelperClasses.TypeConsts;
 import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
 import java.util.ArrayList;
@@ -236,7 +237,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
             if(reg.variableName.equals(as.targetName.name)) {
                 lastRegisterUsed = reg.register;
                 switch (as.type) {
-                    case 1:
+                    case TypeConsts.integerType:
                         if(as.expression instanceof PlusExpr || as.expression instanceof MinusExpr || as.expression instanceof DivExpr || as.expression instanceof ModExpr || as.expression instanceof PlusPlusExpr || as.expression instanceof MinusMinusExpr) {
                             as.expression.accept(this);
                         } else {
@@ -248,7 +249,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
                         }
                         emit("\n");
                         break;
-                    case 6:
+                    case TypeConsts.decimalType:
                         if(as.expression instanceof PlusExpr || as.expression instanceof MinusExpr || as.expression instanceof DivExpr || as.expression instanceof ModExpr  || as.expression instanceof PlusPlusExpr || as.expression instanceof MinusMinusExpr) {
                             as.expression.accept(this);
                             lastRegisterUsed = reg.register;
@@ -385,7 +386,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
 
     public void visit(PlusExpr pe) {
         switch (pe.leftExpr.type) {
-            case 1:
+            case TypeConsts.integerType:
                 emit("ldc ");
                 pe.leftExpr.accept(this);
                 emit("\n");
@@ -399,7 +400,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
                 emit("istore ");
                 emit(lastRegisterUsed + "\n");
                 break;
-            case 6:
+            case TypeConsts.decimalType:
                 emit("ldc2_w ");
                 pe.leftExpr.accept(this);
                 emit("\n");
@@ -418,7 +419,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
 
     public void visit(MinusExpr me) {
         switch (me.leftExpr.type) {
-            case 1:
+            case TypeConsts.integerType:
                 emit("ldc ");
                 me.leftExpr.accept(this);
                 emit("\n");
@@ -432,7 +433,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
                 emit("istore ");
                 emit(lastRegisterUsed + "\n");
                 break;
-            case 6:
+            case TypeConsts.decimalType:
                 emit("ldc2_w ");
                 me.leftExpr.accept(this);
                 emit("\n");
@@ -450,7 +451,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
 
     public void visit(MultExpr me) {
         switch (me.leftExpr.type) {
-            case 1:
+            case TypeConsts.integerType:
                 emit("ldc ");
                 me.leftExpr.accept(this);
                 emit("\n");
@@ -463,7 +464,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
                 emit("istore ");
                 emit(lastRegisterUsed + "\n");
                 break;
-            case 6:
+            case TypeConsts.decimalType:
                 emit("ldc2_w ");
                 me.leftExpr.accept(this);
                 emit("\n");
@@ -484,7 +485,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
 
     public void visit(DivExpr de) {
         switch (de.leftExpr.type) {
-            case 1:
+            case TypeConsts.integerType:
                 emit("ldc ");
                 de.leftExpr.accept(this);
                 emit("\n");
@@ -498,7 +499,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
                 emit("istore ");
                 emit(lastRegisterUsed + "\n");
                 break;
-            case 6:
+            case TypeConsts.decimalType:
                 emit("ldc2_w ");
                 de.leftExpr.accept(this);
                 emit("\n");
@@ -524,7 +525,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
     */
     public void visit(ModExpr me) {
         switch (me.leftExpr.type) {
-            case 1:
+            case TypeConsts.integerType:
                 emit("ldc ");
                 me.leftExpr.accept(this);
                 emit("\n");
@@ -538,7 +539,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
                 emit("istore ");
                 emit(lastRegisterUsed + "\n");
                 break;
-            case 6:
+            case TypeConsts.decimalType:
                 emit("ldc2_w ");
                 me.leftExpr.accept(this);
                 emit("\n");
@@ -612,7 +613,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
 
     public void visit(PlusPlusExpr pe) {
         switch (pe.expression.type) {
-            case 1:
+            case TypeConsts.integerType:
                 emit("ldc ");
                 pe.expression.accept(this);
                 emit("\n");
@@ -621,7 +622,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
                 emit("istore ");
                 emit(lastRegisterUsed+"\n");
                 break;
-            case 6:
+            case TypeConsts.decimalType:
                 emit("ldc2_w ");
                 pe.expression.accept(this);
                 emit("\n");
@@ -635,7 +636,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
 
     public void visit(MinusMinusExpr me) {
         switch (me.expression.type) {
-            case 1:
+            case TypeConsts.integerType:
                 emit("ldc ");
                 me.expression.accept(this);
                 emit("\n");
@@ -645,7 +646,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
                 emit("istore ");
                 emit(lastRegisterUsed + "\n");
                 break;
-            case 6:
+            case TypeConsts.decimalType:
                 emit("ldc2_w ");
                 me.expression.accept(this);
                 emit("\n");
@@ -744,19 +745,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ListOf l) {
-        emit("ArrayList<");
-        if (l.typeName.type == integerType) {
-            emit("Integer");
-        } else if (l.typeName.type == stringType) {
-            emit("String");
-        } else if (l.typeName.type == booleanType) {
-            emit("Boolean");
-        } else if (l.typeName.type == decimalType) {
-            emit("Double");
-        } else if (l.typeName instanceof CustomTypeIdentifier) {
-            emit(((CustomTypeIdentifier) l.typeName).name.name);
-        }
-        emit(">");
+        // TODO
     }
 
     public void visit(Decimal d) {
