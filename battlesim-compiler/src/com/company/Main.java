@@ -106,12 +106,6 @@ public class Main {
                                     }
                                 }
                             }
-
-                            if (generatedCode) {
-
-                                CompileJava cj = new CompileJava(outputName, map);
-                                cj.compile();
-                            }
                         }
                     }
                 } else {
