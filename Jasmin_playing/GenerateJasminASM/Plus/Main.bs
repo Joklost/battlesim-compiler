@@ -1,0 +1,56 @@
+
+Function Void UnimportantFunction(t as String)
+	%``.limit stack 2
+	%``getstatic java/lang/System/out Ljava/io/PrintStream;
+    %``ldc "I never prints"
+    %``invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    %``return
+End Function
+
+Begin Declarations
+End Declarations
+
+Declare Simulations
+End Declare Simulations
+
+Begin Program
+	Declare i as Integer
+	Declare d as Decimal
+
+	i = 42
+	i = 4 + 2
+
+	d = 4.2
+	d = 4.2 + 2.4
+
+	i = 4 - 1
+	d = 4.2 - 1.0
+
+	i = 4 % 1
+	i = 42 + 1
+
+	i = 5--
+
+	i = 2
+	d = 2.0
+
+	i = 41++
+
+	i = 5 + 2
+
+	For 1 To 10 Do
+		%``getstatic java/lang/System/out Ljava/io/PrintStream;
+	    %``ldc "Loop testes"
+	    %``invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    End For
+
+    For 10 DownTo 1 Do
+		%``getstatic java/lang/System/out Ljava/io/PrintStream;
+	    %``ldc "Loop testes DownTo"
+	    %``invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+    End For
+
+	%``getstatic java/lang/System/out Ljava/io/PrintStream;
+	%``iload 1
+	%``invokevirtual java/io/PrintStream/println(I)V
+End Program
