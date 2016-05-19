@@ -16,12 +16,12 @@ public void Take(Step controller){
     }
 
 
-    public void move(Coord target, double velocity){
+    public void setVector(Coord target, double velocity){
         SetVelocity(velocity);
         SetDirection(DSTFunctions.FindUnitVector(DSTFunctions.CenterOfMass(this.getAliveSoldiersCoords()), target));
     }
 
-    public void move(Coord target){
+    public void setVector(Coord target){
         for(Soldier s : Soldiers){
             if(s.Velocity == 0){
                 s.Velocity = s.DefaultVelocity;
