@@ -7,12 +7,12 @@ import com.company.ContextualAnalysis.HelperClasses.Array1DTypeDescriptor;
  */
 public class Array1D extends TypeIdentifier {
     public TypeName typeName;
-    public Expression index;
+    public Expression size;
     public Array1DTypeDescriptor typeDesc;
 
     public Array1D(TypeName tn, Expression e, int ln) {
         super(ln);
         this.typeName = tn;
-        this.index = e;
+        this.size = e;
     }
 }

@@ -95,24 +95,24 @@ public class TypeVisitor extends TopDeclVisitor {
 
     public void visit(Array1D a) {
         a.typeName.accept(this);
-        a.index.accept(this);
+        a.size.accept(this);
         a.type = array1DType;
 
         a.typeDesc = new Array1DTypeDescriptor();
         a.typeDesc.elementType = a.typeName.type;
-        a.typeDesc.arraySize = a.index;
+        a.typeDesc.arraySize = a.size;
     }
 
     public void visit(Array2D a) {
         a.typeName.accept(this);
-        a.index1.accept(this);
-        a.index2.accept(this);
+        a.size1.accept(this);
+        a.size2.accept(this);
         a.type = array2DType;
 
         a.typeDesc = new Array2DTypeDescriptor();
         a.typeDesc.elementType = a.typeName.type;
-        a.typeDesc.arraySize1 = a.index1;
-        a.typeDesc.arraySize2 = a.index2;
+        a.typeDesc.arraySize1 = a.size1;
+        a.typeDesc.arraySize2 = a.size2;
     }
 
     public void visit(ListOf l) {
