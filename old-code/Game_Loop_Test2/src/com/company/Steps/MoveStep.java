@@ -17,7 +17,7 @@ public class MoveStep extends Step{
 
     public void run(double deltaT){
         object.take(this);
-        object.move(coord);
+        object.setVector(coord);
         Vector v = Vector.getVectorByPoints(object.getPos(), coord);
         if(v.getLength() < object.size){
             object.stopMovement();

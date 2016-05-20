@@ -43,8 +43,9 @@ Begin Declarations
   j = 100
   For i To 100 Do
     Declare aSol as Soldier
-    aSol.Pos = (j, 100)
+    aSol.Pos = (j - (j % 5), 100 + (i % 5) * 5)
     aGroup.AddSoldier(aSol)
+    i += 1
     j += 5
   End For
 
@@ -71,13 +72,13 @@ End Declarations
 Begin Declare Simulations
   Simulation AlliesSim allies
     Step 1
-      aGroup.MoveToXY(600, 250)
+      aGroup.MoveToXY(350, 250)
     Interrupts
   End Simulation
 
   Simulation EnemiesSim enemies
     Step 1
-      eGroup.MoveToXY(600, 250)
+      eGroup.MoveToXY(450, 250)
     Interrupts
   End Simulation
 End Declare Simulations

@@ -31,6 +31,28 @@ function assert {
 	fi
 }
 
+function assertASM {
+	# $1 compile filename
+	# $2 expected result filename
+	if [ $PRINTERROR = true ]; then
+		java -jar $path_to_compiler -asm $1 > results_real
+	else
+		java -jar $path_to_compiler -asm $1 > results_real 2> /dev/null
+	fi
+	EXPTRES=$(cat $2)
+	REALRES=$(cat results_real)
+
+	if [ "$EXPTRES" = "$REALRES" ]; then
+		echo "$1: Success"	
+	else	
+		echo "$1: Fail"
+	fi
+
+	if [ -f results_real ]; then
+		rm results_real
+	fi
+}
+
 function assertCompileError {
 	# $1 compile filename
 	# $2 expected result filename
@@ -53,7 +75,7 @@ function assertCompileError {
 	fi
 }
 
-assert Test1_BubbleSort.bs Test1_results_expt #!! Sorta broken/useless after d9f9320
+assert Test1_BubbleSort.bs Test1_results_expt
 assert Test2_Recursion.bs Test2_results_expt
 assert Test3_ReturnInteger.bs Test3_results_expt
 assert Test4_ReturnDecimal.bs Test4_results_expt
@@ -68,3 +90,5 @@ assert Test12_TestScope.bs Test12_results_expt
 assert Test13_CustomTypeParam.bs Test13_results_expt
 assert Test14_TestTypes.bs Test14_results_expt
 assert Test15_EngineStressTest.bs Test15_results_expt
+assertASM Test16_JasminHelloWorld.bs Test16_results_expt
+assertASM Test17_JasminMath.bs Test17_results_expt

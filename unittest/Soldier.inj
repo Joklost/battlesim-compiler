@@ -3,11 +3,12 @@ private List<FireBulletListener> _listeners = new ArrayList<FireBulletListener>(
 //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
 private double accuracy = 0.02;
 
+public int minRange = 50;
 public int Side = 0;
 public final static double DefaultVelocity = 2.2; //meter per second
 public double Size = 0.25;            //radius of a soldier
 public boolean IsEnemyDetected = false;
-public int Fov = 50;
+public int fov = 200;
 public int Ammo = 30;
 public int FireRate = 1000; //firerate in milliseconds
 public double CL_FireRate = FireRate;
@@ -15,19 +16,21 @@ public Soldier Enemy;
 public Vector Direction = new Vector();
 public int Magazines = 4;
 public String Model = "Error";
+public int detectRate = 1000; //Rate at which to detect enemies in ms
+public double cl_detectRate = detectRate;
 
 public Coord GetPos(){
     return Pos;
 }
 
-public void move(Coord target){
+public void setVector(Coord target){
     if(Velocity == 0){
         Velocity = DefaultVelocity;
     }
     Direction = DSTFunctions.FindUnitVector(Pos, target);
 }
 
-public void move(Coord target, double velocity){
+public void setVector(Coord target, double velocity){
     Velocity = velocity;
     Direction = DSTFunctions.FindUnitVector(Pos, target);
 }
@@ -36,7 +39,7 @@ public void StopMovement(){
     Velocity = 0;
 }
 
-public void EnemyDetected(Soldier enemy){
+public void enemyDetected(Soldier enemy){
     Enemy = enemy;
     IsEnemyDetected = true;
 }
@@ -46,7 +49,7 @@ public boolean CanStillSeeEnemy(){
         IsEnemyDetected = false;
         return false;
     }
-    if(!Enemy.IsDead() && Vector.GetVectorByPoints(Pos, Enemy.GetPos()).GetLength() < Fov){
+    if(!Enemy.IsDead() && Vector.GetVectorByPoints(Pos, Enemy.GetPos()).GetLength() < fov){
         return true;
     }
     else{
@@ -90,6 +93,9 @@ public void TryShoot(Coord target){
 public void serviceTimers(double deltaT){
     if(CL_FireRate < FireRate){
         CL_FireRate += deltaT;
+    }
+    if(cl_detectRate < detectRate){
+        cl_detectRate += deltaT;
     }
 }
 

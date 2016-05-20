@@ -6,6 +6,7 @@ import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Vector;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Magnus on 03-05-2016.
@@ -38,7 +39,14 @@ public class CollisionDetector {
             if(!s.IsDead() && !enemy.IsDead()){
                 Vector v = Vector.getVectorByPoints(s.getPos(), enemy.getPos());
                 if(v.getLength() < s.fov){
-                    s.enemyDetected(enemy);
+                    Random rand = new Random();
+                    double range = s.minRange + (s.fov - s.minRange) * rand.nextDouble(); // return a double between s.minRange and s.fov
+                    if(v.getLength() < range){
+                        if(s.cl_detectRate >= s.detectRate){
+                            s.enemyDetected(enemy);
+                            s.cl_detectRate = 0;
+                        }
+                    }
                 }
                 else{
                     s.isEnemyDetected = false;

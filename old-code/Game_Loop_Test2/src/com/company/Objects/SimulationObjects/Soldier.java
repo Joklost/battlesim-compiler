@@ -26,11 +26,12 @@ public class Soldier extends SimObj {
     //private double accuracy = 0.0024999999999971; //accuracy er beregnet udfra at en hjemmeværnsmand skal kunne ramme en torso(0.5m bred) fra 200m afstand
     private double accuracy = 0.02;
 
+    public int minRange = 50;
     public int side = 0;
     public final static double DEFAULTVELOCITY = 2.2; //meter per second
     public double size = 0.25;            //radius of a soldier
     public boolean isEnemyDetected = false;
-    public int fov = 50;
+    public int fov = 200;
     public int ammo = 30;
     public int fireRate = 1000; //firerate in milliseconds
     public double cl_fireRate = fireRate;
@@ -38,19 +39,21 @@ public class Soldier extends SimObj {
     public Vector direction = new Vector();
     public int magazines = 4;
     public String model = "Error";
+    public int detectRate = 1000; //Rate at which to detect enemies in ms
+    public double cl_detectRate = detectRate;
 
     public Coord getPos(){
         return Pos;
     }
 
-    public void move(Coord target){
+    public void setVector(Coord target){
         if(Velocity == 0){
             Velocity = DEFAULTVELOCITY;
         }
         direction = DSTFunctions.findUnitVector(Pos, target);
     }
 
-    public void move(Coord target, double Velocity){
+    public void setVector(Coord target, double Velocity){
         this.Velocity = Velocity;
         direction = DSTFunctions.findUnitVector(Pos, target);
     }
@@ -113,6 +116,9 @@ public class Soldier extends SimObj {
     public void serviceTimers(double deltaT){
         if(cl_fireRate < fireRate){
             cl_fireRate += deltaT;
+        }
+        if(cl_detectRate < detectRate){
+            cl_detectRate += deltaT;
         }
     }
 

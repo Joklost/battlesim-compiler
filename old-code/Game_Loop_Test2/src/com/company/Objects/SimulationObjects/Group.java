@@ -47,12 +47,12 @@ public class Group extends SimObj {
     }
 
 
-    public void move(Coord target, double velocity){
+    public void setVector(Coord target, double velocity){
         setVelocity(velocity);
         setDirection(DSTFunctions.findUnitVector(DSTFunctions.centerOfMass(this.getAliveSoldiersCoords()), target));
     }
 
-    public void move(Coord target){
+    public void setVector(Coord target){
         for(Soldier s : Soldiers){
             if(s.Velocity == 0){
                 s.Velocity = s.DEFAULTVELOCITY;

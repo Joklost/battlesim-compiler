@@ -2,7 +2,7 @@ public void StopMovement(){
 
 }
 
-public void move(Coord coord){
+public void setVector(Coord coord){
 
 }
 
