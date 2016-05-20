@@ -664,29 +664,27 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         a.arrayName.accept(this);
         a.indexExpr.accept(this);
 
+        if (a.indexExpr.type != integerType) {
+            error(a.getLineNumber(), "Index expression is not of type integer.");
+            a.type = errorType;
+        }
+
         if (a.arrayName.type == errorType) {
+            error(a.getLineNumber(), "Array identifier error.");
             a.type = errorType;
         } else {
             if (a.arrayName.type != array1DType) {
-                error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
+                error(a.getLineNumber(), a.arrayName.name + " is not an array.");
                 a.type = errorType;
             } else {
-                if (Main.currentSymbolTable.retrieveSymbol(a.arrayName.name) == null) {
-                    errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
-                    a.type = errorType;
+                ASTNode def = Main.currentSymbolTable.retrieveSymbol(a.arrayName.name);
+                if (def instanceof Array1D) {
+                    a.type = ((Array1D) def).typeName.type;
                 } else {
-                    ASTNode def = Main.currentSymbolTable.retrieveSymbol(a.arrayName.name);
-                    if (def instanceof Array1D) {
-                        a.type = ((Array1D) def).typeName.type;
-                    } else {
-                        error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
-                        a.type = errorType;
-                    }
+                    error(a.getLineNumber(), a.arrayName.name + " is not an array.");
+                    a.type = errorType;
                 }
             }
-        }
-        if (a.indexExpr.type != errorType && a.indexExpr.type != integerType) {
-            error(a.getLineNumber(), "Index expression is not of type integer.");
         }
     }
 
@@ -695,39 +693,37 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         a.firstIndexExpr.accept(this);
         a.secondIndexExpr.accept(this);
 
+        if (a.firstIndexExpr.type != integerType) {
+            error(a.getLineNumber(), "First size expression is not an integer. ArrayName: " + a.arrayName.name);
+        }
+
+        if (a.secondIndexExpr.type != integerType) {
+            error(a.getLineNumber(), "Second size expression is not an integer. ArrayName: " + a.arrayName.name);
+        }
+
         if (a.arrayName.type == errorType) {
+            error(a.getLineNumber(), "Array identifier error.");
             a.type = errorType;
         } else {
             if (a.arrayName.type != array2DType) {
                 error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
                 a.type = errorType;
             } else {
-                if (!Main.currentSymbolTable.declaredLocally(a.arrayName.name)) {
-                    errorNoDeclaration(a.getLineNumber(), a.arrayName.name);
-                    a.type = errorType;
+                ASTNode def = Main.currentSymbolTable.retrieveSymbol(a.arrayName.name);
+                if (def instanceof Array2D) {
+                    a.type = ((Array2D) def).typeName.type;
                 } else {
-                    ASTNode def = Main.currentSymbolTable.retrieveSymbol(a.arrayName.name);
-                    if (def instanceof Array2D) {
-                        a.type = ((Array2D) def).typeName.type;
-                    } else {
-                        error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
-                        a.type = errorType;
-                    }
+                    error(a.getLineNumber(), a.arrayName.name + " is not an array."); // [] måske
+                    a.type = errorType;
                 }
             }
-        }
-        if (a.firstIndexExpr.type != errorType && a.firstIndexExpr.type != integerType) {
-            error(a.getLineNumber(), "First size expression is not an integer. ArrayName: " + a.arrayName.name);
-        }
-
-        if (a.secondIndexExpr.type != errorType && a.secondIndexExpr.type != integerType) {
-            error(a.getLineNumber(), "Second size expression is not an integer. ArrayName: " + a.arrayName.name);
         }
     }
 
     public void visit(ObjectReferencing o) {
         o.objectName.accept(this);
         if (o.objectName.type == errorType) {
+            error(o.getLineNumber(), "Object identifier error.");
             o.type = errorType;
         } else {
             if (o.objectName.type != objectType) {
