@@ -732,21 +732,16 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             } else {
                 ASTNode oDef = Main.currentSymbolTable.retrieveSymbol(o.objectName.name);
                 if (oDef instanceof CustomTypeIdentifier) {
-                    ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
-
-                    // dette sker, hvis vi er i en type deklaration
-                    if (tDef == null) {
-                        tDef = Main.symbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
-                    }
+                    ASTNode tDef = Main.symbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
 
                     if (tDef instanceof TypeDeclaration) {
                         SymbolTable st = ((TypeDeclaration) tDef).typeDescriptor.fields;
                         ASTNode def = st.retrieveSymbol(o.fieldName.name);
-                        if (def == null) {
+                        if (def != null) {
+                            o.type = def.type;
+                        } else {
                             error(o.getLineNumber(), o.fieldName.name + " is not a field of " + o.objectName.name);
                             o.type = errorType;
-                        } else {
-                            o.type = def.type;
                         }
                     } else {
                         error(o.getLineNumber(), "No type declaration for object: " + o.objectName.name);
@@ -756,8 +751,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                     error(o.getLineNumber(), "No type declaration for object: " + o.objectName.name);
                     o.type = errorType;
                 }
-
-
             }
         }
     }
