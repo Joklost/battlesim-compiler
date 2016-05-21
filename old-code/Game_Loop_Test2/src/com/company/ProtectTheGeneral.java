@@ -24,7 +24,6 @@ public class ProtectTheGeneral extends Simulation{
         steps.get(1).runIfCanStart(deltaT);
         steps.get(2).runIfCanStart(deltaT);
         steps.indexOf(new MoveStep(simObjMap.get("aGroup1"), new Coord(600, 300)));
-        steps.
     }
 
 }

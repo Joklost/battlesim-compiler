@@ -226,59 +226,32 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emit("(HashMap<String, SimObj> simObjMap){\n");
         indentLevel++;
         emitIndentation("super(simObjMap);\n");
-        for(int i = 0; i < s.simStepList.size(); i++){
-            StmtList stmtList = s.simStepList.elementAt(i).stmtList;
-            for(int k = 0; k < s.simStepList.elementAt(i).stmtList.size(); k++){
-                if(stmtList.elementAt(k) instanceof FunctionCallStmt){
-                    FunctionCall funcCall = ((FunctionCallStmt) stmtList.elementAt(k)).functionCall;
-                    if(funcCall.objectName instanceof ObjectReferencing){
-                        String funcName = ((ObjectReferencing) funcCall.objectName).fieldName.name;
-                        
-                        if(funcName.equals("MoveToXY")){ //TODO
-                            emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
-                            emit(((ObjectReferencing) funcCall.objectName).objectName.name);
-                            emit("\"), new Coord(");
-                            funcCall.argumentList.elementAt(0).accept(this); //x
-                            emit(",");
-                            funcCall.argumentList.elementAt(1).accept(this); //y
-                            emit(")));\n");
-                        } else if(funcName.equals("Wait")){
-                            emitIndentation("Steps.add(new WaitStep(SimObjMap.get(\"");
-                            emit(((ObjectReferencing) funcCall.objectName).objectName.name);
-                            emit("\"), ");
-                            funcCall.argumentList.elementAt(0).accept(this); //Seconds
-                            emit("));\n");
-                        } else if(funcName.equals("MoveToCoord") && funcCall.argumentList.elementAt(0) instanceof ObjectIdExpr){
-                            emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
-                            emit(((ObjectReferencing) funcCall.objectName).objectName.name);
-                            emit("\"), ");
-                            funcCall.argumentList.elementAt(0).accept(this);
-                            emit("));\n");
-                        }
-                    }
-                }
-                else{
-                    //s.simStepList.elementAt(i).stmtList.elementAt(k).accept(this); // Det her virker nogenlunde, men er ikke brugbart
-                }
-            }
-        }
+        //her skal der emittes til første del
         indentLevel--;
-        emitIndentation("}\n");
 
+        codeMap.put(s.identifier.name + "1", new ArrayList<String>());
+        setEmitTarget(s.identifier.name + "1");
         emitIndentation("public void Run(double deltaT){\n");
         indentLevel++;
         instructionNumber = 0;
         for(int i = 0; i < s.simStepList.size(); i++){
             for(int k = 0; k < s.simStepList.elementAt(i).stmtList.size(); k++){
                 s.simStepList.elementAt(i).stmtList.elementAt(k).accept(this);
+                //her skal der emittes til anden del
             }
         }
 
         indentLevel--;
         emitIndentation("}\n");
 
+        setEmitTarget(s.identifier.name);
+        emitIndentation("}\n");
+        setEmitTarget(s.identifier.name + "1");
         indentLevel--;
         emitIndentation("}\n");
+
+        codeMap.get(s.identifier.name).addAll(codeMap.get(s.identifier.name + "1")); //Sæt anden del i enden på første del
+        codeMap.remove(s.identifier.name + "1"); //slet anden del
     }
 
     public void visit(Interrupts is) {
@@ -838,23 +811,37 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     public void visitInstruction(FunctionCall f, String instruction){
         emit("Steps.get(" + instructionNumber + ").RunIfCanStart(deltaT)");
         instructionNumber++;
+        setEmitTarget(emitTarget.substring(0, emitTarget.length() - 1)); //set emitTarget from SimulationName1 to SimulationName
         if(instruction.equals("MoveToXY")) {
-            emitAtIndex(codeMap.get(emitTarget).
-                            stream().filter(s -> s.contains("Steps.add")).collect(Collectors.toList()).size() - 1,
-                    "Steps.add(new MoveStep(SimObjMap.get(\"");
-                            //"\"), new Coord("
-            emitAtIndex(codeMap.get(emitTarget).
-                            stream().filter(s -> s.contains("Steps.add")).collect(Collectors.toList()).size() - 1,
-                    "\"), new Coord(");
-            f.argumentList.elementAt(0).accept(this);
-            emitAtIndex(codeMap.get(emitTarget).
-                    stream().filter(s -> s.contains("Steps.add")).collect(Collectors.toList()).size() + 1,
-                    ", ");
-            f.argumentList.elementAt(1).
-            emitAtIndex(codeMap.get(emitTarget).
-                            stream().filter(s -> s.contains("Steps.add")).collect(Collectors.toList()).size() + 3,
-                    ")))");
+            emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
+            if(f.objectName instanceof ObjectReferencing){
+                ((ObjectReferencing) f.objectName).objectName.accept(this);
+            }
+            emit("\"), new Coord(");
+            f.argumentList.elementAt(0).accept(this);       //x
+            emit(", ");
+            f.argumentList.elementAt(1).accept(this);       //y
+            emit(")));\n");
         }
+        if(instruction.equals("MoveToCoord")){
+            emitIndentation("Steps.add(new MoveStep(SimObjMap.get(\"");
+            if(f.objectName instanceof ObjectReferencing){
+                ((ObjectReferencing) f.objectName).objectName.accept(this);
+            }
+            emit("\"), ");
+            f.argumentList.elementAt(0).accept(this);       //Coord
+            emit("));\n");
+        }
+        if(instruction.equals("Wait")){
+            emitIndentation("Steps.add(new WaitStep(SimObjMap.get(\"");
+            if(f.objectName instanceof ObjectReferencing){
+                ((ObjectReferencing) f.objectName).objectName.accept(this);
+            }
+            emit("\"), ");
+            f.argumentList.elementAt(0).accept(this);       //Seconds
+            emit("));\n");
+        }
+        setEmitTarget(emitTarget + "1");                    //change emitTarget back to SimulationName1
     }
 
     public void visit(ToIterator ti) {}
@@ -971,7 +958,4 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitIndentation(j.javaCode.substring(3));
     }
 
-    public List<String> getStringsContainingString(List<String> list, String str){
-        return list.stream().filter(s -> s.contains(str)).collect(Collectors.toList());
-    }
 }
