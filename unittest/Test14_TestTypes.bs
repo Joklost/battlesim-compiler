@@ -87,15 +87,19 @@ End Declarations
 Begin Declare Simulations
   Simulation ProtectTheGeneral allies
     Step 1
-      allies.MoveToXY(300, 250)
-      aGeneral.Wait(60)
+      //allies.MoveToXY(300, 250)
     Step 2
       aGroup1.MoveToXY(600, 300)
       aGroup2.MoveToXY(600, 200)
     Step 3
       aGroup1.MoveToXY(600, 250)
       aGroup2.MoveToXY(600, 250)
-      aGeneral.MoveToCoord(base)
+    Step 4
+      If enemies.IsDead() Then
+        aGeneral.MoveToCoord(base)
+        aGeneral.Wait(100)
+        aGeneral.MoveToXY(600, 250)
+      End If
     Interrupts
 
   End Simulation
@@ -106,7 +110,7 @@ Begin Declare Simulations
     Step 2
       enemies.MoveToXY(600, 250)
     Step 3
-      enemies.Wait(60)
+      //enemies.Wait(60)
     Step 4
       enemies.MoveToXY(300, 600)
     Interrupts
