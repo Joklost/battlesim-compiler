@@ -28,7 +28,7 @@ public class Main {
 
         List<String> paths = new ArrayList<>();
 
-        boolean printCode = false;
+        boolean printCode = true;
         boolean generatedCode = true;
         boolean deleteTmpFiles = true;
         boolean generateJasmin = false;
@@ -65,7 +65,7 @@ public class Main {
             //paths.add("/home/joklost/scopetest.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\battlesim-compiler\\battlesim\\jonastest\\javatest.bs");
             //paths.add("/home/pgug/Code/P4-Code/unittest/Test10_TestSwitch.bs");
-            //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test14_TestTypes.bs");
+            paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test14_TestTypes.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test15_EngineStressTest.bs");
         }
 
