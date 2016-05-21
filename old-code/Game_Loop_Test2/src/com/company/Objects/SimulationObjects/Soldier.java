@@ -19,6 +19,11 @@ public class Soldier extends SimObj {
     public boolean IsDead(){
         return isDead;
     }
+
+    public int countAliveSoldiers(){
+        if(!IsDead()){ return 1; }
+        else{ return 0; }
+    }
     //////////////////////
     
     private boolean isDead = false;

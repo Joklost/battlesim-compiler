@@ -27,6 +27,14 @@ public class Group extends SimObj {
         }
         return true;
     }
+
+    public int CountAliveSoldiers(){
+        int res = 0;
+        for(Soldier s: Soldiers){
+            res += s.CountAliveSoldiers();
+        }
+        return res;
+    }
     //////////
 
     public void take(Step controller){

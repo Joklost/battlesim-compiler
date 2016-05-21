@@ -41,6 +41,14 @@ public class Force extends SimObj {
         }
         return true;
     }
+
+    public int CountAliveSoldiers(){
+        int res = 0;
+        for(Platoon p: Platoons){
+            res += p.CountAliveSoldiers();
+        }
+        return res;
+    }
     ///////////////
 
     public void take(Step controller){

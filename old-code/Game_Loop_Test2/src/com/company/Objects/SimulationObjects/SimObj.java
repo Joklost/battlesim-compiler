@@ -40,4 +40,6 @@ public abstract class SimObj {
 
     public abstract boolean IsDead();
 
+    public abstract int CountAliveSoldiers();
+
 }

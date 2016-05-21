@@ -33,6 +33,14 @@ public class Platoon extends SimObj {
         }
         return true;
     }
+
+    public int CountAliveSoldiers(){
+        int res = 0;
+        for(Group g: Groups){
+            res += g.CountAliveSoldiers();
+        }
+        return res;
+    }
     //////////
 
 
