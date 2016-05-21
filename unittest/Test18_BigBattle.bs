@@ -1,0 +1,102 @@
+#Include("stdlib.bsi")
+
+Begin Declarations
+  //Declare Terrain
+  Declare terrain as Terrain
+  terrain.Width = 1800
+  terrain.Height = 900
+
+  //Declare Allies
+  Declare aGroup1 as Group
+  Declare i as Integer
+  i = 0
+  For i To 20 Do
+    Declare aSol as Soldier
+    If i < 10 Then
+      aSol.Pos = (500 + i * 10, 100)
+    Else
+      aSol.Pos = (500 + (i - 10) * 10, 110)
+    End If
+    aGroup1.AddSoldier(aSol)
+    i += 1
+  End For
+
+  Declare aGroup2 as Group
+  i = 0
+  For i To 40 Do
+    Declare aSol as Soldier
+    If i < 20 Then
+      aSol.Pos = (700 + i * 10, 100)
+    Else
+      aSol.Pos = (700 + (i - 20) * 10, 110)
+    End If
+    aGroup2.AddSoldier(aSol)
+    i += 1
+  End For
+
+
+  Declare allies as Force
+  allies.AddGroup(aGroup1)
+  allies.AddGroup(aGroup2)
+
+  //Declare Enemies
+  Declare eGroup1 as Group
+  i = 0
+  For i To 200 Do
+    Declare eSol as Soldier
+    If i < 50 Then
+      eSol.Pos = (350 + i * 10, 600)
+    Else If i < 100 Then
+      eSol.Pos = (350 + (i - 50) * 10, 610)
+    Else If i < 150 Then
+      eSol.Pos = (350 + (i - 100) * 10, 620)
+    Else
+      eSol.Pos = (350 + (i - 150) * 10, 630)
+    End If
+    eGroup1.AddSoldier(eSol)
+    i += 1
+  End For
+
+  Declare eFlank as Group
+  i = 0
+  For i To 40 Do
+    Declare Sol as Soldier
+    If i < 20 Then
+      Sol.Pos = (1600 + i * 10, 20)
+    Else
+      Sol.Pos = (1600 + (i - 20) * 10, 30)
+    End If
+    eFlank.AddSoldier(Sol)
+    i += 1
+  End For
+
+  Declare enemies as Force
+  enemies.AddGroup(eGroup1)
+  enemies.AddGroup(eFlank)
+
+  Declare mainField as Coord
+  mainField = (700, 400)
+
+End Declarations
+
+Begin Declare Simulations
+  Simulation AlliesSim allies
+    Step 1
+      aGroup1.MoveToCoord(mainField)
+      aGroup2.MoveToCoord(mainField)
+    Interrupts
+  End Simulation
+
+  Simulation EnemiesSim enemies
+    Step 1
+      eGroup1.MoveToCoord(mainField)
+      eFlank.Wait(300)
+    Step 2
+      eFlank.MoveToCoord(mainField)
+    Interrupts
+  End Simulation
+End Declare Simulations
+
+Begin Program
+  RunSimulation(allies, enemies, terrain, "AlliesSim", "EnemiesSim")
+End Program
