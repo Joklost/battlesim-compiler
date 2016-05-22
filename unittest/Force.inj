@@ -1,11 +1,9 @@
 public void Take(Step controller){
-        if(!IsControlled()){
-            for(Platoon p: Platoons){
-                p.Take(controller);
-            }
-            Semaphor = true;
-            Controller = controller;
+        for(Platoon p: Platoons){
+            p.Take(controller);
         }
+        Semaphor = true;
+        Controller = controller;
     }
 
     public void Release(){

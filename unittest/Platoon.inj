@@ -1,11 +1,9 @@
 public void Take(Step controller){
-        if(!IsControlled()){
-            for(Group g: Groups){
-                g.Take(controller);
-            }
-            Semaphor = true;
-            Controller = controller;
+        for(Group g: Groups){
+            g.Take(controller);
         }
+        Semaphor = true;
+        Controller = controller;
     }
 
     public void Release(){

@@ -1,11 +1,9 @@
 public void Take(Step controller){
-        if(!IsControlled()){
-            for(Soldier s: Soldiers){
-                s.Take(controller);
-            }
-            Semaphor = true;
-            Controller = controller;
+        for(Soldier s: Soldiers){
+            s.Take(controller);
         }
+        Semaphor = true;
+        Controller = controller;
     }
 
     public void Release(){

@@ -122,6 +122,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
 
     private void performInstructions() {
         //Her skal der blot kaldes MySimulation.Run() for hver af sidernes simulation
+        force1Sim.runInterrupts(deltaT);
+        force2Sim.runInterrupts(deltaT);
         force1Sim.Run(deltaT);
         force2Sim.Run(deltaT);
     }

@@ -244,8 +244,11 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         indentLevel--;
         emitIndentation("}\n");
 
+        s.interrupts.accept(this);
+
         setEmitTarget(s.identifier.name);
         emitIndentation("}\n");
+
         setEmitTarget(s.identifier.name + "1");
         indentLevel--;
         emitIndentation("}\n");
@@ -255,8 +258,13 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(Interrupts is) {
-        // TODO
-
+        emitIndentation("public void runInterrupts(double deltaT){\n");
+        indentLevel++;
+        for(int i = 0 ; i < is.stmtList.size(); i++){
+            is.stmtList.elementAt(i).accept(this);
+        }
+        indentLevel --;
+        emitIndentation("}\n");
     }
 
     public void visit(TypeDeclaration t) {
