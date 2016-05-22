@@ -132,10 +132,8 @@ public class Main {
                         }
                     }
                 }
-
-
-
-                preprocessor.removeOutFile();
+                if(deleteTmpFiles)
+                    preprocessor.removeOutFile();
             }
 
 

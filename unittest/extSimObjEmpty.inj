@@ -13,3 +13,7 @@ public Coord GetPos(){
 public boolean IsDead(){
   return false;
 }
+
+public int CountAliveSoldiers(){
+  return 0;
+}

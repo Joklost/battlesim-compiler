@@ -42,16 +42,12 @@ Begin Declarations
   //Declare Enemies
   Declare eGroup1 as Group
   i = 0
-  For i To 200 Do
+  For i To 100 Do
     Declare eSol as Soldier
     If i < 50 Then
       eSol.Pos = (350 + i * 10, 600)
-    Else If i < 100 Then
-      eSol.Pos = (350 + (i - 50) * 10, 610)
-    Else If i < 150 Then
-      eSol.Pos = (350 + (i - 100) * 10, 620)
     Else
-      eSol.Pos = (350 + (i - 150) * 10, 630)
+      eSol.Pos = (350 + (i - 50) * 10, 610)
     End If
     eGroup1.AddSoldier(eSol)
     i += 1
@@ -76,6 +72,8 @@ Begin Declarations
 
   Declare mainField as Coord
   mainField = (700, 400)
+  Declare aBase as Coord
+  aBase = (1800, 900)
 
 End Declarations
 
@@ -83,16 +81,22 @@ Begin Declare Simulations
   Simulation AlliesSim allies
     Step 1
       aGroup1.MoveToCoord(mainField)
-      aGroup2.MoveToCoord(mainField)
+      aGroup2.MoveToXY(800, 400)
+    Step 2
+      If aGroup1.IsDead() Then
+        aGroup2.MoveToCoord(aBase)
+      End If
     Interrupts
   End Simulation
 
   Simulation EnemiesSim enemies
     Step 1
       eGroup1.MoveToCoord(mainField)
-      eFlank.Wait(300)
+      eFlank.Wait(10)
     Step 2
-      eFlank.MoveToCoord(mainField)
+      If eGroup1.CountAliveSoldiers() < 80 Then
+        eFlank.MoveToCoord(mainField)
+      End If
     Interrupts
   End Simulation
 End Declare Simulations
