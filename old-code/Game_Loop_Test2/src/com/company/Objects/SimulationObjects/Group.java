@@ -38,13 +38,11 @@ public class Group extends SimObj {
     //////////
 
     public void take(Step controller){
-        if(!isControlled()){
-            for(Soldier s: Soldiers){
-                s.take(controller);
-            }
-            semaphor = true;
-            this.controller = controller;
+        for(Soldier s: Soldiers){
+            s.take(controller);
         }
+        semaphor = true;
+        this.controller = controller;
     }
 
     public void release(){

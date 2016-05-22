@@ -52,13 +52,11 @@ public class Force extends SimObj {
     ///////////////
 
     public void take(Step controller){
-        if(!isControlled()){
-            for(Platoon p: Platoons){
-                p.take(controller);
-            }
-            semaphor = true;
-            this.controller = controller;
+        for(Platoon p: Platoons){
+            p.take(controller);
         }
+        semaphor = true;
+        this.controller = controller;
     }
 
     public void release(){

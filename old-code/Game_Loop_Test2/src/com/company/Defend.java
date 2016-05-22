@@ -29,4 +29,8 @@ public class Defend extends Simulation {
             step.runIfCanStart(deltaT);
         }
     }
+
+    public void runInterrupts(double deltaT){
+
+    }
 }

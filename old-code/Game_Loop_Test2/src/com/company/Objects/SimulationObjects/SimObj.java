@@ -22,10 +22,8 @@ public abstract class SimObj {
         return controller;
     }
     public void take(Step controller){
-        if(!isControlled()){
-            semaphor = true;
-            this.controller = controller;
-        }
+        semaphor = true;
+        this.controller = controller;
     }
 
     public void release(){

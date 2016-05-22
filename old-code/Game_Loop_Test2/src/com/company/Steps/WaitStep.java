@@ -17,6 +17,7 @@ public class WaitStep extends Step{
 
     public void run(double deltaT){
         object.take(this);
+        object.stopMovement();
         if(ticker >= time){
             object.release();
             isDone = true;

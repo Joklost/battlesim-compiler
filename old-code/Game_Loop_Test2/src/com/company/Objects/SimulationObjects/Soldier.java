@@ -20,7 +20,7 @@ public class Soldier extends SimObj {
         return isDead;
     }
 
-    public int countAliveSoldiers(){
+    public int CountAliveSoldiers(){
         if(!IsDead()){ return 1; }
         else{ return 0; }
     }

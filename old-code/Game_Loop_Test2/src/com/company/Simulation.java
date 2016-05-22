@@ -20,4 +20,6 @@ public abstract class Simulation {
 
     public abstract void run(double deltaT);
 
+    public abstract void runInterrupts(double deltaT);
+
 }

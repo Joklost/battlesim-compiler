@@ -123,6 +123,8 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     }
 
     private void performInstructions() {
+        force1Sim.runInterrupts(deltaT);
+        force2Sim.runInterrupts(deltaT);
         force1Sim.run(deltaT);
         force2Sim.run(deltaT);
     }

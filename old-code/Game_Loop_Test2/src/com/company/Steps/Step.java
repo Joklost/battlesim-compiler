@@ -8,6 +8,7 @@ import com.company.Objects.SimulationObjects.SimObj;
 public abstract class Step{
     public boolean isDone = false;
     public SimObj object; //Soldier, Group, Platoon og Force nedarver fra SimObj (Dynamisk objekt)
+    public boolean isInterrupt = false;
 
     protected Step(SimObj object){
         this.object = object;
@@ -20,9 +21,18 @@ public abstract class Step{
 
     protected abstract void run(double deltaT);
 
-
     public void runIfCanStart(double deltaT){
         if(canStart())
             run(deltaT);
+    }
+
+    public boolean canStartInterrupt(){
+        return !isDone && !object.IsDead() && (!object.isControlled() || object.getController().equals(this) || !object.getController().isInterrupt);
+    }
+
+    public void interrupt(double delta){
+        isInterrupt = true;
+        if(canStartInterrupt())
+            run(delta);
     }
 }

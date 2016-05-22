@@ -45,13 +45,11 @@ public class Platoon extends SimObj {
 
 
     public void take(Step controller){
-        if(!isControlled()){
-            for(Group g: Groups){
-                g.take(controller);
-            }
-            semaphor = true;
-            controller = controller;
+        for(Group g: Groups){
+            g.take(controller);
         }
+        semaphor = true;
+        this.controller = controller;
     }
 
     public void release(){

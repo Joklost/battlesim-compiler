@@ -3,6 +3,7 @@ package com.company;
 import com.company.Objects.SimulationObjects.SimObj;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Steps.MoveStep;
+import com.company.Steps.WaitStep;
 
 import java.util.HashMap;
 
@@ -16,6 +17,8 @@ public class ProtectTheGeneral extends Simulation{
         steps.add(new MoveStep(simObjMap.get("allies"), new Coord(300,250)));
         steps.add(new MoveStep(simObjMap.get("aGroup1"), new Coord(600, 300)));
         steps.add(new MoveStep(simObjMap.get("aGroup2"), new Coord(600, 200)));
+        steps.add(new WaitStep(simObjMap.get("allies"), 10));
+        steps.add(new MoveStep(simObjMap.get("allies"), new Coord(1000, 800)));
     }
 
     public void run(double deltaT){
@@ -23,5 +26,12 @@ public class ProtectTheGeneral extends Simulation{
         //potentielt neste steps i ifs
         steps.get(1).runIfCanStart(deltaT);
         steps.get(2).runIfCanStart(deltaT);
+    }
+
+    public void runInterrupts(double deltaT){
+        if(simObjMap.get("enemies").IsDead()){
+            steps.get(3).interrupt(deltaT);
+            steps.get(4).interrupt(deltaT);
+        }
     }
 }
