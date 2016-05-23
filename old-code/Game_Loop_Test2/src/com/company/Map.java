@@ -3,8 +3,6 @@ package com.company;
 import com.company.Objects.Bullet;
 import com.company.Objects.StaticObjects.*;
 import com.company.Objects.SimulationObjects.*;
-import com.company.Objects.StaticObjects.Vector;
-import com.company.Steps.*;
 
 import javax.swing.*;
 import javax.swing.Timer;

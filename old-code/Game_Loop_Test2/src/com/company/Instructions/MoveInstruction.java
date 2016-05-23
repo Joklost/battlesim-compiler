@@ -1,4 +1,4 @@
-package com.company.Steps;
+package com.company.Instructions;
 
 import com.company.Objects.SimulationObjects.SimObj;
 import com.company.Objects.StaticObjects.Coord;

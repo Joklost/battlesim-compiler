@@ -2,9 +2,9 @@ package com.company;
 
 import com.company.Objects.SimulationObjects.SimObj;
 import com.company.Objects.StaticObjects.Coord;
-import com.company.Steps.MoveInstruction;
-import com.company.Steps.Instruction;
-import com.company.Steps.WaitInstruction;
+import com.company.Instructions.MoveInstruction;
+import com.company.Instructions.Instruction;
+import com.company.Instructions.WaitInstruction;
 
 import java.util.HashMap;
 

@@ -1,7 +1,7 @@
 package com.company.Objects.SimulationObjects;
 
 import com.company.Objects.StaticObjects.Coord;
-import com.company.Steps.Instruction;
+import com.company.Instructions.Instruction;
 
 /**
  * Created by Magnus on 01-05-2016.

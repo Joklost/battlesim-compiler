@@ -1,7 +1,7 @@
 package com.company;
 
 import com.company.Objects.SimulationObjects.SimObj;
-import com.company.Steps.Instruction;
+import com.company.Instructions.Instruction;
 
 import java.util.ArrayList;
 import java.util.HashMap;

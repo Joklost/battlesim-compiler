@@ -3,7 +3,7 @@ package com.company.Objects.SimulationObjects;
 import com.company.DSTFunctions;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Vector;
-import com.company.Steps.Instruction;
+import com.company.Instructions.Instruction;
 
 import java.util.ArrayList;
 import java.util.List;
