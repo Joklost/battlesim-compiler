@@ -3,7 +3,7 @@ package com.company.Objects.SimulationObjects;
 import com.company.*;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Vector;
-import com.company.Steps.Step;
+import com.company.Steps.Instruction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class Force extends SimObj {
     }
     ///////////////
 
-    public void take(Step controller){
+    public void take(Instruction controller){
         for(Platoon p: Platoons){
             p.take(controller);
         }

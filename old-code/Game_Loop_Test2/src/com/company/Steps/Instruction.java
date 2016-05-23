@@ -5,12 +5,12 @@ import com.company.Objects.SimulationObjects.SimObj;
 /**
  * Created by Magnus on 01-05-2016.
  */
-public abstract class Step{
+public abstract class Instruction {
     public boolean isDone = false;
     public SimObj object; //Soldier, Group, Platoon og Force nedarver fra SimObj (Dynamisk objekt)
     public boolean isInterrupt = false;
 
-    protected Step(SimObj object){
+    protected Instruction(SimObj object){
         this.object = object;
     }
 

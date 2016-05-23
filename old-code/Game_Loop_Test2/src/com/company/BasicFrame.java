@@ -3,7 +3,6 @@ package com.company;
 import com.company.Objects.SimulationObjects.Force;
 import com.company.Objects.StaticObjects.Barrier;
 import com.company.Objects.StaticObjects.Terrain;
-import com.company.Steps.Step;
 
 import javax.swing.*;
 import java.util.ArrayList;

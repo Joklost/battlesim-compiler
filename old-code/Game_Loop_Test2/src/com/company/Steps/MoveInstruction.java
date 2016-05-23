@@ -7,10 +7,10 @@ import com.company.Objects.StaticObjects.Vector;
 /**
  * Created by Magnus on 01-05-2016.
  */
-public class MoveStep extends Step{
+public class MoveInstruction extends Instruction {
     public Coord coord = new Coord(0,0);
 
-    public MoveStep(SimObj object, Coord coord){
+    public MoveInstruction(SimObj object, Coord coord){
         super(object);
         this.coord = coord;
     }

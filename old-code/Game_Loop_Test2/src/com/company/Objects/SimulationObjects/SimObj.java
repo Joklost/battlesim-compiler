@@ -1,15 +1,14 @@
 package com.company.Objects.SimulationObjects;
 
 import com.company.Objects.StaticObjects.Coord;
-import com.company.Objects.StaticObjects.Vector;
-import com.company.Steps.Step;
+import com.company.Steps.Instruction;
 
 /**
  * Created by Magnus on 01-05-2016.
  */
 public abstract class SimObj {
     protected boolean semaphor;
-    protected Step controller; //Maybe not necessary with EmptyStep
+    protected Instruction controller; //Maybe not necessary with EmptyStep
 
     public int size = 3;
     public int reloadSpeed = 3000; //ms
@@ -18,10 +17,10 @@ public abstract class SimObj {
         return semaphor;
     }
 
-    public Step getController(){
+    public Instruction getController(){
         return controller;
     }
-    public void take(Step controller){
+    public void take(Instruction controller){
         semaphor = true;
         this.controller = controller;
     }

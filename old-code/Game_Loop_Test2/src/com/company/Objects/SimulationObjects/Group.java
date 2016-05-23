@@ -3,7 +3,7 @@ package com.company.Objects.SimulationObjects;
 import com.company.DSTFunctions;
 import com.company.Objects.StaticObjects.Coord;
 import com.company.Objects.StaticObjects.Vector;
-import com.company.Steps.Step;
+import com.company.Steps.Instruction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Group extends SimObj {
     }
     //////////
 
-    public void take(Step controller){
+    public void take(Instruction controller){
         for(Soldier s: Soldiers){
             s.take(controller);
         }

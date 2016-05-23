@@ -102,16 +102,16 @@ public class Main {
 
 
         /*
-        ArrayList<Step> steps = new ArrayList<Step>();
+        ArrayList<Instruction> instructions = new ArrayList<Instruction>();
 
-        steps.add(new MoveStep(allies, new Coord(300,250)));
-        steps.add(new MoveStep(aGroup1, new Coord(600, 300)));
-        steps.add(new MoveStep(aGroup2, new Coord(600, 200)));
+        instructions.add(new MoveInstruction(allies, new Coord(300,250)));
+        instructions.add(new MoveInstruction(aGroup1, new Coord(600, 300)));
+        instructions.add(new MoveInstruction(aGroup2, new Coord(600, 200)));
 
-        steps.add(new MoveStep(enemies, new Coord(950,250)));
-        steps.add(new MoveStep(enemies, new Coord(600,250)));
-        steps.add(new WaitStep(enemies, 60));
-        steps.add(new MoveStep(enemies, new Coord(300, 600)));
+        instructions.add(new MoveInstruction(enemies, new Coord(950,250)));
+        instructions.add(new MoveInstruction(enemies, new Coord(600,250)));
+        instructions.add(new WaitInstruction(enemies, 60));
+        instructions.add(new MoveInstruction(enemies, new Coord(300, 600)));
         */
 
 
