@@ -267,12 +267,12 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(SwitchStmt ss) {
-        ss.variable.accept(this);
-        if (ss.variable.type != errorType && !assignable(integerType, ss.variable.type) && !assignable(stringType, ss.variable.type)) {
+        ss.control.accept(this);
+        if (ss.control.type != errorType && !assignable(integerType, ss.control.type) && !assignable(stringType, ss.control.type)) {
             error(ss.getLineNumber(), "Illegal type for Switch statement.");
             ss.type = errorType;
         } else {
-            ss.type = ss.variable.type;
+            ss.type = ss.control.type;
         }
 
         for (int i = 0; i < ss.switchCaseList.size(); i++) {

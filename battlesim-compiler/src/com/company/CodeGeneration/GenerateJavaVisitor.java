@@ -5,7 +5,6 @@ import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.company.ContextualAnalysis.HelperClasses.TypeConsts.*;
 
@@ -557,7 +556,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     public void visit(SwitchStmt ss) {
         emitIndentation("switch (");
-        ss.variable.accept(this);
+        ss.control.accept(this);
         emit(") {\n");
 
         indentLevel++;

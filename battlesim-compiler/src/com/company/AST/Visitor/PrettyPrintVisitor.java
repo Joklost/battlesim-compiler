@@ -294,7 +294,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(SwitchStmt ss){
         printIndent();
         print("Switch ");
-        ss.variable.accept(this);
+        ss.control.accept(this);
         print("\n");
 
         indentLevel++;
