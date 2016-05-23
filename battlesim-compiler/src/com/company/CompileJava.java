@@ -107,7 +107,7 @@ public class CompileJava {
         return deleteDir(new File("com")) && (new File("Manifest.txt")).delete();
     }
 
-    private boolean deleteDir(File dir) {
+    public static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
             for (String child : children) {
