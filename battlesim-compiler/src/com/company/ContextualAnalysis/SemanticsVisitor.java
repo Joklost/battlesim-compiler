@@ -6,6 +6,7 @@ import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
 import com.company.Main;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,7 +153,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ForeachStmt fes) {
-        //fes.typeName.type == fes.objectName.type
         Main.currentSymbolTable.openScope();
         fes.typeName.accept(this);
 
@@ -191,7 +191,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 errorNoDeclaration(fes.getLineNumber(), fes.objectName.name);
                 fes.type = errorType;
             }
-
         }
     }
 
@@ -283,6 +282,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             }
         }
 
+        ss.switchDef.accept(this);
+
         // Nedenstående kan gøres smartere... -jkj
         // line number skal med når der er dupes
         if (ss.type == stringType) {
@@ -292,7 +293,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
             List<Integer> labelList = gatherLabelsInteger(ss.switchCaseList);
             checkForDupesInt(labelList);
         }
-
     }
 
     public void visit(SwitchCase sc) {
@@ -511,11 +511,9 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(FunctionCall f) {
-        //f.type = returnType
         f.objectName.accept(this);
 
-        int[] argTypeList;
-        argTypeList = new int[f.argumentList.size()];
+        int[] argTypeList = new int[f.argumentList.size()];
         for (int i = 0; i < f.argumentList.size(); i++) {
             f.argumentList.elementAt(i).accept(this);
             argTypeList[i] = f.argumentList.elementAt(i).type;
@@ -527,13 +525,16 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
         } else {
             ASTNode def = null;
             if (f.objectName instanceof ObjectReferencing) {
-                ASTNode oDef = Main.currentSymbolTable.retrieveSymbol(((ObjectReferencing) f.objectName).objectName.name);
+                ObjectReferencing oName = (ObjectReferencing) f.objectName;
+                ASTNode oDef = Main.currentSymbolTable.retrieveSymbol(oName.objectName.name);
 
                 if (oDef instanceof CustomTypeIdentifier) {
-                    ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(((CustomTypeIdentifier) oDef).name.name);
+                    CustomTypeIdentifier cType = (CustomTypeIdentifier) oDef;
+                    ASTNode tDef = Main.currentSymbolTable.retrieveSymbol(cType.name.name);
 
                     if (tDef instanceof TypeDeclaration) {
-                        def = ((TypeDeclaration) tDef).typeDescriptor.fields.retrieveSymbol(((ObjectReferencing) f.objectName).fieldName.name);
+                        TypeDeclaration tDecl = (TypeDeclaration) tDef;
+                        def = tDecl.typeDescriptor.fields.retrieveSymbol(oName.fieldName.name);
                     } else {
                         error(f.getLineNumber(), "Type declaration not found for " + f.objectName.name);
                         f.type = errorType;
@@ -554,7 +555,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 function = (FunctionDcl) def;
 
                 if (f.argumentList.size() != function.paramList.size()) {
-                    error(f.getLineNumber(), "Found " + f.argumentList.size() + " function arguments. Needs " + function.paramList.size() + ".");
+                    error(f.getLineNumber(),
+                            "Found " + f.argumentList.size() +
+                            " function arguments. Needs " +
+                            function.paramList.size() + ".");
                     f.type = errorType;
                 } else {
                     boolean misMatchedArgsFound = false;
@@ -568,7 +572,10 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                                 fName = f.objectName.name;
                             }
 
-                            error(f.getLineNumber(), "Argument " + (i + 1) + " in function call of " + fName + " does not match with parameter. Type: " + getTypeName(f.argumentList.elementAt(i).type));
+                            error(f.getLineNumber(),
+                                    "Argument " + (i + 1) + " in function call of " +
+                                    fName + " does not match with parameter. Type: " +
+                                    getTypeName(f.argumentList.elementAt(i).type));
                             f.type = errorType;
                             misMatchedArgsFound = true;
                         }
