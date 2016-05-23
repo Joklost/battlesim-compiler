@@ -801,18 +801,17 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(FunctionCall f) {
-        String funcName = ((ObjectReferencing) f.objectName).fieldName.name;
-        if(funcName.equals("MoveToXY") || funcName.equals("Wait") || funcName.equals("MoveToCoord")){
-            visitInstruction(f, funcName);
+        if(f.objectName instanceof ObjectReferencing){
+            String funcName = ((ObjectReferencing) f.objectName).fieldName.name;
+            if(funcName.equals("MoveToXY") || funcName.equals("Wait") || funcName.equals("MoveToCoord")){
+                visitInstruction(f, funcName);
+            }
+            else{
+                visitFunctionCall(f);
+            }
         }
         else{
-            f.objectName.accept(this);
-            emit("(");
-            for (int i = 0; i < f.argumentList.size(); i++) {
-                f.argumentList.elementAt(i).accept(this);
-                if (i < f.argumentList.size() - 1) emit(", ");
-            }
-            emit(")");
+            visitFunctionCall(f);
         }
     }
 
@@ -850,6 +849,16 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
             emit("));\n");
         }
         setEmitTarget(emitTarget + "1");                    //change emitTarget back to SimulationName1
+    }
+
+    public void visitFunctionCall(FunctionCall f){
+        f.objectName.accept(this);
+        emit("(");
+        for (int i = 0; i < f.argumentList.size(); i++) {
+            f.argumentList.elementAt(i).accept(this);
+            if (i < f.argumentList.size() - 1) emit(", ");
+        }
+        emit(")");
     }
 
     public void visit(ToIterator ti) {}

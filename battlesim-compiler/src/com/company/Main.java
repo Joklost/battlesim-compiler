@@ -68,6 +68,7 @@ public class Main {
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test14_TestTypes.bs");
             //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test15_EngineStressTest.bs");
             //paths.add("D:\\Documents\\P4-Code\\unittest\\Test14_TestTypes.bs");
+            //paths.add("C:\\Users\\Magnus\\Documents\\P4-Code\\unittest\\Test1_BubbleSort.bs");
         }
 
         Preprocessor preprocessor = null;
