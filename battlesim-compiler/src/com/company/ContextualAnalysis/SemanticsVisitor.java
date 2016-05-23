@@ -268,7 +268,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
     public void visit(SwitchStmt ss) {
         ss.control.accept(this);
-        if (ss.control.type != errorType && !assignable(integerType, ss.control.type) && !assignable(stringType, ss.control.type)) {
+        if (ss.control.type != errorType && (ss.control.type == integerType ? (!assignable(integerType, ss.control.type)) : (!assignable(stringType, ss.control.type)))) {
             error(ss.getLineNumber(), "Illegal type for Switch statement.");
             ss.type = errorType;
         } else {
@@ -282,7 +282,6 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
                 ss.type = errorType;
             }
         }
-
 
         // Nedenstående kan gøres smartere... -jkj
         // line number skal med når der er dupes
