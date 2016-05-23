@@ -14,6 +14,7 @@ public class WaitStep extends Step{
 
     public void Run(double deltaT){
         object.Take(this);
+        object.StopMovement();
         if(ticker >= time){
             object.Release();
             isDone = true;

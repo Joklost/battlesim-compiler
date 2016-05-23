@@ -17,4 +17,5 @@ public abstract class Simulation {
 
     public abstract void Run(double deltaT);
 
+    public abstract void runInterrupts(double deltaT);
 }

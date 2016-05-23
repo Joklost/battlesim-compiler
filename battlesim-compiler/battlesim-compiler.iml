@@ -10,5 +10,6 @@
     <orderEntry type="library" exported="" name="de.jflex:jflex-maven-plugin:1.6.1" level="project" />
     <orderEntry type="library" exported="" name="com.github.vbmacher:java-cup:11b" level="project" />
     <orderEntry type="library" exported="" name="com.github.vbmacher:java-cup-runtime:11b" level="project" />
+    <orderEntry type="library" name="com.github.peterzeller:javacup:11c" level="project" />
   </component>
 </module>

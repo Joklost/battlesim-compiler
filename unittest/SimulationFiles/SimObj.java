@@ -19,10 +19,8 @@ public abstract class SimObj {
         return Controller;
     }
     public void Take(Step controller){
-        if(!IsControlled()){
-            Semaphor = true;
-            Controller = controller;
-        }
+        Semaphor = true;
+        Controller = controller;
     }
 
     public void Release(){
@@ -36,5 +34,7 @@ public abstract class SimObj {
     public abstract Coord GetPos();
 
     public abstract boolean IsDead();
+
+    public abstract int CountAliveSoldiers();
 
 }
