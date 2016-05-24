@@ -92,3 +92,4 @@ assert Test14_TestTypes.bs Test14_results_expt
 assert Test15_EngineStressTest.bs Test15_results_expt
 assertASM Test16_JasminHelloWorld.bs Test16_results_expt
 assertASM Test17_JasminMath.bs Test17_results_expt
+assert Test18_BigBattle.bs Test18_results_expt
