@@ -738,7 +738,7 @@ public class Parser extends java_cup.runtime.lr_parser {
         System.err.flush();
         if (info instanceof Symbol) {
             if (((Symbol)info).left != -1) {
-                System.err.println(" at line " + (((Symbol)info).left + 1) + " column " + (((Symbol)info).right + 1) + " of input");
+                System.err.println(" at line " + (((Symbol)info).left + 1 - Preprocessor.STDLIB_LINES) + " column " + (((Symbol)info).right + 1) + " of input");
             } else {
                 System.err.println("");
             }
