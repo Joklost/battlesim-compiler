@@ -50,7 +50,7 @@ public class SimulationFileReader {
         }
 
         for (String fileName : fileNames) {
-            URL server = new URL("http://188.166.148.164/" + fileName);
+            URL server = new URL(serverIp + fileName);
             File f = new File(simDir.getAbsolutePath() + File.separator + fileName);
             FileUtils.copyURLToFile(server, f);
         }
