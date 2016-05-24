@@ -2,6 +2,7 @@ package com.company.AST.Nodes;
 
 import com.company.AST.Visitor.Visitable;
 import com.company.AST.Visitor.Visitor;
+import com.company.SyntaxAnalysis.Preprocessor;
 
 import static com.company.ContextualAnalysis.HelperClasses.TypeConsts.noType;
 
@@ -18,7 +19,7 @@ public abstract class ASTNode implements Visitable {
     }
 
     public int getLineNumber() {
-        return lineNumber;
+        return lineNumber - Preprocessor.STDLIB_LINES;
     }
 
     public void accept(Visitor v) { v.dispatch(this); }
