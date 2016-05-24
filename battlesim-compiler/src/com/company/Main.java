@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.AST.Nodes.Start;
+import com.company.AST.Nodes.StringLiteral;
 import com.company.AST.Nodes.TypeDeclaration;
 import com.company.AST.SymbolTable.SymbolTable;
 import com.company.AST.Visitor.PrettyPrintVisitor;
@@ -10,8 +11,11 @@ import com.company.ContextualAnalysis.SemanticsVisitor;
 import com.company.SyntaxAnalysis.Parser;
 import com.company.SyntaxAnalysis.Preprocessor;
 import com.company.SyntaxAnalysis.Scanner;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +86,7 @@ public class Main {
 
         try {
             for (String path : paths) {
+                getInjectionFiles();
                 preprocessor = new Preprocessor(path);
                 File f = new File(path);
                 currentFile = f.getName();
@@ -135,6 +140,8 @@ public class Main {
                 }
                 if(deleteTmpFiles)
                     preprocessor.removeOutFile();
+
+                deleteInjectionFiles();
             }
 
 
@@ -143,6 +150,46 @@ public class Main {
                 preprocessor.removeOutFile();
             }
             e.printStackTrace();
+        }
+    }
+
+    private static List<String> getInjectionList() {
+        List<String> fileNames = new ArrayList<>();
+        fileNames.add("stdlib.bsi");
+        fileNames.add("Coord.inj");
+        fileNames.add("extSimObjEmpty.inj");
+        fileNames.add("Force.inj");
+        fileNames.add("Group.inj");
+        fileNames.add("Platoon.inj");
+        fileNames.add("Soldier.inj");
+
+        return fileNames;
+    }
+
+    private static void getInjectionFiles() {
+        try {
+            String serverIp = "http://188.166.148.164/";
+
+            File curDir = new File("");
+
+            for (String fileName : getInjectionList()) {
+                URL server = new URL(serverIp + fileName);
+                File f = new File(curDir.getAbsolutePath() + File.separator + fileName);
+                FileUtils.copyURLToFile(server, f);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteInjectionFiles() throws IOException {
+        File curDir = new File("");
+
+        for (String fileName : getInjectionList()) {
+            File f = new File(curDir.getAbsolutePath() + File.separator + fileName);
+            if (f.exists() && !f.delete()) {
+                throw new IOException("Unable to delete file: " + fileName + ". Do you have the proper rights?");
+            }
         }
     }
 }

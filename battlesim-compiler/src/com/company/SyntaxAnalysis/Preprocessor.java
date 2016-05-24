@@ -1,7 +1,14 @@
 package com.company.SyntaxAnalysis;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import java.io.FileReader;
+import org.apache.commons.io.FileUtils;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 /**
  * Created by Magnus on 08-04-2016.
@@ -26,6 +33,8 @@ public class Preprocessor {
     }
 
     public String makeFile(){
+
+
         //make output file ready
         try {
             writer = new PrintWriter(outputPath);
