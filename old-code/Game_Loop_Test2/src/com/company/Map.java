@@ -113,18 +113,18 @@ public class Map extends JPanel implements ActionListener, FireBulletListener, C
     public void actionPerformed(ActionEvent actionEvent) {
         elapsedTime = actionEvent.getWhen() - hrt;
         hrt = actionEvent.getWhen();
-        updateStates();
         performInstructions();
+        updateStates();
         detectCollisions();
         repaint();
         frameNum++;
     }
 
     private void performInstructions() {
-        force1Sim.runInterrupts(deltaT);
-        force2Sim.runInterrupts(deltaT);
         force1Sim.run(deltaT);
         force2Sim.run(deltaT);
+        force1Sim.runInterrupts(deltaT);
+        force2Sim.runInterrupts(deltaT);
     }
 
     private void updateStates() {
