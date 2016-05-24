@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class Preprocessor {
 
-    public static int STDLIB_LINES = 0;
+    public static int STDLIB_LINES = -1;
     private static int INCLUDE_STR_INDEX = 10; //#include("simProtectTheGeneral.inc")
     private PrintWriter writer;
     public String inputPath;
@@ -34,8 +34,6 @@ public class Preprocessor {
     }
 
     public String makeFile(){
-
-
         //make output file ready
         try {
             writer = new PrintWriter(outputPath);
@@ -59,15 +57,14 @@ public class Preprocessor {
                         String fileName = line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
                         writer.println("%``//START INJECTION OF FILE " + fileName);
                         writer.println("");
-                        STDLIB_LINES += 2;
                         for(int i = 0; i < includeLines.size(); i++){
                             writer.println("%``" + includeLines.get(i));
                             writer.println(""); // empty line between injectionlines
-                            STDLIB_LINES += 2;
+                            STDLIB_LINES++;
                         }
                         writer.println("%``//END INJECTION OF FILE " + fileName);
                         writer.println("");
-                        STDLIB_LINES += 2;
+                            STDLIB_LINES += 2;
                     }else{
                         for(int i = 0; i < includeLines.size(); i++){
                             writer.println(includeLines.get(i));
@@ -76,7 +73,6 @@ public class Preprocessor {
                 }
                 else{
                     writer.println(line);
-                    STDLIB_LINES++;
                 }
             }
         } catch (IOException e) {
@@ -106,7 +102,7 @@ public class Preprocessor {
                         for(int i = 0; i < includeLines.size(); i++){
                             lines.add("%``" + includeLines.get(i));
                             lines.add(""); // empty line between injectionlines
-                            STDLIB_LINES += 2;
+                            STDLIB_LINES++;
                         }
                         lines.add("%``//END INJECTION OF FILE " + fileName);
                         lines.add("");
