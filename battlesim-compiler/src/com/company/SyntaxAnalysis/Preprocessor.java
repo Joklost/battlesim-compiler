@@ -15,6 +15,7 @@ import java.io.IOException;
  */
 public class Preprocessor {
 
+    public static int STDLIB_LINES = 0;
     private static int INCLUDE_STR_INDEX = 10; //#include("simProtectTheGeneral.inc")
     private PrintWriter writer;
     public String inputPath;
@@ -46,7 +47,6 @@ public class Preprocessor {
         try (BufferedReader br = new BufferedReader(new FileReader(inputPath))) {
             String line;
             while ((line = br.readLine()) != null) {
-
                 //include handling
                 if(line.startsWith("#Include")){
                     String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
@@ -59,19 +59,25 @@ public class Preprocessor {
                         String fileName = line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
                         writer.println("%``//START INJECTION OF FILE " + fileName);
                         writer.println("");
+                        STDLIB_LINES += 2;
                         for(int i = 0; i < includeLines.size(); i++){
                             writer.println("%``" + includeLines.get(i));
                             writer.println(""); // empty line between injectionlines
+                            STDLIB_LINES += 2;
                         }
                         writer.println("%``//END INJECTION OF FILE " + fileName);
                         writer.println("");
+                        STDLIB_LINES += 2;
                     }else{
-                        for(int i = 0; i < includeLines.size(); i++)
+                        for(int i = 0; i < includeLines.size(); i++){
                             writer.println(includeLines.get(i));
+                        }
                     }
                 }
-                else
+                else{
                     writer.println(line);
+                    STDLIB_LINES++;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,19 +102,24 @@ public class Preprocessor {
                         String fileName = line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
                         lines.add("%``//START INJECTION OF FILE " + fileName);
                         lines.add("");
+                        STDLIB_LINES += 2;
                         for(int i = 0; i < includeLines.size(); i++){
                             lines.add("%``" + includeLines.get(i));
                             lines.add(""); // empty line between injectionlines
+                            STDLIB_LINES += 2;
                         }
                         lines.add("%``//END INJECTION OF FILE " + fileName);
                         lines.add("");
+                        STDLIB_LINES += 2;
                     } else{
-                        for(int i = 0; i < includeLines.size(); i++)
+                        for(int i = 0; i < includeLines.size(); i++){
                             lines.add(includeLines.get(i));
+                        }
                     }
                 }
                 else{
                     lines.add(line);
+                    STDLIB_LINES++;
                 }
             }
         } catch (IOException e){
