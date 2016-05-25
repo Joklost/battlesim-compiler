@@ -704,10 +704,11 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
 
     public void visit(LogicEqualsExpr le) {
         if (le.leftExpr.type == stringType && le.rightExpr.type == stringType) {
+            emit("(");
             le.leftExpr.accept(this);
             emit(".equals(");
             le.rightExpr.accept(this);
-            emit(")");
+            emit("))");
         } else {
             emit("(");
             le.leftExpr.accept(this);
