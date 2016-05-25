@@ -370,6 +370,9 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
                 else{
                     p.stmtList.elementAt(i).accept(this);
                 }
+            }//Handle rest in Program
+            else{
+                p.stmtList.elementAt(i).accept(this);
             }
         }
 
