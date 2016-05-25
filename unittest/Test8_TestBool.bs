@@ -25,6 +25,9 @@ Function Void TestBool()
     PrintLine((NOT NOT NOT NOT NOT no) + "")
     PrintLine((NOT NOT da OR no) + "")
     PrintLine(((NOT NOT da) OR (da AND (NOT no))) + "")
+
+    PrintLine(("Kat" == "Mis") + "")
+    PrintLine(("hej" == "hej") + "")
 End Function
 
 Begin Declarations
