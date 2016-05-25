@@ -27,6 +27,7 @@ public class Main {
     public static String currentFile;
     public static SymbolTable currentSymbolTable = new SymbolTable();
     public static SymbolTable symbolTable = currentSymbolTable;
+    public static boolean stdLibIncluded = false;
 
     public static void main(String[] args) {
 
@@ -119,7 +120,9 @@ public class Main {
                         if (!errorFound) {
                             startNode.accept(generateJavaVisitor);
                             Map<String, List<String>> map = generateJavaVisitor.getCode();
-                            map.putAll(SimulationFileReader.getDST());
+                            if (stdLibIncluded) {
+                                map.putAll(SimulationFileReader.getDST());
+                            }
                             if (printCode) {
                                 int ln = 1;
                                 for (String s : map.keySet()) {

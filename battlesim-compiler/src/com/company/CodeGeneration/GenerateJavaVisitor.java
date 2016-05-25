@@ -3,6 +3,7 @@ package com.company.CodeGeneration;
 import com.company.AST.Nodes.*;
 import com.company.AST.Visitor.Visitor;
 import com.company.AST.Visitor.VisitorInterface;
+import com.company.Main;
 
 import java.util.*;
 
@@ -111,8 +112,10 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         emitComment("BattleSim automatically generated code file.\n");
         emitIndentation("public class Declarations {\n");
         indentLevel++;
-        emitIndentation("public static HashMap<String, SimObj> SimObjMap = new HashMap<String, SimObj>();\n");
-        emitIndentation("public static ArrayList<Barrier> barriers = new ArrayList<Barrier>();\n");
+        if(Main.stdLibIncluded){
+            emitIndentation("public static HashMap<String, SimObj> SimObjMap = new HashMap<String, SimObj>();\n");
+            emitIndentation("public static ArrayList<Barrier> barriers = new ArrayList<Barrier>();\n");
+        }
         s.dclBlock.accept(this);
         indentLevel--;
         emitIndentation("}\n");
@@ -180,7 +183,7 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
         for(int i = 0; i < db.stmtLists.size(); i++){
             if(db.stmtLists.elementAt(i) instanceof Dcl) {
                 for (int k = 0; k < ((Dcl) db.stmtLists.elementAt(i)).dclIdList.size(); k++) {
-                    if(((Dcl) db.stmtLists.elementAt(i)).typeName instanceof CustomTypeIdentifier){
+                    if(Main.stdLibIncluded && ((Dcl) db.stmtLists.elementAt(i)).typeName instanceof CustomTypeIdentifier){
                         String typeName = ((CustomTypeIdentifier) ((Dcl) db.stmtLists.elementAt(i)).typeName).name.name;
                         String name = ((Dcl) db.stmtLists.elementAt(i)).dclIdList.elementAt(k).name;
                         if(typeName.equals("Barrier")){

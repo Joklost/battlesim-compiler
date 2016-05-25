@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
 import java.io.FileReader;
+
+import com.company.Main;
 import org.apache.commons.io.FileUtils;
 import java.net.URL;
 import java.io.BufferedReader;
@@ -47,6 +49,7 @@ public class Preprocessor {
             while ((line = br.readLine()) != null) {
                 //include handling
                 if(line.startsWith("#Include")){
+                    Main.stdLibIncluded = true;
                     String includeFile = directory + line.substring(INCLUDE_STR_INDEX, line.lastIndexOf('"'));
                     if(includeFile == inputPath){
                         throw new Error("Unable to include file " + includeFile + " in " + inputPath);
