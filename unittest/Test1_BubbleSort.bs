@@ -31,7 +31,7 @@ Function Void BubbleSort()
             a[c + 1] = t
             flag = true
           End If
-        c = c + 1
+        //c = c + 1
         End For
     End While
 
