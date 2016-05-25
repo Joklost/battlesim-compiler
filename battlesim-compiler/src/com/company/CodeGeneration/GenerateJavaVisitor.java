@@ -703,11 +703,18 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(LogicEqualsExpr le) {
-        emit("(");
-        le.leftExpr.accept(this);
-        emit("==");
-        le.rightExpr.accept(this);
-        emit(")");
+        if (le.leftExpr.type == stringType && le.rightExpr.type == stringType) {
+            le.leftExpr.accept(this);
+            emit(".equals(");
+            le.rightExpr.accept(this);
+            emit(")");
+        } else {
+            emit("(");
+            le.leftExpr.accept(this);
+            emit("==");
+            le.rightExpr.accept(this);
+            emit(")");
+        }
     }
 
     public void visit(LessThanExpr le) {
