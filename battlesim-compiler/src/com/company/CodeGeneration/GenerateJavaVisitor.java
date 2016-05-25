@@ -479,6 +479,8 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     public void visit(ForStmt fs) {
         emitIndentation("for (");
         fs.var.accept(this);
+        emit("=");
+        fs.var.accept(this);
         emit("; ");
         if (fs.forIterator instanceof ToIterator) {
             fs.var.accept(this);
