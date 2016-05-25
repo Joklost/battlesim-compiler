@@ -4,6 +4,7 @@ import com.company.AST.Nodes.ASTNode;
 
 /**
  * Created by joklost on 11-04-16.
+ * http://web.cecs.pdx.edu/~harry/compilers/p6/SymbolTable.java
  */
 public class SymbolTable {
 
