@@ -291,7 +291,7 @@ public class GenerateJasminVisitor extends Visitor implements VisitorInterface {
         int registerTO = registerUsed;
 
         emit("bipush ");
-        fs.initialExpr.accept(this);
+        //fs.initialExpr.accept(this);
         emit("\nistore ");
         emit(registerFROM+"\n");
 

@@ -194,9 +194,9 @@ WhileStmt     ::= WHILE Expression:e DO Stmts:ss END WHILE MultEOL              
               ;
 ForeachStmt   ::= FOREACH TypeId:ti Identifier:id IN ObjectId:oi DO Stmts:s END FOREACH MultEOL {: RESULT = new ForeachStmt(ti, id, oi, s, tileft); :}
               ;
-ForStmt       ::= FOR Expression:e1 ForIterator:fi Expression:e2 DO Stmts:ss END FOR MultEOL    {: RESULT = new ForStmt(e1, fi, e2, ss, e1left); :}
+ForStmt       ::= FOR ObjectId:i ForIterator:fi Expression:e DO Stmts:ss END FOR MultEOL       {: RESULT = new ForStmt(i, fi, e, ss, e1left); :}
               ;
-
+// For i To 10 Do
 IfStmt        ::= IF Expression:e THEN Stmts:ss ElseIfStmt:els                                  {: RESULT = new IfStmt(e, ss, els, eleft); :}
               ;
 ElseIfStmt    ::= ELSE IF Expression:e THEN Stmts:s ElseIfStmt:es                               {: RESULT = new ElseIfStmt(e, s, es, eleft); :}

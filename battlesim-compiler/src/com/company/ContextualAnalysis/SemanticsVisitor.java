@@ -197,7 +197,8 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
     // der kan ikke deklareres typer i en for loop
     // så scopet åbnes efter toExpr - jkj
     public void visit(ForStmt fs) {
-        fs.initialExpr.accept(this);
+        fs.var.accept(this);
+        //fs.initialExpr.accept(this);
         fs.forIterator.accept(this);
         fs.toExpr.accept(this);
 
@@ -209,7 +210,7 @@ public class SemanticsVisitor extends Visitor implements VisitorInterface {
 
         Main.currentSymbolTable.closeScope();
 
-        if (fs.initialExpr.type != integerType) {
+        if (fs.var.type != integerType) {
             error(fs.getLineNumber(), "Inital expression in for statement has to be an integer.");
             fs.type = errorType;
         }

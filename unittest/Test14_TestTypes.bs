@@ -11,7 +11,7 @@ Begin Declarations
   bar1vertex1 = (30, 50)
   Declare bar1vertex2 as Coord
   bar1vertex2 = (50, 30)
-  Declare bar1vertex3 as Coord
+  Declar bar1vertex3 as Coord
   bar1vertex3 = (100, 100)
   Declare bar1vertex4 as Coord
   bar1vertex4 = (300, 600)

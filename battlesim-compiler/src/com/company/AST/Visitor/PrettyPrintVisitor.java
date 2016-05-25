@@ -232,7 +232,7 @@ public class PrettyPrintVisitor extends Visitor implements VisitorInterface {
     public void visit(ForStmt fs){
         printIndent();
         print("For ");
-        fs.initialExpr.accept(this);
+        fs.var.accept(this);
         fs.forIterator.accept(this);
         fs.toExpr.accept(this);
         print(" Do\n");

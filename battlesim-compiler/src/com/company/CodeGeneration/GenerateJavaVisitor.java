@@ -477,17 +477,23 @@ public class GenerateJavaVisitor extends Visitor implements VisitorInterface {
     }
 
     public void visit(ForStmt fs) {
-        emitIndentation("for (int i795030" + indentLevel + "_forloop=");
-        fs.initialExpr.accept(this);
+        emitIndentation("for (");
+        fs.var.accept(this);
         emit("; ");
         if (fs.forIterator instanceof ToIterator) {
-            emit("i795030" + indentLevel + "_forloop<");
+            fs.var.accept(this);
+            emit("<");
             fs.toExpr.accept(this);
-            emit("; i795030" + indentLevel + "_forloop++) {\n");
+            emit(";");
+            fs.var.accept(this);
+            emit("++) {\n");
         } else {
-            emit("i795030" + indentLevel + "_forloop>");
+            fs.var.accept(this);
+            emit(">");
             fs.toExpr.accept(this);
-            emit("; i795030" + indentLevel + "_forloop--) {\n");
+            emit(";");
+            fs.var.accept(this);
+            emit("--) {\n");
         }
 
         indentLevel++;
