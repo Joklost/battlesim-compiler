@@ -1438,7 +1438,7 @@ class CUP$Parser$actions {
 		int ssleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)).left;
 		int ssright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)).right;
 		StmtList ss = (StmtList)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-3)).value;
-		 RESULT = new ForStmt(i, fi, e, ss, e1left); 
+		 RESULT = new ForStmt(i, fi, e, ss, ileft); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("ForStmt",18, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
