@@ -18,7 +18,7 @@ public class BasicFrame extends JFrame{
       Map map = new Map(force1, force2, terrain, barriers, force1Sim, force2Sim);
       add(map);
       map.start();
-      setTitle("Simple example");
+      setTitle("BattleSim Simulation");
       setSize(terrain.Width, terrain.Height);
       setLocationRelativeTo(null);
       setDefaultCloseOperation(EXIT_ON_CLOSE);
